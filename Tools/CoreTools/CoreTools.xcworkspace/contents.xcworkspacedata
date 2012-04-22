@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:CoreObjectCreate/CoreObjectCreate.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../../CoreEngine3D(OSX).xcodeproj">
    </FileRef>
    <FileRef

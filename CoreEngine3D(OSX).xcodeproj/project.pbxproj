@@ -174,6 +174,7 @@
 		23FCBD8D14A1E09A00C5EA7C /* SpriteSheetAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23FCBD9314A1E09A00C5EA7C /* ViewFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */; };
 		23FCBD9414A1E09A00C5EA7C /* ViewFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD78C2631543C4A30029AA56 /* StringUtil.cpp */; };
 		DD805AAD14D79E67006C6D10 /* Square_Tiled_32.h in Headers */ = {isa = PBXBuildFile; fileRef = DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */; };
 		DDA6C705151155980035DE60 /* CoreObjectTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6C702151155980035DE60 /* CoreObjectTypes.h */; };
 		DDA6C706151155980035DE60 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6C703151155980035DE60 /* Tile.cpp */; };
@@ -355,6 +356,8 @@
 		23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSheetAnimator.h; sourceTree = "<group>"; };
 		23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewFlags.cpp; sourceTree = "<group>"; };
 		23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
+		DD78C2611543C48D0029AA56 /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
+		DD78C2631543C4A30029AA56 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
 		DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square_Tiled_32.h; sourceTree = "<group>"; };
 		DDA6C702151155980035DE60 /* CoreObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreObjectTypes.h; sourceTree = "<group>"; };
 		DDA6C703151155980035DE60 /* Tile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Tile.cpp; sourceTree = "<group>"; };
@@ -526,6 +529,8 @@
 				23FCBC1914A1E09A00C5EA7C /* PowerVR */,
 				23FCBC4714A1E09A00C5EA7C /* pugixml */,
 				23FCBC9F14A1E09A00C5EA7C /* SOIL */,
+				DD78C2611543C48D0029AA56 /* StringUtil.h */,
+				DD78C2631543C4A30029AA56 /* StringUtil.cpp */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -800,7 +805,7 @@
 		23FCBB9C14A1DFBC00C5EA7C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = 23FCBB9F14A1DFBC00C5EA7C /* Build configuration list for PBXProject "CoreEngine3D(OSX)" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -903,6 +908,7 @@
 				239760D01501F4EB001E7DF0 /* Spawner.cpp in Sources */,
 				DDA6C706151155980035DE60 /* Tile.cpp in Sources */,
 				DDC893791530EB620091EB0E /* Box2DUtil.cpp in Sources */,
+				DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
