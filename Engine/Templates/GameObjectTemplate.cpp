@@ -1,6 +1,6 @@
 //
 //  GameObjectTemplate.cpp
-//  Game(OSX)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 4/21/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
@@ -11,6 +11,34 @@
 //Engine includes
 #include "Engine/MathUtil.h"
 #include "Engine/matrix.h"
+#include "Engine/GraphicsTypes.h"
+#include "Engine/Game.h"
+
+//Game includes
+#include "GameModels.h"
+
+
+//Materials
+/*static const MaterialSettings g_Material_AlphaBlendedUseView =
+{
+	GL_LINEAR,
+	GL_CLAMP_TO_EDGE,
+	GL_CLAMP_TO_EDGE,
+	MT_TextureOnlySimple,
+	RenderFlagDefaults_2DTexture_AlphaBlended_UseView,
+	true,
+};*/
+
+//Art
+/*static ItemArtDescription g_Art_SpaceShip =
+{
+    "ArtResources/Characters/SpaceShip/SpaceShip.png",
+    ImageType_PNG,
+    0,
+    &g_Material_AlphaBlendedUseView,
+    &g_Square1x1_modelData,
+};*/
+
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
@@ -24,7 +52,8 @@ void GameObjectTemplate::InitClass()
 //----------------------------------------------------------------
 bool GameObjectTemplate::LoadResourcesForType(u32 type)
 {
-    //TODO: call LoadItemArt and LoadItemSound here
+    //TODO: call GAME->AddItemArt(&g_Art_SpaceShip)
+	//TODO: call GAME->AddItemSound(&g_Sound_SpaceShipBeam)
     
     return true;
 }
