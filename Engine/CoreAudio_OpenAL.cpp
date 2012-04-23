@@ -382,6 +382,8 @@ void CoreAudioOpenAL::DeleteSoundBuffer(u32* soundBufferID)
 	}
 	
 	alDeleteBuffers(1, soundBufferID);
+	CheckForOpenALError();
+	
 	*soundBufferID = 0;
 }
 
@@ -392,45 +394,55 @@ void CoreAudioOpenAL::DeleteSoundSource(u32* soundSourceID)
 		return;
 	}
 	
+	//delete source
 	alDeleteSources(1, soundSourceID);
+	CheckForOpenALError();
+	
 	*soundSourceID = 0;
 }
 
 void CoreAudioOpenAL::SetSoundSourceIsLooping(u32 soundSourceID, bool isLooping)
 {
 	alSourcei(soundSourceID, AL_LOOPING, isLooping?AL_TRUE:AL_FALSE);
+	CheckForOpenALError();
 }
 
 
 void CoreAudioOpenAL::SetSoundSourcePitch(u32 soundSourceID, f32 pitch)
 {
 	alSourcef(soundSourceID, AL_PITCH, pitch);
+	CheckForOpenALError();
 }
 
 void CoreAudioOpenAL::SetSoundSourceVolume(u32 soundSourceID, f32 volume)
 {
 	alSourcef(soundSourceID, AL_GAIN, volume);
+	CheckForOpenALError();
 }
 
 void CoreAudioOpenAL::SetSoundSourcePosition(u32 soundSourceID, const vec3* pPosition)
 {
 	alSourcefv(soundSourceID, AL_POSITION, (ALfloat*)pPosition);
+	CheckForOpenALError();
 }
 
 void CoreAudioOpenAL::SetSoundSourceDirection(u32 soundSourceID, const vec3* pDirection)
 {
 	alSourcefv(soundSourceID, AL_DIRECTION, (ALfloat*)pDirection);
+	CheckForOpenALError();
 }
 
 void CoreAudioOpenAL::SetSoundSourceVelocity(u32 soundSourceID, const vec3* pVelocity)
 {
 	alSourcefv(soundSourceID, AL_VELOCITY, (ALfloat*)pVelocity);
+	CheckForOpenALError();
 }
 
 bool CoreAudioOpenAL::GetSourceIsStopped(u32 soundSourceID)
 {
 	s32 state;
 	alGetSourcei(soundSourceID,AL_SOURCE_STATE,&state);
+	CheckForOpenALError();
 	
 	return state == AL_STOPPED;
 }

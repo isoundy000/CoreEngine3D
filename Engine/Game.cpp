@@ -112,6 +112,8 @@ bool Game::Init()
 	{
 		TileSetDescription* pDesc = &m_tileSetDescriptions[i];
 		pDesc->loadedTextureID = 0;
+		pDesc->textureFileName = NULL;
+		pDesc->name = NULL;
 	}
 	
 	//Register the common models people will use
@@ -205,12 +207,26 @@ void Game::CleanUp()
     
     for(u32 i=0; i<m_collisionLineSegments.size(); ++i)
     {
-        delete[] m_collisionLineSegments[i].pPoints;
+		if(m_collisionLineSegments[i].pPoints != NULL)
+		{
+			delete[] m_collisionLineSegments[i].pPoints;
+		}
     }
 	
-	for(u32 i=0; i<m_numTileSetDescriptions; ++i)
+	for(u32 i=0; i<GAME_MAX_TILESET_DESCRIPTIONS; ++i)
 	{
 		TileSetDescription* pDesc = &m_tileSetDescriptions[i];
+		
+		if(pDesc->textureFileName != NULL)
+		{
+			delete[] pDesc->textureFileName;
+		}
+		
+		if(pDesc->name != NULL)
+		{
+			delete[] pDesc->name;
+		}
+		
 		GLRENDERER->DeleteTexture(&pDesc->loadedTextureID);
 	}
 	
@@ -1371,9 +1387,12 @@ void Game::Box2D_Init(bool continuousPhysicsEnabled, bool allowObjectsToSleep)
 	m_Box2D_pWorld = new b2World(gravity);
 	
 #if defined(DEBUG) || defined(_DEBUG)
-	m_Box2D_pDebugDraw = new Box2DDebugDraw;
-	m_Box2D_pDebugDraw->SetFlags(0xFFFFFFFF);
-	m_Box2D_pWorld->SetDebugDraw(m_Box2D_pDebugDraw);
+	if(m_Box2D_pDebugDraw == NULL)
+	{
+		m_Box2D_pDebugDraw = new Box2DDebugDraw;
+		m_Box2D_pDebugDraw->SetFlags(0xFFFFFFFF);
+		m_Box2D_pWorld->SetDebugDraw(m_Box2D_pDebugDraw);
+	}
 #endif
 	
 	m_Box2D_pWorld->SetContinuousPhysics(continuousPhysicsEnabled);
@@ -1581,9 +1600,29 @@ bool Game::TiledLevel_GetGroundPos(vec3* pOut_GroundPos, vec3* pOut_GroundNormal
 
 bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)
 {
+	for(u32 i=0; i<GAME_MAX_TILESET_DESCRIPTIONS; ++i)
+	{
+		TileSetDescription* pDesc = &m_tileSetDescriptions[i];
+
+		if(pDesc->textureFileName != NULL)
+		{
+			delete[] pDesc->textureFileName;
+			pDesc->textureFileName = NULL;
+		}
+		
+		if(pDesc->name != NULL)
+		{
+			delete[] pDesc->name;
+			pDesc->name = NULL;
+		}
+	}
+	
 	for(u32 i=0; i<m_collisionLineSegments.size(); ++i)
     {
-        delete[] m_collisionLineSegments[i].pPoints;
+		if(m_collisionLineSegments[i].pPoints != NULL)
+		{
+			delete[] m_collisionLineSegments[i].pPoints;
+		}
     }
     m_collisionLineSegments.clear();
     
@@ -1902,6 +1941,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 			unsigned char decodedData[BUFFER_SIZE];
 			
 			size_t outputLength = base64_decode(dataToDecode,decodedData, BUFFER_SIZE);
+			assert(outputLength != -1);
 
 			COREDEBUG_PrintDebugMessage("base64_decode...");
 			
