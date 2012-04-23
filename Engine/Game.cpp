@@ -158,7 +158,7 @@ bool Game::Init()
 	m_currSongID = -1;
 	
 #if defined (PLATFORM_IOS)
-	m_pTouchInput = [[[TouchInputIOS alloc]init:&m_deviceInputState]retain];
+	m_pTouchInput = [[TouchInputIOS alloc]init:&m_deviceInputState];
 	//HACK:
 	[m_pTouchInput SetAccelerometerIsUsed:YES];
 #endif
@@ -384,7 +384,7 @@ s32 Game::AddSongToPlaylist(const char* songFilenameMP3)
 std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 {
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	//NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
 	NSString* fileString = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
 	NSString *fullPath = [[NSBundle mainBundle] pathForResource:[fileString lastPathComponent] ofType:nil inDirectory:[fileString stringByDeletingLastPathComponent]];
@@ -397,7 +397,7 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 		pathString = [fullPath UTF8String];
 	}
 
-	[pool drain];
+	//[pool drain];
 	
 	return pathString;
 #endif
@@ -411,7 +411,7 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 void Game::StopSong()
 {
 	[m_pAudioPlayer stop];
-	[m_pAudioPlayer release];
+	//[m_pAudioPlayer release];
 	
 	m_pAudioPlayer = nil;
 	
@@ -432,7 +432,7 @@ void Game::PlaySongByID(s32 songID, f32 volume, bool isLooping)
 	
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
 	[m_pAudioPlayer stop];
-	[m_pAudioPlayer release];
+	//[m_pAudioPlayer release];
 	
 	NSString* fileString = [NSString stringWithCString:m_songPlaylist[songID] encoding:NSUTF8StringEncoding];
 	NSString *fullPath = [[NSBundle mainBundle] pathForResource:[fileString lastPathComponent] ofType:nil inDirectory:[fileString stringByDeletingLastPathComponent]];
@@ -2357,6 +2357,9 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
         
         //Load all resources into memory
         
+		//Load shadow blob
+		AddItemArt(&g_Game_BlobShadowDesc);
+		
         //Loads sounds in a separate thread while loading textures
         //in the main thread.
         LoadItemSounds();  

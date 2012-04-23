@@ -11,6 +11,7 @@
 
 #include "Engine/CoreGameObject.h"
 #include "Engine/MathTypes.h"
+#include "Engine/GraphicsTypes.h"
 
 class GameObjectTemplate: public CoreGameObject
 {

@@ -85,12 +85,12 @@
 		//No existing touch found so add it in
 		if(pFoundTouch == nil && touchIndex != -1)
 		{
-			if(m_pTouches[touchIndex])
+			/*if(m_pTouches[touchIndex])
 			{
 				[m_pTouches[touchIndex] release];
-			}
+			}*/
 			m_pTouches[touchIndex] = touch;
-			[m_pTouches[touchIndex] retain];
+			//[m_pTouches[touchIndex] retain];
 			
 #ifdef DEBUG_PRINTTOUCHEVENTS
 			//printf("*New touch created!	%d\n",(int)touch);
@@ -271,7 +271,7 @@
 		//Should be impossible for touchIndex to be -1 by now
 		m_inputState->m_touchStates[touchIndex] = TouchState_Cancelled;
 		
-		[m_pTouches[touchIndex] release];
+		//[m_pTouches[touchIndex] release];
 		m_pTouches[touchIndex] = nil;
 		
 	}
@@ -310,7 +310,7 @@
 				{
 					if(m_pTouches[i])
 					{
-						[m_pTouches[i] release];
+						//[m_pTouches[i] release];
 						m_pTouches[i] = nil;
 					}	
 				}

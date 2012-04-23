@@ -11,7 +11,6 @@
 //Engine includes
 #include "Engine/MathUtil.h"
 #include "Engine/matrix.h"
-#include "Engine/GraphicsTypes.h"
 #include "Engine/Game.h"
 
 //Game includes
