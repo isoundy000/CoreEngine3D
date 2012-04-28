@@ -20,9 +20,11 @@
 #include "CoreObjects/CoreObjectTypes.h"
 
 #if defined (PLATFORM_WIN)
-#include <direct.h>
+#include <direct.h>	//For directory commands
 #include <stdlib.h>
 #endif
+
+#include <algorithm>
 
 #define ENGINE_PATH "Engine/" 
 
@@ -31,6 +33,7 @@ Game* GAME = NULL;
 static void DrawFunc_DrawTile_Init();
 static void DrawFunc_DrawTile_Uninit();
 static void DrawFunc_DrawTile(void* pData);
+static bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const CollisionLineSegment& rhs);
 
 static DrawFunctionStruct g_drawStruct_RenderTile = 
 {
@@ -1597,6 +1600,11 @@ bool Game::TiledLevel_GetGroundPos(vec3* pOut_GroundPos, vec3* pOut_GroundNormal
     return false;
 }
 
+bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const CollisionLineSegment& rhs)
+{
+	return lhs.pPoints[0].x < rhs.pPoints[0].x;
+}
+
 
 bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)
 {
@@ -2211,6 +2219,9 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 						}
 					}
 				}
+				
+				//Sort the segments
+				std::sort(m_collisionLineSegments.begin(),m_collisionLineSegments.end(),SortCollisionLineSegmentByX);
 			}
 			//Create objects
 			else
