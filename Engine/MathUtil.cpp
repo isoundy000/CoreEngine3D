@@ -922,4 +922,47 @@ bool rand_Bool()
 	return rand_FloatRange( 0.0f, 1.0f ) >= 0.5f;
 }
 
+void CatmullRom_Evalulate(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t)
+{
+	const f32 c0 = ((-t + 2.0f) * t - 1.0f) * t * 0.5f;
+	const f32 c1 = (((3.0f * t - 5.0f) * t) * t + 2.0f) * 0.5f;
+	const f32 c2 = ((-3.0f * t + 4.0f) * t + 1.0f) * t * 0.5f;
+	const f32 c3 = ((t - 1.0f) * t * t) * 0.5f;
+	
+	ScaleVec3(pOut_result, p0, c0);
+	AddScaledVec3_Self(pOut_result, p1, c1);
+	AddScaledVec3_Self(pOut_result, p2, c2);
+	AddScaledVec3_Self(pOut_result, p3, c3);
+}
 
+
+void CatmullRom_CreatePoints(vec3* pOut_result, u32* pOut_numPoints, u32 numSubdivisions, const vec3* pPoints, u32 numPoints)
+{	
+	const u32 numPointsMin1 = numPoints-1;
+	const u32 numSubdivisionsMin1 = numSubdivisions-1;
+
+	u32 numOutputPoints = 0;
+
+	for(u32 i=0; i<numPoints-1; ++i)
+	{
+		const u32 index0 = MaxS32(0, i-1);
+		const u32 index1 = i;
+		const u32 index2 = i+1;
+		const u32 index3 = MinS32(i+2,numPointsMin1);
+		
+		for(u32 j=0; j<numSubdivisions; ++j)
+		{
+			const vec3* p0 = &pPoints[index0];
+			const vec3* p1 = &pPoints[index1];
+			const vec3* p2 = &pPoints[index2];
+			const vec3* p3 = &pPoints[index3];
+			
+			const f32 t = (f32)j/(f32)(numSubdivisionsMin1);
+			
+			CatmullRom_Evalulate(&pOut_result[numOutputPoints], p0, p1, p2, p3, t);
+			++numOutputPoints;
+		}
+	}
+	
+	*pOut_numPoints = numOutputPoints;
+}

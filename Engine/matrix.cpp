@@ -673,7 +673,7 @@ void mat4f_LoadScaledRotationFromLeftAndUp_IgnoreTranslation(f32* pOut_matrix, c
 }
 
 
-void mat4f_LoadScaledRotationFromUpAndLeft_IgnoreTranslation(f32* pOut_matrix, const vec3* pLeft, const vec3* pUp, const f32 scale)
+void mat4f_LoadScaledRotationFromUpAndLeft_IgnoreTranslation(f32* pOut_matrix, const vec3* pUp, const vec3* pLeft, const f32 scale)
 {
 	vec3 mat_up;
 	CopyVec3(&mat_up,pUp);
@@ -758,7 +758,7 @@ void mat4f_LoadScaledRotationFromLeftAndUp(f32* pOut_matrix, const vec3* pLeft, 
 }
 
 
-void mat4f_LoadScaledRotationFromUpAndLeft(f32* pOut_matrix, const vec3* pLeft, const vec3* pUp, const f32 scale)
+void mat4f_LoadScaledRotationFromUpAndLeft(f32* pOut_matrix, const vec3* pUp, const vec3* pLeft, const f32 scale)
 {
 	vec3 mat_up;
 	CopyVec3(&mat_up,pUp);
