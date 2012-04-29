@@ -922,7 +922,7 @@ bool rand_Bool()
 	return rand_FloatRange( 0.0f, 1.0f ) >= 0.5f;
 }
 
-void CatmullRom_Evalulate(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t)
+void CatmullRom_Evaluate(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t)
 {
 	const f32 c0 = ((-t + 2.0f) * t - 1.0f) * t * 0.5f;
 	const f32 c1 = (((3.0f * t - 5.0f) * t) * t + 2.0f) * 0.5f;
@@ -935,34 +935,94 @@ void CatmullRom_Evalulate(vec3* pOut_result, const vec3* p0, const vec3* p1, con
 	AddScaledVec3_Self(pOut_result, p3, c3);
 }
 
+void CatmullRom_EvaluateCurve(vec3* pOut_result, const vec3* pPoints, u32 numPoints, f32 t)
+{
+	const f32 index1F = t * (f32)(numPoints-1);
+	const u32 index1 = (u32)index1F;
+	
+	const f32 remainder = index1F - (f32)index1;
+	
+	const u32 index0 = MaxS32(0,index1 - 1);
+	const u32 index2 = index1 + 1;
+	const u32 index3 = MinS32(numPoints-1,index1 + 2);
+	
+	const vec3* p0 = &pPoints[index0];
+	const vec3* p1 = &pPoints[index1];
+	const vec3* p2 = &pPoints[index2];
+	const vec3* p3 = &pPoints[index3];
+	
+	CatmullRom_Evaluate(pOut_result, p0, p1, p2, p3, remainder);
+}
 
-void CatmullRom_CreatePoints(vec3* pOut_result, u32* pOut_numPoints, u32 numSubdivisions, const vec3* pPoints, u32 numPoints)
-{	
-	const u32 numPointsMin1 = numPoints-1;
-	const u32 numSubdivisionsMin1 = numSubdivisions-1;
-
-	u32 numOutputPoints = 0;
-
-	for(u32 i=0; i<numPoints-1; ++i)
+f32 Curve_TValueFromDist(f32 dist, DistanceTableEntry* pDistTable, u32 numDistTableEntries)
+{
+	for(s32 i=numDistTableEntries-2; i != -1; --i)
 	{
-		const u32 index0 = MaxS32(0, i-1);
-		const u32 index1 = i;
-		const u32 index2 = i+1;
-		const u32 index3 = MinS32(i+2,numPointsMin1);
-		
-		for(u32 j=0; j<numSubdivisions; ++j)
+		DistanceTableEntry* pEntry = &pDistTable[i];
+		if(dist >= pEntry->distance)
 		{
-			const vec3* p0 = &pPoints[index0];
-			const vec3* p1 = &pPoints[index1];
-			const vec3* p2 = &pPoints[index2];
-			const vec3* p3 = &pPoints[index3];
-			
-			const f32 t = (f32)j/(f32)(numSubdivisionsMin1);
-			
-			CatmullRom_Evalulate(&pOut_result[numOutputPoints], p0, p1, p2, p3, t);
-			++numOutputPoints;
+			if(i == numDistTableEntries-1)
+			{
+				return 1.0f;
+			}
+			else
+			{
+				DistanceTableEntry* pNextEntry = &pDistTable[i+1];
+				const f32 lerpT = (dist-pEntry->distance)/(pNextEntry->distance-pEntry->distance);
+				const f32 t = Lerp(pEntry->t, pNextEntry->t, lerpT);
+				
+				return t;
+			}
 		}
 	}
 	
-	*pOut_numPoints = numOutputPoints;
+	return 0.0f;
+}
+
+void CatmullRom_CreatePoints_Uniform(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries)
+{
+	const f32 numPointsDesiredMin1 = (f32)(numPointsDesired-1);
+	const f32 totalLength = pDistTable[numDistTableEntries-1].distance;
+	
+	for(u32 i=0; i<numPointsDesired; ++i)
+	{
+		const f32 distT = (f32)i/(f32)numPointsDesiredMin1;
+		const f32 distance = distT * totalLength;
+		
+		const f32 t = Curve_TValueFromDist(distance,pDistTable,numDistTableEntries);
+		CatmullRom_EvaluateCurve(&pOut_pointArray[i],pCurvePoints,numCurvePoints,t);
+	}
+}
+
+
+void CatmullRom_CreatePoints(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints)
+{	
+	const f32 numPointsDesiredMin1 = (f32)(numPointsDesired-1);
+	
+	for(u32 i=0; i<numPointsDesired; ++i)
+	{
+		const f32 t = (f32)i/numPointsDesiredMin1;
+		CatmullRom_EvaluateCurve(&pOut_pointArray[i],pCurvePoints,numCurvePoints,t);
+	}
+}
+
+void Curve_CreateDistanceTable(DistanceTableEntry* pOut_result, const vec3* pPoints, u32 numPoints)
+{
+	const u32 numPointsMin1 = numPoints-1;
+	
+	f32 distSoFar = 0.0f;
+	
+	pOut_result[0].distance = 0.0f;
+	pOut_result[0].t = 0.0f;
+	
+	for(u32 i=1; i<numPoints; ++i)
+	{
+		const f32 dist = DistVec3(&pPoints[i-1], &pPoints[i]);
+		
+		distSoFar += dist;
+		
+		DistanceTableEntry* pEntry = &pOut_result[i];
+		pEntry->distance = distSoFar;
+		pEntry->t = (f32)i/(f32)numPointsMin1;
+	}
 }

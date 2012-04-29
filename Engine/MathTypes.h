@@ -69,6 +69,12 @@ struct PlaneVec3 {
 	vec3 normal;
 };
 
+struct DistanceTableEntry
+{
+	f32 t;
+	f32 distance;
+};
+
 extern const vec3 vec3_up;
 extern const vec3 vec3_down;
 extern const vec3 vec3_at;

@@ -79,8 +79,14 @@ f32 DistVec3_2D(const vec3* vec0, const vec3* vec1);
 f32 DistVec3(const vec3* vec0, const vec3* vec1);
 f32 MagnitudeSqVec3(const vec3* vec);
 
-void CatmullRom_Evalulate(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t);
-void CatmullRom_CreatePoints(vec3* pOut_result, u32* pOut_numPoints, u32 numSubdivisions, const vec3* pPoints, u32 numPoints);
+void CatmullRom_Evaluate(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t);
+void CatmullRom_EvaluateCurve(vec3* pOut_result, const vec3* pPoints, u32 numPoints, f32 t);
+
+void CatmullRom_CreatePoints(vec3* pOut_result, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints);
+void CatmullRom_CreatePoints_Uniform(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
+
+void Curve_CreateDistanceTable(DistanceTableEntry* pOut_result, const vec3* pPoints, u32 numPoints);
+f32 Curve_TValueFromDist(f32 dist, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
 
 //Projects vec0 onto normalized vec1
 void ProjectVec3_Norm(vec3* out_resultVec, vec3* vec0, vec3* vec1);
