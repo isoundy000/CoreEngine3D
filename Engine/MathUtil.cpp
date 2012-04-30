@@ -222,8 +222,8 @@ void  LerpVec4(vec4* out_lerpedPos, const vec4* p0, const vec4* p1, f32 t)
 //----------------------------------------------------------------------------
 void  MakeRotatedVec2(vec2* out_resultVec, f32 angleRadians)
 {
-	out_resultVec->x = cosf(angleRadians);
-	out_resultVec->y = -sinf(angleRadians);
+	out_resultVec->x = -sinf(angleRadians);
+	out_resultVec->y = cosf(angleRadians);
 }
 
 
@@ -231,8 +231,8 @@ void  MakeRotatedVec2(vec2* out_resultVec, f32 angleRadians)
 //----------------------------------------------------------------------------
 void  MakeRotatedVec2_SinCos(vec2* out_resultVec, f32 sinTheta, f32 cosTheta)
 {
-    out_resultVec->x = cosTheta;
-	out_resultVec->y = -sinTheta;
+    out_resultVec->x = -sinTheta;
+	out_resultVec->y = cosTheta;
 }
 
 

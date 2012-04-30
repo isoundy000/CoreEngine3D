@@ -16,17 +16,6 @@
 
 static const f32 g_Spawner_mass = 64.0f;
 
-static const MaterialSettings g_Spawner_MaterialSettings1 =
-{
-	GL_LINEAR,
-	GL_CLAMP_TO_EDGE,
-	GL_CLAMP_TO_EDGE,
-	MT_TextureOnlySimple,
-	RenderFlagDefaults_2DTexture_AlphaBlended_UseView,
-	true,
-};
-
-
 bool Spawner::SpawnInit(void* pSpawnStruct)
 {
 	m_hSpawnObject = CoreObjectHandle();

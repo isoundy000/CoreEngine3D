@@ -17,8 +17,7 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosit
 	m_pSettings = pSettings;
 	
 	ItemArtDescription* pArtDesc = pSettings->pItemArt;
-	const MaterialSettings* pMaterial = pArtDesc->materialSettings;
-	
+
 	RenderableGeometry3D* pGeom = NULL;
 	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);
 	
@@ -28,7 +27,7 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosit
 		return;
 	}
 	
-	GLRENDERER->InitRenderableGeometry3D(pGeom, pArtDesc->pModelData, pMaterial->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, View_0, pMaterial->renderFlags|RenderFlag_Visible);
+	GLRENDERER->InitRenderableGeometry3D(pGeom, pArtDesc->pModelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
 	pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
 	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
 	

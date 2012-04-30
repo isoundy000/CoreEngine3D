@@ -48,6 +48,9 @@ public:
 	
 	struct ParticleSettings
 	{
+		RenderMaterial renderMaterial;
+		u32 renderFlags;
+		BlendMode blendMode;
 		f32 lifetimeMin;
 		f32 lifetimeMax;
 		f32 gravity;

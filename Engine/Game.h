@@ -60,7 +60,6 @@ class Box2DDebugDraw;
 
 #define GAME_MAX_STORED_DELETABLE_TILES 64
 
-extern const MaterialSettings g_Game_BlobShadowSettings;
 extern ItemArtDescription g_Game_BlobShadowDesc;
 
 enum CollisionFilter

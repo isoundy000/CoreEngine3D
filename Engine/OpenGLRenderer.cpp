@@ -221,15 +221,15 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
 	
 
 #ifdef PLATFORM_OSX
-	m_supportsFeaturesFromiOS4 = true;
+	m_supportsVAOs = true;
 #endif
 
 #ifdef PLATFORM_WIN
-	m_supportsFeaturesFromiOS4 = glGenVertexArrays != NULL;
+	m_supportsVAOs = glGenVertexArrays != NULL;
 #endif
 
 #ifdef PLATFORM_IOS
-	m_supportsFeaturesFromiOS4 = [[[UIDevice currentDevice] systemVersion] floatValue] >= 4.0f;
+	m_supportsVAOs = [[[UIDevice currentDevice] systemVersion] floatValue] >= 4.0f;
 #endif
 	
 #if TARGET_IPHONE_SIMULATOR
@@ -239,7 +239,7 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
     //COREDEBUG_PrintDebugMessage("This device has %d processors.",processorCount);
     
 	const s32 processorCount = 1;
-    m_supportsMultisampling = m_supportsFeaturesFromiOS4 && processorCount > 1; //Hack to enable multi-sampling only on iPad 2
+    m_supportsMultisampling = processorCount > 1; //Hack to enable multi-sampling only on iPad 2
 #endif
     
 	SetClearColor(0, 0, 0);
@@ -257,22 +257,15 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
         m_currTextureInTextureUnit[i] = 0;
     }
     
-    for(int i=0; i<MAX_TRAILS; ++i)
-    {
-        m_trails[i].m_numTrailParticles = 0;
-        m_trails[i].inUse = 0;
-        m_trails[i].pCallbackTrailPointer = 0;
-    }
-    
     m_screenShakeTimer = -1.0f;
     m_currScreenShakeAmount = 10.0f;
     
     m_maxNumRenderables = 0;
-    m_maxNumTrails = 0;
 	
 	ClearOneFrameGeometry();
     
     m_renderStateFlags = 0;
+	m_blendMode = BlendMode_None;
     
     m_currTextureUnit = 999;
     
@@ -292,8 +285,6 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
 	
 	m_renderableObject3DsNeedSorting_UI = false;
 	m_renderableObject3DsNeedSorting_Normal = false;
-	
-	ClearParticles();
 	
 	for (s32 i=0; i<NUM_SINCOS_BUCKETS; ++i)
 	{
@@ -395,7 +386,7 @@ void OpenGLRenderer::ClearOneFrameGeometry()
 void OpenGLRenderer::DisableVertexBufferObjects()
 {
     //Do this to disable vertex array objects
-    if(m_supportsFeaturesFromiOS4)
+    if(m_supportsVAOs)
     {
 #ifdef PLATFORM_IOS
         glBindVertexArrayOES(0);
@@ -416,85 +407,57 @@ void OpenGLRenderer::DisableVertexBufferObjects()
 }
 
 
-void OpenGLRenderer::SetRenderState(u32 renderFlags)
+void OpenGLRenderer::SetRenderState(BlendMode blendMode, u32 renderFlags)
 {
-	//Enable or disable depth writing based on the RenderFlag
-	const u32 currDepthTestValue = (renderFlags & RenderFlag_DisableDepthTest) | (renderFlags & RenderFlag_EnableDepthTest);
-	const u32 prevDepthTestValue = (m_renderStateFlags & RenderFlag_DisableDepthTest) | (m_renderStateFlags & RenderFlag_EnableDepthTest);
-	
-	if(currDepthTestValue != prevDepthTestValue)
+	//Depth Test
+	if(m_hasSetRenderstateThisFrame == false
+	   || (renderFlags & RenderFlag_EnableDepthTest) != (m_renderStateFlags & RenderFlag_EnableDepthTest))
 	{
-		if (renderFlags & RenderFlag_DisableDepthTest)
+		if(renderFlags & RenderFlag_EnableDepthTest)
+		{
+			glEnable( GL_DEPTH_TEST );
+		}
+		else
 		{
 			glDisable( GL_DEPTH_TEST );
 		}
-		else if(renderFlags & RenderFlag_EnableDepthTest)
+	}
+	
+	//Depth read
+	if(m_hasSetRenderstateThisFrame == false
+	   || (renderFlags & RenderFlag_EnableDepthRead) != (m_renderStateFlags & RenderFlag_EnableDepthRead))
+	{
+		if(renderFlags & RenderFlag_EnableDepthRead)
 		{
-			glEnable( GL_DEPTH_TEST );
-			
-			//These other values rely on the depth test being on so if it's not on,
-			//don't do any of this
-			
-			const u32 currDepthReadValue = (renderFlags & RenderFlag_DisableDepthRead) | (renderFlags & RenderFlag_EnableDepthRead);
-			const u32 prevDepthReadValue = (m_renderStateFlags & RenderFlag_DisableDepthRead) | (m_renderStateFlags & RenderFlag_EnableDepthRead);
-			
-			if(currDepthReadValue != prevDepthReadValue)
-			{
-				if (renderFlags & RenderFlag_DisableDepthRead)
-				{
-					glDepthFunc(GL_ALWAYS);
-				}
-				else if(renderFlags & RenderFlag_EnableDepthRead)
-				{
-					glDepthFunc(GL_LEQUAL) ;
-				}
-			}
-			
-			const u32 currDepthWriteValue = (renderFlags & RenderFlag_DisableDepthWrite) | (renderFlags & RenderFlag_EnableDepthWrite);
-			const u32 prevDepthWriteValue = (m_renderStateFlags & RenderFlag_DisableDepthWrite) | (m_renderStateFlags &RenderFlag_EnableDepthWrite);
-			
-			if(currDepthWriteValue != prevDepthWriteValue)
-			{
-				if (renderFlags & RenderFlag_DisableDepthWrite)
-				{
-					glDepthMask( GL_FALSE );
-				}
-				else if(renderFlags & RenderFlag_EnableDepthWrite)
-				{
-					glDepthMask( GL_TRUE );
-				}
-			}
+			glDepthFunc(GL_LEQUAL);
+		}
+		else
+		{
+			glDepthFunc(GL_ALWAYS);
 		}
 	}
 	
-	
-	const u32 currAlphaBlendValue = (renderFlags & RenderFlag_AlphaBlended) | (renderFlags & RenderFlag_AdditiveBlending) | (renderFlags & RenderFlag_NonPremultipliedAlpha) | (renderFlags & RenderFlag_DisableBlending);
-	const u32 prevAlphaBlendValue = (m_renderStateFlags & RenderFlag_AlphaBlended) | (m_renderStateFlags & RenderFlag_AdditiveBlending) | (m_renderStateFlags & RenderFlag_NonPremultipliedAlpha) | (m_renderStateFlags & RenderFlag_DisableBlending);
-	
-	if(currAlphaBlendValue != prevAlphaBlendValue)
+	//Depth write
+	if(m_hasSetRenderstateThisFrame == false
+	   || (renderFlags & RenderFlag_EnableDepthWrite) != (m_renderStateFlags & RenderFlag_EnableDepthWrite))
 	{
-		//Enable or disable alpha blended based on the RenderFlag
-		if (renderFlags & RenderFlag_AlphaBlended)
+		if(renderFlags & RenderFlag_EnableDepthWrite)
+		{
+			glDepthMask(GL_TRUE);
+		}
+		else
+		{
+			glDepthMask(GL_FALSE);
+		}
+	}
+	
+	//Blending toggle
+	if(m_hasSetRenderstateThisFrame == false
+	   || (renderFlags & RenderFlag_BlendingEnabled) != (m_renderStateFlags & RenderFlag_BlendingEnabled))
+	{
+		if(renderFlags & RenderFlag_BlendingEnabled)
 		{
 			glEnable(GL_BLEND);
-			if(renderFlags & RenderFlag_AdditiveBlending)
-			{
-				//Additive blending
-				glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-			}
-			else
-			{
-				if(renderFlags & RenderFlag_NonPremultipliedAlpha)
-				{
-					//Normal blending
-					glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				}
-				else
-				{
-					//Normal blending
-					glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-				}
-			}
 		}
 		else
 		{
@@ -502,13 +465,54 @@ void OpenGLRenderer::SetRenderState(u32 renderFlags)
 		}
 	}
 	
-	
-	const u32 currCullValue = (renderFlags & RenderFlag_DisableCulling) | (renderFlags & RenderFlag_InverseCulling);
-	const u32 prevCullValue = (m_renderStateFlags & RenderFlag_DisableCulling) | (m_renderStateFlags & RenderFlag_InverseCulling);
-	
-	if(currCullValue != prevCullValue)
+	//Blend mode
+	if(m_hasSetRenderstateThisFrame == false
+	   || blendMode != m_blendMode)
 	{
-		//Turn on or off culling based on the RenderFlags
+		switch(blendMode)
+		{
+			case BlendMode_None:
+			{
+				break;
+			}
+			case BlendMode_Normal:
+			{
+				glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				
+				break;
+			}
+			case BlendMode_Premultiplied:
+			{
+				glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				break;
+			}
+			case BlendMode_Add:
+			{
+				glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+				
+				break;
+			}
+			case BlendMode_Subtract:
+			{
+				//Unsupported
+				break;
+			}
+			case BlendMode_Multiply:
+			{
+				//Unsupported
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+	
+	//Culling Toggle
+	if(m_hasSetRenderstateThisFrame == false
+	   || (renderFlags & RenderFlag_DisableCulling) != (m_renderStateFlags & RenderFlag_DisableCulling))
+	{
 		if(renderFlags & RenderFlag_DisableCulling)
 		{
 			glDisable(GL_CULL_FACE);
@@ -516,22 +520,29 @@ void OpenGLRenderer::SetRenderState(u32 renderFlags)
 		else
 		{
 			glEnable(GL_CULL_FACE);
-			
-			if (renderFlags & RenderFlag_InverseCulling)
-			{
-				//Inverse culling
-				glFrontFace(GL_CW);
-			}
-			else
-			{
-				//Normal culling
-				glFrontFace(GL_CCW);
-			}
+		}
+	}
+	
+	//Culling mode
+	if(m_hasSetRenderstateThisFrame == false
+	   || (renderFlags & RenderFlag_InverseCulling) != (m_renderStateFlags & RenderFlag_InverseCulling))
+	{
+		if(renderFlags & RenderFlag_InverseCulling)
+		{
+			glFrontFace(GL_CW);
+		}
+		else
+		{
+			glFrontFace(GL_CCW);
 		}
 	}
 	
 	//Save the current flags so we don't repeat renderstate calls
 	m_renderStateFlags = renderFlags;
+	
+	m_blendMode = blendMode;
+	
+	m_hasSetRenderstateThisFrame = true;
 }
 
 
@@ -614,7 +625,7 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 			}
 		}
 		
-		SetRenderState(renderFlags);
+		SetRenderState(pGeom->blendMode,renderFlags);
         
         void* pDrawObject = pGeom->drawObject;
         DrawFunctionStruct* pDrawStruct = pGeom->pDrawStruct;
@@ -670,7 +681,7 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 				if (currPrim->vertexData != vertexData)
 				{
 					vertexData = currPrim->vertexData;
-					if (m_supportsFeaturesFromiOS4)
+					if (m_supportsVAOs)
 					{
 						BindVertexArrayObject(currPrim);
 						
@@ -708,441 +719,6 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 	}
 }
 
-
-void OpenGLRenderer::RenderEffects()
-{
-#ifdef DEBUG_RENDERLOOP
-	//COREDEBUG_PrintDebugMessage("Skipped swaps: %d",skippedTextureSwaps);
-	
-	//COREDEBUG_PrintDebugMessage("**Render End.  Rendered %d objects.",m_numRenderableObject3Ds);
-#endif
-
-    //Do this to disable vertex array objects
-    if(m_supportsFeaturesFromiOS4)
-    {
-#ifdef PLATFORM_IOS
-		glBindVertexArrayOES(0);
-		
-#elif defined PLATFORM_WIN
-		glBindVertexArray(0);
-		
-#else
-		glBindVertexArrayAPPLE(0);	
-#endif
-    }
-
-	//Disable Vertex Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-	//Disable Index Buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
-	glEnable(GL_DEPTH_TEST);
-	
-    glDepthFunc(GL_LEQUAL) ;
-	
-	//Disable depth write
-	glDepthMask( GL_FALSE );
-    glDepthFunc(GL_LEQUAL) ;
-	
-	//Disable culling
-	glDisable(GL_CULL_FACE);
-	
-	//Enable alpha blend
-	glEnable(GL_BLEND);
-	
-	/*** RENDER TEXTURED LINES ***/
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	
-	
-	//Set line material
-    SetMaterial(MT_TextureAndDiffuseColor);
-	
-	
-	u32 currLineTexture = 0;
-	
-	DebugDrawMode drawMode = DebugDrawMode_None;
-	
-	for(s32 renderLineIDX=0; renderLineIDX<m_numTexturedLines_saved; ++renderLineIDX)
-	{
-		assert(renderLineIDX < MAX_TEXTURED_LINES);
-		
-		TexturedLineObject* pCurrLine = &m_texturedLineObjects[renderLineIDX];
-		
-		if(drawMode != pCurrLine->drawMode)
-		{
-			drawMode = pCurrLine->drawMode;
-			
-			switch(pCurrLine->drawMode)
-			{
-				case DebugDrawMode_2D:
-				{
-					//Draw 2D lines
-					m_currProjMatType = ProjMatType_Orthographic_Points;
-					UploadWorldViewProjMatrix(m_identityMat);
-					
-					
-					break;
-				}
-				case DebugDrawMode_3D:
-				{
-					//Draw 3D lines
-					m_currProjMatType = ProjMatType_Perspective;
-					UploadWorldViewProjMatrix(m_identityMat);
-					
-					break;
-				}
-				case DebugDrawMode_Screen2D:
-				{
-					//Draw to the screen with no view matrix in 2D
-					m_currProjMatType = ProjMatType_Orthographic_Points;
-					UploadWorldProjMatrix(m_identityMat);
-					
-					break;
-				}
-				default:
-				{
-					break;
-				}
-			}
-		}
-		
-		u32 nextLineTexture = pCurrLine->texturedID;
-		
-		if(nextLineTexture != currLineTexture)
-		{
-			SetTexture(&nextLineTexture,0);
-			
-			
-			currLineTexture = nextLineTexture;
-		}
-		
-		vec3 lineVec;
-		SubVec3(&lineVec, &pCurrLine->line.p0, &pCurrLine->line.p1);
-		
-		vec3 camAt;
-		mat4f_GetViewAt(&camAt, m_view[0]);
-		
-		vec3 sideVec;
-		CrossVec3(&sideVec, &lineVec, &camAt);
-		
-		TryNormalizeVec3_Self(&sideVec);
-		
-		vec3 sideVec0;
-		vec3 sideVec1;
-		
-		ScaleVec3(&sideVec0, &sideVec, pCurrLine->lineWidth0*0.5f);
-		ScaleVec3(&sideVec1, &sideVec, pCurrLine->lineWidth1*0.5f);
-		
-		const f32 texcoordYStart = pCurrLine->texcoordYStart;
-		const f32 texcoordYEnd = pCurrLine->texcoordYEnd;
-		
-		m_texturedLineVerts[0].texcoord.x = 0.0f;
-		m_texturedLineVerts[0].texcoord.y = texcoordYStart;
-		CopyVec3(&m_texturedLineVerts[0].position,&pCurrLine->line.p0);
-		AddVec3_Self(&m_texturedLineVerts[0].position, &sideVec0);
-		
-		m_texturedLineVerts[1].texcoord.x = 1.0f;
-		m_texturedLineVerts[1].texcoord.y = texcoordYStart;
-		CopyVec3(&m_texturedLineVerts[1].position,&pCurrLine->line.p0);
-		AddScaledVec3_Self(&m_texturedLineVerts[1].position, &sideVec0,-1.0f);
-		
-		m_texturedLineVerts[2].texcoord.x = 0.0f;
-		m_texturedLineVerts[2].texcoord.y = texcoordYEnd;
-		CopyVec3(&m_texturedLineVerts[2].position,&pCurrLine->line.p1);
-		AddVec3_Self(&m_texturedLineVerts[2].position, &sideVec1);
-		
-		m_texturedLineVerts[3].texcoord.x = 1.0f;
-		m_texturedLineVerts[3].texcoord.y = texcoordYEnd;
-		CopyVec3(&m_texturedLineVerts[3].position,&pCurrLine->line.p1);
-		AddScaledVec3_Self(&m_texturedLineVerts[3].position, &sideVec1,-1.0f);
-		
-		//Set diffuse color
-		vec4 color = { pCurrLine->diffuseColor.x, pCurrLine->diffuseColor.y, pCurrLine->diffuseColor.z, 1.0f };
-		glUniform4fv(g_Materials[MT_TextureAndDiffuseColor].uniforms_unique[0],1,(f32*)&color);
-		
-		
-		//Draw verts
-		//Draw particles
-		glEnableVertexAttribArray(ATTRIB_VERTEX);
-		
-		glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, sizeof(TexturedLineVert), &m_texturedLineVerts[0].position);
-		
-		
-		glEnableVertexAttribArray(ATTRIB_TEXCOORD);
-		
-		glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, 0, sizeof(TexturedLineVert), &m_texturedLineVerts[0].texcoord);
-		
-		
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		
-	}
-	
-	
-    /*** RENDER TRAILS ***/
-    
-    //Set trail material
-    SetMaterial(MT_TextureWithColor);
-	
-    m_currProjMatType = ProjMatType_Perspective;
-    UploadWorldViewProjMatrix(m_identityMat);
-    
-    
-	u32 currTrailTexture = 0;
-	
-    for(u32 renderTrailIDX=0; renderTrailIDX<m_numRenderableTrails; ++renderTrailIDX)
-    {
-        GFX_Trail* currTrail = m_renderableTrails[renderTrailIDX];
-        const u32 renderFlags = currTrail->renderFlags;
-        
-        //Don't render trails that can't be drawn
-        if(currTrail->m_numTrailParticles < 1)
-        {
-            continue;
-        }
-        
-        const GFX_TrailSettings* pTrailSettings = &currTrail->trailSettings;
-        
-        glUniform1fv(trailShaderUniform_scrollAmountU,1,&pTrailSettings->scrollAmountU);
-		
-        glUniform1fv(trailShaderUniform_scrollAmountV,1,&pTrailSettings->scrollAmountV);
-		
-		
-        //Enable or disable alpha blended based on the RenderFlag
-        if (renderFlags & RenderFlag_AlphaBlended)
-        {
-            glEnable(GL_BLEND);
-            if(renderFlags & RenderFlag_AdditiveBlending)
-            {
-                //Additive blending
-                glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-            }
-            else
-            {
-				glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	//For premultiplied alpha
-            }
-        }
-        else
-        {
-            glDisable(GL_BLEND);
-        }
-		
-        //Set current trail texture
-        //JAMTODO: sort list by texture
-		
-		u32 nextTrailTexture = m_renderableTrails[renderTrailIDX]->texture;
-		
-		if(nextTrailTexture != currTrailTexture)
-		{
-			SetTexture(&nextTrailTexture,0);
-			
-			currTrailTexture = nextTrailTexture;
-		}
-        
-        s32 numToRender = 0;
-        s32 bufferOffset = 0;
-        
-        s32 numDrawableTrailParticles = currTrail->m_numTrailParticles;
-        f32 maxParticlesForUV = (f32)(numDrawableTrailParticles-1);
-        
-        //Make a dupe of the last particle
-        currTrail->trailParticles[currTrail->m_numTrailParticles] = currTrail->trailParticles[currTrail->m_numTrailParticles-1];
-        currTrail->trailParticles[currTrail->m_numTrailParticles].position = currTrail->currPos;
-        
-        
-        //Fill in vert data
-        for(s32 trailParticleIDX=0; trailParticleIDX<numDrawableTrailParticles; ++trailParticleIDX)
-        {
-            f32 texCoordV = 1.0f-((f32)trailParticleIDX)/MaxF(1.0f,maxParticlesForUV);
-            const f32 topLerpT = 1.0f-texCoordV;
-            
-            texCoordV *= pTrailSettings->texCoordMultV;
-			
-            const vec2 texCoordTopLeft = {0.0f,texCoordV};
-            const vec2 texCoordTopRight = {1.0f*pTrailSettings->texCoordMultU,texCoordV};
-            
-            const GFX_TrailParticle* pParticleHead = &currTrail->trailParticles[trailParticleIDX+1];
-            const GFX_TrailParticle* pParticleTail = &currTrail->trailParticles[trailParticleIDX];
-            
-            const vec3* posHead = &pParticleHead->position;
-            const vec3* posTail = &pParticleTail->position;
-            
-            vec3 distVec;
-            SubVec3(&distVec, posHead, posTail);
-            
-            const f32 magnitude = MagnitudeVec3(&distVec);
-            
-            const f32 epsilon = 0.02f;
-            if (magnitude < epsilon)
-            {
-                //Skip this particle if it is too close to the previous one
-                continue;
-            }
-            
-            vec3 normalizedDistVec;
-            ScaleVec3(&normalizedDistVec,&distVec,1.0f/magnitude);
-            
-            const vec3 leftVec = {normalizedDistVec.y,-normalizedDistVec.x,0.0f};
-            
-            GFX_TrailParticleData* pTopLeft = &m_trailParticleRenderablePoints[bufferOffset];
-            GFX_TrailParticleData* pTopRight = &m_trailParticleRenderablePoints[1+bufferOffset];
-            
-            //const f32 topLerpT = pParticleHead->timeToLiveCurr/pParticleHead->timeToLiveStart;
-			
-            
-            
-            f32 topScale = Lerp(pTrailSettings->fatnessEnd,pTrailSettings->fatnessBegin,topLerpT);
-            
-            f32 sinCosOffset = 0.0f;
-            if(pTrailSettings->sinCosBucket > -1)
-            {
-                //TODO: if there's a way to bucketize this, do it "currTrail->sinCosBucket"
-                //TODO: verify the use of texCoordV here
-                sinCosOffset = sinf(0.1f*(f32)m_accumulatedFrames*(f32)pTrailSettings->sinCosBucket
-                                   +pTrailSettings->sinCosFreq*texCoordV)*Lerp(pTrailSettings->sinCosEffectScaleBegin,pTrailSettings->sinCosEffectScaleEnd,1.0f-topLerpT);
-            }
-            
-            vec4 topColor;
-            LerpVec4(&topColor,&pTrailSettings->colorEnd,&pTrailSettings->colorBegin,topLerpT);
-            
-            topColor.x *= currTrail->diffuseColor.x;
-            topColor.y *= currTrail->diffuseColor.y;
-            topColor.z *= currTrail->diffuseColor.z;
-            topColor.w *= currTrail->diffuseColor.w;
-			
-            if(topLerpT > pTrailSettings->alphaFadeInTime)
-            {
-                topColor.w *= 1.0f-((topLerpT-pTrailSettings->alphaFadeInTime)/pTrailSettings->alphaFadeInTime);
-            }
-            else if(topLerpT < pTrailSettings->alphaFadeOutTime)
-            {
-                topColor.w *= topLerpT/pTrailSettings->alphaFadeOutTime;
-            }
-			
-            pTopLeft->texcoord = texCoordTopLeft;
-            pTopLeft->color = topColor;
-            AddScaledVec3(&pTopLeft->position, posHead, &leftVec, -topScale-sinCosOffset);
-            
-            pTopRight->texcoord = texCoordTopRight;
-            pTopRight->color = topColor;
-            AddScaledVec3(&pTopRight->position, posHead, &leftVec, topScale-sinCosOffset);
-            
-            ++numToRender;
-            bufferOffset += VERTS_PER_TRAILPARTICLE;
-        }
-        
-        if(numToRender > 0)
-        {
-            //Draw verts
-            //Draw particles
-            glEnableVertexAttribArray(ATTRIB_VERTEX);
-			
-            glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, sizeof(GFX_TrailParticleData), &m_trailParticleRenderablePoints[0].position);
-			
-            
-            glEnableVertexAttribArray(ATTRIB_TEXCOORD);
-			
-            glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, 0, sizeof(GFX_TrailParticleData), &m_trailParticleRenderablePoints[0].texcoord);
-			
-            
-            glEnableVertexAttribArray(ATTRIB_COLOR);
-			
-            glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, 0, sizeof(GFX_TrailParticleData), &m_trailParticleRenderablePoints[0].color);
-			
-            
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, numToRender*VERTS_PER_TRAILPARTICLE);
-			
-        }
-    }
-    
-	/*** PARTICLES ***/
-	
-	//Enable blending
-	glEnable(GL_BLEND);
-    
-#if DRAWPARTICLES
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	//For non-premultiplied alpha
-	
-	
-	//HACK: Draw particles in CameraView0
-	if (m_currViewIndex == CameraView0)
-	{
-		m_currProjMatType = ProjMatType_Perspective;
-		
-		//Set particle material
-		
-		for (s32 bucketIDX=0; bucketIDX<NumParticleBuckets; ++bucketIDX)
-		{
-			RendererParticleBucket* pBucket = &m_particleBuckets[bucketIDX];
-			if(pBucket->m_numParticlesToDraw == 0)
-			{
-				continue;
-			}
-			
-			switch(bucketIDX)
-			{
-				case ParticleBucket_Normal:
-				{
-					SetMaterial(MT_BasicPointSprite);
-					UploadWorldViewProjMatrix(m_identityMat);
-                    
-					//Additive Blending
-					glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-					
-					break;
-				}
-				case ParticleBucket_ColorShine:
-				{
-					//NOTE: NO here assumes additive happens first and sets the texture
-					SetMaterial(MT_PointSpriteColorShine);
-					UploadWorldViewProjMatrix(m_identityMat);
-					
-					//Normal blending
-					glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-					
-					break;
-				}
-                case ParticleBucket_Additive:
-				{
-					SetMaterial(MT_BasicPointSprite);
-					UploadWorldViewProjMatrix(m_identityMat);
-                    
-					//Additive Blending
-					glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-					
-					break;
-				}
-				default:
-				{
-					break;
-				}
-			}
-			
-			
-			
-			//Draw particles
-			glEnableVertexAttribArray(ATTRIB_VERTEX);
-			
-			glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, sizeof(ParticleData), pBucket->m_spriteData);
-			
-			
-			glEnableVertexAttribArray(ATTRIB_TEXCOORD);
-			
-			glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, 0, sizeof(ParticleData), &pBucket->m_spriteData[0].texcoord);
-			
-			
-			glEnableVertexAttribArray(ATTRIB_COLOR);
-			
-			glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, 0, sizeof(ParticleData), &pBucket->m_spriteData[0].color);
-			
-			
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, pBucket->m_numParticlesToDraw*VERTS_PER_PARTICLE);
-			
-		}
-	}	
-#endif
-}
 
 const vec3* OpenGLRenderer::GetClearColor()
 {
@@ -1202,12 +778,6 @@ void OpenGLRenderer::Render(f32 timeElapsed)
         glBindFramebuffer(GL_FRAMEBUFFER, msaaFramebuffer); 
     }*/
     
-    if(m_numRenderableTrails > m_maxNumTrails)
-    {
-        m_maxNumTrails = m_numRenderableTrails;
-        COREDEBUG_PrintDebugMessage("*** Max number of trails has increased to: %d",m_maxNumTrails);
-    }
-    
     //Update screen shake
     m_screenShakerT_X += m_screenShakerSpeed_X*timeElapsed;
     if(m_screenShakerT_X > 1.0f)
@@ -1253,9 +823,6 @@ void OpenGLRenderer::Render(f32 timeElapsed)
 		m_sinCosBuckets[i].cosTheta = cosf(sinCosT);
 	}
 	
-	//Sort particles if needed
-	SortParticleQueues();
-	
 	//Sort renderables if needed
 	if(m_renderableObject3DsNeedSorting_UI == true)
 	{
@@ -1276,186 +843,6 @@ void OpenGLRenderer::Render(f32 timeElapsed)
         SortRenderablesInLayerRangeByZ(m_sortRenderablesLayerStart,m_sortRenderablesLayerEnd);
     }
 	
-	if (!paused)
-	{
-		//Update particles (some particles might die here)
-		UpdateParticleQueues(timeElapsed);
-        
-        
-        //update trails
-        m_numRenderableTrails = 0;
-        UpdateTrails(timeElapsed);
-		
-		//Copy positions and other data into array LOL!
-		for (s32 bucketIDX=0; bucketIDX<NumParticleBuckets; ++bucketIDX)
-		{
-			RendererParticleBucket* pBucket = &m_particleBuckets[bucketIDX];
-            
-            //I keep a separate count for particles to draw for the case of someone adding particles
-            //when the graphics are paused.  It would not update the vert buffer but it would tell it
-            //to draw all these new particles.  NOT GOOD.
-			pBucket->m_numParticlesToDraw = 0;
-            
-			s32 particleVertIDX = 0;
-			for (s32 i=0; i<pBucket->m_numParticles; ++i,particleVertIDX+=VERTS_PER_PARTICLE,++pBucket->m_numParticlesToDraw)
-			{
-				Particle3D* pCurrParticle = &pBucket->m_particleQueue[i];
-				vec3 particleCenterPos;
-				CopyVec3(&particleCenterPos, pCurrParticle->pPositionOverride?pCurrParticle->pPositionOverride:&pCurrParticle->position);
-				
-				const f32 ttl = pCurrParticle->totalTTL-pCurrParticle->timeToLive;
-				
-				f32 particleAlpha;
-				
-				if (ttl < pCurrParticle->alphaInTime)
-				{
-					particleAlpha = ttl/pCurrParticle->alphaInTime;
-				}
-				else if(ttl > pCurrParticle->alphaOutTime)
-				{
-					const f32 alphaOutTime = pCurrParticle->alphaOutTime;
-					particleAlpha = 1.0f-(ttl-alphaOutTime)/(pCurrParticle->totalTTL-alphaOutTime);
-				}
-				else
-				{
-					particleAlpha = 1.0f;
-				}
-				
-				f32 particleSize;
-				
-				particleSize = Lerp(pCurrParticle->size_max, pCurrParticle->size_min, ttl/pCurrParticle->totalTTL);
-				
-				vec3 cameraLeft,cameraUp;
-				mat4f_GetViewUp(&cameraUp,m_view[CameraView0]);
-				mat4f_GetViewLeft(&cameraLeft,m_view[CameraView0]);
-				
-				vec3* topLeft = &pBucket->m_spriteData[particleVertIDX+1].position;
-				vec3* topRight = &pBucket->m_spriteData[particleVertIDX+2].position;
-				vec3* bottomLeft = &pBucket->m_spriteData[particleVertIDX+3].position;
-				vec3* bottomRight = &pBucket->m_spriteData[particleVertIDX+4].position;
-				
-				const f32 fatMult = (pCurrParticle->particleFlags & ParticleFlag_MultWidthByAlpha?particleAlpha:(pCurrParticle->particleFlags & ParticleFlag_DivWidthByAlpha?1.0f/particleAlpha:1.0f));
-				const f32 flipUMult = (((pCurrParticle->particleFlags & ParticleFlag_FlipU) && pCurrParticle->sinCosBucket<0)?-pCurrParticle->flipRotMult:pCurrParticle->flipRotMult)*fatMult;
-				const f32 sizePositiveX = particleSize*flipUMult;
-				const f32 sizeNegativeX = -particleSize*flipUMult;
-				
-				const f32 flipVMult = ((pCurrParticle->particleFlags & ParticleFlag_FlipV) && pCurrParticle->sinCosBucket<0)?-1.0f:1.0f;
-				const f32 sizePositiveY = particleSize*flipVMult;
-				const f32 sizeNegativeY = -particleSize*flipVMult;
-				
-				
-				AddScaledVec3(topLeft,&particleCenterPos,&cameraLeft,sizeNegativeX);
-				AddScaledVec3_Self(topLeft,&cameraUp,sizePositiveY);
-				
-				AddScaledVec3(topRight,&particleCenterPos,&cameraLeft,sizePositiveX);
-				AddScaledVec3_Self(topRight,&cameraUp,sizePositiveY);
-				
-				AddScaledVec3(bottomLeft,&particleCenterPos,&cameraLeft,sizeNegativeX);
-				AddScaledVec3_Self(bottomLeft,&cameraUp,sizeNegativeY);
-				
-				AddScaledVec3(bottomRight,&particleCenterPos,&cameraLeft,sizePositiveX);
-				AddScaledVec3_Self(bottomRight,&cameraUp,sizeNegativeY);
-				
-				AddVec3_Self(topLeft,&pCurrParticle->positionOffset);
-				AddVec3_Self(topRight,&pCurrParticle->positionOffset);
-				AddVec3_Self(bottomLeft,&pCurrParticle->positionOffset);
-				AddVec3_Self(bottomRight,&pCurrParticle->positionOffset);
-				
-				CopyVec3(&pBucket->m_spriteData[particleVertIDX].position,topLeft);
-				CopyVec3(&pBucket->m_spriteData[particleVertIDX+5].position,bottomRight);
-				
-				
-				//Make rotated base coordinates
-				vec2 texcoord_TopLeft;
-				
-				texcoord_TopLeft.x = -HALF_PARTICLE_TEXCOORD_OFFSET;
-				texcoord_TopLeft.y = 0;
-                
-				if (pCurrParticle->sinCosBucket > -1)
-				{
-					const f32 sinTheta = m_sinCosBuckets[pCurrParticle->sinCosBucket].sinTheta;
-					const f32 cosTheta = m_sinCosBuckets[pCurrParticle->sinCosBucket].cosTheta;
-					
-                    MakeRotatedVec2_SinCos(&texcoord_TopLeft, sinTheta, cosTheta);
-                    ScaleVec2_Self(&texcoord_TopLeft, -HALF_PARTICLE_TEXCOORD_OFFSET);
-				}
-				else if(pCurrParticle->particleFlags & ParticleFlag_AlignToVel_All)
-				{
-					vec3 dir = vec3_left;
-					TryNormalizeVec3( &dir, &pCurrParticle->velocity );
-					f32 angle = atan2( dir.x, dir.y );
-					
-					pCurrParticle->alignmentSin = sinf(angle);
-					pCurrParticle->alignmentCos = -cosf(angle);
-					
-                    MakeRotatedVec2_SinCos(&texcoord_TopLeft, pCurrParticle->alignmentSin, pCurrParticle->alignmentCos);
-                    ScaleVec2_Self(&texcoord_TopLeft, -HALF_PARTICLE_TEXCOORD_OFFSET);
-				}
-				else if(pCurrParticle->particleFlags & ParticleFlag_AlignToVel_Start)
-				{
-                    MakeRotatedVec2_SinCos(&texcoord_TopLeft, pCurrParticle->alignmentSin, pCurrParticle->alignmentCos);
-                    ScaleVec2_Self(&texcoord_TopLeft, -HALF_PARTICLE_TEXCOORD_OFFSET);
-				}
-                
-                //texcoord_TopLeft is now simply the left direction scaled by -HALF_PARTICLE_TEXCOORD_OFFSET
-				
-                //Save left direction before you shift texcoord_TopLeft
-                vec2 texCoordDirLeft = texcoord_TopLeft;
-                
-                //Get texCoordUp from texCoordDirLeft
-                vec2 texCoordDirUp;
-                SetVec2(&texCoordDirUp,-texCoordDirLeft.y,texCoordDirLeft.x);
-                
-                //Move top left coord into position
-                
-                //Now it's the top left
-                AddVec2_Self(&texcoord_TopLeft, &texCoordDirUp);
-				
-                //Now it's adjusted by the offset
-                AddVec2_Self(&texcoord_TopLeft, &pCurrParticle->texcoordOffset);
-				
-                texcoord_TopLeft.x += HALF_PARTICLE_TEXCOORD_OFFSET;
-                texcoord_TopLeft.y += HALF_PARTICLE_TEXCOORD_OFFSET;
-				
-                //Initially set all tex coords to be top left, then we'll add offsets
-                vec2 texcoord_TopRight = texcoord_TopLeft;
-                vec2 texcoord_BottomRight = texcoord_TopLeft;
-                vec2 texcoord_BottomLeft = texcoord_TopLeft;
-                
-                AddScaledVec2_Self(&texcoord_TopRight,&texCoordDirLeft, -2.0f);
-                AddScaledVec2(&texcoord_BottomRight,&texcoord_TopRight,&texCoordDirUp, -2.0f);
-                AddScaledVec2(&texcoord_BottomLeft,&texcoord_TopLeft,&texCoordDirUp, -2.0f);
-                
-				//0,0
-				CopyVec2(&pBucket->m_spriteData[particleVertIDX+1].texcoord,&texcoord_TopLeft);
-				
-				//1,0
-				CopyVec2(&pBucket->m_spriteData[particleVertIDX+2].texcoord,&texcoord_TopRight);
-				
-				//0,1
-				CopyVec2(&pBucket->m_spriteData[particleVertIDX+3].texcoord,&texcoord_BottomLeft);
-				
-				//1,1
-				CopyVec2(&pBucket->m_spriteData[particleVertIDX+4].texcoord,&texcoord_BottomRight);
-				
-				//Create a vec4 of color!
-				vec4 finalColor;
-				CopyVec3((vec3*)&finalColor,&pCurrParticle->color);
-				finalColor.w = particleAlpha*pCurrParticle->overallAlpha;
-				
-				//Copy all other data over
-				for (s32 pDataIDX=particleVertIDX+1; pDataIDX<particleVertIDX+VERTS_PER_PARTICLE-1; ++pDataIDX)
-				{
-					CopyVec4(&pBucket->m_spriteData[pDataIDX].color,&finalColor);
-				}	
-			}
-		}
-	}
-	
-#if DEBUG_DRAW && PARTICLE_TEST_PRINT
-	COREDEBUG_PrintDebugMessage("Num particles: %d",m_numParticles);
-#endif
-	
 	glEnable(GL_CULL_FACE);
 	
 	//Render renderables
@@ -1471,6 +858,8 @@ void OpenGLRenderer::Render(f32 timeElapsed)
 	
     //Reset renderstate flags
     m_renderStateFlags = 0;
+	m_blendMode = BlendMode_None;
+	m_hasSetRenderstateThisFrame = false;
 	
 	//for (u32 camViewIDX=0; camViewIDX<NumCameraViews; ++camViewIDX)
 	{	
@@ -1509,10 +898,6 @@ void OpenGLRenderer::Render(f32 timeElapsed)
         //Set normal render target
         //SetRenderTarget(&m_renderTarget_Normal);
         
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL) ;
-        glDepthMask( GL_TRUE );
-        
         m_clearColorPulseTimer += timeElapsed;
         if(m_clearColorPulseTimer > 1.0f)
         {
@@ -1522,6 +907,11 @@ void OpenGLRenderer::Render(f32 timeElapsed)
         //Clear normal render target using pulse color
         SetClearColor(m_clearColorPulseTimer, 0, 0);
         
+		//Make sure we can write to the depth buffer before clearing
+		glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL) ;
+        glDepthMask( GL_TRUE );
+		
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         
         //Draw all the normal stuff
@@ -1555,13 +945,14 @@ void OpenGLRenderer::Render(f32 timeElapsed)
 #endif        
 	}
 	
+	DisableVertexBufferObjects();
 	
-	RenderEffects();
-    
+	//Disable depth and culling
     glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+	
+	//Enable blending
     glEnable(GL_BLEND);
-    
     
     //Normal blending
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1889,7 +1280,7 @@ void OpenGLRenderer::Render(f32 timeElapsed)
 			for(u32 i=0; i<pModelData->numPrimitives; ++i)
 			{
 				PrimitiveData* pCurrPrim = &pModelData->primitiveArray[i];
-				if (m_supportsFeaturesFromiOS4)
+				if (m_supportsVAOs)
 				{
 					BindVertexArrayObject(pCurrPrim);
 				}
@@ -1922,37 +1313,7 @@ void OpenGLRenderer::Render(f32 timeElapsed)
 	 //}
 	// }
 	 //}
-    
-#if DEBUG_DRAWPARTICLESASLINESTRIP
-    //HACK: Draw particles in CameraView0
-	if (m_currViewIndex == CameraView0)
-	{
-		//Set particle material
-        m_currProjMatType = ProjMatType_Perspective;
-        [self setMaterial: MT_VertColors];
-        [self uploadWorldViewProjMatrix:m_identityMat];
-        glDisable(GL_BLEND);
-        
-		for (s32 bucketIDX=0; bucketIDX<NumParticleBuckets; ++bucketIDX)
-		{
-			RendererParticleBucket* pBucket = &m_particleBuckets[bucketIDX];
-			
-			if(pBucket->m_numParticlesToDraw == 0)
-			{
-				continue;
-			}
-			
-			//Draw particles
-			glEnableVertexAttribArray(ATTRIB_VERTEX);
-			glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, sizeof(ParticleData), pBucket->m_spriteData);
-			
-			glEnableVertexAttribArray(ATTRIB_COLOR);
-			glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, 0, sizeof(ParticleData), &pBucket->m_spriteData[0].color);
-			
-			glDrawArrays(GL_LINE_STRIP, 0, pBucket->m_numParticlesToDraw*VERTS_PER_PARTICLE);
-		}
-	}
-#endif
+
     
 	
 	// if (ENABLE_MULTISAMPLING)
@@ -2027,7 +1388,7 @@ void OpenGLRenderer::RegisterModel(ModelData* pModelData)
         PrintOpenGLError("Before binding VertexArrayObject");
 		
         //Use vertex array object
-        if (m_supportsFeaturesFromiOS4)
+        if (m_supportsVAOs)
         {
             u32 vertexBufferID;
             glGenBuffers(1,&vertexBufferID);
@@ -2062,7 +1423,7 @@ void OpenGLRenderer::RegisterModel(ModelData* pModelData)
         PrintOpenGLError("After binding VertexArrayObject");
         
         //If we're using VAO, enable the attributes here once and never again
-        if (m_supportsFeaturesFromiOS4)
+        if (m_supportsVAOs)
         {
             EnableAttributes(pModelData);
 			
@@ -2150,318 +1511,6 @@ CoreObjectHandle OpenGLRenderer::CreateRenderableGeometry3D(RenderableObjectType
 }
 
 
-void OpenGLRenderer::AddParticleToQueue(Particle3D* pParticle, vec3* pPosition, vec3* pCallbackPos, ParticleBuckets particleBucket)
-{
-	RendererParticleBucket* pBucket = &m_particleBuckets[particleBucket];
-	
-	if (pBucket->m_numParticles < MAX_PARTICLES)
-	{
-		//Copy particle contents
-		Particle3D* pCurrParticle = &pBucket->m_particleQueue[pBucket->m_numParticles];
-		*pCurrParticle = *pParticle;
-        pCurrParticle->pCallbackPos = pCallbackPos;
-		
-		//TODO: remove
-		pCurrParticle->totalTTL = pCurrParticle->timeToLive;
-		
-		if (pCurrParticle->particleFlags & ParticleFlag_OverridePosition)
-		{
-			pCurrParticle->pPositionOverride = pPosition;
-		}
-		else
-		{
-			pCurrParticle->pPositionOverride = NULL;
-			
-			//Set the sprite position
-			CopyVec3(&pCurrParticle->position,pPosition);
-		}
-		
-		
-#if DEBUG_DRAW && PARTICLE_TEST_PRINT
-		//COREDEBUG_PrintDebugMessage("-- Added particle(%d) with pos:<%f,%f,%f>, TTL: %f",m_numParticles,pCurrParticle->position.x, pCurrParticle->position.y, pCurrParticle->position.z, m_particleQueue[m_numParticles].timeToLive);
-#endif
-		
-		++pBucket->m_numParticles;
-		
-		pBucket->m_particlesNeedSorting = true;
-	}
-#if PRINT_ERRORS
-	/*else 
-	 {
-	 NSLog(@"INSANE ERROR: You've reached the particle limit!");
-	 }*/
-#endif
-}
-
-
-void OpenGLRenderer::SpawnParticles(vec3* pPosition, const vec3* pColor, const ParticleSettings* particleSettings, s32 numParticles)
-{
-	RendererParticleBucket* pBucket = &m_particleBuckets[particleSettings->particleBucket];
-	
-	const s32 particlesLeft = MAX_PARTICLES-pBucket->m_numParticles;
-	const s32 numToSpawn = MaxS32(0,MinS32(particlesLeft, numParticles));
-	
-	for (s32 i=0; i<numToSpawn; ++i)
-	{
-		Particle3D newParticle;
-		
-		newParticle.particleFlags = particleSettings->particleFlags;
-		
-		newParticle.timeToLive = rand_FloatRange(particleSettings->timeToLive_Min, particleSettings->timeToLive_Max);
-		newParticle.alphaInTime = newParticle.timeToLive*rand_FloatRange(particleSettings->alphaInTime_Min, particleSettings->alphaInTime_Max);
-		newParticle.alphaOutTime = newParticle.timeToLive-newParticle.timeToLive*rand_FloatRange(particleSettings->alphaOutTime_Min, particleSettings->alphaOutTime_Max);
-		
-		vec2 rotatedVec2;
-		const f32 velocityAngle = rand_FloatRange(particleSettings->velocityAngle_Min,particleSettings->velocityAngle_Max);
-		
-		MakeRotatedVec2(&rotatedVec2,velocityAngle);
-		const u8 flipVel = rand_IntRange(0, 1);
-		if (newParticle.particleFlags & ParticleFlag_FlipVelOnY && flipVel)
-		{
-			rotatedVec2.x *= -1.0f;
-		}
-		
-		newParticle.positionOffset.x = rotatedVec2.x*particleSettings->positionOffsetAmount;
-		newParticle.positionOffset.y = rotatedVec2.y*particleSettings->positionOffsetAmount;
-		newParticle.positionOffset.z = 0.0f;
-		
-		if (newParticle.particleFlags & ParticleFlag_AlignToVel_Start ||
-			newParticle.particleFlags & ParticleFlag_AlignToVel_All )
-		{
-			f32 finalAngle = velocityAngle-PI_DIV_2;
-			if (newParticle.particleFlags & ParticleFlag_FlipVelOnY && flipVel)
-			{
-				finalAngle *= -1.0f;
-			}
-			newParticle.alignmentSin = sinf(finalAngle);
-			newParticle.alignmentCos = -cosf(finalAngle);
-		}
-		
-		newParticle.overallAlpha = particleSettings->overallAlpha;
-		
-		if ((newParticle.particleFlags & ParticleFlag_AlignToVel_Start ||
-			 newParticle.particleFlags & ParticleFlag_AlignToVel_All )
-			&& newParticle.particleFlags & ParticleFlag_CancelVelocity)
-		{
-			SetVec3(&newParticle.velocity, 0.0f, 0.0f, 0.0f);
-		}
-		else
-		{
-			vec3 rotatedVec3;
-			rotatedVec3.x = rotatedVec2.x;
-			rotatedVec3.y = rotatedVec2.y;
-			rotatedVec3.z = 0.0f;
-			ScaleVec3(&newParticle.velocity, &rotatedVec3, rand_FloatRange(particleSettings->speed_Min, particleSettings->speed_Max));
-		}
-		
-		newParticle.gravity = rand_FloatRange(particleSettings->gravity_Min,particleSettings->gravity_Max);
-		
-		const s32 numCells = rand_IntRange(0,particleSettings->atlas_numCells-1);
-		
-		s32 cellX = particleSettings->atlasCell_X+numCells;
-		s32 cellY = particleSettings->atlasCell_Y;
-		
-		//TODO: see if I can directly compute this but too tired (should be easy)
-		const s32 max_X = 15;
-		while (cellX > max_X)
-		{
-			cellX -= max_X;
-			++cellY;
-		}
-		
-		newParticle.texcoordOffset.x = (f32)cellX*PARTICLE_TEXCOORD_OFFSET;
-		newParticle.texcoordOffset.y = (f32)cellY*PARTICLE_TEXCOORD_OFFSET;
-		
-		newParticle.size_max = rand_FloatRange(particleSettings->size_Min, particleSettings->size_Max);
-		
-		if (newParticle.particleFlags & ParticleFlag_FlipScalePercent && rand_IntRange(0, 1))
-		{
-			newParticle.size_min = newParticle.size_max/particleSettings->scalePercent;
-		}
-		else
-		{
-			newParticle.size_min = newParticle.size_max*particleSettings->scalePercent;
-		}
-		
-		
-		CopyVec3(&newParticle.color, pColor);
-		
-		newParticle.sinCosBucket = rand_IntRange(particleSettings->sinCosBucket_Min, particleSettings->sinCosBucket_Max);
-		
-		newParticle.flipRotMult = (newParticle.particleFlags & ParticleFlag_FlipRotation)?(rand_IntRange(0, 1)?-1.0f:1.0f):1.0f;
-		
-		newParticle.particleFlags &= ~ParticleFlag_FlipU;
-		newParticle.particleFlags &= ~ParticleFlag_FlipV;
-		
-		if ((particleSettings->particleFlags & ParticleFlag_FlipU) && rand_IntRange(0, 1))
-		{
-			newParticle.particleFlags |= ParticleFlag_FlipU;
-		}
-		
-		if ((particleSettings->particleFlags & ParticleFlag_FlipV) && rand_IntRange(0, 1))
-		{
-			newParticle.particleFlags |= ParticleFlag_FlipV;
-		}
-		
-		newParticle.pCallbackCounter = NULL;
-		newParticle.timeForCallbackCounter = 0.0f;
-		
-		AddParticleToQueue(&newParticle,pPosition,NULL,particleSettings->particleBucket);
-	}
-}
-
-
-void OpenGLRenderer::UpdateParticleQueues(f32 timeElapsed)
-{
-	for (s32 bucketIDX=0; bucketIDX<NumParticleBuckets; ++bucketIDX)
-	{
-		RendererParticleBucket* pBucket = &m_particleBuckets[bucketIDX];
-		
-		const s32 currNumParticles = pBucket->m_numParticles;
-		for (s32 i=0; i < currNumParticles; ++i)
-		{
-			Particle3D* pCurrParticle = &pBucket->m_particleQueue[i];
-			
-			const f32 currTTL = pCurrParticle->timeToLive;
-			
-			pCurrParticle->timeToLive -= timeElapsed;
-			
-			AddScaledVec3_Self(&pCurrParticle->position, &pCurrParticle->velocity, timeElapsed);
-            AddScaledVec3_Self(&pCurrParticle->velocity,&m_gravityDir,pCurrParticle->gravity*timeElapsed);
-			
-            if (pCurrParticle->pCallbackPos)
-            {
-                CopyVec3(pCurrParticle->pCallbackPos,&pCurrParticle->position);
-            }
-            
-            //Increment the callback counter once when the timeForCallbackCounter is reached
-			if (pCurrParticle->pCallbackCounter && currTTL>pCurrParticle->timeForCallbackCounter
-				&& pCurrParticle->timeToLive <= pCurrParticle->timeForCallbackCounter)
-			{
-				++(*pCurrParticle->pCallbackCounter);
-			}
-			
-			if (pCurrParticle->timeToLive < 0.0f)
-			{
-				pCurrParticle->timeToLive = 0.0f;
-				
-				--pBucket->m_numParticles;
-				
-#if DEBUG_DRAW && PARTICLE_TEST_PRINT
-				//COREDEBUG_PrintDebugMessage("- Particle died...");
-#endif	
-			}
-		}
-	}
-}
-
-
-void OpenGLRenderer::UpdateTrails(f32 timeElapsed)
-{
-	m_numRenderableTrails = 0;
-    
-    for (s32 trailIDX=0; trailIDX<MAX_TRAILS; ++trailIDX)
-    {
-        GFX_Trail* pCurrTrail = &m_trails[trailIDX];
-        const GFX_TrailSettings* pTrailSettings = &pCurrTrail->trailSettings;
-        
-        if (!pCurrTrail->inUse)
-        {
-            continue;
-        }
-        
-        vec3 distVec;
-        SubVec3(&distVec,&pCurrTrail->currPos, &pCurrTrail->trailParticles[pCurrTrail->m_numTrailParticles-1].position);
-        const f32 distSqFromLastParticle = MagnitudeSqVec3(&distVec);
-        
-        
-        const bool createNewParticle = distSqFromLastParticle > pCurrTrail->segmentLengthSq;
-        
-        if(createNewParticle && pCurrTrail->m_numTrailParticles == MAX_TRAIL_PARTICLES_PER_TRAIL)
-        {   
-            //If we're out of trail particles, just kill the first one to make room
-            pCurrTrail->trailParticles[0].timeToLiveCurr = -1.0f;
-        }
-        
-        //Count up the dead pieces
-        s32 numDeadParticles = 0;
-        for (s32 i=0; i<pCurrTrail->m_numTrailParticles; ++i)
-        {
-            pCurrTrail->trailParticles[i].timeToLiveCurr -= timeElapsed;
-            if (pCurrTrail->trailParticles[i].timeToLiveCurr < 0.0f)
-            {
-                ++numDeadParticles;
-            }
-        }
-        
-        //Shift out the dead ones
-        for (s32 i=numDeadParticles; i<pCurrTrail->m_numTrailParticles; ++i)
-        {
-            pCurrTrail->trailParticles[i-numDeadParticles] = pCurrTrail->trailParticles[i];
-        }
-        
-        //Update the number of particles
-        pCurrTrail->m_numTrailParticles -= numDeadParticles;       
-        
-        //Check if we should add a new particle
-        if(createNewParticle)
-        {
-            //COREDEBUG_PrintDebugMessage("DistSq: %f",distSqFromLastParticle);
-            
-            GFX_TrailParticle* pCurrParticle = &pCurrTrail->trailParticles[pCurrTrail->m_numTrailParticles];
-            CopyVec3(&pCurrParticle->position,&pCurrTrail->currPos);
-            pCurrParticle->timeToLiveStart = pTrailSettings->timeToLivePerParticle;
-            pCurrParticle->timeToLiveCurr = pTrailSettings->timeToLivePerParticle;
-            
-            ++pCurrTrail->m_numTrailParticles;
-        }
-        
-        //Trails with negative lifetimes live forever so only decrement if
-        //the time to live is more than 1
-        if(pCurrTrail->timeToLive >= 0.0f)
-        {
-            pCurrTrail->timeToLive -= timeElapsed;
-            if (/*pCurrTrail->m_numTrailParticles == 0 && */pCurrTrail->timeToLive < 0.0f)
-            {
-                pCurrTrail->inUse = 0;
-                if(pCurrTrail->pCallbackTrailPointer != NULL)
-                {
-                    *pCurrTrail->pCallbackTrailPointer = NULL;   //TODO: if this ever gets threaded WATCH OUT
-                }
-            }
-        }
-        
-        //If the trail is still good
-        if(pCurrTrail->inUse)
-        {
-            m_renderableTrails[m_numRenderableTrails] = pCurrTrail;
-            ++m_numRenderableTrails;
-#if DEBUG_DRAW && DEBUG_DRAW_TRAIL_LINES
-            
-            for (s32 i=1; i<pCurrTrail->m_numTrailParticles; ++i)
-            {
-                vec4 color;
-                color.w = 1.0f;
-                const vec3 color0 = {1.0f,0.0f,0.0f};
-                const vec3 color1 = {1.0f,1.0f,0.0f};
-                LerpVec3((vec3*)&color,&color1,&color0,pCurrTrail->trailParticles[i].timeToLiveCurr/pCurrTrail->trailParticles[i].timeToLiveStart);
-                
-                [self DEBUGDRAW3D_DrawLineSegment:&pCurrTrail->trailParticles[i].position:&pCurrTrail->trailParticles[i-1].position:&color];
-            }
-            
-            vec4 color;
-            color.w = 1.0f;
-            const vec3 color0 = {1.0f,0.0f,0.0f};
-            const vec3 color1 = {1.0f,1.0f,0.0f};
-            LerpVec3((vec3*)&color,&color1,&color0,pCurrTrail->trailParticles[pCurrTrail->m_numTrailParticles-1].timeToLiveCurr/pCurrTrail->trailParticles[pCurrTrail->m_numTrailParticles-1].timeToLiveStart);
-            
-            [self DEBUGDRAW3D_DrawLineSegment:&pCurrTrail->trailParticles[pCurrTrail->m_numTrailParticles-1].position:&pCurrTrail->currPos:&color];
-#endif
-        }
-    }
-}
-
-
 void OpenGLRenderer::InitRenderableSceneObject3D_Simple(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, mat4f matrix4x4, u32 viewFlags)
 {
 	renderableObject->pScene = pScene;
@@ -2510,14 +1559,15 @@ void OpenGLRenderer::InitRenderableSceneObject3D(RenderableSceneObject3D* render
 	}
 }
 
-void OpenGLRenderer::InitRenderableGeometry3D_Shared(RenderableGeometry3D* renderableObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags)
+void OpenGLRenderer::InitRenderableGeometry3D_Shared(RenderableGeometry3D* renderableObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags)
 {
 	renderableObject->material.materialID = materialID;
 	renderableObject->material.flags = renderFlags|RenderFlag_Initialized;
 	renderableObject->renderLayer = renderLayer;
 	renderableObject->material.customTexture0 = customTexture;
 	renderableObject->material.customTexture1 = NULL;
-	renderableObject->viewFlags = viewFlags;
+	renderableObject->viewFlags = View_0;
+	renderableObject->blendMode = blendMode;
 	renderableObject->postRenderLayerSortValue = 0;
 	
 	for (s32 i=0; i<MAX_UNIQUE_UNIFORM_VALUES; ++i)
@@ -2535,16 +1585,16 @@ void OpenGLRenderer::InitRenderableGeometry3D_Shared(RenderableGeometry3D* rende
 	}
 }
 
-void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags)
+void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags)
 {
 	renderableObject->pDrawStruct = pDrawStruct;
 	renderableObject->drawObject = drawObject;
 	
-	InitRenderableGeometry3D_Shared(renderableObject,materialID,customTexture,matrix4x4,renderLayer,viewFlags,renderFlags);
+	InitRenderableGeometry3D_Shared(renderableObject,materialID,customTexture,matrix4x4,renderLayer,blendMode,renderFlags);
 }
 
 
-void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags)
+void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags)
 {
 	if(pModel->modelID == -1)
 	{
@@ -2555,7 +1605,7 @@ void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableOb
 	renderableObject->drawObject = NULL;
 	renderableObject->pModel = pModel;
 	
-	InitRenderableGeometry3D_Shared(renderableObject,materialID,customTexture,matrix4x4,renderLayer,viewFlags,renderFlags);
+	InitRenderableGeometry3D_Shared(renderableObject,materialID,customTexture,matrix4x4,renderLayer,blendMode,renderFlags);
 }
 
 
@@ -2675,11 +1725,6 @@ s32 OpenGLRenderer::AddPixelShaderToList(const char* filename)
 	}
 }
 
-
-void OpenGLRenderer::LoadParticleAtlas(const char* filename)
-{
-	LoadTexture(filename, ImageType_PNG, &texture_pointSpriteAtlas, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
-}
 
 void OpenGLRenderer::CreateMaterials()
 {
@@ -3057,36 +2102,6 @@ void OpenGLRenderer::ResetPauseFade()
 }
 
 
-void OpenGLRenderer::ClearParticles()
-{
-	//Clear normal particles
-	for (s32 bucketIDX=0; bucketIDX<NumParticleBuckets; ++bucketIDX)
-	{
-		RendererParticleBucket* pBucket = &m_particleBuckets[bucketIDX];
-		
-		pBucket->m_particlesNeedSorting = false;
-		pBucket->m_numParticles = 0;
-        pBucket->m_numParticlesToDraw = 0;
-		
-		for (s32 i=0; i<MAX_PARTICLES; ++i)
-		{
-			pBucket->m_particleQueue[i].timeToLive = -1.0f;
-            pBucket->m_particleQueue[i].pCallbackCounter = NULL;
-            pBucket->m_particleQueue[i].pCallbackPos = NULL;
-		}
-	}
-    
-    m_numRenderableTrails = 0;
-    
-    //Clear trails
-    for(int i=0; i<MAX_TRAILS; ++i)
-    {
-        m_trails[i].m_numTrailParticles = 0;
-        m_trails[i].inUse = 0;
-        m_trails[i].pCallbackTrailPointer = 0;
-    }
-}
-
 void OpenGLRenderer::SetScreenFramebuffer(u32 framebuffer)
 {
     m_renderTarget_Screen.frameBuffer = framebuffer;
@@ -3378,42 +2393,6 @@ bool OpenGLRenderer::LoadTexture(const char* fileName,ImageType imageType, u32* 
 
 		return false;
 	}
-}
-
-
-GFX_Trail* OpenGLRenderer::CreateTrail(GFX_Trail** pCallbackTrail, vec3* pInitialPos, f32 timeToLive, const GFX_TrailSettings* pTrailSettings, u32 renderFlags)
-{
-	for(int i=0; i<MAX_TRAILS; ++i)
-    {
-        if (m_trails[i].inUse == 0)
-        {
-            m_trails[i].inUse = 1;
-            m_trails[i].trailSettings = *pTrailSettings;
-            m_trails[i].segmentLengthSq = pTrailSettings->segmentLength*pTrailSettings->segmentLength;
-            CopyVec3(&m_trails[i].currPos,pInitialPos);
-            m_trails[i].timeToLive = timeToLive;
-            m_trails[i].texture = *pTrailSettings->texture;
-            m_trails[i].pCallbackTrailPointer = (void**)pCallbackTrail;
-            SetVec4(&m_trails[i].diffuseColor,1.0f,1.0f,1.0f,1.0f);
-			
-            for (s32 j=1; j<MAX_TRAIL_PARTICLES_PER_TRAIL; ++j)
-            {
-                m_trails[i].trailParticles[j].timeToLiveCurr = -1.0f;
-            }
-            
-            //set up first particle
-            CopyVec3(&m_trails[i].trailParticles[0].position,pInitialPos);
-            m_trails[i].trailParticles[0].timeToLiveStart = pTrailSettings->timeToLivePerParticle;
-            m_trails[i].trailParticles[0].timeToLiveCurr = pTrailSettings->timeToLivePerParticle;
-            m_trails[i].m_numTrailParticles = 1;
-            m_trails[i].renderFlags = renderFlags;
-			
-			
-            return &m_trails[i];
-        }
-    }
-    
-    return NULL;
 }
 
 
@@ -4618,42 +3597,6 @@ void OpenGLRenderer::AddUniform_Shared(RenderMaterial renderMaterial, const char
 }
 
 
-void OpenGLRenderer::SortParticleQueues()
-{
-	//Sort every particle bucket
-	for (s32 bucketIDX=0; bucketIDX<NumParticleBuckets; ++bucketIDX)
-	{
-		RendererParticleBucket* pBucket = &m_particleBuckets[bucketIDX];
-		
-		if (pBucket->m_particlesNeedSorting == false)
-		{
-			continue;
-		}
-		
-		//Else it needs sorting
-		pBucket->m_particlesNeedSorting = false;
-		
-		//INSERTION SORT
-		for (s32 i=0; i < pBucket->m_numParticles; ++i)
-		{
-			Particle3D particleV = pBucket->m_particleQueue[i];
-			
-			s32 j;
-			for (j = i - 1; j > -1; --j)
-			{
-				if (pBucket->m_particleQueue[j].timeToLive >= particleV.timeToLive)
-				{
-					break;
-				}
-				
-				pBucket->m_particleQueue[j + 1] = pBucket->m_particleQueue[j];
-			}
-			
-			pBucket->m_particleQueue[j + 1] = particleV;	
-		}
-	}
-}
-
 CPVRTModelPOD* OpenGLRenderer::LoadPOD(const char* fileName)
 {
 	CPVRTModelPOD* newPod = new CPVRTModelPOD;
@@ -4758,7 +3701,7 @@ void OpenGLRenderer::DrawSceneObject(RenderableSceneObject3D* pSceneObject)
 		SetMaterial(pMaterialOverride->materialID);
 		SetTexture(pMaterialOverride->customTexture0, 0);
 		const u32 renderFlags = pMaterialOverride->flags;
-		SetRenderState(renderFlags);
+		SetRenderState(BlendMode_Normal,renderFlags);
 		
 		//Upload uniforms that have unique values per object
 		UploadUniqueUniforms(pMaterialOverride->uniqueUniformValues);
@@ -4776,7 +3719,7 @@ void OpenGLRenderer::DrawSceneObject(RenderableSceneObject3D* pSceneObject)
 		//Get scene from 
 		PrimitiveData* pCurrPrim = &pCurrModel->primitiveArray[0];
 		
-		if (m_supportsFeaturesFromiOS4)
+		if (m_supportsVAOs)
 		{
 			BindVertexArrayObject(pCurrPrim);
 		}
@@ -4815,7 +3758,7 @@ void OpenGLRenderer::DrawSceneObject(RenderableSceneObject3D* pSceneObject)
 			SetTexture(pCurrMaterial->customTexture0, 0);
 			
 			const u32 renderFlags = pCurrMaterial->flags;
-			SetRenderState(renderFlags);
+			SetRenderState(BlendMode_Normal,renderFlags);
 		}
 
 		mat4f_Multiply(worldMat, pSceneObject->worldMat, pCurrSceneMesh->worldMat);
@@ -4881,7 +3824,7 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 		
 		PrimitiveData* pCurrPrim = &pCurrModel->primitiveArray[0];
 		
-		if (m_supportsFeaturesFromiOS4)
+		if (m_supportsVAOs)
 		{
 			BindVertexArrayObject(pCurrPrim);
 		}
@@ -4911,7 +3854,7 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 		SetTexture(pCurrMaterial->customTexture0, 0);
 		
 		const u32 renderFlags = pCurrMaterial->flags;
-		SetRenderState(renderFlags);
+		SetRenderState(BlendMode_Normal,renderFlags);
 		
 		SPODNode& Node = pPod->pNode[meshIDX];
 		

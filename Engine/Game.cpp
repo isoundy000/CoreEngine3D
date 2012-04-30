@@ -42,22 +42,15 @@ static DrawFunctionStruct g_drawStruct_RenderTile =
     DrawFunc_DrawTile_Uninit,
 };
 
-const MaterialSettings g_Game_BlobShadowSettings =
-{
-	GL_LINEAR,//GLuint			textureFilterMode;
-	GL_CLAMP_TO_EDGE,//GLuint			wrapModeU;
-	GL_CLAMP_TO_EDGE,//GLuint			wrapModeV;
-    MT_TextureOnlySimple,//RenderMaterial	renderMaterial;
-    RenderFlagDefaults_CardWithAlpha,//u32				renderFlags;
-	true,
-};
-
 ItemArtDescription g_Game_BlobShadowDesc =
 {
 	"ArtResources/Textures/shadowblob.png",//const char*		textureFileName;
 	ImageType_PNG,//ImageType		imageType;
 	0,//GLuint			textureHandle;
-	&g_Game_BlobShadowSettings,//MaterialSettings	materialSettings;
+	GL_LINEAR,//u32			textureFilterMode;
+	GL_CLAMP_TO_EDGE,//u32			wrapModeU;
+	GL_CLAMP_TO_EDGE,//u32			wrapModeV;
+	true,//bool			flipY;
 	&g_Square1x1_modelData//ModelData*		pModelData;
 };
 
@@ -579,10 +572,8 @@ void Game::LoadItemArt()
 			continue;
 		}
 		
-		const MaterialSettings* pMaterialSettings = pCurrArtDesc->materialSettings;
-		
 		//This will load the texture but if it's already loaded, it will do nothing
-		const bool loadedATexture = GLRENDERER->LoadTexture(pCurrArtDesc->textureFileName, pCurrArtDesc->imageType, &pCurrArtDesc->textureHandle, pMaterialSettings->textureFilterMode, pMaterialSettings->wrapModeU, pMaterialSettings->wrapModeV,pMaterialSettings->flipY);
+		const bool loadedATexture = GLRENDERER->LoadTexture(pCurrArtDesc->textureFileName, pCurrArtDesc->imageType, &pCurrArtDesc->textureHandle, pCurrArtDesc->textureFilterMode, pCurrArtDesc->wrapModeU, pCurrArtDesc->wrapModeV,pCurrArtDesc->flipY);
 		
 		//If we loaded a texture, we should force a resort for optimum performance
 		if(loadedATexture == true)
@@ -831,7 +822,7 @@ void Game::CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, R
 	
 	const u32 baseFlag = RenderFlagDefaults_2DTexture_AlphaBlended;
 	
-	GLRENDERER->InitRenderableGeometry3D(*pGeom, &g_drawStruct_RenderTile, pTile, MT_WorldSpace_TextureOnly, &pDesc->loadedTextureID, NULL, renderLayer, View_0, baseFlag|RenderFlag_Visible);
+	GLRENDERER->InitRenderableGeometry3D(*pGeom, &g_drawStruct_RenderTile, pTile, MT_WorldSpace_TextureOnly, &pDesc->loadedTextureID, NULL, renderLayer, BlendMode_Normal, baseFlag|RenderFlag_Visible);
 	
 	const s32 tileID_X = pTile->tileID%pDesc->numTextureTilesX;
 	const s32 tileID_Y = pTile->tileID/pDesc->numTextureTilesX;
@@ -877,7 +868,7 @@ void Game::CreateRenderableTile(Tile* pTile, RenderableGeometry3D** pGeom, Rende
 
 	const u32 baseFlag = usesViewMatrix ? RenderFlagDefaults_2DTexture_AlphaBlended_UseView:RenderFlagDefaults_2DTexture_AlphaBlended;
 	
-	GLRENDERER->InitRenderableGeometry3D(*pGeom, pDesc->pModelData, material, &pDesc->loadedTextureID, tileMat, renderLayer, View_0, baseFlag|RenderFlag_Visible);
+	GLRENDERER->InitRenderableGeometry3D(*pGeom, pDesc->pModelData, material, &pDesc->loadedTextureID, tileMat, renderLayer, BlendMode_Normal, baseFlag|RenderFlag_Visible);
 	
 	const s32 tileID_X = pTile->tileID%pDesc->numTextureTilesX;
 	const s32 tileID_Y = pTile->tileID/pDesc->numTextureTilesX;

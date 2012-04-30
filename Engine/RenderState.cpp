@@ -7,8 +7,8 @@
  *
  */
 
-#include "RenderFlags.h"
-
+#include "RenderState.h"
+/*
 const char* g_RenderFlagNames[NUM_RENDERFLAGS] =
 {
 	"RenderFlag_CastShadow",
@@ -35,3 +35,4 @@ const char* g_RenderFlagNames[NUM_RENDERFLAGS] =
 	"RenderFlag_EnableDepthRead",
 	"RenderFlag_EnableDepthWrite",
 };
+*/

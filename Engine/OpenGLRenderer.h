@@ -34,6 +34,7 @@ extern OpenGLRenderer* GLRENDERER;
 
 #include "MathUtil.h"
 #include "GraphicsTypes.h"
+#include "RenderState.h"
 #include "MaterialDeclarations.h"
 #include "ArrayUtil.h"
 
@@ -51,15 +52,7 @@ extern OpenGLRenderer* GLRENDERER;
 
 
 #define GAUSSIAN_NUMSAMPLES 6
-#define MAX_TRAILS 64
-#define MAX_PARTICLES 512
-#define VERTS_PER_PARTICLE 6
-#define VERTS_PER_TRAILPARTICLE 2
-#define PARTICLE_TEXTURE_SIZE 256.0f
-#define PARTICLES_PER_ROW 8.0f
-#define PARTICLE_CELL_SIZE (PARTICLE_TEXTURE_SIZE/PARTICLES_PER_ROW)
-#define PARTICLE_TEXCOORD_OFFSET (PARTICLE_CELL_SIZE/PARTICLE_TEXTURE_SIZE)
-#define HALF_PARTICLE_TEXCOORD_OFFSET (PARTICLE_TEXCOORD_OFFSET*0.5f)
+
 #define DEBUG_LINES_MAXVERTICES 30
 #define NUM_SINCOS_BUCKETS 10
 #define NUM_SINCOS_BUCKET_MAX_MULT 0.3f
@@ -105,16 +98,6 @@ struct SinCosBucket
 	f32 sinTheta;
 	f32 cosTheta;
 	f32 multiplier;
-};
-
-
-struct RendererParticleBucket
-{
-	Particle3D m_particleQueue[MAX_PARTICLES];
-	ParticleData m_spriteData[MAX_PARTICLES*VERTS_PER_PARTICLE];
-	s32 m_numParticles;
-    s32 m_numParticlesToDraw;
-	bool m_particlesNeedSorting;
 };
 
 
@@ -170,11 +153,11 @@ public:
 	bool InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* pPod, u32 viewFlags, const char* relativePath);
 	void CleanUp();
     CoreObjectHandle CreateRenderableGeometry3D(RenderableObjectType renderableType,RenderableGeometry3D** pOut_Geom);
-	void LoadParticleAtlas(const char* filename);
+	
 	bool GetFadeFinished();
 	void ClearOneFrameGeometry();
 	void RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableObjectArray, u32 numRenderableObjects);
-	void RenderEffects();
+
 	void SetClearColor(f32 r, f32 g, f32 b);
 	const vec3* GetClearColor();
 	void SetGravityDir(const vec3* pNewGravityDir);
@@ -188,12 +171,9 @@ public:
 	bool LoadTextureFromData(u32* out_textureName,const void* data,u32 texWidth, u32 texHeight, u32 format, u32 type, u32 filterMode, u32 wrapModeU, u32 wrapModeV);
 	bool UpdateTextureFromData(u32* out_textureName, const void* data, u32 texWidth, u32 texHeight, u32 format, u32 type);
 	void RegisterModel(ModelData* pModelData);
-	void AddParticleToQueue(Particle3D* pParticle, vec3* pPosition, vec3* pCallbackPos, ParticleBuckets particleBucket);
-	void SpawnParticles(vec3* pPosition, const vec3* pColor, const ParticleSettings* particleSettings, s32 numParticles);
-	void UpdateParticleQueues(f32 timeElapsed);
-	void UpdateTrails(f32 timeElapsed);
-	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);
-	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);
+	
+	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
+	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
 	void InitRenderableSceneObject3D(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);
 	void InitRenderableSceneObject3D_Simple(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, mat4f matrix4x4, u32 viewFlags);
 	void SortRenderableGeometry3DList(RenderableObjectType type);
@@ -208,15 +188,14 @@ public:
 	void StartPauseFadeOut(f32 finalFade, f32 timeInSeconds);
 	void ResetPauseFade();
 	void DeleteTexture(u32* pTextureID);
-	void ClearParticles();
+
 	void SetScreenFadeColor(vec3* screenFadeColor);
 	void ForceRenderablesNeedSorting(RenderableObjectType renderableType);
 	void SetScreenFramebuffer(u32 framebuffer);
 	void FlashScreen(const vec3* pColor, f32 timeInSeconds);
 	void ShakeScreen(f32 shakeAmount,f32 shakeSpeed, f32 shakeTime);
 	bool LoadTexture(const char* fileName,ImageType imageType, u32* pGLTexture, u32 filterMode, u32 wrapModeU, u32 wrapModeV, bool flipY = false);
-	GFX_Trail* CreateTrail(GFX_Trail** pCallbackTrail, vec3* pInitialPos, f32 timeToLive, const GFX_TrailSettings* pTrailSettings, u32 renderFlags);
-	
+
 	void DRAW_DrawTexturedLine(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* pDiffuseColor, u32 texturedID, f32 lineWidth0, f32 lineWidth1, f32 texcoordYStart, f32 texcoordYEnd);
 	void DEBUGDRAW_DrawLineSegment(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* color);
 	void DEBUGDRAW_DrawLineSegment(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* color1, const vec4* color2);
@@ -237,7 +216,7 @@ public:
 private:
 	
 	//private functions
-	void InitRenderableGeometry3D_Shared(RenderableGeometry3D* renderableObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);
+	void InitRenderableGeometry3D_Shared(RenderableGeometry3D* renderableObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
 	
 	void SortRenderablesWithMaterialByZ(RenderMaterial materialID);
 	void SortRenderablesInLayerRangeByZ(RenderLayer layerBegin, RenderLayer layerEnd);
@@ -255,7 +234,7 @@ private:
 	void UploadSharedUniforms();
 	void UploadUniqueUniforms(u8* const * pValuePointerArray);
 	void SetTexture(const u32* pTexture,u32 textureUnit);
-	void SetRenderState(u32 renderFlags);
+	void SetRenderState(BlendMode blendMode, u32 renderFlags);
 	f32 ComputeGaussianValue(f32 x, f32 stdDevSq);
 	void ComputeGaussianWeights(f32* out_pWeights, s32 numWeights, f32 standardDeviationSquared);
 	void EnableAttributes(const ModelData* pModelData);
@@ -264,7 +243,7 @@ private:
 	void AddUniform_Unique(RenderMaterial renderMaterial, const char* nameOfUniformInShader,UniformType uniformType, u32 amount);
 	void AddUniform_Shared(RenderMaterial renderMaterial, const char* nameOfUniformInShader, UniformType uniformType, u8* pData, u32 amount);
 	void AddUniform_Shared_Const(RenderMaterial renderMaterial, const char* nameOfUniformInShader, UniformType uniformType, u8* pData, u32 amount);
-	void SortParticleQueues();
+
 	bool CompileShader(u32 *shader, s32 type, s32 count, const char* filename);
 	bool LinkProgram(u32 prog);
 	s32 ValidateProgram(u32 prog);
@@ -316,8 +295,7 @@ private:
 	u32 m_accumulatedFrames;
 	s32 m_numModels;
     u32 m_maxNumRenderables;
-    u32 m_maxNumTrails;
-    u32 m_maxNumParticles;
+
 	u32 m_currTexture;
     vec3 m_flashColor;
     u32 m_currTextureInTextureUnit[MAX_NUM_TEXTURE_UNITS];
@@ -327,11 +305,6 @@ private:
 	AnimatedPOD m_animatedPODs[MAX_ANIMATED_PODS];
 	u32 m_numAnimatedPods;
 
-    RendererParticleBucket m_particleBuckets[NumParticleBuckets];
-    u32 trailShaderUniform_accumulatedTime;
-    u32 trailShaderUniform_scrollAmountU;
-    u32 trailShaderUniform_scrollAmountV;
-    GFX_Trail m_trails[MAX_TRAILS];
     PointData m_debugLinePoints[DebugDrawMode_Num][DEBUGDRAW_MAXLINESPOINTS];
     s32 m_numDebugLinePoints[DebugDrawMode_Num];
 	s32 m_numDebugLinePoints_saved[DebugDrawMode_Num];
@@ -339,10 +312,11 @@ private:
 	s32 m_numTexturedLines;
 	s32 m_numTexturedLines_saved;
 	TexturedLineVert m_texturedLineVerts[4];
-    GFX_Trail* m_renderableTrails[MAX_TRAILS];
-    u32 m_numRenderableTrails;
-    GFX_TrailParticleData m_trailParticleRenderablePoints[MAX_TRAIL_PARTICLES_PER_TRAIL*VERTS_PER_TRAILPARTICLE];
+
     u32 m_renderStateFlags;
+	BlendMode m_blendMode;
+	bool m_hasSetRenderstateThisFrame;
+	
     f32 m_screenShakerT_X;
     f32 m_screenShakerT_Y;
     f32 m_screenShakerSpeed_X;
@@ -352,7 +326,7 @@ private:
     f32 m_screenShakeStartTime;
     f32 m_screenShakeSpeed;
     vec3 m_gravityDir;
-    bool m_supportsFeaturesFromiOS4;
+    bool m_supportsVAOs;
     bool m_supportsMultisampling;
     FadeState m_pauseFadeState;
 	f32 m_pauseTotalFadeTime;

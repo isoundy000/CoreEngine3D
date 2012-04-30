@@ -22,7 +22,7 @@
 #include "MaterialDeclarations.h"
 #include "MathTypes.h"
 #include "RenderLayer.h"
-#include "RenderFlags.h"
+#include "RenderState.h"
 #include "ViewFlags.h"
 #include "PowerVR/PVRTModelPOD.h"
 #include "CoreObject.h"
@@ -71,7 +71,7 @@ struct CoreImageHeader
 /*!***************************************************************************
  Describes the header of a PVR header-texture
  *****************************************************************************/
-typedef struct
+struct
 {
 	u32 dwHeaderSize;			/*!< size of the structure */
 	u32 dwHeight;				/*!< height of surface to be created */
@@ -89,7 +89,7 @@ typedef struct
 } PVR_Texture_Header;
 
 // Attributes used for shaders
-typedef enum {
+enum Attributes{
 	ATTRIB_VERTEX,
 	ATTRIB_VERTEX2,
 	ATTRIB_NORMAL,
@@ -102,9 +102,9 @@ typedef enum {
 	ATTRIB_BONEINDEX,
 	ATTRIB_BONEWEIGHT,
 	NUM_ATTRIBUTES
-} Attributes;
+};
 
-typedef enum {
+enum AttributeFlags{
 	ATTRIBFLAG_VERTEX = 1 << 0,
 	ATTRIBFLAG_VERTEX2 = 1 << 1,
 	ATTRIBFLAG_NORMAL = 1 << 2,
@@ -117,9 +117,9 @@ typedef enum {
 	ATTRIBFLAG_BONEINDEX = 1 << 10,
 	ATTRIBFLAG_BONEWEIGHT = 1 << 11,
 	NUM_ATTRIBUTEFLAGS
-} AttributeFlags;
+};
 
-typedef enum
+enum PixelType
 {
 	MGLPT_ARGB_4444 = 0x00,
 	MGLPT_ARGB_1555,
@@ -326,10 +326,10 @@ typedef enum
 	
 	MGLPT_NOTYPE = 0xff
 	
-} PixelType;
+};
 
 //Vertex Formats (V = Vertex, N = Normal, T = Texture Coordinates, C = Vertex Colors
-typedef enum {
+enum VertexFormat{
 	VertexFormat_VNT,
     VertexFormat_VTNT,
     VertexFormat_VTBNT,
@@ -341,7 +341,7 @@ typedef enum {
 	VertexFormat_VN,
 	VertexFormat_V,
 	VertexFormat_POD_Skinned,
-} VertexFormat;
+};
 
 struct DrawFunctionStruct
 {
@@ -352,7 +352,7 @@ struct DrawFunctionStruct
 
 //TODO: remove all the typedefs
 
-typedef struct
+struct PrimitiveData
 {
 	u32 drawMethod;
 	u8* vertexData;
@@ -362,17 +362,17 @@ typedef struct
 	u32 sizeOfIndexData;
     u32 vertexArrayObjectID; //Gets filled in at init
 	u32 indexBufferID; //Gets filled in at init
-}PrimitiveData;
+};
 
-typedef struct
+struct AttributeData
 {
 	Attributes attribute;
 	u16 type;
 	u8 size;
 	u8 offset;
-}AttributeData;
+};
 
-typedef struct
+struct ModelData
 {
 	u32 attribFlags;
 	AttributeData* attributeArray;
@@ -382,9 +382,9 @@ typedef struct
 	PrimitiveData* primitiveArray;
 	u32 numPrimitives;
 	s32 modelID;
-}ModelData;
+};
 
-typedef enum {
+enum TextureFormat{
     TextureFormatGray,
     TextureFormatGrayAlpha,
     TextureFormatRgb,
@@ -395,9 +395,9 @@ typedef enum {
     TextureFormatPvrtcRgba4,
 	TextureFormat565,
     TextureFormat5551,
-} TextureFormat;
+};
 
-typedef enum{
+enum UniformType{
 	Uniform_Int,
 	Uniform_Float,
 	Uniform_Vec2,
@@ -406,25 +406,25 @@ typedef enum{
 	Uniform_Mat3x3,
     Uniform_Mat4x4,
 	Uniform_NumTypes,
-} UniformType;
+};
 
 extern const u32 g_UniformSizes[Uniform_NumTypes];
 
-typedef enum{
+enum ProjMatType{
 	ProjMatType_Perspective,
 	ProjMatType_Orthographic_NDC,
     ProjMatType_Orthographic_Points,
 	NumProjMatTypes,
-} ProjMatType;
+};
 
-typedef struct {
+struct TextureDescription{
     TextureFormat Format;
     int BitsPerComponent;
     vec2 Size;
     int MipCount;
-} TextureDescription;
+};
 
-typedef struct
+struct TexturedMorphVertexData3D
 {
 	vec3 vertex1;
 	vec3 vertex2;
@@ -432,32 +432,32 @@ typedef struct
 	vec3 normal2;
 	vec2 texCoord1;
 	vec2 texCoord2;
-} TexturedMorphVertexData3D;
+};
 
-typedef struct
+struct LineSegment
 {
     vec3 p0;
     vec3 p1;
-} LineSegment;
+};
 
 //UniformValue
-typedef struct
+struct UniformValue
 {
 	u8* data;
 	UniformType type;
-} UniformValue;
+};
 
 //UniformBlob
-typedef struct
+struct UniformBlob
 {
 	s32 uniform;
 	UniformValue value;
 	s32 size;
-} UniformBlob;
+};
 
 
 //Material
-typedef struct
+struct Material
 {
 	u32 shaderProgram;
 	s32 uniform_worldViewProjMat;//TODO: remove
@@ -474,7 +474,7 @@ typedef struct
 	u32* texture2;
 	VertexFormat requiredVertexFormat;	//TODO: use this
 	const char* materialName;
-} Material;
+};
 
 enum PPDrawArea{
 	PPDrawArea_FullScreen,
@@ -485,13 +485,13 @@ enum PPDrawArea{
 };
 
 //FadeState
-typedef enum
+enum FadeState
 {
 	FadeState_FadeOut,
     FadeState_WaitingForFadeIn,
 	FadeState_FadeIn,
 	FadeState_Idle,
-}FadeState;
+};
 
 
 enum ColorBufferType
@@ -501,83 +501,29 @@ enum ColorBufferType
 };
 
 //RenderTarget	
-typedef struct
+struct RenderTarget
 {
 	u32 width;
 	u32 height;
     u32 colorBuffer;
     u32 depthBuffer;
 	u32 frameBuffer;
-} RenderTarget;
-
-
-typedef struct
-{
-    u32* texture;
-    f32 fatnessBegin;
-    f32 fatnessEnd;
-    f32 segmentLength;
-    f32 timeToLivePerParticle;
-    f32 alphaFadeInTime;
-    f32 alphaFadeOutTime;
-    vec4 colorBegin;
-    vec4 colorEnd;
-    s32 sinCosBucket;
-    f32 sinCosEffectScaleBegin;
-    f32 sinCosEffectScaleEnd;
-    f32 sinCosFreq;
-    f32 scrollAmountU;
-    f32 scrollAmountV;
-    f32 texCoordMultU;
-    f32 texCoordMultV;
-}GFX_TrailSettings;
-
-typedef struct
-{
-    vec3 position;
-    f32 timeToLiveStart;
-    f32 timeToLiveCurr;
-} GFX_TrailParticle;
-
-typedef struct
-{
-    GFX_TrailParticle trailParticles[MAX_TRAIL_PARTICLES_PER_TRAIL+1];
-    u32 texture;
-    s32 m_numTrailParticles;
-    f32 segmentLengthSq;
-    vec3 currPos;
-    f32 timeToLive;
-    vec4 diffuseColor;
-    GFX_TrailSettings trailSettings;
-    u32 renderFlags;
-    void** pCallbackTrailPointer;
-    u8 inUse;
-} GFX_Trail;
-
-typedef struct
-{
-	vec3 position;	//12 bytes
-    u32 pad2;
-	vec2 texcoord; //8 bytes
-    u32 pad0;
-    u32 pad1;
-    vec4 color;
-}GFX_TrailParticleData;
+};
 
 
 //DoubleRenderTarget
-typedef struct
+struct DoubleRenderTarget
 {
 	RenderTarget* renderTargetA;
 	RenderTarget* renderTargetB;
-}DoubleRenderTarget;
+};
 
-typedef enum
+enum ImageType
 {
     ImageType_PVR,
     ImageType_PNG,
 	ImageType_TGA,
-} ImageType;
+};
 
 
 struct RenderableMaterial
@@ -589,12 +535,12 @@ struct RenderableMaterial
 	u32 flags;  //4 bytes
 };
 
-typedef struct
+struct SceneMesh
 {
 	ModelData* pModelData;
 	RenderableMaterial* pMaterial;
 	mat4f worldMat;   //16 bytes
-} SceneMesh;
+};
 
 class RenderableGeometry3D: public CoreObject
 {
@@ -608,6 +554,7 @@ public:
 	void* drawObject;  //4 bytes
 	RenderableMaterial material;
 	RenderLayer renderLayer;    //4 bytes
+	BlendMode blendMode;
 	u32 viewFlags;  //4 bytes
 	u32 sortValue;  //4 bytes
     u32 postRenderLayerSortValue; //4 bytes (optional)
@@ -675,7 +622,7 @@ struct AnimatedPOD
 	f32 worldMat[16];   //16 bytes
 };
 
-typedef enum
+enum ParticleFlags
 {
 	ParticleFlag_FlipU = 1 << 0,
 	ParticleFlag_FlipV = 1 << 1,
@@ -688,9 +635,9 @@ typedef enum
 	ParticleFlag_OverridePosition = 1 << 8,
 	ParticleFlag_MultWidthByAlpha = 1 << 9,
 	ParticleFlag_DivWidthByAlpha = 1 << 10,
-}ParticleFlags;
+};
 
-typedef struct
+struct Particle3D
 {
     vec3 position; //12 bytes
 	//12
@@ -724,9 +671,9 @@ typedef struct
     vec3* pCallbackPos;
     //8
     //Grand total: 128
-} Particle3D;
+} ;
 
-typedef struct
+struct ParticleData
 {
 	vec3 position;	//12 bytes
     u32 pad2;
@@ -734,24 +681,24 @@ typedef struct
     u32 pad0;
     u32 pad1;
 	vec4 color; //16 bytes  
-}ParticleData;
+};
 
-typedef struct
+struct PointData
 {
 	vec3 position;	//12 bytes
     u32 pad2;   //4 bytes
 	vec4 color; //16 bytes  
-}PointData;	//Grand total: 32 bytes
+};	//Grand total: 32 bytes
 
-typedef enum
+enum ParticleBuckets
 {
 	ParticleBucket_ColorShine,
     ParticleBucket_Additive,
 	ParticleBucket_Normal,
 	NumParticleBuckets,
-} ParticleBuckets;
+};
 
-typedef struct
+struct
 {
 	s32 atlasCell_X;
 	s32 atlasCell_Y;
@@ -779,22 +726,16 @@ typedef struct
 	ParticleBuckets particleBucket;
 }ParticleSettings;
 
-struct MaterialSettings
-{
-	u32			textureFilterMode;
-	u32			wrapModeU;
-	u32			wrapModeV;
-    RenderMaterial	renderMaterial;
-    u32				renderFlags;
-	bool			flipY;
-};
 
 struct ItemArtDescription
 {
     const char*		textureFileName;
     ImageType		imageType;
     u32			textureHandle;
-	const MaterialSettings*	materialSettings;
+	u32			textureFilterMode;
+	u32			wrapModeU;
+	u32			wrapModeV;
+	bool			flipY;
     ModelData*		pModelData;
 };
 
