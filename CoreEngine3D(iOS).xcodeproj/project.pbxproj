@@ -130,8 +130,8 @@
 		DDA6F5AC149C1A930035A1BF /* PVRTVector.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F4F0149C1A920035A1BF /* PVRTVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDA6F5AD149C1A930035A1BF /* PVRTVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F4F1149C1A920035A1BF /* PVRTVertex.cpp */; };
 		DDA6F5AE149C1A930035A1BF /* PVRTVertex.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F4F2149C1A920035A1BF /* PVRTVertex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DDA6F5B1149C1A930035A1BF /* RenderFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F4F5149C1A920035A1BF /* RenderFlags.cpp */; };
-		DDA6F5B2149C1A930035A1BF /* RenderFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F4F6149C1A920035A1BF /* RenderFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DDA6F5B1149C1A930035A1BF /* RenderState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F4F5149C1A920035A1BF /* RenderState.cpp */; };
+		DDA6F5B2149C1A930035A1BF /* RenderState.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F4F6149C1A920035A1BF /* RenderState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDA6F5B3149C1A930035A1BF /* RenderLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F4F7149C1A920035A1BF /* RenderLayer.cpp */; };
 		DDA6F5B4149C1A930035A1BF /* RenderLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F4F8149C1A920035A1BF /* RenderLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDA6F5FF149C1A930035A1BF /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F545149C1A920035A1BF /* image_DXT.c */; };
@@ -309,8 +309,8 @@
 		DDA6F4F0149C1A920035A1BF /* PVRTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRTVector.h; sourceTree = "<group>"; };
 		DDA6F4F1149C1A920035A1BF /* PVRTVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PVRTVertex.cpp; sourceTree = "<group>"; };
 		DDA6F4F2149C1A920035A1BF /* PVRTVertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRTVertex.h; sourceTree = "<group>"; };
-		DDA6F4F5149C1A920035A1BF /* RenderFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderFlags.cpp; sourceTree = "<group>"; };
-		DDA6F4F6149C1A920035A1BF /* RenderFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderFlags.h; sourceTree = "<group>"; };
+		DDA6F4F5149C1A920035A1BF /* RenderState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderState.cpp; sourceTree = "<group>"; };
+		DDA6F4F6149C1A920035A1BF /* RenderState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderState.h; sourceTree = "<group>"; };
 		DDA6F4F7149C1A920035A1BF /* RenderLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderLayer.cpp; sourceTree = "<group>"; };
 		DDA6F4F8149C1A920035A1BF /* RenderLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderLayer.h; sourceTree = "<group>"; };
 		DDA6F545149C1A920035A1BF /* image_DXT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = image_DXT.c; sourceTree = "<group>"; };
@@ -491,8 +491,8 @@
 				233BBC7614F4D3EC00BB12FA /* OpenGLRenderer.cpp */,
 				DDA6F4C2149C1A920035A1BF /* Physics.cpp */,
 				DDA6F4C3149C1A920035A1BF /* Physics.h */,
-				DDA6F4F5149C1A920035A1BF /* RenderFlags.cpp */,
-				DDA6F4F6149C1A920035A1BF /* RenderFlags.h */,
+				DDA6F4F5149C1A920035A1BF /* RenderState.cpp */,
+				DDA6F4F6149C1A920035A1BF /* RenderState.h */,
 				DDA6F4F7149C1A920035A1BF /* RenderLayer.cpp */,
 				DDA6F4F8149C1A920035A1BF /* RenderLayer.h */,
 				DDA6F553149C1A920035A1BF /* TouchInputIOS.h */,
@@ -703,7 +703,7 @@
 				DDA6F5AA149C1A930035A1BF /* PVRTTriStrip.h in Headers */,
 				DDA6F5AC149C1A930035A1BF /* PVRTVector.h in Headers */,
 				DDA6F5AE149C1A930035A1BF /* PVRTVertex.h in Headers */,
-				DDA6F5B2149C1A930035A1BF /* RenderFlags.h in Headers */,
+				DDA6F5B2149C1A930035A1BF /* RenderState.h in Headers */,
 				DDA6F5B4149C1A930035A1BF /* RenderLayer.h in Headers */,
 				DDA6F600149C1A930035A1BF /* image_DXT.h in Headers */,
 				DDA6F602149C1A930035A1BF /* image_helper.h in Headers */,
@@ -845,7 +845,7 @@
 				DDA6F5A9149C1A930035A1BF /* PVRTTriStrip.cpp in Sources */,
 				DDA6F5AB149C1A930035A1BF /* PVRTVector.cpp in Sources */,
 				DDA6F5AD149C1A930035A1BF /* PVRTVertex.cpp in Sources */,
-				DDA6F5B1149C1A930035A1BF /* RenderFlags.cpp in Sources */,
+				DDA6F5B1149C1A930035A1BF /* RenderState.cpp in Sources */,
 				DDA6F5B3149C1A930035A1BF /* RenderLayer.cpp in Sources */,
 				DDA6F5FF149C1A930035A1BF /* image_DXT.c in Sources */,
 				DDA6F601149C1A930035A1BF /* image_helper.c in Sources */,
