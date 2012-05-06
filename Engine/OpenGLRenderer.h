@@ -368,5 +368,8 @@ float UnpackFloat16(float x, float y);
 void DoubleRenderTarget_Flip(DoubleRenderTarget* doubleRenderTarget);
 
 void Draw_Matrix();
-
+RenderableGeometry3D* GetGeomPointer(CoreObjectHandle handle);
+vec3* GetGeomPos(RenderableGeometry3D* pGeom);
+vec3* GetGeomLeft(RenderableGeometry3D* pGeom);
+vec3* GetGeomUp(RenderableGeometry3D* pGeom);
 #endif

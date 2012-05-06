@@ -4491,3 +4491,23 @@ bool RenderableGeometry3DCompare_SortByNegativeZ(const RenderableGeometry3D& lhs
 	return (pPosLHS->z > pPosRHS->z) || (pPosLHS->z == pPosRHS->z && pPosLHS->x < pPosRHS->x);
 }
 
+
+RenderableGeometry3D* GetGeomPointer(CoreObjectHandle handle)
+{
+	return (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(handle);
+}
+
+vec3* GetGeomPos(RenderableGeometry3D* pGeom)
+{
+	return mat4f_GetPos(pGeom->worldMat);
+}
+
+vec3* GetGeomLeft(RenderableGeometry3D* pGeom)
+{
+	return mat4f_GetLeft(pGeom->worldMat);
+}
+
+vec3* GetGeomUp(RenderableGeometry3D* pGeom)
+{
+	return mat4f_GetUp(pGeom->worldMat);
+}
