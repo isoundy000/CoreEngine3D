@@ -698,17 +698,17 @@ bool  PointInsidePlaneVec2(vec2* point,struct PlaneVec2* plane)
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-f32 AngleBetweenVec2(vec2* vec0, vec2* vec1)
+f32 AngleBetweenVec2(const vec2* vec0, const vec2* vec1)
 {
-	return atan2(vec1->y,vec1->x) - atan2(vec0->y,vec0->x);
+	return atan2f(vec1->y,vec1->x) - atan2f(vec0->y,vec0->x);
 }
 
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-f32 AngleOfVec2(vec2* vec0)
+f32 AngleOfVec2(const vec2* vec0)
 {
-	return atan2(vec0->y,vec0->x);
+	return AngleBetweenVec2(&vec2_up,vec0);
 }
 
 //----------------------------------------------------------------------------
@@ -1037,5 +1037,13 @@ f32 Curve_TValueFromDist(f32 dist, DistanceTableEntry* pDistTable, u32 numDistTa
 	}
 	
 	return 0.0f;
+}
+
+void RGBAToVec4(vec4* pOut_vec,u8 r, u8 g, u8 b, u8 a)
+{
+	pOut_vec->x = (f32)r/255.0f;
+	pOut_vec->y = (f32)g/255.0f;
+	pOut_vec->z = (f32)b/255.0f;
+	pOut_vec->w = (f32)a/255.0f;
 }
 

@@ -385,6 +385,8 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 	NSString* fileString = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
 	NSString *fullPath = [[NSBundle mainBundle] pathForResource:[fileString lastPathComponent] ofType:nil inDirectory:[fileString stringByDeletingLastPathComponent]];
 	
+	//File does not exist or if you're running XCode and just added new art,
+	//do a Product->Clean from the menu
 	assert(fullPath != nil);
 	
 	std::string pathString;

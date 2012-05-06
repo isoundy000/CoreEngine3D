@@ -53,8 +53,8 @@ void  CopyVec2(vec2* out_result, const vec2* point);
 void  CreatePlaneFromPointsVec2(struct PlaneVec2* out_resultPlane, vec2* p0, vec2* p1);
 bool  PointInsidePlaneVec2(vec2* point,struct PlaneVec2* plane);
 bool  PointInsidePlaneVec2(vec2* point, struct PlaneVec2* plane);
-f32 AngleBetweenVec2(vec2* vec0, vec2* vec1);
-f32 AngleOfVec2(vec2* vec0);
+f32 AngleBetweenVec2(const vec2* vec0, const vec2* vec1);
+f32 AngleOfVec2(const vec2* vec0);
 void  MakeRotatedVec2(vec2* out_resultVec, f32 angleRadians);
 void  MakeRotatedVec2_SinCos(vec2* out_resultVec, f32 sinTheta, f32 cosTheta);
 //Projects vec0 onto normalized vec1
@@ -116,4 +116,6 @@ f32 rand_FloatRange(f32 a, f32 b);
 s32 rand_IntRange(s32 a, s32 b);
 void RotateVec3AboutAxis(vec3* out_resultVec,const vec3* vec0, const vec3* pAxis,f32 sinAngle, f32 cosAngle);
 void RotateVec3AboutAxis_Self(vec3* out_resultVec,const vec3* pAxis,f32 sinAngle, f32 cosAngle);
+
+void RGBAToVec4(vec4* pOut_vec,u8 r, u8 g, u8 b, u8 a);
 #endif
