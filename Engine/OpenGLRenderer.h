@@ -372,4 +372,5 @@ RenderableGeometry3D* GetGeomPointer(CoreObjectHandle handle);
 vec3* GetGeomPos(RenderableGeometry3D* pGeom);
 vec3* GetGeomLeft(RenderableGeometry3D* pGeom);
 vec3* GetGeomUp(RenderableGeometry3D* pGeom);
+void GetGeomNormalizeLeft(RenderableGeometry3D* pGeom, vec3* pOut_left);
 #endif
