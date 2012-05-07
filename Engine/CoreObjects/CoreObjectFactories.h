@@ -9,6 +9,7 @@
 #include "TileAffector.h"
 #include "BasicParticle.h"
 #include "Spawner.h"
+#include "MuzzleFlareParticle.h"
 
 extern CoreObjectFactory<CollisionBox> g_Factory_CollisionBox;
 extern CoreObjectFactory<ScriptObject> g_Factory_ScriptObject;
@@ -21,6 +22,7 @@ extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_UI;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_Light;
 extern CoreObjectFactory<RenderableSceneObject3D> g_Factory_RenderableSceneObject;
 extern CoreObjectFactory<Spawner> g_Factory_Spawner;
+extern CoreObjectFactory<MuzzleFlareParticle> g_Factory_MuzzleFlareParticle;
 
 //IMPLEMENT THIS YOURSELF
 void CoreObjectFactories_Init();

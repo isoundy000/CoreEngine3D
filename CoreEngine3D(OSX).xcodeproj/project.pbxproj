@@ -175,6 +175,8 @@
 		23FCBD9314A1E09A00C5EA7C /* ViewFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */; };
 		23FCBD9414A1E09A00C5EA7C /* ViewFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD78C2631543C4A30029AA56 /* StringUtil.cpp */; };
+		DD78DD02155797CD003F3E57 /* MuzzleFlareParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD78DD00155797CD003F3E57 /* MuzzleFlareParticle.cpp */; };
+		DD78DD03155797CD003F3E57 /* MuzzleFlareParticle.h in Headers */ = {isa = PBXBuildFile; fileRef = DD78DD01155797CD003F3E57 /* MuzzleFlareParticle.h */; };
 		DD805AAD14D79E67006C6D10 /* Square_Tiled_32.h in Headers */ = {isa = PBXBuildFile; fileRef = DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */; };
 		DDA6C705151155980035DE60 /* CoreObjectTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6C702151155980035DE60 /* CoreObjectTypes.h */; };
 		DDA6C706151155980035DE60 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6C703151155980035DE60 /* Tile.cpp */; };
@@ -358,6 +360,8 @@
 		23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
 		DD78C2611543C48D0029AA56 /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		DD78C2631543C4A30029AA56 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
+		DD78DD00155797CD003F3E57 /* MuzzleFlareParticle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MuzzleFlareParticle.cpp; sourceTree = "<group>"; };
+		DD78DD01155797CD003F3E57 /* MuzzleFlareParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MuzzleFlareParticle.h; sourceTree = "<group>"; };
 		DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square_Tiled_32.h; sourceTree = "<group>"; };
 		DDA6C702151155980035DE60 /* CoreObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreObjectTypes.h; sourceTree = "<group>"; };
 		DDA6C703151155980035DE60 /* Tile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Tile.cpp; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 		236904CD14E0F41B0014F02D /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
+				DD78DD00155797CD003F3E57 /* MuzzleFlareParticle.cpp */,
+				DD78DD01155797CD003F3E57 /* MuzzleFlareParticle.h */,
 				DDA6C702151155980035DE60 /* CoreObjectTypes.h */,
 				DDA6C703151155980035DE60 /* Tile.cpp */,
 				DDA6C704151155980035DE60 /* Tile.h */,
@@ -776,6 +782,7 @@
 				DDA6C705151155980035DE60 /* CoreObjectTypes.h in Headers */,
 				DDA6C707151155980035DE60 /* Tile.h in Headers */,
 				DDC8937A1530EB620091EB0E /* Box2DUtil.h in Headers */,
+				DD78DD03155797CD003F3E57 /* MuzzleFlareParticle.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -909,6 +916,7 @@
 				DDA6C706151155980035DE60 /* Tile.cpp in Sources */,
 				DDC893791530EB620091EB0E /* Box2DUtil.cpp in Sources */,
 				DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */,
+				DD78DD02155797CD003F3E57 /* MuzzleFlareParticle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

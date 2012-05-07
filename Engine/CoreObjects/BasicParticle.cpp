@@ -135,12 +135,7 @@ void BasicParticle::Update(f32 timeElapsed)
 	const f32 breakableAlpha = ClampF(m_lifeTimer/0.15f,0.0f,1.0f);
     
     ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,breakableAlpha);
-    
-    if(m_lifeTimer <= 0.0f)
-	{
-		this->DeleteObject();
-	}
-    
+
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
 	
 	if(m_pBody != NULL)
