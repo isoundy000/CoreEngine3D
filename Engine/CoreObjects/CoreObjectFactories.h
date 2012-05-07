@@ -22,6 +22,7 @@ extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_Light;
 extern CoreObjectFactory<RenderableSceneObject3D> g_Factory_RenderableSceneObject;
 extern CoreObjectFactory<Spawner> g_Factory_Spawner;
 
+//IMPLEMENT THIS YOURSELF
 void CoreObjectFactories_Init();
 void CoreObjectFactories_Update(f32 timeElapsed);
 void CoreObjectFactories_Clear();
