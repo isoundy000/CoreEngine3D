@@ -4507,7 +4507,7 @@ vec3* GetGeomLeft(RenderableGeometry3D* pGeom)
 	return mat4f_GetLeft(pGeom->worldMat);
 }
 
-void GetGeomNormalizeLeft(RenderableGeometry3D* pGeom, vec3* pOut_left)
+void GetGeomNormalizedLeft(RenderableGeometry3D* pGeom, vec3* pOut_left)
 {
 	TryNormalizeVec3(pOut_left, GetGeomLeft(pGeom));
 }

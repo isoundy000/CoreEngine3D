@@ -26,7 +26,6 @@ extern CoreObjectFactory<MuzzleFlareParticle> g_Factory_MuzzleFlareParticle;
 
 //IMPLEMENT THIS YOURSELF
 void CoreObjectFactories_Init();
-void CoreObjectFactories_Update(f32 timeElapsed);
 void CoreObjectFactories_Clear();
 
 #endif

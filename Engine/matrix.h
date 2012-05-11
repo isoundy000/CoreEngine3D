@@ -21,6 +21,8 @@ void mat4f_LoadScaleFromVec_IgnoreTranslation(mat4f pOut_matrix, const vec3* v);
 void mat4f_LoadScale(mat4f pOut_matrix, f32 s);
 void mat4f_LoadScale_IgnoreTranslation(mat4f pOut_matrix, f32 s);
 void mat4f_Copy(mat4f pOut_matrix,mat4f m_copyFrom);
+void mat4f_Normalize_Self(mat4f pOut_matrix);
+void mat4f_Scale_Self(mat4f pOut_matrix, f32 scale);
 void mat4f_CopyRotation(mat4f pOut_matrix,mat4f m_copyFrom);
 void mat4f_GetViewAt(vec3* out_viewAt, mat4f pMatrix);
 void mat4f_GetViewUp(vec3* out_viewUp, mat4f pMatrix);

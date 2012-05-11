@@ -35,21 +35,28 @@ public:
 	
 	virtual void UpdateHandle();	//Call when the memory location changes
 	
-	void InitParticle(MuzzleFlareParticle::ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, u32 texIndex);
+	void InitParticle(MuzzleFlareParticle::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex);
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
 
 private:
+	void UpdateAttachment();
+	
 	ParticleSettings* m_pSettings;
 	f32 m_lifeTimer;
 	f32 m_timeToLive;
 	f32 m_radius;
+	f32 m_computedRadius;
 	vec3 m_position;
 	vec3 m_dir;
 	vec4 m_diffuseColorStart;
 	vec4 m_diffuseColor;
 	vec2 m_texcoordOffset;
 	CoreObjectHandle m_hRenderable;
+	
+	mat4f m_localMat;
+	
+	CoreObjectHandle m_hParentRenderable;
 };
 
 #endif

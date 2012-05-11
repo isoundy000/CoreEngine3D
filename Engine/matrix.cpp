@@ -1074,6 +1074,26 @@ void mat4f_Copy(mat4f pOut_matrix,mat4f m_copyFrom)
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
+void mat4f_Normalize_Self(mat4f pOut_matrix)
+{
+	TryNormalizeVec3_Self(mat4f_GetAt(pOut_matrix));
+	TryNormalizeVec3_Self(mat4f_GetUp(pOut_matrix));
+	TryNormalizeVec3_Self(mat4f_GetLeft(pOut_matrix));
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_Scale_Self(mat4f pOut_matrix, f32 scale)
+{
+	ScaleVec3_Self(mat4f_GetAt(pOut_matrix),scale);
+	ScaleVec3_Self(mat4f_GetUp(pOut_matrix),scale);
+	ScaleVec3_Self(mat4f_GetLeft(pOut_matrix),scale);
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void mat4f_CopyRotation(mat4f pOut_matrix,mat4f m_copyFrom)
 {
 	for(int i=0; i<12; ++i)

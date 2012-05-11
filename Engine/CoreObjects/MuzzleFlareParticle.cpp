@@ -12,9 +12,13 @@
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void MuzzleFlareParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, u32 texIndex)
+void MuzzleFlareParticle::InitParticle(MuzzleFlareParticle::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex)
 {
 	m_pSettings = pSettings;
+	
+	mat4f_Copy(m_localMat, localMat);
+	
+	m_hParentRenderable = hParentRenderable;
 	
 	ItemArtDescription* pArtDesc = pSettings->pItemArt;
 
@@ -27,19 +31,11 @@ void MuzzleFlareParticle::InitParticle(ParticleSettings *pSettings, const vec3* 
 		return;
 	}
 	
-	CopyVec3(&m_dir,pDirection);
-	
 	GLRENDERER->InitRenderableGeometry3D(pGeom, pArtDesc->pModelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
 	pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
 	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
 	
 	m_radius = rand_FloatRange(pSettings->radiusMin, pSettings->radiusMax);
-	
-	mat4f_LoadScale(pGeom->worldMat, m_radius);
-	
-	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
-	CopyVec3(pPos, pPosition);
-	CopyVec3(&m_position,pPosition);
 	
 	m_lifeTimer = 0.0f;
 	m_timeToLive = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
@@ -74,12 +70,40 @@ void MuzzleFlareParticle::InitParticle(ParticleSettings *pSettings, const vec3* 
 			break;
 		}
 	}
+	
+	UpdateAttachment();
+}
+
+
+void MuzzleFlareParticle::UpdateAttachment()
+{
+	RenderableGeometry3D* pGeomSelf = GetGeomPointer(m_hRenderable);
+	if(pGeomSelf == NULL)
+	{
+		return;
+	}
+	
+	RenderableGeometry3D* pGeomParent = GetGeomPointer(m_hParentRenderable);
+	if(pGeomParent == NULL)
+	{
+		return;
+	}
+	
+	mat4f normalizedMat;
+	mat4f_Copy(normalizedMat, pGeomParent->worldMat);
+	mat4f_Normalize_Self(normalizedMat);
+	
+	mat4f localMat;
+	mat4f_Copy(localMat, m_localMat);
+	mat4f_Scale_Self(localMat, m_computedRadius);
+	
+	mat4f_Multiply(pGeomSelf->worldMat, normalizedMat, localMat);
 }
 
 
 void MuzzleFlareParticle::Update(f32 timeElapsed)
 {
-    RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
+    RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
     
     if(pGeom == NULL)
 	{
@@ -95,8 +119,6 @@ void MuzzleFlareParticle::Update(f32 timeElapsed)
 		this->DeleteObject();
 	}
     
-	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
-	
 	f32 scale;
 	f32 alpha;
 	
@@ -118,13 +140,11 @@ void MuzzleFlareParticle::Update(f32 timeElapsed)
 		alpha = 1.0f-lerpT;
 	}
 	
-	ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,alpha);
+	m_diffuseColor.w = alpha;
 	
-	const f32 radius = m_radius*scale;
-	mat4f_LoadScaledRotationFromUp(pGeom->worldMat, &m_dir, radius);
-
-	CopyVec3(pPos, &m_position);
-	AddScaledVec3_Self(pPos, &m_dir, radius*0.5f);
+	m_computedRadius = m_radius*scale;
+	
+	UpdateAttachment();
 }
 
 
