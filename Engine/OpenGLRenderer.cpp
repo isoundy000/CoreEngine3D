@@ -328,9 +328,9 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
 	
 	PrintOpenGLError("Before registering models");
 	
-    RegisterModel(&g_DEBUGMODEL_CircleXY_modelData);
-	RegisterModel(&g_DEBUGMODEL_CircleXZ_modelData);
-    RegisterModel(&g_DEBUGMODEL_Cylinder_modelData);
+    BufferModel(&g_DEBUGMODEL_CircleXY_modelData);
+	BufferModel(&g_DEBUGMODEL_CircleXZ_modelData);
+    BufferModel(&g_DEBUGMODEL_Cylinder_modelData);
     
 	PrintOpenGLError("Initialized Renderer");
 
@@ -1377,9 +1377,85 @@ bool OpenGLRenderer::UpdateTextureFromData(u32* out_textureName, const void* dat
 }
 
 
-void OpenGLRenderer::RegisterModel(ModelData* pModelData)
+//NOTE: UNTESTED
+void OpenGLRenderer::UpdateVBO(u32 VBO, void* pVerts, u32 dataSize, GLenum useage)
 {
-	PrintOpenGLError("/*** Entered registerModel ***/");
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER,dataSize,pVerts,useage);
+}
+
+
+//NOTE: UNTESTED
+void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 dataSize, GLenum useage, const AttributeData* pAttrib, u32 numAttribs, u32 vertSize)
+{
+	//Use vertex array object
+	if (m_supportsVAOs)
+	{
+		glGenBuffers(1,pOut_VBO);
+		
+#if defined (PLATFORM_IOS)
+		glGenVertexArraysOES(1, pOut_VAO);
+		glBindVertexArrayOES(*pOut_VAO);
+#endif
+		
+#if defined (PLATFORM_OSX)
+		glGenVertexArraysAPPLE(1, pOut_VAO);
+		glBindVertexArrayAPPLE(*pOut_VAO);
+#endif
+		
+#if defined (PLATFORM_WIN)
+		glGenVertexArrays(1, pOut_VAO);
+		glBindVertexArray(*pOut_VAO);
+#endif
+		glBindBuffer(GL_ARRAY_BUFFER, *pOut_VBO);
+		PrintOpenGLError("Binding vertex buffer");
+	}
+	//Use plain old VBO
+	else
+	{
+		//No VAO
+		*pOut_VAO = 0;
+		
+		glGenBuffers(1,pOut_VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, *pOut_VBO);
+	}
+	
+	glBufferData(GL_ARRAY_BUFFER,dataSize,pVerts,useage);
+	PrintOpenGLError("Uploading vertex buffer");
+	
+	PrintOpenGLError("After binding VertexArrayObject");
+	
+	//If we're using VAO, enable the attributes here once and never again
+	if (m_supportsVAOs)
+	{
+		for(u32 i=0; i<numAttribs; ++i)
+		{
+			const AttributeData* pAttrib = &pAttrib[i];
+			glEnableVertexAttribArray(pAttrib->attribute);
+			
+			bool isNormalized = pAttrib->attribute == ATTRIB_COLOR ? true:false;
+			glVertexAttribPointer(pAttrib->attribute, pAttrib->size, pAttrib->type, isNormalized, vertSize, BUFFER_OFFSET(pAttrib->offset));
+		}
+
+		//Make sure nothing randomly writes to our new VAO
+#ifdef PLATFORM_IOS
+		glBindVertexArrayOES(0);
+#elif  PLATFORM_WIN
+		glBindVertexArray(0);
+#else
+		glBindVertexArrayAPPLE(0);
+#endif
+		
+		PrintOpenGLError("After resetting VAO");
+	}
+}
+
+
+void OpenGLRenderer::BufferModel(ModelData* pModelData)
+{
+	//TODO: make this use my CreateVBO function
+	
+	PrintOpenGLError("/*** Entered BufferModel ***/");
 	
 	for(u32 i=0; i<pModelData->numPrimitives; ++i)
 	{
@@ -2676,7 +2752,8 @@ void OpenGLRenderer::PostProcess(RenderMaterial ppMaterial, RenderTarget* render
     }
     
 	//Draw a full screen quad
-	switch (drawArea) {
+	switch (drawArea)
+	{
 		case PPDrawArea_FullScreen:
 		{
 			glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices);
@@ -3051,7 +3128,8 @@ bool OpenGLRenderer::CompileShader(u32 *shader, s32 type, s32 count, const char*
     }
 
     glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
-    if (status == 0) {
+    if (status == 0)
+	{
         glDeleteShader(*shader);
         return false;
     }
@@ -3068,7 +3146,8 @@ bool OpenGLRenderer::LinkProgram(u32 prog)
     
     s32 logLength;
     glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
+    if (logLength > 0)
+	{
         GLchar *log = (GLchar *)malloc(logLength);
         glGetProgramInfoLog(prog, logLength, &logLength, log);
         COREDEBUG_PrintDebugMessage("Program link log: %s",log);
@@ -3076,7 +3155,8 @@ bool OpenGLRenderer::LinkProgram(u32 prog)
     }
     
     glGetProgramiv(prog, GL_LINK_STATUS, &status);
-    if (status == 0) {
+    if (status == 0)
+	{
         return false;
     }
     
@@ -4241,7 +4321,7 @@ bool OpenGLRenderer::InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* 
 				pCurrData->sizeOfIndexData = indexDataSize;
 			}
 			
-			RegisterModel(pModelData);
+			BufferModel(pModelData);
 		}
 		
 		// To draw a scene, you must go through all the MeshNodes and draw the referenced meshes.
@@ -4312,7 +4392,8 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	
 	/* Open the file. */
 	infile = fopen(fileName, "rb");
-	if (!infile) {
+	if (!infile)
+	{
 		return false;
 	}
 	
@@ -4324,7 +4405,8 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	/* Check for the 8-byte signature */
 	fread(sig, 1, 8, infile);
 	
-	if (!png_check_sig((unsigned char *) sig, 8)) {
+	if (!png_check_sig((unsigned char *) sig, 8))
+	{
 		fclose(infile);
 		return false;
 	}
@@ -4333,13 +4415,15 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	 * Set up the PNG structs 
 	 */
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (!png_ptr) {
+	if (!png_ptr)
+	{
 		fclose(infile);
 		return false;    /* out of memory */
 	}
 	
 	info_ptr = png_create_info_struct(png_ptr);
-	if (!info_ptr) {
+	if (!info_ptr)
+	{
 		png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
 		fclose(infile);
 		return false;    /* out of memory */
@@ -4350,7 +4434,8 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	 * block to handle libpng errors, 
 	 * then check whether the PNG file had a bKGD chunk
 	 */
-	if (setjmp(png_jmpbuf(png_ptr))) {
+	if (setjmp(png_jmpbuf(png_ptr)))
+	{
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		fclose(infile);
 		return false;
@@ -4398,14 +4483,19 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 		outHasAlpha = false;
 	}
 	
-	if (bit_depth > 8) {
+	if (bit_depth > 8)
+	{
 		png_set_strip_16(png_ptr);
 	}
+	
 	if (color_type == PNG_COLOR_TYPE_GRAY ||
-		color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
+		color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+	{
 		png_set_gray_to_rgb(png_ptr);
 	}
-	if (color_type == PNG_COLOR_TYPE_PALETTE) {
+	
+	if (color_type == PNG_COLOR_TYPE_PALETTE)
+	{
 		png_set_palette_to_rgb(png_ptr);
 	}
 	
@@ -4417,12 +4507,14 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	
 	
 	/* Allocate the image_data buffer. */
-	if ((image_data = (GLubyte *) malloc(rowbytes * height))==NULL) {
+	if ((image_data = (GLubyte *) malloc(rowbytes * height))==NULL)
+	{
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		return false;
     }
 	
-	if ((row_pointers = (png_bytepp)malloc(height*sizeof(png_bytep))) == NULL) {
+	if ((row_pointers = (png_bytepp)malloc(height*sizeof(png_bytep))) == NULL)
+	{
         png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
         free(image_data);
         image_data = NULL;
@@ -4446,8 +4538,6 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 			row_pointers[height - 1 - i] = image_data + i*rowbytes;
 		}
 	}
-	
-    
 	
     /* now we can go ahead and just read the whole image */
     png_read_image(png_ptr, row_pointers);

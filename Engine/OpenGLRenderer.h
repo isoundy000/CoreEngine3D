@@ -170,8 +170,9 @@ public:
 	CoreObjectHandle CreateRenderableSceneObject3D(RenderableSceneObject3D** pOut_SceneObject);
 	bool LoadTextureFromData(u32* out_textureName,const void* data,u32 texWidth, u32 texHeight, u32 format, u32 type, u32 filterMode, u32 wrapModeU, u32 wrapModeV);
 	bool UpdateTextureFromData(u32* out_textureName, const void* data, u32 texWidth, u32 texHeight, u32 format, u32 type);
-	void RegisterModel(ModelData* pModelData);
-	
+	void BufferModel(ModelData* pModelData);
+	void CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 dataSize, GLenum useage, const AttributeData* pAttrib, u32 numAttribs, u32 vertSize);
+	void UpdateVBO(u32 VBO, void* pVerts, u32 dataSize, GLenum useage);
 	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
 	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
 	void InitRenderableSceneObject3D(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);

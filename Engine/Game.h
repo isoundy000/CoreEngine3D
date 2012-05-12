@@ -122,6 +122,12 @@ struct SpawnableEntity
 	CoreObject* pObject;
 };
 
+struct TileVert
+{
+	vec3 position;	//TODO: make it use a vec2
+	vec2 texcoord;
+};
+
 struct Layer
 {
 	u32 numTilesX;
@@ -339,6 +345,11 @@ private:
 	s32 m_numTilesToDelete;
     
     std::vector<CollisionLineSegment> m_collisionLineSegments;
+	
+	TileVert* m_pTileVerts;
+	
+	u32 m_tileVBOHandle;
+	u32 m_tileVAOHandle;
 };
 
 #endif

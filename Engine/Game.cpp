@@ -35,6 +35,13 @@ static void DrawFunc_DrawTile_Uninit();
 static void DrawFunc_DrawTile(void* pData);
 static bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const CollisionLineSegment& rhs);
 
+static const u32 g_Tile_NumAttributes = 2;
+static const AttributeData g_Tile_AttribData[g_Tile_NumAttributes] = 
+{
+	{ATTRIB_VERTEX,GL_FLOAT,3,0},
+	{ATTRIB_TEXCOORD,GL_FLOAT,2,12},
+};
+
 static DrawFunctionStruct g_drawStruct_RenderTile = 
 {
     DrawFunc_DrawTile_Init,
@@ -112,13 +119,15 @@ bool Game::Init()
 		pDesc->name = NULL;
 	}
 	
+	m_pTileVerts = NULL;
+	
 	//Register the common models people will use
-	GLRENDERER->RegisterModel(&g_Square1x1_modelData);
-	GLRENDERER->RegisterModel(&g_Square_Tiled_2_modelData);
-	GLRENDERER->RegisterModel(&g_Square_Tiled_4_modelData);
-	GLRENDERER->RegisterModel(&g_Square_Tiled_8_modelData);
-	GLRENDERER->RegisterModel(&g_Square_Tiled_16_modelData);
-	GLRENDERER->RegisterModel(&g_Square_Tiled_32_modelData);
+	GLRENDERER->BufferModel(&g_Square1x1_modelData);
+	GLRENDERER->BufferModel(&g_Square_Tiled_2_modelData);
+	GLRENDERER->BufferModel(&g_Square_Tiled_4_modelData);
+	GLRENDERER->BufferModel(&g_Square_Tiled_8_modelData);
+	GLRENDERER->BufferModel(&g_Square_Tiled_16_modelData);
+	GLRENDERER->BufferModel(&g_Square_Tiled_32_modelData);
 
 #if defined (PLATFORM_WIN)
 	char currentPath[_MAX_PATH];
@@ -1601,6 +1610,12 @@ bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const Collisio
 
 bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)
 {
+	const s32 tilesOnScreenX = GLRENDERER->screenWidth_points/tileWidthPixels;
+	const s32 tilesOnScreenY = GLRENDERER->screenHeight_points/tileWidthPixels;
+	
+	const s32 maxTileVerts = tilesOnScreenX*tilesOnScreenY;
+	const u32 vertDataSize = maxTileVerts*sizeof(TileVert);
+	
 	for(u32 i=0; i<GAME_MAX_TILESET_DESCRIPTIONS; ++i)
 	{
 		TileSetDescription* pDesc = &m_tileSetDescriptions[i];
@@ -1644,6 +1659,18 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 			pCurrLayer->tiles = NULL;
 		}
 	}
+	
+	if(m_pTileVerts != NULL)
+	{
+		delete[] m_pTileVerts;
+		m_pTileVerts = NULL;
+	}
+	
+	m_pTileVerts = new TileVert[maxTileVerts];
+	
+	/*COREDEBUG_PrintDebugMessage("Creating VBO for layer...");
+	GLRENDERER->CreateVBO(&m_tileVAOHandle,&m_tileVBOHandle,(void*)m_pTileVerts,vertDataSize,GL_DYNAMIC_DRAW,g_Tile_AttribData,g_Tile_NumAttributes,sizeof(TileVert));
+	COREDEBUG_PrintDebugMessage("VBO created!");*/
 	
 	m_numTilesToDelete = 0;
 	
@@ -1910,6 +1937,8 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 					pCurrLayer->numTilesX = width;
 					pCurrLayer->numTilesY = height;
 					
+					//TODO: seems like there's a bit of waste
+					//if this camera extents layer is in here
 					pData = new s32[numTiles];
 					
 					pCurrLayer->pLevelData = pData;
