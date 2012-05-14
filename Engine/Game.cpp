@@ -1901,7 +1901,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 	const s32 tilesOnScreenX = GLRENDERER->screenWidth_points/tileWidthPixels;
 	const s32 tilesOnScreenY = GLRENDERER->screenHeight_points/tileWidthPixels;
 	
-	const s32 maxTiles = tilesOnScreenX*tilesOnScreenY*2;
+	const s32 maxTiles = tilesOnScreenX*tilesOnScreenY;
 	const u32 vertsPerTile = 6;
 	m_tileVertDataSize = maxTiles*sizeof(TileVert)*vertsPerTile;
 	
