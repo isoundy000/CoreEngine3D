@@ -33,6 +33,11 @@ Game* GAME = NULL;
 static void DrawFunc_DrawTile_Init();
 static void DrawFunc_DrawTile_Uninit();
 static void DrawFunc_DrawTile(void* pData);
+
+static void DrawFunc_DrawTileLayer_Init();
+static void DrawFunc_DrawTileLayer_Uninit();
+static void DrawFunc_DrawTileLayer(void* pData);
+
 static bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const CollisionLineSegment& rhs);
 
 static const u32 g_Tile_NumAttributes = 2;
@@ -47,6 +52,13 @@ static DrawFunctionStruct g_drawStruct_RenderTile =
     DrawFunc_DrawTile_Init,
     DrawFunc_DrawTile,
     DrawFunc_DrawTile_Uninit,
+};
+
+static DrawFunctionStruct g_drawStruct_RenderTileLayer = 
+{
+    DrawFunc_DrawTileLayer_Init,
+    DrawFunc_DrawTileLayer,
+    DrawFunc_DrawTileLayer_Uninit,
 };
 
 ItemArtDescription g_Game_BlobShadowDesc =
@@ -800,6 +812,231 @@ static void DrawFunc_DrawTile(void* pData)
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
+static void DrawFunc_DrawTileLayer_Init()
+{
+	//TODO: check this
+    GLRENDERER->DisableVertexBufferObjects();
+}
+
+static void DrawFunc_DrawTileLayer_Uninit()
+{
+	const bool supportsVAOs = GLRENDERER->GetSupportsVAOs();
+	
+	//if(supportsVAOs == false)
+	if(1)
+	{
+		glDisableVertexAttribArray(ATTRIB_VERTEX);
+		glDisableVertexAttribArray(ATTRIB_TEXCOORD);
+	}
+}
+
+static void DrawFunc_DrawTileLayer(void* pData)
+{
+	mat4f identityMat;
+	mat4f_LoadIdentity(identityMat);
+	
+	const bool supportsVAOs = GLRENDERER->GetSupportsVAOs();
+	
+	Layer* pLayer = (Layer*)pData;
+
+	TileVert* pTileVerts = GAME->GetTiledVerts();
+	
+	u32 tileVertIndex = 0;
+	
+	const s32 numTilesX = pLayer->numTilesX;
+	const s32 numTilesY = pLayer->numTilesY;
+	
+	
+	const s32 tilePosX = (s32)(-pLayer->position.x/GAME->GetTileSize());
+	
+	const s32 numScreenTilesX = (f32)GLRENDERER->screenWidth_points/GAME->GetTileSize()+0.5f;
+	
+	//const s32 testCullingBuffer = 4;
+	
+	int xStart = ClampS32(tilePosX, 0, numTilesX);
+	int xEnd = ClampS32(tilePosX+numScreenTilesX+1, 0, numTilesX);
+	
+	assert(xEnd < numTilesX+1);
+	
+	const s32 tilePosY = (s32)(-pLayer->position.y/GAME->GetTileSize());
+	
+	const s32 numScreenTilesY = (f32)GLRENDERER->screenHeight_points/GAME->GetTileSize()+0.5f;
+	
+	const s32 yStart = ClampS32(tilePosY, 0, numTilesY);
+	const s32 yEnd = ClampS32(tilePosY+numScreenTilesY+1, 0, numTilesY);
+	
+	u32 textureID = 0;
+	
+	//Calculate position
+	const s32 halfTileSize = GAME->GetHalfTileSize();
+	const s32 tileSize = GAME->GetTileSize();
+	const s32 baseX = halfTileSize+((s32)pLayer->position.x);
+	const s32 baseY = halfTileSize+((s32)pLayer->position.y);
+	
+	for(u32 y=yStart; y<yEnd; ++y)
+	{
+		const s32 tileBasePosY = y*tileSize+baseY;
+		
+		for(u32 x=xStart; x<xEnd; ++x)
+		{
+			Tile* pTile = &ARRAY2D(pLayer->tiles, x, y, numTilesX);
+			
+			if(pTile->tileID == -1)
+			{
+				continue;
+			}
+			
+			const s32 tileBasePosX = x*tileSize+baseX;
+			vec2 position = {tileBasePosX,tileBasePosY};
+			
+			//Create vert!
+			const TileSetDescription* pDesc = pTile->pDesc;
+			
+			//TODO: replace this fucked code
+			textureID = pDesc->loadedTextureID;
+			
+			static TileVert tileVerts[4];
+			
+			const PrimitiveData* pVertData = &pDesc->pModelData->primitiveArray[0];
+			memcpy(tileVerts, pVertData->vertexData, pVertData->sizeOfVertexData);
+			
+			vec3* pos0 = &tileVerts[0].position;
+			vec3* pos1 = &tileVerts[1].position;
+			vec3* pos2 = &tileVerts[2].position;
+			vec3* pos3 = &tileVerts[3].position;
+			
+			ScaleVec3_Self(pos0, tileSize);
+			ScaleVec3_Self(pos1, tileSize);
+			ScaleVec3_Self(pos2, tileSize);
+			ScaleVec3_Self(pos3, tileSize);
+			
+			AddVec2_Self((vec2*)pos0, &position);
+			AddVec2_Self((vec2*)pos1, &position);
+			AddVec2_Self((vec2*)pos2, &position);
+			AddVec2_Self((vec2*)pos3, &position);
+			
+			const f32 screenWidthDiv2 = (f32)GLRENDERER->screenWidth_points/2.0f;
+			const f32 screenHeightDiv2 = (f32)GLRENDERER->screenHeight_points/2.0f;
+			
+			pos0->x = pos0->x/screenWidthDiv2-1.0f;
+			pos1->x = pos1->x/screenWidthDiv2-1.0f;
+			pos2->x = pos2->x/screenWidthDiv2-1.0f;
+			pos3->x = pos3->x/screenWidthDiv2-1.0f;
+			
+			pos0->y = -pos0->y/screenHeightDiv2+1.0f;
+			pos1->y = -pos1->y/screenHeightDiv2+1.0f;
+			pos2->y = -pos2->y/screenHeightDiv2+1.0f;
+			pos3->y = -pos3->y/screenHeightDiv2+1.0f;
+			
+			vec2* uv0 = &tileVerts[0].texcoord;
+			vec2* uv1 = &tileVerts[1].texcoord;
+			vec2* uv2 = &tileVerts[2].texcoord;
+			vec2* uv3 = &tileVerts[3].texcoord;
+			
+			const s32 tileID_X = pTile->tileID%pDesc->numTextureTilesX;
+			const s32 tileID_Y = pTile->tileID/pDesc->numTextureTilesX;
+			
+			vec2 texcoordOffset;
+			texcoordOffset.x = (f32)tileID_X/(f32)pDesc->numTextureTilesX;
+			texcoordOffset.y = (f32)tileID_Y/(f32)pDesc->numTextureTilesY;
+			
+			AddVec2_Self(uv0, &texcoordOffset);
+			AddVec2_Self(uv1, &texcoordOffset);
+			AddVec2_Self(uv2, &texcoordOffset);
+			AddVec2_Self(uv3, &texcoordOffset);
+			
+			//Triangle 1
+			pTileVerts[tileVertIndex]   = tileVerts[0];
+			pTileVerts[tileVertIndex+1] = tileVerts[1];
+			pTileVerts[tileVertIndex+2] = tileVerts[2];
+			
+			//Triangle 2
+			pTileVerts[tileVertIndex+3] = tileVerts[1];
+			pTileVerts[tileVertIndex+4] = tileVerts[2];
+			pTileVerts[tileVertIndex+5] = tileVerts[3];
+			
+			//Increment vert index
+			tileVertIndex += 6; //6 verts in a tile
+		}
+	}
+	
+	GAME->UpdateTileVBO();
+	
+	//if (supportsVAOs)
+	if(0)
+	{
+		const u32 vao = GAME->GetTileVAO();
+		GLRENDERER->BindVertexArrayObject(vao);
+	}
+	else
+	{
+		const u32 vbo = GAME->GetTileVBO();
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		
+		for(u32 i=0; i<g_Tile_NumAttributes; ++i)
+		{
+			GLRENDERER->EnableAttribute(&g_Tile_AttribData[i], sizeof(TileVert));
+		}
+	}
+	
+	GLRENDERER->SetTexture(&textureID, 0);
+	
+	glDrawArrays(GL_TRIANGLES, 0, tileVertIndex);
+	
+	
+	//TEST TRIANGLE
+	/*TileVert* pTileVerts = GAME->GetTiledVerts();
+	
+	const u32 textureID = 0;
+	GLRENDERER->SetTexture(&textureID, 1);
+	
+	vec3 pos0 = {-1.0f,-1.0f,0.0f};
+	vec3 pos1 = {1.0f,-1.0f,0.0f};
+	vec3 pos2 = {1.0f,1.0f,0.0f};
+	
+	vec2 uv0 = {0.0f,0.0f};
+	vec2 uv1 = {1.0f,0.0f};
+	vec2 uv2 = {1.0f,1.0f};
+
+	pTileVerts[0].position = pos0;
+	pTileVerts[0].texcoord = uv0;
+	
+	pTileVerts[1].position = pos1;
+	pTileVerts[1].texcoord = uv1;
+	
+	pTileVerts[2].position = pos2;
+	pTileVerts[2].texcoord = uv2;
+		
+	GAME->UpdateTileVBO();
+	
+	for(u32 i=0; i<g_Tile_NumAttributes; ++i)
+	{
+		GLRENDERER->EnableAttribute(&g_Tile_AttribData[i], sizeof(TileVert));
+	}
+	
+	glDrawArrays(GL_TRIANGLES, 0, 3);*/
+}
+
+void Game::UpdateTileVBO()
+{
+	GLRENDERER->UpdateVBO(m_tileVBOHandle, m_pTileVerts, m_tileVertDataSize, GL_DYNAMIC_DRAW);
+}
+
+TileVert* Game::GetTiledVerts()
+{
+	return m_pTileVerts;
+}
+
+u32 Game::GetTileVBO()
+{
+	return m_tileVBOHandle;
+}
+
+u32 Game::GetTileVAO()
+{
+	return m_tileVAOHandle;
+}
+
 
 void Game::CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, RenderLayer renderLayer, RenderMaterial material)
 {
@@ -831,9 +1068,9 @@ void Game::CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, R
 	
 	CopyVec2(&pTile->scale,&scaleVec);
 	
-	const u32 baseFlag = RenderFlagDefaults_2DTexture_AlphaBlended;
+	//const u32 baseFlag = RenderFlagDefaults_2DTexture_AlphaBlended;
 	
-	GLRENDERER->InitRenderableGeometry3D(*pGeom, &g_drawStruct_RenderTile, pTile, MT_WorldSpace_TextureOnly, &pDesc->loadedTextureID, NULL, renderLayer, BlendMode_Normal, baseFlag|RenderFlag_Visible);
+	//GLRENDERER->InitRenderableGeometry3D(*pGeom, &g_drawStruct_RenderTile, pTile, MT_WorldSpace_TextureOnly, &pDesc->loadedTextureID, NULL, renderLayer, BlendMode_Normal, baseFlag|RenderFlag_Visible);
 	
 	const s32 tileID_X = pTile->tileID%pDesc->numTextureTilesX;
 	const s32 tileID_Y = pTile->tileID/pDesc->numTextureTilesX;
@@ -842,7 +1079,7 @@ void Game::CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, R
 	pTile->texCoordOffset.y = (f32)tileID_Y/(f32)pDesc->numTextureTilesY;
 
 	
-	pTile->hRenderable = hRenderable;
+	//pTile->hRenderable = hRenderable;
 }
 
 
@@ -921,8 +1158,59 @@ void Game::SetTileCullingRange(s32 cullingRange)
 	m_cullingRange = cullingRange;
 }
 
-//TODO: OPTIMIZE! This is the slowest function in the whole game
 void Game::UpdateTiledLevelPosition(vec3* pPosition)
+{
+	vec3 position;
+	ScaleVec3(&position,pPosition,-1.0f);
+	
+	vec3 negPosition;
+	CopyVec3(&negPosition,&position);
+	negPosition.y = -position.y;
+	
+	for(s32 i=0; i<NumLevelLayers; ++i)
+	{
+		const LevelLayer currLayer = (LevelLayer)i;
+		
+#ifndef _DEBUG
+		if(currLayer == LevelLayer_Collision)
+		{
+			continue;
+		}
+#endif
+		if(currLayer == LevelLayer_CameraExtents)
+		{
+			continue;
+		}
+		
+		Layer* pCurrLayer = &m_layers[i];
+		if(pCurrLayer->pLevelData == NULL)
+		{
+			continue;
+		}
+		
+		//const RenderLayer renderLayer = (RenderLayer)(RenderLayer_Background0+i);
+		//const RenderMaterial renderMaterial = pCurrLayer->material;
+		
+		//If this is the collision layer, it should move at the same rate as the main layer
+		const s32 adjustedIndex = (currLayer==LevelLayer_Main0 || currLayer==LevelLayer_Collision || currLayer==LevelLayer_TileObjectArt)?(s32)LevelLayer_Main1:i;
+		//const s32 scrollIndex = (s32)LevelLayer_Main1-adjustedIndex;	//TODO: index into an array of values maybe
+		
+		//ScaleVec3(&pCurrLayer->position,&position,1.0f/(f32)scrollIndex);
+		
+		CopyVec3(&pCurrLayer->position,&position);
+		
+		if(m_parallaxScale != 0.0f)
+		{
+			vec3 parallaxDiffVec;
+			
+			SubVec3(&parallaxDiffVec,&m_parallaxBasePos,&negPosition);
+			SubScaledVec3_Self(&pCurrLayer->position,&parallaxDiffVec,(f32)(adjustedIndex-LevelLayer_Main1)*m_parallaxScale);
+		}
+	}
+}
+
+//TODO: OPTIMIZE! This is the slowest function in the whole game
+/*void Game::UpdateTiledLevelPosition(vec3* pPosition)
 {
 	vec3 position;
 	ScaleVec3(&position,pPosition,-1.0f);
@@ -983,8 +1271,8 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 		
 		//const s32 testCullingBuffer = 4;
 		
-		int xStart = ClampS32(tilePosX/*+testCullingBuffer*/, 0, numTilesX);
-		int xEnd = ClampS32(tilePosX+numScreenTilesX+1/*-testCullingBuffer*/, 0, numTilesX);
+		int xStart = ClampS32(tilePosX, 0, numTilesX);
+		int xEnd = ClampS32(tilePosX+numScreenTilesX+1, 0, numTilesX);
 		
 		assert(xEnd < numTilesX+1);
 		
@@ -992,8 +1280,8 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 		
 		const s32 numScreenTilesY = (f32)GLRENDERER->screenHeight_points/GAME->GetTileSize()+0.5f;
 		
-		const s32 yStart = ClampS32(tilePosY/*+testCullingBuffer*/, 0, numTilesY);
-		const s32 yEnd = ClampS32(tilePosY+numScreenTilesY+1/*-testCullingBuffer*/, 0, numTilesY);
+		const s32 yStart = ClampS32(tilePosY, 0, numTilesY);
+		const s32 yEnd = ClampS32(tilePosY+numScreenTilesY+1, 0, numTilesY);
 
 		//If it's the TileObjectArt layer, just update the uniforms
 		
@@ -1081,7 +1369,7 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 			}
 		}
 	}
-}
+}*/
 
 const vec3* Game::GetCameraPosition()
 {
@@ -1613,8 +1901,9 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 	const s32 tilesOnScreenX = GLRENDERER->screenWidth_points/tileWidthPixels;
 	const s32 tilesOnScreenY = GLRENDERER->screenHeight_points/tileWidthPixels;
 	
-	const s32 maxTileVerts = tilesOnScreenX*tilesOnScreenY;
-	const u32 vertDataSize = maxTileVerts*sizeof(TileVert);
+	const s32 maxTiles = tilesOnScreenX*tilesOnScreenY*2;
+	const u32 vertsPerTile = 6;
+	m_tileVertDataSize = maxTiles*sizeof(TileVert)*vertsPerTile;
 	
 	for(u32 i=0; i<GAME_MAX_TILESET_DESCRIPTIONS; ++i)
 	{
@@ -1666,11 +1955,11 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 		m_pTileVerts = NULL;
 	}
 	
-	m_pTileVerts = new TileVert[maxTileVerts];
+	m_pTileVerts = new TileVert[m_tileVertDataSize];
 	
-	/*COREDEBUG_PrintDebugMessage("Creating VBO for layer...");
-	GLRENDERER->CreateVBO(&m_tileVAOHandle,&m_tileVBOHandle,(void*)m_pTileVerts,vertDataSize,GL_DYNAMIC_DRAW,g_Tile_AttribData,g_Tile_NumAttributes,sizeof(TileVert));
-	COREDEBUG_PrintDebugMessage("VBO created!");*/
+	COREDEBUG_PrintDebugMessage("Creating VBO for layer...");
+	GLRENDERER->CreateVBO(&m_tileVAOHandle,&m_tileVBOHandle,(void*)m_pTileVerts,m_tileVertDataSize,GL_DYNAMIC_DRAW,g_Tile_AttribData,g_Tile_NumAttributes,sizeof(TileVert));
+	COREDEBUG_PrintDebugMessage("VBO created!");
 	
 	m_numTilesToDelete = 0;
 	
@@ -1707,20 +1996,20 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 		m_unitConversionScale = (f32)tileWidthPixels/(f32)mapTileSizeX;
 		
 		m_numTileSetDescriptions = 0;
-		for (pugi::xml_node layer = map.child("tileset"); layer; layer = layer.next_sibling("tileset"),++m_numTileSetDescriptions)
+		for (pugi::xml_node tileset = map.child("tileset"); tileset; tileset = tileset.next_sibling("tileset"),++m_numTileSetDescriptions)
 		{
 			TileSetDescription* pDesc = &m_tileSetDescriptions[m_numTileSetDescriptions];
 
-			const char* descName = layer.attribute("name").value();
+			const char* descName = tileset.attribute("name").value();
 			const size_t descNameSize = strlen(descName);
 			pDesc->name = new char[descNameSize+1];
 			strcpy(pDesc->name, descName);
 			
-			pDesc->firstTileIndex = atoi(layer.attribute("firstgid").value());
-			pDesc->tileSizeX = atoi(layer.attribute("tilewidth").value());
-			pDesc->tileSizeY = atoi(layer.attribute("tileheight").value());
+			pDesc->firstTileIndex = atoi(tileset.attribute("firstgid").value());
+			pDesc->tileSizeX = atoi(tileset.attribute("tilewidth").value());
+			pDesc->tileSizeY = atoi(tileset.attribute("tileheight").value());
 			
-			pugi::xml_node textureNode = layer.child("image");
+			pugi::xml_node textureNode = tileset.child("image");
 			
 			const char* textureName = textureNode.attribute("source").value();
 			const size_t textureNameSize = strlen(textureName);
@@ -1944,7 +2233,17 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 					pCurrLayer->pLevelData = pData;
 					
 					CopyVec3(&pCurrLayer->position,&vec3_zero);
+					
+					RenderableGeometry3D* pGeom;
+					pCurrLayer->hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal, &pGeom); 
 
+					if(pGeom != NULL)
+					{
+						const RenderLayer renderLayer = (RenderLayer)(RenderLayer_Background0+currLayer);
+						
+						GLRENDERER->InitRenderableGeometry3D(pGeom, &g_drawStruct_RenderTileLayer, pCurrLayer, MT_WorldSpace_TextureOnly, 0, NULL, renderLayer, BlendMode_Normal, RenderFlagDefaults_2DTexture_AlphaBlended_Fullscreen|RenderFlag_Visible);
+					}
+					
 					break;
 				}
 				default:

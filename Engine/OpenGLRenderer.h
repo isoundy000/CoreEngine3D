@@ -157,7 +157,7 @@ public:
 	bool GetFadeFinished();
 	void ClearOneFrameGeometry();
 	void RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableObjectArray, u32 numRenderableObjects);
-
+	bool GetSupportsVAOs();
 	void SetClearColor(f32 r, f32 g, f32 b);
 	const vec3* GetClearColor();
 	void SetGravityDir(const vec3* pNewGravityDir);
@@ -214,6 +214,11 @@ public:
 	f32 aspectRatio;
 	bool paused;
 	
+	void BindVertexArrayObject(u32 vao);
+	void SetMaterial(RenderMaterial material);
+	void SetTexture(const u32* pTexture,u32 textureUnit);
+	void UploadWorldProjMatrix(const f32* pWorldMat); //only call after setMaterial
+	void EnableAttribute(const AttributeData* pAttrib, u32 stride);
 private:
 	
 	//private functions
@@ -221,7 +226,7 @@ private:
 	
 	void SortRenderablesWithMaterialByZ(RenderMaterial materialID);
 	void SortRenderablesInLayerRangeByZ(RenderLayer layerBegin, RenderLayer layerEnd);
-	void SetMaterial(RenderMaterial material);
+	
 	void DeleteScene(RenderableScene3D* pScene);
 	void PostProcess(RenderMaterial ppMaterial, RenderTarget* renderTarget, PPDrawArea drawArea, u32* texture0, u32* texture1, u32* texture2);
 	void PrintOpenGLError(const char* callerName);
@@ -231,15 +236,15 @@ private:
 	void SetRenderTarget(RenderTarget* renderTarget);
 	void UploadWorldViewProjMatrix(const f32* pWorldMat); //only call after setMaterial
 	void UploadProjMatrix(const f32* pProjMat); //only call after setMaterial
-	void UploadWorldProjMatrix(const f32* pWorldMat); //only call after setMaterial
+	
 	void UploadSharedUniforms();
 	void UploadUniqueUniforms(u8* const * pValuePointerArray);
-	void SetTexture(const u32* pTexture,u32 textureUnit);
+	
 	void SetRenderState(BlendMode blendMode, u32 renderFlags);
 	f32 ComputeGaussianValue(f32 x, f32 stdDevSq);
 	void ComputeGaussianWeights(f32* out_pWeights, s32 numWeights, f32 standardDeviationSquared);
 	void EnableAttributes(const ModelData* pModelData);
-	void BindVertexArrayObject(const PrimitiveData* pPrimitive);
+	
 	void BindIndexData(const PrimitiveData* pPrimitive);
 	void AddUniform_Unique(RenderMaterial renderMaterial, const char* nameOfUniformInShader,UniformType uniformType, u32 amount);
 	void AddUniform_Shared(RenderMaterial renderMaterial, const char* nameOfUniformInShader, UniformType uniformType, u8* pData, u32 amount);

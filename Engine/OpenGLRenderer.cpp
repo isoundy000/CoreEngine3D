@@ -586,44 +586,49 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 		//Set material whenever it has changed
 		
 		RenderMaterial nextMaterial = pGeom->material.materialID;
-		if(nextMaterial != m_lastUsedMaterial)
+		
+		if(nextMaterial != MT_None)
 		{
-			SetMaterial(nextMaterial);
+			if(nextMaterial != m_lastUsedMaterial)
+			{
+				SetMaterial(nextMaterial);
+			}
+			
+			//At this point, either the texture was set by a material or its still set to
+			//the last override texture
+			
+			//The material groups are sub-sorted by override texture, so all
+			//the non-overridden things draw first.  Therefore, there is
+			//never any need to reset back to the original texture from the
+			//material.
+			
+			//Override material texture0 if needed
+			//Will do nothing if the texture is set to 0 or the texture is already set
+			SetTexture(pGeom->material.customTexture0, 0);
+			SetTexture(pGeom->material.customTexture1, 1);
+			
+			//Upload uniforms that have unique values per object
+			UploadUniqueUniforms(pGeom->material.uniqueUniformValues);
+			
+			//Draw the current object
+			
+			const Material* currMaterial = &g_Materials[m_lastUsedMaterial];
+			//If there's a matrix at all
+			if(currMaterial->uniform_worldViewProjMat != -1)
+			{
+				//Some objects ignore the view matrix
+				if (renderFlags & RenderFlag_IgnoreViewMatrix)
+				{
+					UploadWorldProjMatrix(pGeom->worldMat);
+				}
+				//Some use the view matrix
+				else
+				{
+					UploadWorldViewProjMatrix(pGeom->worldMat);
+				}
+			}
 		}
 		
-		//At this point, either the texture was set by a material or its still set to
-		//the last override texture
-		
-		//The material groups are sub-sorted by override texture, so all
-		//the non-overridden things draw first.  Therefore, there is
-		//never any need to reset back to the original texture from the
-		//material.
-		
-		//Override material texture0 if needed
-		//Will do nothing if the texture is set to 0 or the texture is already set
-		SetTexture(pGeom->material.customTexture0, 0);
-		SetTexture(pGeom->material.customTexture1, 1);
-		
-		//Upload uniforms that have unique values per object
-		UploadUniqueUniforms(pGeom->material.uniqueUniformValues);
-		
-		//Draw the current object
-		
-		const Material* currMaterial = &g_Materials[m_lastUsedMaterial];
-		//If there's a matrix at all
-		if(currMaterial->uniform_worldViewProjMat != -1)
-		{
-			//Some objects ignore the view matrix
-			if (renderFlags & RenderFlag_IgnoreViewMatrix)
-			{
-				UploadWorldProjMatrix(pGeom->worldMat);
-			}
-			//Some use the view matrix
-			else
-			{
-				UploadWorldViewProjMatrix(pGeom->worldMat);
-			}
-		}
 		
 		SetRenderState(pGeom->blendMode,renderFlags);
         
@@ -683,7 +688,7 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 					vertexData = currPrim->vertexData;
 					if (m_supportsVAOs)
 					{
-						BindVertexArrayObject(currPrim);
+						BindVertexArrayObject(currPrim->vertexArrayObjectID);
 						
 					}
 					else
@@ -708,8 +713,7 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 					{
 						//VAOs don't save this I guess?
 						BindIndexData(currPrim);
-						
-						
+
 						glDrawElements(currPrim->drawMethod, currPrim->numVerts, GL_UNSIGNED_SHORT, 0);
 						
 					}
@@ -1282,7 +1286,7 @@ void OpenGLRenderer::Render(f32 timeElapsed)
 				PrimitiveData* pCurrPrim = &pModelData->primitiveArray[i];
 				if (m_supportsVAOs)
 				{
-					BindVertexArrayObject(pCurrPrim);
+					BindVertexArrayObject(pCurrPrim->vertexArrayObjectID);
 				}
 				else
 				{
@@ -1388,11 +1392,11 @@ void OpenGLRenderer::UpdateVBO(u32 VBO, void* pVerts, u32 dataSize, GLenum useag
 //NOTE: UNTESTED
 void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 dataSize, GLenum useage, const AttributeData* pAttrib, u32 numAttribs, u32 vertSize)
 {
+	glGenBuffers(1,pOut_VBO);
+	
 	//Use vertex array object
 	if (m_supportsVAOs)
 	{
-		glGenBuffers(1,pOut_VBO);
-		
 #if defined (PLATFORM_IOS)
 		glGenVertexArraysOES(1, pOut_VAO);
 		glBindVertexArrayOES(*pOut_VAO);
@@ -1407,18 +1411,17 @@ void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 d
 		glGenVertexArrays(1, pOut_VAO);
 		glBindVertexArray(*pOut_VAO);
 #endif
-		glBindBuffer(GL_ARRAY_BUFFER, *pOut_VBO);
-		PrintOpenGLError("Binding vertex buffer");
+		
 	}
 	//Use plain old VBO
 	else
 	{
 		//No VAO
-		*pOut_VAO = 0;
-		
-		glGenBuffers(1,pOut_VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, *pOut_VBO);
+		*pOut_VAO = 0;	
 	}
+	
+	glBindBuffer(GL_ARRAY_BUFFER, *pOut_VBO);
+	PrintOpenGLError("Binding vertex buffer");
 	
 	glBufferData(GL_ARRAY_BUFFER,dataSize,pVerts,useage);
 	PrintOpenGLError("Uploading vertex buffer");
@@ -1431,10 +1434,7 @@ void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 d
 		for(u32 i=0; i<numAttribs; ++i)
 		{
 			const AttributeData* pAttrib = &pAttrib[i];
-			glEnableVertexAttribArray(pAttrib->attribute);
-			
-			bool isNormalized = pAttrib->attribute == ATTRIB_COLOR ? true:false;
-			glVertexAttribPointer(pAttrib->attribute, pAttrib->size, pAttrib->type, isNormalized, vertSize, BUFFER_OFFSET(pAttrib->offset));
+			EnableAttribute(pAttrib, vertSize);
 		}
 
 		//Make sure nothing randomly writes to our new VAO
@@ -3599,6 +3599,14 @@ void OpenGLRenderer::ComputeGaussianWeights(f32* out_pWeights, s32 numWeights, f
 	}
 }
 
+void OpenGLRenderer::EnableAttribute(const AttributeData* pAttrib, u32 stride)
+{
+	glEnableVertexAttribArray(pAttrib->attribute);
+	
+	bool isNormalized = pAttrib->attribute == ATTRIB_COLOR ? true:false;
+	glVertexAttribPointer(pAttrib->attribute, pAttrib->size, pAttrib->type, isNormalized, stride, BUFFER_OFFSET(pAttrib->offset));
+}
+
 
 void OpenGLRenderer::EnableAttributes(const ModelData* pModelData)
 {
@@ -3607,24 +3615,21 @@ void OpenGLRenderer::EnableAttributes(const ModelData* pModelData)
 	for(u32 i=0; i<pModelData->numAttributes; ++i)
 	{
 		const AttributeData* pAttrib = &pModelData->attributeArray[i];
-		glEnableVertexAttribArray(pAttrib->attribute);
-		
-		bool isNormalized = pAttrib->attribute == ATTRIB_COLOR ? true:false;
-		glVertexAttribPointer(pAttrib->attribute, pAttrib->size, pAttrib->type, isNormalized, stride, BUFFER_OFFSET(pAttrib->offset));
+		EnableAttribute(pAttrib,stride);
 	}
 		
     PrintOpenGLError("After enabling attributes");
 }
 
 
-void OpenGLRenderer::BindVertexArrayObject(const PrimitiveData* pPrimitive)
+void OpenGLRenderer::BindVertexArrayObject(u32 vao)
 {
 #ifdef PLATFORM_IOS
-	glBindVertexArrayOES(pPrimitive->vertexArrayObjectID);
+	glBindVertexArrayOES(vao);
 #elif defined PLATFORM_WIN
-	glBindVertexArray(pPrimitive->vertexArrayObjectID);
+	glBindVertexArray(vao);
 #else
-	glBindVertexArrayAPPLE(pPrimitive->vertexArrayObjectID);
+	glBindVertexArrayAPPLE(vao);
 #endif
 	
 }
@@ -3801,7 +3806,7 @@ void OpenGLRenderer::DrawSceneObject(RenderableSceneObject3D* pSceneObject)
 		
 		if (m_supportsVAOs)
 		{
-			BindVertexArrayObject(pCurrPrim);
+			BindVertexArrayObject(pCurrPrim->vertexArrayObjectID);
 		}
 		else
 		{
@@ -3906,7 +3911,7 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 		
 		if (m_supportsVAOs)
 		{
-			BindVertexArrayObject(pCurrPrim);
+			BindVertexArrayObject(pCurrPrim->vertexArrayObjectID);
 		}
 		else
 		{
@@ -4004,6 +4009,12 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 			glDrawElements(pCurrPrim->drawMethod, i32Tris * 3, GL_UNSIGNED_SHORT, BUFFER_OFFSET(batchOffset));
 		}
 	}
+}
+
+
+bool OpenGLRenderer::GetSupportsVAOs()
+{
+	return m_supportsVAOs;
 }
 
 

@@ -138,6 +138,9 @@ struct Layer
 	RenderMaterial material;
 	vec4 fogColor;
 	f32	blurAmount;
+	CoreObjectHandle hRenderable;
+	
+	TileSetDescription* pTileSetDescription;
 	
 	Tile* tiles;
 };
@@ -225,7 +228,10 @@ public:
 	bool TiledLevel_GetGroundPos(vec3* pOut_GroundPos, vec3* pOut_GroundNormal, const vec3* pPos);
     void TiledLevel_DeleteObjectIfOffscreen_X(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
     void TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
-    
+    TileVert* GetTiledVerts();
+	u32 GetTileVBO();
+	u32 GetTileVAO();
+	void UpdateTileVBO();
 	Layer* GetLayer(LevelLayer layer);
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 	DeviceInputState* GetDeviceInputState();
@@ -350,6 +356,7 @@ private:
 	
 	u32 m_tileVBOHandle;
 	u32 m_tileVAOHandle;
+	u32 m_tileVertDataSize;
 };
 
 #endif

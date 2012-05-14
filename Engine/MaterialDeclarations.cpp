@@ -12,6 +12,7 @@
 const char* g_MaterialNames[NumRenderMaterials] = 
 
 {
+	"MT_None",
 	"MT_TextureAndVertColor",
     "MT_TextureOnlySimple",
     "MT_TextureAlphaAndDiffuseColor",
