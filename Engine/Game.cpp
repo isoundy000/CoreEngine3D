@@ -1897,9 +1897,10 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 	const s32 tilesOnScreenX = GLRENDERER->screenWidth_points/tileWidthPixels;
 	const s32 tilesOnScreenY = GLRENDERER->screenHeight_points/tileWidthPixels;
 	
-	const s32 maxTiles = tilesOnScreenX*tilesOnScreenY;
+	const s32 maxTiles = (tilesOnScreenX+1)*(tilesOnScreenY+1);
 	const u32 vertsPerTile = 6;
-	m_tileVertDataSize = maxTiles*sizeof(TileVert)*vertsPerTile;
+	const u32 numTileVerts = vertsPerTile*maxTiles;
+	m_tileVertDataSize = sizeof(TileVert)*numTileVerts;
 	
 	for(u32 i=0; i<GAME_MAX_TILESET_DESCRIPTIONS; ++i)
 	{
@@ -1951,7 +1952,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 		m_pTileVerts = NULL;
 	}
 	
-	m_pTileVerts = new TileVert[m_tileVertDataSize];
+	m_pTileVerts = new TileVert[numTileVerts];
 	
 	COREDEBUG_PrintDebugMessage("Creating VBO for layer...");
 	GLRENDERER->CreateVBO(&m_tileVAOHandle,&m_tileVBOHandle,(void*)m_pTileVerts,m_tileVertDataSize,GL_DYNAMIC_DRAW,&g_Tile_AttribData[0],g_Tile_NumAttributes,sizeof(TileVert));
