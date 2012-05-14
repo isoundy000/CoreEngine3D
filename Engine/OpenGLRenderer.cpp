@@ -1391,9 +1391,7 @@ void OpenGLRenderer::UpdateVBO(u32 VBO, void* pVerts, u32 dataSize, GLenum useag
 
 //NOTE: UNTESTED
 void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 dataSize, GLenum useage, const AttributeData* pAttrib, u32 numAttribs, u32 vertSize)
-{
-	glGenBuffers(1,pOut_VBO);
-	
+{	
 	//Use vertex array object
 	if (m_supportsVAOs)
 	{
@@ -1420,6 +1418,7 @@ void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 d
 		*pOut_VAO = 0;	
 	}
 	
+	glGenBuffers(1,pOut_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, *pOut_VBO);
 	PrintOpenGLError("Binding vertex buffer");
 	
@@ -1433,8 +1432,9 @@ void OpenGLRenderer::CreateVBO(u32* pOut_VAO, u32* pOut_VBO, void* pVerts, u32 d
 	{
 		for(u32 i=0; i<numAttribs; ++i)
 		{
-			const AttributeData* pAttrib = &pAttrib[i];
-			EnableAttribute(pAttrib, vertSize);
+			const AttributeData* pCurrAttrib = &pAttrib[i];
+			
+			EnableAttribute(pCurrAttrib, vertSize);
 		}
 
 		//Make sure nothing randomly writes to our new VAO
@@ -3603,8 +3603,12 @@ void OpenGLRenderer::EnableAttribute(const AttributeData* pAttrib, u32 stride)
 {
 	glEnableVertexAttribArray(pAttrib->attribute);
 	
+	PrintOpenGLError("After glEnableVertexAttribArray");
+	
 	bool isNormalized = pAttrib->attribute == ATTRIB_COLOR ? true:false;
 	glVertexAttribPointer(pAttrib->attribute, pAttrib->size, pAttrib->type, isNormalized, stride, BUFFER_OFFSET(pAttrib->offset));
+	
+	PrintOpenGLError("After glVertexAttribPointer");
 }
 
 

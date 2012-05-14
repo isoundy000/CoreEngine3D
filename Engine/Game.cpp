@@ -822,8 +822,7 @@ static void DrawFunc_DrawTileLayer_Uninit()
 {
 	const bool supportsVAOs = GLRENDERER->GetSupportsVAOs();
 	
-	//if(supportsVAOs == false)
-	if(1)
+	if(supportsVAOs == false)
 	{
 		glDisableVertexAttribArray(ATTRIB_VERTEX);
 		glDisableVertexAttribArray(ATTRIB_TEXCOORD);
@@ -850,8 +849,6 @@ static void DrawFunc_DrawTileLayer(void* pData)
 	const s32 tilePosX = (s32)(-pLayer->position.x/GAME->GetTileSize());
 	
 	const s32 numScreenTilesX = (f32)GLRENDERER->screenWidth_points/GAME->GetTileSize()+0.5f;
-	
-	//const s32 testCullingBuffer = 4;
 	
 	int xStart = ClampS32(tilePosX, 0, numTilesX);
 	int xEnd = ClampS32(tilePosX+numScreenTilesX+1, 0, numTilesX);
@@ -962,8 +959,7 @@ static void DrawFunc_DrawTileLayer(void* pData)
 	
 	GAME->UpdateTileVBO();
 	
-	//if (supportsVAOs)
-	if(0)
+	if (supportsVAOs)
 	{
 		const u32 vao = GAME->GetTileVAO();
 		GLRENDERER->BindVertexArrayObject(vao);
@@ -1958,7 +1954,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 	m_pTileVerts = new TileVert[m_tileVertDataSize];
 	
 	COREDEBUG_PrintDebugMessage("Creating VBO for layer...");
-	GLRENDERER->CreateVBO(&m_tileVAOHandle,&m_tileVBOHandle,(void*)m_pTileVerts,m_tileVertDataSize,GL_DYNAMIC_DRAW,g_Tile_AttribData,g_Tile_NumAttributes,sizeof(TileVert));
+	GLRENDERER->CreateVBO(&m_tileVAOHandle,&m_tileVBOHandle,(void*)m_pTileVerts,m_tileVertDataSize,GL_DYNAMIC_DRAW,&g_Tile_AttribData[0],g_Tile_NumAttributes,sizeof(TileVert));
 	COREDEBUG_PrintDebugMessage("VBO created!");
 	
 	m_numTilesToDelete = 0;
