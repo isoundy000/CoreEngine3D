@@ -28,7 +28,15 @@ public:
 		f32 radiusScaleStart;
 		f32 radiusScaleIdle;
 		f32 radiusScaleEnd;
+		f32 heightScaleStart;
+		f32 heightScaleIdle;
+		f32 heightScaleEnd;
+		f32 widthScaleStart;
+		f32 widthScaleIdle;
+		f32 widthScaleEnd;
 		vec4 diffuseColor;
+		f32 lerpT_Idle;
+		f32 lerpT_End;
 		ItemArtDescription* pItemArt;
 		RenderLayer renderLayer;
 	};
@@ -53,7 +61,8 @@ private:
 	vec4 m_diffuseColor;
 	vec2 m_texcoordOffset;
 	CoreObjectHandle m_hRenderable;
-	
+	f32 m_heightScale;
+	f32 m_widthScale;
 	mat4f m_localMat;
 	
 	CoreObjectHandle m_hParentRenderable;

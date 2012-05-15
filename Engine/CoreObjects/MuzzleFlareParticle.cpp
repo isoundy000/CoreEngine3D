@@ -70,8 +70,6 @@ void MuzzleFlareParticle::InitParticle(MuzzleFlareParticle::ParticleSettings *pS
 			break;
 		}
 	}
-	
-	UpdateAttachment();
 }
 
 
@@ -95,7 +93,11 @@ void MuzzleFlareParticle::UpdateAttachment()
 	
 	mat4f localMat;
 	mat4f_Copy(localMat, m_localMat);
+	AddScaledVec3_Self(mat4f_GetPos(localMat), mat4f_GetUp(localMat), 0.5f*(1.0f-m_heightScale)*m_computedRadius);
 	mat4f_Scale_Self(localMat, m_computedRadius);
+	
+	ScaleVec3_Self(mat4f_GetLeft(localMat), m_widthScale);
+	ScaleVec3_Self(mat4f_GetUp(localMat), m_heightScale);
 	
 	mat4f_Multiply(pGeomSelf->worldMat, normalizedMat, localMat);
 }
@@ -122,25 +124,34 @@ void MuzzleFlareParticle::Update(f32 timeElapsed)
 	f32 scale;
 	f32 alpha;
 	
-	if(lifeT <= 0.25f)
+	if(lifeT <= m_pSettings->lerpT_Idle)
 	{
-		const f32 lerpT = lifeT/0.25f;
+		const f32 lerpT = lifeT/m_pSettings->lerpT_Idle;
 		scale = Lerp(m_pSettings->radiusScaleStart,m_pSettings->radiusScaleIdle,lerpT);
 		alpha = lerpT;
+		
+		m_heightScale = Lerp(m_pSettings->heightScaleStart,m_pSettings->heightScaleIdle,lerpT);
+		m_widthScale = Lerp(m_pSettings->widthScaleStart,m_pSettings->widthScaleIdle,lerpT);
 	}
-	else if(lifeT > 0.25f && lifeT < 0.75f)
+	else if(lifeT > m_pSettings->lerpT_Idle && lifeT < m_pSettings->lerpT_End)
 	{
 		scale = m_pSettings->radiusScaleIdle;
 		alpha = 1.0f;
+		
+		m_heightScale = m_pSettings->heightScaleIdle;
+		m_widthScale = m_pSettings->widthScaleIdle;
 	}
 	else
 	{
-		const f32 lerpT = (lifeT-0.75f)/0.25f;
+		const f32 lerpT = (lifeT-m_pSettings->lerpT_End)/(1.0f-m_pSettings->lerpT_End);
 		scale = Lerp(m_pSettings->radiusScaleIdle,m_pSettings->radiusScaleEnd,lerpT);
 		alpha = 1.0f-lerpT;
+		
+		m_heightScale = Lerp(m_pSettings->heightScaleIdle,m_pSettings->heightScaleEnd,lerpT);
+		m_widthScale = Lerp(m_pSettings->widthScaleIdle,m_pSettings->widthScaleEnd,lerpT);
 	}
 	
-	m_diffuseColor.w = alpha;
+	m_diffuseColor.w = alpha*m_diffuseColorStart.w;
 	
 	m_computedRadius = m_radius*scale;
 	

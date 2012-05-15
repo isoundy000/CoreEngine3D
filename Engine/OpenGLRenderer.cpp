@@ -483,7 +483,7 @@ void OpenGLRenderer::SetRenderState(BlendMode blendMode, u32 renderFlags)
 			}
 			case BlendMode_Premultiplied:
 			{
-				glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 				break;
 			}
 			case BlendMode_Add:
