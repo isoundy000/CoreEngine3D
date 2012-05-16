@@ -1,20 +1,15 @@
 //
-//  GameObjectTemplate.cpp
+//  NullObject.cpp
 //  CoreEngine3D
 //
 //  Created by Jody McAdams on 4/21/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#include "GameObjectTemplate.h"
+#include "NullObject.h"
 
 //Engine includes
-#include "Engine/MathUtil.h"
-#include "Engine/matrix.h"
-#include "Engine/Game.h"
-
-//Game includes
-#include "GameModels.h"
+#include "../Game.h"
 
 
 //Materials
@@ -48,7 +43,7 @@
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void GameObjectTemplate::InitClass()
+void NullObject::InitClass()
 {
     //TODO: initialize shared class globals here
 }
@@ -56,7 +51,7 @@ void GameObjectTemplate::InitClass()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool GameObjectTemplate::LoadResourcesForType(u32 type)
+bool NullObject::LoadResourcesForType(u32 type)
 {
     //TODO: call GAME->AddItemArt(&g_Art_SpaceShip)
 	//TODO: call GAME->AddItemSound(&g_Sound_SpaceShipBeam)
@@ -67,7 +62,7 @@ bool GameObjectTemplate::LoadResourcesForType(u32 type)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool GameObjectTemplate::Init(u32 type)
+bool NullObject::Init(u32 type)
 {
     //Base class init
     CoreGameObject::Init(type);
@@ -80,11 +75,19 @@ bool GameObjectTemplate::Init(u32 type)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool GameObjectTemplate::SpawnInit(void* pSpawnStruct)
+bool NullObject::SpawnInit(void* pSpawnStruct)
 {
     //TODO: spawn init here
     //You can read in XML or other data here to
     //construct the object
+	
+	SpawnableEntity* pSpawnableEnt = (SpawnableEntity*)pSpawnStruct;
+	if(pSpawnableEnt == NULL)
+	{
+		return false;
+	}
+	
+	CopyVec3(&m_position, &pSpawnableEnt->position);
     
     return true;
 }
@@ -92,17 +95,24 @@ bool GameObjectTemplate::SpawnInit(void* pSpawnStruct)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool GameObjectTemplate::PostSpawnInit(void* pSpawnStruct)
+bool NullObject::PostSpawnInit(void* pSpawnStruct)
 {
     //TODO: save any links to other objects here
-    
+	
     return true;
 }
 
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void GameObjectTemplate::Uninit()
+const vec3* NullObject::GetPosition() const
+{
+	return &m_position;
+}
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void NullObject::Uninit()
 {
     //Base class uninit
     CoreGameObject::Uninit();
@@ -111,7 +121,7 @@ void GameObjectTemplate::Uninit()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void GameObjectTemplate::Update(f32 timeElapsed)
+void NullObject::Update(f32 timeElapsed)
 {
     //TODO: update here
     
@@ -120,7 +130,7 @@ void GameObjectTemplate::Update(f32 timeElapsed)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void GameObjectTemplate::UpdateHandle()
+void NullObject::UpdateHandle()
 {
     //TODO: update anything that has pointers to local
     //member variables, such as material uniform locations
@@ -129,7 +139,7 @@ void GameObjectTemplate::UpdateHandle()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void GameObjectTemplate::ProcessMessage(u32 message)
+void NullObject::ProcessMessage(u32 message)
 {
     //TODO: switch statement based on message
     

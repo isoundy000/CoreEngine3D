@@ -2665,6 +2665,12 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 							
 							break;
 						}
+						case g_Type_NullObject:
+						{
+							pCurrEnt->pObject = g_Factory_NullObject.CreateObject(pCurrEnt->type);
+							
+							break;
+						}
 						default:
 						{
 							//If it's not a core game object then it's a custom one

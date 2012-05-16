@@ -187,6 +187,7 @@ public:
 	MouseInputState m_mouseState;
 	KeyboardInputState m_keyboardState;
 #endif
+	virtual const vec3* GetPlayerPos(s32 playerIndex){return NULL;}
 	virtual void ProcessMessage(u32 message){};	//Pass in a hash value
 	void Box2D_SetPhysicsIsLocked(bool isLocked);
 	void Box2D_TogglePhysicsDebug(bool allowPhysicsDebugDraw);

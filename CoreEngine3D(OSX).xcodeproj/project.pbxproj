@@ -183,6 +183,8 @@
 		DDA6C707151155980035DE60 /* Tile.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6C704151155980035DE60 /* Tile.h */; };
 		DDC893791530EB620091EB0E /* Box2DUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDC893771530EB610091EB0E /* Box2DUtil.cpp */; };
 		DDC8937A1530EB620091EB0E /* Box2DUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = DDC893781530EB620091EB0E /* Box2DUtil.h */; };
+		DDE051291563736D00820163 /* NullObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDE051271563736D00820163 /* NullObject.cpp */; };
+		DDE0512A1563736D00820163 /* NullObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DDE051281563736D00820163 /* NullObject.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -368,6 +370,8 @@
 		DDA6C704151155980035DE60 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		DDC893771530EB610091EB0E /* Box2DUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DUtil.cpp; sourceTree = "<group>"; };
 		DDC893781530EB620091EB0E /* Box2DUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DUtil.h; sourceTree = "<group>"; };
+		DDE051271563736D00820163 /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NullObject.cpp; sourceTree = "<group>"; };
+		DDE051281563736D00820163 /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NullObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -385,6 +389,8 @@
 		236904CD14E0F41B0014F02D /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
+				DDE051271563736D00820163 /* NullObject.cpp */,
+				DDE051281563736D00820163 /* NullObject.h */,
 				DD78DD00155797CD003F3E57 /* MuzzleFlareParticle.cpp */,
 				DD78DD01155797CD003F3E57 /* MuzzleFlareParticle.h */,
 				DDA6C702151155980035DE60 /* CoreObjectTypes.h */,
@@ -783,6 +789,7 @@
 				DDA6C707151155980035DE60 /* Tile.h in Headers */,
 				DDC8937A1530EB620091EB0E /* Box2DUtil.h in Headers */,
 				DD78DD03155797CD003F3E57 /* MuzzleFlareParticle.h in Headers */,
+				DDE0512A1563736D00820163 /* NullObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -917,6 +924,7 @@
 				DDC893791530EB620091EB0E /* Box2DUtil.cpp in Sources */,
 				DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */,
 				DD78DD02155797CD003F3E57 /* MuzzleFlareParticle.cpp in Sources */,
+				DDE051291563736D00820163 /* NullObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

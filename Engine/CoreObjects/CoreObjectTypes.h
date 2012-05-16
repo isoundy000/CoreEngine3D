@@ -17,5 +17,6 @@ const u32 g_Type_SoundPlayerType = 3829171037; //SoundPlayerType
 const u32 g_Type_TileAffector = 1657205277; //TileAffector
 const u32 g_Type_Spawner = 88179141; //Spawner
 const u32 g_Type_Tile = 2089610323; //Tile
+const u32 g_Type_NullObject = 2458776375; //NullObject
 
 #endif

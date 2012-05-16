@@ -13,3 +13,4 @@ CoreObjectFactory<RenderableSceneObject3D> g_Factory_RenderableSceneObject;
 CoreObjectFactory<BasicParticle> g_Factory_BasicParticle;
 CoreObjectFactory<Spawner> g_Factory_Spawner;
 CoreObjectFactory<MuzzleFlareParticle> g_Factory_MuzzleFlareParticle;
+CoreObjectFactory<NullObject> g_Factory_NullObject;
