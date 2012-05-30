@@ -78,6 +78,8 @@ f32 DistSqVec3(const vec3* vec0, const vec3* vec1);
 f32 DistVec3_2D(const vec3* vec0, const vec3* vec1);
 f32 DistVec3(const vec3* vec0, const vec3* vec1);
 f32 MagnitudeSqVec3(const vec3* vec);
+f32 Ease_InOut_Cubic(f32 t, f32 t5, f32 t4, f32 t3, f32 t2, f32 t1);
+f32 Ease_InOut_Cubic_Simple(f32 t);
 
 void CatmullRom_Evaluate(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t);
 void CatmullRom_EvaluateCurve(vec3* pOut_result, const vec3* pPoints, u32 numPoints, f32 t);

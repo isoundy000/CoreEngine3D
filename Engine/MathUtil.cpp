@@ -13,6 +13,19 @@ int mlcg,p,q;
 
 static const f32 g_MathUtil_Epsilon = 0.0001f;
 
+f32 Ease_InOut_Cubic(f32 t, f32 t5, f32 t4, f32 t3, f32 t2, f32 t1)
+{
+	f32 ts = t*t;
+	f32 tc = ts*t;
+	return (t5*tc*ts + t4*ts*ts + t3*tc + t2*ts + t1*t);
+}
+
+f32 Ease_InOut_Cubic_Simple(f32 t)
+{
+	f32 ts = t*t;
+	f32 tc = ts*t;
+	return (-2.0f*tc + 3.0f*ts);
+}
 
 // This Function Gets The First Power Of 2 >= The
 // Int That We Pass It.
