@@ -2077,11 +2077,15 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 			
 			LevelLayer currLayer = LevelLayer_Invalid;
 			
-			if(strcmp(layerName, "Main0") == 0)
+			if(strcmp(layerName, "Dummy") == 0)
+			{
+				continue;
+			}
+			else if(strcmp(layerName, "Main0") == 0)
 			{
 				currLayer = LevelLayer_Main0;
 			}
-			if(strcmp(layerName, "Main1") == 0)
+			else if(strcmp(layerName, "Main1") == 0)
 			{
 				currLayer = LevelLayer_Main1;
 			}
@@ -2425,6 +2429,11 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 		for (pugi::xml_node layer = map.child("objectgroup"); layer; layer = layer.next_sibling("objectgroup"))
 		{
 			const char* layerName = layer.attribute("name").value();
+			
+			if(strcmp(layerName,"Dummy") == 0)
+			{
+				continue;
+			}
 
 			COREDEBUG_PrintDebugMessage("Layer: %s",layerName);
 			
