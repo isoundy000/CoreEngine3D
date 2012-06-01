@@ -14,7 +14,7 @@ SpriteSheetAnimator::SpriteSheetAnimator()
 	
 }
 
-bool SpriteSheetAnimator::GetSpriteInfoForFrame(u32 frame, SpriteFrameInfo* pOut_SpriteFrameInfo)
+bool SpriteSheetAnimator::GetSpriteInfoForFrame(SpriteFrameInfo* pOut_SpriteFrameInfo,u32 frame)
 {
 	SpriteSheet* pSheet = NULL;
 	
