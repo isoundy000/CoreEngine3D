@@ -185,6 +185,8 @@
 		DDC8937A1530EB620091EB0E /* Box2DUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = DDC893781530EB620091EB0E /* Box2DUtil.h */; };
 		DDE051291563736D00820163 /* NullObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDE051271563736D00820163 /* NullObject.cpp */; };
 		DDE0512A1563736D00820163 /* NullObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DDE051281563736D00820163 /* NullObject.h */; };
+		DDF60DCC157936F7007C18DA /* AnimatedParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF60DCA157936F7007C18DA /* AnimatedParticle.cpp */; };
+		DDF60DCD157936F7007C18DA /* AnimatedParticle.h in Headers */ = {isa = PBXBuildFile; fileRef = DDF60DCB157936F7007C18DA /* AnimatedParticle.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -372,6 +374,8 @@
 		DDC893781530EB620091EB0E /* Box2DUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DUtil.h; sourceTree = "<group>"; };
 		DDE051271563736D00820163 /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NullObject.cpp; sourceTree = "<group>"; };
 		DDE051281563736D00820163 /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NullObject.h; sourceTree = "<group>"; };
+		DDF60DCA157936F7007C18DA /* AnimatedParticle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = AnimatedParticle.cpp; sourceTree = "<group>"; };
+		DDF60DCB157936F7007C18DA /* AnimatedParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedParticle.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +393,8 @@
 		236904CD14E0F41B0014F02D /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
+				DDF60DCA157936F7007C18DA /* AnimatedParticle.cpp */,
+				DDF60DCB157936F7007C18DA /* AnimatedParticle.h */,
 				DDE051271563736D00820163 /* NullObject.cpp */,
 				DDE051281563736D00820163 /* NullObject.h */,
 				DD78DD00155797CD003F3E57 /* MuzzleFlareParticle.cpp */,
@@ -790,6 +796,7 @@
 				DDC8937A1530EB620091EB0E /* Box2DUtil.h in Headers */,
 				DD78DD03155797CD003F3E57 /* MuzzleFlareParticle.h in Headers */,
 				DDE0512A1563736D00820163 /* NullObject.h in Headers */,
+				DDF60DCD157936F7007C18DA /* AnimatedParticle.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -925,6 +932,7 @@
 				DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */,
 				DD78DD02155797CD003F3E57 /* MuzzleFlareParticle.cpp in Sources */,
 				DDE051291563736D00820163 /* NullObject.cpp in Sources */,
+				DDF60DCC157936F7007C18DA /* AnimatedParticle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

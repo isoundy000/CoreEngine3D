@@ -1,20 +1,23 @@
 //
-//  BasicParticle.cpp
+//  AnimatedParticle.cpp
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 2/26/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#include "BasicParticle.h"
+#include "AnimatedParticle.h"
 #include "../OpenGLRenderer.h"
 #include "../matrix.h"
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, u32 texIndex)
+void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, s32 animID, u32 frameOffset, f32 playSpeed)
 {
 	m_pSettings = pSettings;
+	
+	m_animPlayer.Init(pSettings->pAnimSet);
+	m_animPlayer.PlayAnimation(animID, frameOffset, playSpeed);
 	
 	ItemArtDescription* pArtDesc = pSettings->pItemArt;
 
@@ -34,7 +37,7 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosit
 	const f32 radius = rand_FloatRange(pSettings->radiusMin, pSettings->radiusMax);
 	m_radiusStart = radius*pSettings->radiusScale_start;
 	m_radiusEnd = radius*pSettings->radiusScale_end;
-		
+	
 	mat4f_LoadScale(pGeom->worldMat, m_radiusStart);
 	
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
@@ -56,75 +59,27 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosit
 	SetVec4(&m_diffuseColor,1.0f,1.0f,1.0f,1.0f);
 	CopyVec4(&m_diffuseColorStart,&vec4_one);
 	
-	switch (texIndex)
-	{
-		case 0:
-		{
-			SetVec2(&m_texcoordOffset, 0.0f, 0.0f);
-			break;
-		}
-		case 1:
-		{
-			SetVec2(&m_texcoordOffset, 0.5f, 0.0f);
-			break;
-		}
-		case 2:
-		{
-			SetVec2(&m_texcoordOffset, 0.0f, 0.5f);
-			break;
-		}
-		case 3:
-		{
-			SetVec2(&m_texcoordOffset, 0.5f, 0.5f);
-			break;
-		}
-		default:
-		{
-			break;
-		}
-	}
+	m_animPlayer.Update(0.0f);
+	const s32 currFrame = (s32)m_animPlayer.GetCurrentFrame();
 	
-	m_pBody = NULL;
-	if(pSettings->pBox2D_ParticleSettings != NULL)
+	SpriteFrameInfo frameInfo;
+	
+	const bool gotInfo = pSettings->pSpriteAnimator->GetSpriteInfoForFrame(&frameInfo,currFrame);
+	
+	if(gotInfo == true)
 	{
-		Box2D_ParticleSettings* pCurrSettings = &pSettings->pBox2D_ParticleSettings[texIndex];
-		
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position.Set(m_position.x/GAME->GetPixelsPerMeter(), m_position.y/GAME->GetPixelsPerMeter());
-		
-		b2FixtureDef fixtureDef;
-		fixtureDef.filter.maskBits = pCurrSettings->maskBits;
-		fixtureDef.filter.categoryBits = pCurrSettings->categoryBits;
-		fixtureDef.filter.groupIndex = pCurrSettings->groupIndex;
-		fixtureDef.restitution = pCurrSettings->restitution;
-		fixtureDef.density = pCurrSettings->density;
-		fixtureDef.friction = pCurrSettings->friction;
-		
-		
-		b2CircleShape circleShape;
-
-
-		circleShape.m_radius = pCurrSettings->collisionRadiusPixels/GAME->GetPixelsPerMeter();
-
-		fixtureDef.shape = &circleShape;
-		
-		m_pBody = GAME->Box2D_GetWorld()->CreateBody(&bodyDef);
-		m_pBody->CreateFixture(&fixtureDef);
-		
-		m_pBody->SetAngularVelocity(m_spinSpeed);
-		m_pBody->SetLinearVelocity(b2Vec2(pDirection->x,pDirection->y));
+		CopyVec2(&m_texcoordOffset,&frameInfo.textureOffset);
 	}
 }
 
 
-u32 BasicParticle::GetCategoryFlags()
+u32 AnimatedParticle::GetCategoryFlags()
 {
 	return m_pSettings->categoryFlags;
 }
 
 
-void BasicParticle::Update(f32 timeElapsed)
+void AnimatedParticle::Update(f32 timeElapsed)
 {
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
     
@@ -137,7 +92,7 @@ void BasicParticle::Update(f32 timeElapsed)
 	
 	const f32 breakableAlpha = ClampF(m_lifeTimer/0.15f,0.0f,1.0f);
     
-	if(m_pSettings->blendMode == BlendMode_Premultiplied)
+    if(m_pSettings->blendMode == BlendMode_Premultiplied)
 	{
 		ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,breakableAlpha);
 	}
@@ -148,31 +103,34 @@ void BasicParticle::Update(f32 timeElapsed)
 
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
 	
+	
 	const f32 lerpT = MinF(1.0f,m_lifeTimer/m_totalLifeTime);
 	const f32 radius = Lerp(m_radiusEnd, m_radiusStart, lerpT);
 	
-	if(m_pBody != NULL)
-	{
-		const b2Vec2& posVec = m_pBody->GetPosition();
-		pPos->x = posVec.x*GAME->GetPixelsPerMeter();
-		pPos->y = posVec.y*GAME->GetPixelsPerMeter();
-		pPos->z = 0.0f;
-		
-		mat4f_LoadScaledZRotation_IgnoreTranslation(pGeom->worldMat, m_pBody->GetAngle(), radius);
-	}
-	else
-	{
-		m_currSpinAngle += m_spinSpeed*timeElapsed;
+	m_currSpinAngle += m_spinSpeed*timeElapsed;
 
-		m_velocity.y -= m_pSettings->gravity*timeElapsed;
-		AddScaledVec3_Self(&m_position,&m_velocity,timeElapsed);
-		
-		CopyVec3(pPos,&m_position);
-		
-		vec3 velNorm;
-		TryNormalizeVec3(&velNorm,&m_velocity);
-		
-		mat4f_LoadScaledZRotation_IgnoreTranslation(pGeom->worldMat, m_currSpinAngle, radius);
+	m_velocity.y -= m_pSettings->gravity*timeElapsed;
+	AddScaledVec3_Self(&m_position,&m_velocity,timeElapsed);
+	
+	CopyVec3(pPos,&m_position);
+	
+	vec3 velNorm;
+	TryNormalizeVec3(&velNorm,&m_velocity);
+	
+	mat4f_LoadScaledZRotation_IgnoreTranslation(pGeom->worldMat, m_currSpinAngle, radius);
+	
+	
+	//Update sprite animation
+	m_animPlayer.Update(timeElapsed);
+	const s32 currFrame = (s32)m_animPlayer.GetCurrentFrame();
+	
+	SpriteFrameInfo frameInfo;
+	
+	const bool gotInfo = m_pSettings->pSpriteAnimator->GetSpriteInfoForFrame(&frameInfo,currFrame);
+	
+	if(gotInfo == true)
+	{
+		CopyVec2(&m_texcoordOffset,&frameInfo.textureOffset);
 	}
 	
 	
@@ -186,7 +144,7 @@ void BasicParticle::Update(f32 timeElapsed)
 }
 
 
-void BasicParticle::Uninit()
+void AnimatedParticle::Uninit()
 {
 	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
 	if(pGeom != NULL)
@@ -194,27 +152,22 @@ void BasicParticle::Uninit()
 		pGeom->DeleteObject();
 	}
 	
-	if(m_pBody != NULL)
-	{
-		GAME->Box2D_GetWorld()->DestroyBody(m_pBody);
-	}
-	
 	CoreObject::Uninit();
 }
 
 
-const vec3* BasicParticle::GetPosition() const
+const vec3* AnimatedParticle::GetPosition() const
 {
 	return &m_position;
 }
 
-void BasicParticle::AddVelocity(const vec3* pVelAdd)
+void AnimatedParticle::AddVelocity(const vec3* pVelAdd)
 {
 	AddVec3_Self(&m_velocity, pVelAdd);
 }
 
 
-void BasicParticle::UpdateHandle()	//Call when the memory location changes
+void AnimatedParticle::UpdateHandle()	//Call when the memory location changes
 {	
 	CoreObject::UpdateHandle();
     

@@ -9,10 +9,6 @@
 #ifndef Crow_Regime_iOS__AnimationController_h
 #define Crow_Regime_iOS__AnimationController_h
 
-class AnimationController;
-
-extern AnimationController* ANIMCONTROLLER;
-
 #include "MathTypes.h"
 
 #define ANIMATION_MAX_PLAYERS 64
@@ -43,10 +39,12 @@ public:
 struct AnimationSet
 {
 public:
-	void AddAnimation(s32 animID, u32 startFrame, u32 endFrame, f32 FPS, bool isLooping, s32 animID_NextAnim);
+	AnimationSet();
+	void AddAnimation(s32* pOut_animID, u32 startFrame, u32 endFrame, f32 FPS, bool isLooping, s32 animID_NextAnim);
 	Animation* GetAnimationByID(s32 animID);
 	Animation m_animations[ANIMATION_MAX_ANIMATIONS];
 	u32 m_numAnimations;
+	u32 m_currAnimIDX;
 };
 
 
@@ -55,7 +53,7 @@ struct AnimationPlayer
 public:
 	void Init(AnimationSet* pAnimSet);
 	void Update(f32 timeElapsed);
-	void PlayAnimation(u32 animID,u32 frameOffset, f32 playSpeed);
+	void PlayAnimation(s32 animID,u32 frameOffset, f32 playSpeed);
 	void SetSpeed(f32 speed);
 	bool GetAnimIsDone();
 	f32 GetCurrentFrame();
@@ -67,20 +65,5 @@ public:
 	f32 m_playSpeed;
 };
 
-
-class AnimationController
-{
-public:
-	AnimationController();
-	void (*animEventCallback)(u32);
-	
-	AnimationSet* CreateAnimationSet();
-
-private:
-	AnimationPlayer m_animPlayers[ANIMATION_MAX_PLAYERS];
-	u32 m_numAnimPlayers;
-	AnimationSet m_animSets[ANIMATION_MAX_ANIMATION_SETS];
-	u32 m_numAnimSets;
-};
 
 #endif

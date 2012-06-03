@@ -11,10 +11,13 @@
 #include "Hash.h"
 #include <cassert>
 
-AnimationController* ANIMCONTROLLER = NULL;
+AnimationSet::AnimationSet()
+{
+	m_currAnimIDX = 0;
+}
 
 //ANIMATION SET
-void AnimationSet::AddAnimation(s32 animID, u32 startFrame, u32 endFrame, f32 FPS, bool isLooping, s32 animID_NextAnim)
+void AnimationSet::AddAnimation(s32* pOut_animID, u32 startFrame, u32 endFrame, f32 FPS, bool isLooping, s32 animID_NextAnim)
 {
 	if(m_numAnimations == ANIMATION_MAX_ANIMATIONS)
 	{
@@ -28,7 +31,10 @@ void AnimationSet::AddAnimation(s32 animID, u32 startFrame, u32 endFrame, f32 FP
 	pAnim->FPS = FPS;
 	pAnim->isLooping = isLooping;
 	pAnim->animID_playWhenFinished = animID_NextAnim;
-	pAnim->animID = animID;
+	pAnim->animID = m_currAnimIDX;
+	
+	*pOut_animID = m_currAnimIDX;
+	++m_currAnimIDX;
 
 	++m_numAnimations;
 }
@@ -51,7 +57,7 @@ Animation* AnimationSet::GetAnimationByID(s32 animID)
 
 //ANIMATION PLAYER
 
-void AnimationPlayer::PlayAnimation(u32 animID, u32 frameOffset, f32 playSpeed)
+void AnimationPlayer::PlayAnimation(s32 animID, u32 frameOffset, f32 playSpeed)
 {
 	if(m_pAnimSet == NULL)
 	{
@@ -124,17 +130,6 @@ void AnimationPlayer::Update(f32 timeElapsed)
 }
 
 
-//ANIMATION CONTROLLER
-
-AnimationController::AnimationController()
-{
-	m_numAnimPlayers = 0;
-	m_numAnimSets = 0;
-	
-	ANIMCONTROLLER = this;
-}
-
-
 void AnimationPlayer::Init(AnimationSet* pAnimSet)
 {
 	m_pAnimSet = pAnimSet;
@@ -142,22 +137,6 @@ void AnimationPlayer::Init(AnimationSet* pAnimSet)
 	m_currFrame = 0.0f;
 	m_animIsDone = false;
 	m_playSpeed = 1.0f;
-}
-
-
-AnimationSet* AnimationController::CreateAnimationSet()
-{
-	if(m_numAnimSets == ANIMATION_MAX_ANIMATION_SETS)
-	{
-		return NULL;
-	}
-	
-	AnimationSet* pAnimSet = &m_animSets[m_numAnimSets];
-	pAnimSet->m_numAnimations = 0;
-	
-	++m_numAnimSets;
-	
-	return pAnimSet;
 }
 
 
