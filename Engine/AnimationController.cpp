@@ -118,7 +118,7 @@ void AnimationPlayer::Update(f32 timeElapsed)
 		{
 			m_currFrame -= (m_pCurrAnim->endFrame-m_pCurrAnim->startFrame+1);
 		}
-		else if(m_pCurrAnim->animID_playWhenFinished)
+		else if(m_pCurrAnim->animID_playWhenFinished != -1)
 		{
 			PlayAnimation(m_pCurrAnim->animID_playWhenFinished,0,m_playSpeed);
 		}

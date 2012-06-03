@@ -1820,6 +1820,27 @@ void Game::TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos,
     }
 }
 
+
+bool Game::TiledLevel_CheckIsOnScreen_X(vec3* pPos, f32 scale)
+{
+	Layer* pLayerDesc = &m_layers[LevelLayer_Main1];
+	
+    const f32 posX = pPos->x;
+    
+    const f32 xMin = -pLayerDesc->position.x + scale;
+    const f32 xMax = -pLayerDesc->position.x + GLRENDERER->screenWidth_points - scale;
+    
+    if(posX < xMin || posX > xMax)
+    {
+        return false;
+    }
+	else
+	{
+		return true;
+	}
+}
+
+
 bool Game::TiledLevel_GetGroundPos(vec3* pOut_GroundPos, vec3* pOut_GroundNormal, const vec3* pPos)
 {
     //TODO: make this run faster

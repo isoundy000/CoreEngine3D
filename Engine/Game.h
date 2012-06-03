@@ -229,6 +229,7 @@ public:
 	bool TiledLevel_GetGroundPos(vec3* pOut_GroundPos, vec3* pOut_GroundNormal, const vec3* pPos);
     void TiledLevel_DeleteObjectIfOffscreen_X(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
     void TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
+	bool TiledLevel_CheckIsOnScreen_X(vec3* pPos, f32 scale);
     TileVert* GetTiledVerts();
 	u32 GetTileVBO();
 	u32 GetTileVAO();

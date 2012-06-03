@@ -657,11 +657,11 @@ void mat4f_LoadScaledRotationFromLeftAndUp_IgnoreTranslation(f32* pOut_matrix, c
 	
 	//Create at
 	vec3 mat_at;
-	CrossVec3(&mat_at, pUp, &mat_left);
+	CrossVec3(&mat_at, &mat_left, pUp );
 	NormalizeVec3_Self(&mat_at);
 	
 	//Create up
-	CrossVec3(&mat_up, &mat_left, &mat_at);
+	CrossVec3(&mat_up, &mat_at, &mat_left );
 	
 	ScaleVec3_Self(&mat_up,scale);
 	ScaleVec3_Self(&mat_at,scale);
@@ -673,6 +673,8 @@ void mat4f_LoadScaledRotationFromLeftAndUp_IgnoreTranslation(f32* pOut_matrix, c
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void mat4f_LoadScaledRotationFromUpAndLeft_IgnoreTranslation(f32* pOut_matrix, const vec3* pUp, const vec3* pLeft, const f32 scale)
 {
 	vec3 mat_up;
@@ -683,11 +685,11 @@ void mat4f_LoadScaledRotationFromUpAndLeft_IgnoreTranslation(f32* pOut_matrix, c
 	
 	//Create at
 	vec3 mat_at;
-	CrossVec3(&mat_at, pUp, &mat_left);
+	CrossVec3(&mat_at, &mat_left, pUp );
 	NormalizeVec3_Self(&mat_at);
 	
 	//Create left
-	CrossVec3(&mat_left, &mat_at, &mat_up);
+	CrossVec3(&mat_left, &mat_up, &mat_at );
 	
 	ScaleVec3_Self(&mat_up,scale);
 	ScaleVec3_Self(&mat_at,scale);
@@ -711,11 +713,11 @@ void mat4f_LoadScaledRotationFromUp_IgnoreTranslation(f32* pOut_matrix, const ve
 	
 	//Create at
 	vec3 mat_at;
-	CrossVec3(&mat_at, pUp, &mat_left);
+	CrossVec3(&mat_at, &mat_left, pUp );
 	NormalizeVec3_Self(&mat_at);
 	
 	//Create left
-	CrossVec3(&mat_left, &mat_up, &mat_at);
+	CrossVec3(&mat_left, &mat_up, &mat_at );
 	
 	ScaleVec3_Self(&mat_up,scale);
 	ScaleVec3_Self(&mat_at,scale);
@@ -725,6 +727,7 @@ void mat4f_LoadScaledRotationFromUp_IgnoreTranslation(f32* pOut_matrix, const ve
 	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
 	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
 }
+
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -738,11 +741,11 @@ void mat4f_LoadScaledRotationFromLeftAndUp(f32* pOut_matrix, const vec3* pLeft, 
 	
 	//Create at
 	vec3 mat_at;
-	CrossVec3(&mat_at, pUp, &mat_left);
+	CrossVec3(&mat_at, &mat_left, pUp );
 	NormalizeVec3_Self(&mat_at);
 	
 	//Create up
-	CrossVec3(&mat_up, &mat_left, &mat_at);
+	CrossVec3(&mat_up, &mat_at, &mat_left );
 	
 	ScaleVec3_Self(&mat_up,scale);
 	ScaleVec3_Self(&mat_at,scale);
@@ -758,6 +761,8 @@ void mat4f_LoadScaledRotationFromLeftAndUp(f32* pOut_matrix, const vec3* pLeft, 
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void mat4f_LoadScaledRotationFromUpAndLeft(f32* pOut_matrix, const vec3* pUp, const vec3* pLeft, const f32 scale)
 {
 	vec3 mat_up;
@@ -768,11 +773,11 @@ void mat4f_LoadScaledRotationFromUpAndLeft(f32* pOut_matrix, const vec3* pUp, co
 	
 	//Create at
 	vec3 mat_at;
-	CrossVec3(&mat_at, pUp, &mat_left);
+	CrossVec3(&mat_at, &mat_left, pUp );
 	NormalizeVec3_Self(&mat_at);
 	
 	//Create left
-	CrossVec3(&mat_left, &mat_at, &mat_up);
+	CrossVec3(&mat_left, &mat_up, &mat_at );
 	
 	ScaleVec3_Self(&mat_up,scale);
 	ScaleVec3_Self(&mat_at,scale);
@@ -800,11 +805,11 @@ void mat4f_LoadScaledRotationFromUp(f32* pOut_matrix, const vec3* pUp, const f32
 	
 	//Create at
 	vec3 mat_at;
-	CrossVec3(&mat_at, pUp, &mat_left);
+	CrossVec3(&mat_at, &mat_left, pUp );
 	NormalizeVec3_Self(&mat_at);
 	
 	//Create left
-	CrossVec3(&mat_left, &mat_up, &mat_at);
+	CrossVec3(&mat_left, &mat_up, &mat_at );
 	
 	ScaleVec3_Self(&mat_up,scale);
 	ScaleVec3_Self(&mat_at,scale);
