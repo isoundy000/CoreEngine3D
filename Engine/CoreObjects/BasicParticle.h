@@ -53,6 +53,7 @@ public:
 		BlendMode blendMode;
 		f32 lifetimeMin;
 		f32 lifetimeMax;
+		f32 fadeTime;
 		f32 gravity;
 		f32 moveSpeedMin;
 		f32 moveSpeedMax;
@@ -63,6 +64,7 @@ public:
 		f32 radiusMax;
 		f32 radiusScale_start;
 		f32 radiusScale_end;
+		vec4 diffuseColor;
 		ItemArtDescription* pItemArt;
 		RenderLayer renderLayer;
 		u32 categoryFlags;
@@ -90,6 +92,7 @@ private:
 	f32 m_totalLifeTime;
 	f32 m_radiusStart;
 	f32 m_radiusEnd;
+	f32 m_fadeTime;
 	vec3 m_velocity;
 	vec3 m_position;
 	vec4 m_diffuseColorStart;

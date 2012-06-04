@@ -53,8 +53,10 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosit
 	m_lifeTimer = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
 	m_totalLifeTime = m_lifeTimer;
 	
-	SetVec4(&m_diffuseColor,1.0f,1.0f,1.0f,1.0f);
-	CopyVec4(&m_diffuseColorStart,&vec4_one);
+	m_fadeTime = pSettings->fadeTime*m_totalLifeTime;
+	
+	CopyVec4(&m_diffuseColor,&pSettings->diffuseColor);
+	CopyVec4(&m_diffuseColorStart,&m_diffuseColor);
 	
 	switch (texIndex)
 	{
@@ -135,7 +137,7 @@ void BasicParticle::Update(f32 timeElapsed)
     
 	m_lifeTimer -= timeElapsed;
 	
-	const f32 breakableAlpha = ClampF(m_lifeTimer/0.15f,0.0f,1.0f);
+	const f32 breakableAlpha = ClampF(m_lifeTimer/m_fadeTime,0.0f,1.0f);
     
 	if(m_pSettings->blendMode == BlendMode_Premultiplied)
 	{
@@ -143,7 +145,7 @@ void BasicParticle::Update(f32 timeElapsed)
 	}
 	else
 	{
-		m_diffuseColor.w = breakableAlpha;
+		m_diffuseColor.w = m_diffuseColorStart.w*breakableAlpha;
 	}
 
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);

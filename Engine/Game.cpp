@@ -47,12 +47,6 @@ static const AttributeData g_Tile_AttribData[g_Tile_NumAttributes] =
 	{ATTRIB_TEXCOORD,GL_FLOAT,2,12},
 };
 
-static DrawFunctionStruct g_drawStruct_RenderTile = 
-{
-    DrawFunc_DrawTile_Init,
-    DrawFunc_DrawTile,
-    DrawFunc_DrawTile_Uninit,
-};
 
 static DrawFunctionStruct g_drawStruct_RenderTileLayer = 
 {
