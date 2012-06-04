@@ -478,28 +478,43 @@ void OpenGLRenderer::SetRenderState(BlendMode blendMode, u32 renderFlags)
 			case BlendMode_Normal:
 			{
 				glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glBlendEquation(GL_FUNC_ADD);
 				
 				break;
 			}
 			case BlendMode_Premultiplied:
 			{
 				glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+				glBlendEquation(GL_FUNC_ADD);
+				
+				break;
+			}
+			case BlendMode_DesaturatedAdd:
+			{
+				glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_COLOR);
+				glBlendEquation(GL_FUNC_ADD);
+				
 				break;
 			}
 			case BlendMode_Add:
 			{
-				glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+				glBlendFunc (GL_ONE, GL_ONE);
+				glBlendEquation(GL_FUNC_ADD);
 				
 				break;
 			}
 			case BlendMode_Subtract:
 			{
-				//Unsupported
+				glBlendFunc (GL_SRC_COLOR, GL_ONE);
+				glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+				
 				break;
 			}
 			case BlendMode_Multiply:
 			{
-				//Unsupported
+				glBlendFunc (GL_ZERO, GL_SRC_COLOR);
+				glBlendEquation(GL_FUNC_ADD);
+				
 				break;
 			}
 			default:

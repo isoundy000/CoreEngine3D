@@ -18,8 +18,9 @@ enum BlendMode
 	BlendMode_Normal,
 	BlendMode_Premultiplied,
 	BlendMode_Add,
-	BlendMode_Subtract,	//Unsupported
-	BlendMode_Multiply, //Unsupported
+	BlendMode_DesaturatedAdd,
+	BlendMode_Subtract,
+	BlendMode_Multiply,
 	BlendMode_None,
 };
 
