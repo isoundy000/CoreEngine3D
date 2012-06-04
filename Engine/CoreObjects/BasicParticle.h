@@ -78,7 +78,7 @@ public:
 	//virtual bool Init(u32 type);
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}
 	//virtual bool PostSpawnInit(void* pSpawnStruct){return true;}
-	void InitParticle(BasicParticle::ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, u32 texIndex);
+	void InitParticle(BasicParticle::ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex);
 	u32 GetCategoryFlags();
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);

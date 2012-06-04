@@ -12,7 +12,7 @@
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, s32 animID, u32 frameOffset, f32 playSpeed)
+void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, s32 animID, u32 frameOffset, f32 playSpeed)
 {
 	m_pSettings = pSettings;
 	
@@ -52,7 +52,7 @@ void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPo
 		spinSpeed *= -1.0f;
 	}
 	m_spinSpeed = spinSpeed*(rand_Bool() ? -1.0f : 1.0f);
-	m_currSpinAngle = 0.0f;
+	m_currSpinAngle = startAngle;
 	m_lifeTimer = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
 	m_totalLifeTime = m_lifeTimer;
 	

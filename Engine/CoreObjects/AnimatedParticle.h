@@ -52,7 +52,7 @@ public:
 	//virtual bool Init(u32 type);
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}
 	//virtual bool PostSpawnInit(void* pSpawnStruct){return true;}
-	void InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, s32 animID, u32 frameOffset, f32 playSpeed);
+	void InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, s32 animID, u32 frameOffset, f32 playSpeed);
 	u32 GetCategoryFlags();
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
