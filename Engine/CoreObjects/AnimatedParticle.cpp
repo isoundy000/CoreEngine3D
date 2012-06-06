@@ -30,7 +30,7 @@ void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPo
 		return;
 	}
 	
-	GLRENDERER->InitRenderableGeometry3D(pGeom, pArtDesc->pModelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
+	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
 	pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
 	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
 	
@@ -133,6 +133,7 @@ void AnimatedParticle::Update(f32 timeElapsed)
 	if(gotInfo == true)
 	{
 		CopyVec2(&m_texcoordOffset,&frameInfo.textureOffset);
+		pGeom->pModel = frameInfo.pModelData;
 	}
 	
 	

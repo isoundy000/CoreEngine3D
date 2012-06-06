@@ -9,6 +9,8 @@
 #include "SpriteSheetAnimator.h"
 #include "stddef.h" //for NULL -_-
 
+#include "EngineModels.h"
+
 SpriteSheetAnimator::SpriteSheetAnimator()
 {
 	
@@ -56,6 +58,46 @@ bool SpriteSheetAnimator::GetSpriteInfoForFrame(SpriteFrameInfo* pOut_SpriteFram
 	pOut_SpriteFrameInfo->cellsPerRow = cellsPerRow;
 	pOut_SpriteFrameInfo->textureOffset.x = uIncrement*(f32)cellX;
 	pOut_SpriteFrameInfo->textureOffset.y = vIncrement*(f32)cellY+halfTexel;
+	
+	switch(cellsPerRow)
+	{
+		case 1:
+		{
+			pOut_SpriteFrameInfo->pModelData = &g_Square1x1_modelData;
+			
+			break;
+		}
+		case 2:
+		{
+			pOut_SpriteFrameInfo->pModelData = &g_Square_Tiled_2_modelData;
+			
+			break;
+		}
+		case 4:
+		{
+			pOut_SpriteFrameInfo->pModelData = &g_Square_Tiled_4_modelData;
+			
+			break;
+		}
+		case 8:
+		{
+			pOut_SpriteFrameInfo->pModelData = &g_Square_Tiled_8_modelData;
+			
+			break;
+		}
+		case 16:
+		{
+			pOut_SpriteFrameInfo->pModelData = &g_Square_Tiled_16_modelData;
+			
+			break;
+		}
+		case 32:
+		{
+			pOut_SpriteFrameInfo->pModelData = &g_Square_Tiled_32_modelData;
+			
+			break;
+		}
+	}
 	
 	return true;
 }

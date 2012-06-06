@@ -10,6 +10,7 @@
 #define Crow_Regime_iOS__SpriteSheetAnimator_h
 
 #include "MathTypes.h"
+#include "GraphicsTypes.h"
 
 #define SPRITESHEET_MAX_SHEETS 3
 
@@ -18,6 +19,7 @@ struct SpriteFrameInfo
 	vec2 textureOffset;
 	u32* pTextureHandle;
 	u32 cellsPerRow;
+	ModelData* pModelData;
 };
 
 struct SpriteSheet

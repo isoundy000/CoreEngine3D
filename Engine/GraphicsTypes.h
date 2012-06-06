@@ -736,7 +736,6 @@ struct ItemArtDescription
 	u32			wrapModeU;
 	u32			wrapModeV;
 	bool			flipY;
-    ModelData*		pModelData;
 };
 
 #endif

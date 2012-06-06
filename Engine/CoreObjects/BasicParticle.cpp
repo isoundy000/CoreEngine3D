@@ -12,7 +12,7 @@
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex)
+void BasicParticle::InitParticle(ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex)
 {
 	m_pSettings = pSettings;
 	
@@ -27,7 +27,49 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosit
 		return;
 	}
 	
-	GLRENDERER->InitRenderableGeometry3D(pGeom, pArtDesc->pModelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
+	ModelData* pModelData = NULL;
+	
+	switch(numColumns)
+	{
+		case 1:
+		{
+			pModelData = &g_Square1x1_modelData;
+			
+			break;
+		}
+		case 2:
+		{
+			pModelData = &g_Square_Tiled_2_modelData;
+			
+			break;
+		}
+		case 4:
+		{
+			pModelData = &g_Square_Tiled_4_modelData;
+			
+			break;
+		}
+		case 8:
+		{
+			pModelData = &g_Square_Tiled_8_modelData;
+			
+			break;
+		}
+		case 16:
+		{
+			pModelData = &g_Square_Tiled_16_modelData;
+			
+			break;
+		}
+		case 32:
+		{
+			pModelData = &g_Square_Tiled_32_modelData;
+			
+			break;
+		}
+	}
+	
+	GLRENDERER->InitRenderableGeometry3D(pGeom, pModelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
 	pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
 	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
 	

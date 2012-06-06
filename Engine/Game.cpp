@@ -55,18 +55,6 @@ static DrawFunctionStruct g_drawStruct_RenderTileLayer =
     DrawFunc_DrawTileLayer_Uninit,
 };
 
-ItemArtDescription g_Game_BlobShadowDesc =
-{
-	"ArtResources/Textures/shadowblob.png",//const char*		textureFileName;
-	ImageType_PNG,//ImageType		imageType;
-	0,//GLuint			textureHandle;
-	GL_LINEAR,//u32			textureFilterMode;
-	GL_CLAMP_TO_EDGE,//u32			wrapModeU;
-	GL_CLAMP_TO_EDGE,//u32			wrapModeV;
-	true,//bool			flipY;
-	&g_Square1x1_modelData//ModelData*		pModelData;
-};
-
 
 void Game::ResetCamera()
 {
@@ -2714,13 +2702,10 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
             GAME->LoadResourcesForType(pEnt->type);
 		}
         
-        //Load all resources into memory
-        
-		//Load shadow blob
-		AddItemArt(&g_Game_BlobShadowDesc);
+        //Load shared resources
+		LoadSharedResources();
 		
-        //Loads sounds in a separate thread while loading textures
-        //in the main thread.
+        //Perform actual loading of textures and sounds
         LoadItemSounds();  
         LoadItemArt();
         

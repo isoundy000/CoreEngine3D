@@ -60,8 +60,6 @@ class Box2DDebugDraw;
 
 #define GAME_MAX_STORED_DELETABLE_TILES 64
 
-extern ItemArtDescription g_Game_BlobShadowDesc;
-
 enum CollisionFilter
 {
 	CollisionFilter_Particle,
@@ -169,6 +167,7 @@ class Game
 {
 public:
 	virtual bool Init();
+	virtual bool LoadSharedResources(){return true;}
 	virtual void Update(f32 timeElapsed);
 	virtual void CleanUp();
 	virtual CoreObject* CreateObject(u32 objectType){return NULL;};
