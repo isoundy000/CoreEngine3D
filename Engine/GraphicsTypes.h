@@ -417,12 +417,12 @@ enum ProjMatType{
 	NumProjMatTypes,
 };
 
-struct TextureDescription{
+/*struct TextureDescription{
     TextureFormat Format;
     int BitsPerComponent;
     vec2 Size;
     int MipCount;
-};
+};*/
 
 struct TexturedMorphVertexData3D
 {
@@ -727,7 +727,7 @@ struct
 }ParticleSettings;
 
 
-struct ItemArtDescription
+struct TextureDescription
 {
     const char*		textureFileName;
     ImageType		imageType;

@@ -40,7 +40,7 @@ public:
 		f32 radiusScale_start;
 		f32 radiusScale_end;
 		vec4 diffuseColor;
-		ItemArtDescription* pItemArt;
+		TextureDescription* pItemArt;
 		RenderLayer renderLayer;
 		u32 categoryFlags;
 	};

@@ -16,7 +16,7 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, u32 numColumns, co
 {
 	m_pSettings = pSettings;
 	
-	ItemArtDescription* pArtDesc = pSettings->pItemArt;
+	TextureDescription* pArtDesc = pSettings->pItemArt;
 
 	RenderableGeometry3D* pGeom = NULL;
 	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);

@@ -505,11 +505,11 @@ void Game::UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTou
 
 
 //Checks if the art will be loaded next time LoadItemArt gets called
-bool Game::WillArtDescriptionBeLoaded(ItemArtDescription* pArtDesc)
+bool Game::WillArtDescriptionBeLoaded(TextureDescription* pArtDesc)
 {
     for(u32 i=0; i<m_numArtDescriptionsToLoadTexturesFor; ++i)
     {
-        ItemArtDescription* pCurrArtDesc = m_pArtDescriptionsToLoadTexturesFor[i];
+        TextureDescription* pCurrArtDesc = m_pArtDescriptionsToLoadTexturesFor[i];
 		if(pCurrArtDesc == NULL)
 		{
 			return false;
@@ -525,7 +525,7 @@ bool Game::WillArtDescriptionBeLoaded(ItemArtDescription* pArtDesc)
 
 
 //Call many times to prepare art to be loaded later
-void Game::AddItemArt(ItemArtDescription* pArtDescription)
+void Game::AddItemArt(TextureDescription* pArtDescription)
 {
     //Make sure this description is not already in the list
     for(u32 i=0; i<m_numArtDescriptionsToLoadTexturesFor; ++i)
@@ -549,7 +549,7 @@ void Game::LoadItemArt()
     //Dump old textures that don't need to be loaded
     for(u32 i=0; i<m_numLoadedArtDescriptions; ++i)
     {
-        ItemArtDescription* pCurrArtDesc = m_pLoadedArtDescriptions[i];
+        TextureDescription* pCurrArtDesc = m_pLoadedArtDescriptions[i];
 		if(pCurrArtDesc == NULL)
 		{
 			//This seems evil
@@ -570,7 +570,7 @@ void Game::LoadItemArt()
     //This list has only unique entries
     for(u32 i=0; i<m_numArtDescriptionsToLoadTexturesFor; ++i)
     {
-		ItemArtDescription* pCurrArtDesc = m_pArtDescriptionsToLoadTexturesFor[i];
+		TextureDescription* pCurrArtDesc = m_pArtDescriptionsToLoadTexturesFor[i];
 		if(pCurrArtDesc == NULL)
 		{
 			//Why is someone adding NULL art descriptions?
@@ -609,7 +609,7 @@ void Game::DeleteAllItemArt()
 	//Dump old textures that don't need to be loaded
     for(u32 i=0; i<m_numLoadedArtDescriptions; ++i)
     {
-        ItemArtDescription* pCurrArtDesc = m_pLoadedArtDescriptions[i];
+        TextureDescription* pCurrArtDesc = m_pLoadedArtDescriptions[i];
 		GLRENDERER->DeleteTexture(&pCurrArtDesc->textureHandle);
     }
 	

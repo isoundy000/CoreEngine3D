@@ -20,7 +20,7 @@ void MuzzleFlareParticle::InitParticle(MuzzleFlareParticle::ParticleSettings *pS
 	
 	m_hParentRenderable = hParentRenderable;
 	
-	ItemArtDescription* pArtDesc = pSettings->pItemArt;
+	TextureDescription* pArtDesc = pSettings->pItemArt;
 
 	RenderableGeometry3D* pGeom = NULL;
 	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);

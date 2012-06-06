@@ -24,7 +24,7 @@
 };*/
 
 //Art
-/*static ItemArtDescription g_Art_SpaceShip =
+/*static TextureDescription g_Art_SpaceShip =
 {
     "ArtResources/Characters/SpaceShip/SpaceShip.png",
     ImageType_PNG,

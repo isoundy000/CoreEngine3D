@@ -37,7 +37,7 @@ public:
 		vec4 diffuseColor;
 		f32 lerpT_Idle;
 		f32 lerpT_End;
-		ItemArtDescription* pItemArt;
+		TextureDescription* pItemArt;
 		RenderLayer renderLayer;
 	};
 	
