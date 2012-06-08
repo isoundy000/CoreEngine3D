@@ -57,7 +57,7 @@ public:
 	void SetSpeed(f32 speed);
 	bool GetAnimIsDone();
 	f32 GetCurrentFrame();
-	s32 GetCurrentAnimation();
+	s32 GetCurrentAnimationID();
 	f32 m_currFrame;
 	bool m_animIsDone;
 	AnimationSet* m_pAnimSet;
