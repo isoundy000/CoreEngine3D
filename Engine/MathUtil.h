@@ -73,7 +73,11 @@ f32  TryNormalizeVec3(vec3* out_resultVec, const vec3* vec);
 f32  TryNormalizeVec3_Self(vec3* vec);
 f32  NormalizeVec3(vec3* out_resultVec, const vec3* vec);
 f32 MagnitudeVec3(const vec3* vec);
+
+const vec2* AsVec2(const vec3* pVec);
+
 bool  PosIsBehind(const vec3* frontPos, const vec3* frontAt, const vec3* behindPos);
+
 f32 DistSqVec3(const vec3* vec0, const vec3* vec1);
 f32 DistVec3_2D(const vec3* vec0, const vec3* vec1);
 f32 DistVec3(const vec3* vec0, const vec3* vec1);

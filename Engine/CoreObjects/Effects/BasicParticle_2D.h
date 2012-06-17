@@ -68,6 +68,7 @@ public:
 		TextureAsset* pItemArt;
 		RenderLayer renderLayer;
 		u32 categoryFlags;
+		u32 group;
 		Box2D_ParticleSettings* pBox2D_ParticleSettings;	//Array of settings for each particle index
 	};
 	
@@ -84,6 +85,8 @@ public:
 	virtual void Update(f32 timeElapsed);
 	virtual const vec3* GetPosition() const;
 	void AddVelocity(const vec3* pVelAdd);
+	void SetVelocity(const vec3* pVel);
+	const ParticleSettings* GetParticleSettings(){return m_pSettings;}
 	//virtual void ProcessMessage(u32 message){};	//Pass in a hash value
 private:
 	ParticleSettings* m_pSettings;

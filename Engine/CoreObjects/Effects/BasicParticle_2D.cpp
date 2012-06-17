@@ -258,6 +258,12 @@ void BasicParticle_2D::AddVelocity(const vec3* pVelAdd)
 }
 
 
+void BasicParticle_2D::SetVelocity(const vec3* pVel)
+{
+	CopyVec3(&m_velocity, pVel);
+}
+
+
 void BasicParticle_2D::UpdateHandle()	//Call when the memory location changes
 {	
 	CoreObject::UpdateHandle();
