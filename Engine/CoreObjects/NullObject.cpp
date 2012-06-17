@@ -24,7 +24,7 @@
 };*/
 
 //Art
-/*static TextureDescription g_Art_SpaceShip =
+/*static TextureAsset g_Art_SpaceShip =
 {
     "ArtResources/Characters/SpaceShip/SpaceShip.png",
     ImageType_PNG,
@@ -34,7 +34,7 @@
 };*/
 
 //Sound
-/*static ItemSoundDescription g_Sound_SpaceShipBeam =
+/*static SoundAsset g_Sound_SpaceShipBeam =
 {
 	"ArtResources/SFX/SpaceShipBeam.wav",
 	0,//soundBufferID

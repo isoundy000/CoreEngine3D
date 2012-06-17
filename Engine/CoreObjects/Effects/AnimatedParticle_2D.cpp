@@ -19,7 +19,7 @@ void AnimatedParticle_2D::InitParticle(ParticleSettings *pSettings, const vec3* 
 	m_animPlayer.Init(pSettings->pAnimSet);
 	m_animPlayer.PlayAnimation(animID, frameOffset, playSpeed);
 	
-	TextureDescription* pArtDesc = pSettings->pItemArt;
+	TextureAsset* pArtDesc = pSettings->pItemArt;
 
 	RenderableGeometry3D* pGeom = NULL;
 	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);

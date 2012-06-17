@@ -65,7 +65,7 @@ public:
 		f32 radiusScale_start;
 		f32 radiusScale_end;
 		vec4 diffuseColor;
-		TextureDescription* pItemArt;
+		TextureAsset* pItemArt;
 		RenderLayer renderLayer;
 		u32 categoryFlags;
 		Box2D_ParticleSettings* pBox2D_ParticleSettings;	//Array of settings for each particle index

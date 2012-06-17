@@ -202,8 +202,8 @@ public:
 	CoreUI_Button* AddUIButton(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32));
 	void UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTouchPosCurr);
 	void ClearAllButtons();
-	void AddItemArt(TextureDescription* pArtDescription);
-	void AddItemSound(ItemSoundDescription* pSoundDescription);
+	void AddItemArt(TextureAsset* pArtDescription);
+	void AddItemSound(SoundAsset* pSoundDescription);
 	s32 AddSongToPlaylist(const char* songFilenameMP3);
 	void PlaySongByID(s32 songID, f32 volume, bool isLooping);
 	void StopSong();
@@ -306,19 +306,19 @@ private:
 	b2Body* m_Box2D_pGroundBody;
 	
 	f32 m_pixelsPerMeter;
-	bool WillArtDescriptionBeLoaded(TextureDescription* pArtDesc);
-	bool WillSoundDescriptionBeLoaded(ItemSoundDescription* pArtDesc);
+	bool WillArtDescriptionBeLoaded(TextureAsset* pArtDesc);
+	bool WillSoundDescriptionBeLoaded(SoundAsset* pArtDesc);
 	
-	TextureDescription* m_pLoadedArtDescriptions[GAME_MAX_ART_DESCRIPTIONS];
+	TextureAsset* m_pLoadedArtDescriptions[GAME_MAX_ART_DESCRIPTIONS];
     u32 m_numLoadedArtDescriptions;
     
-    TextureDescription* m_pArtDescriptionsToLoadTexturesFor[GAME_MAX_ART_DESCRIPTIONS];
+    TextureAsset* m_pArtDescriptionsToLoadTexturesFor[GAME_MAX_ART_DESCRIPTIONS];
     u32 m_numArtDescriptionsToLoadTexturesFor;
 	
-	ItemSoundDescription* m_pLoadedSoundDescriptions[GAME_MAX_SOUND_DESCRIPTIONS];
+	SoundAsset* m_pLoadedSoundDescriptions[GAME_MAX_SOUND_DESCRIPTIONS];
     u32 m_numLoadedSoundDescriptions;
     
-    ItemSoundDescription* m_pSoundDescriptionsToLoadWavsFor[GAME_MAX_SOUND_DESCRIPTIONS];
+    SoundAsset* m_pSoundDescriptionsToLoadWavsFor[GAME_MAX_SOUND_DESCRIPTIONS];
     u32 m_numSoundDescriptionsToLoadWavsFor;
 	
 	CoreUI_Button m_ui_buttons[GAME_MAX_BUTTONS];

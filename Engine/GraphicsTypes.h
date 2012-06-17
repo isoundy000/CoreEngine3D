@@ -727,7 +727,7 @@ struct
 }ParticleSettings;
 
 
-struct TextureDescription
+struct TextureAsset
 {
     const char*		textureFileName;
     ImageType		imageType;

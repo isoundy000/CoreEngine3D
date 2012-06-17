@@ -29,7 +29,7 @@ struct CoreAudioFileInfo
 	s32 sampleRate;
 };
 
-struct ItemSoundDescription
+struct SoundAsset
 {
     const char*		soundFileName;
     u32			soundBufferID;
