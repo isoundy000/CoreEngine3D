@@ -4622,6 +4622,11 @@ vec3* GetGeomPos(RenderableGeometry3D* pGeom)
 	return mat4f_GetPos(pGeom->worldMat);
 }
 
+void SetGeomPos(RenderableGeometry3D* pGeom, const vec3* pPos)
+{
+	CopyVec3(mat4f_GetPos(pGeom->worldMat), pPos);
+}
+
 vec3* GetGeomLeft(RenderableGeometry3D* pGeom)
 {
 	return mat4f_GetLeft(pGeom->worldMat);
