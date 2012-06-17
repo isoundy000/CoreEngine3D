@@ -1,18 +1,18 @@
 //
-//  BasicParticle.cpp
+//  BasicParticle_2D.cpp
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 2/26/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#include "BasicParticle.h"
+#include "BasicParticle_2D.h"
 #include "../OpenGLRenderer.h"
 #include "../matrix.h"
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void BasicParticle::InitParticle(ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex)
+void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex)
 {
 	m_pSettings = pSettings;
 	
@@ -162,13 +162,13 @@ void BasicParticle::InitParticle(ParticleSettings *pSettings, u32 numColumns, co
 }
 
 
-u32 BasicParticle::GetCategoryFlags()
+u32 BasicParticle_2D::GetCategoryFlags()
 {
 	return m_pSettings->categoryFlags;
 }
 
 
-void BasicParticle::Update(f32 timeElapsed)
+void BasicParticle_2D::Update(f32 timeElapsed)
 {
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
     
@@ -230,7 +230,7 @@ void BasicParticle::Update(f32 timeElapsed)
 }
 
 
-void BasicParticle::Uninit()
+void BasicParticle_2D::Uninit()
 {
 	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
 	if(pGeom != NULL)
@@ -247,18 +247,18 @@ void BasicParticle::Uninit()
 }
 
 
-const vec3* BasicParticle::GetPosition() const
+const vec3* BasicParticle_2D::GetPosition() const
 {
 	return &m_position;
 }
 
-void BasicParticle::AddVelocity(const vec3* pVelAdd)
+void BasicParticle_2D::AddVelocity(const vec3* pVelAdd)
 {
 	AddVec3_Self(&m_velocity, pVelAdd);
 }
 
 
-void BasicParticle::UpdateHandle()	//Call when the memory location changes
+void BasicParticle_2D::UpdateHandle()	//Call when the memory location changes
 {	
 	CoreObject::UpdateHandle();
     

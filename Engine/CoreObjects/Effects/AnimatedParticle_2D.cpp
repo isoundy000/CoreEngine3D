@@ -1,18 +1,18 @@
 //
-//  AnimatedParticle.cpp
+//  AnimatedParticle_2D.cpp
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 2/26/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#include "AnimatedParticle.h"
+#include "AnimatedParticle_2D.h"
 #include "../OpenGLRenderer.h"
 #include "../matrix.h"
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, s32 animID, u32 frameOffset, f32 playSpeed)
+void AnimatedParticle_2D::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, s32 animID, u32 frameOffset, f32 playSpeed)
 {
 	m_pSettings = pSettings;
 	
@@ -75,13 +75,13 @@ void AnimatedParticle::InitParticle(ParticleSettings *pSettings, const vec3* pPo
 }
 
 
-u32 AnimatedParticle::GetCategoryFlags()
+u32 AnimatedParticle_2D::GetCategoryFlags()
 {
 	return m_pSettings->categoryFlags;
 }
 
 
-void AnimatedParticle::Update(f32 timeElapsed)
+void AnimatedParticle_2D::Update(f32 timeElapsed)
 {
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
     
@@ -147,7 +147,7 @@ void AnimatedParticle::Update(f32 timeElapsed)
 }
 
 
-void AnimatedParticle::Uninit()
+void AnimatedParticle_2D::Uninit()
 {
 	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
 	if(pGeom != NULL)
@@ -159,18 +159,18 @@ void AnimatedParticle::Uninit()
 }
 
 
-const vec3* AnimatedParticle::GetPosition() const
+const vec3* AnimatedParticle_2D::GetPosition() const
 {
 	return &m_position;
 }
 
-void AnimatedParticle::AddVelocity(const vec3* pVelAdd)
+void AnimatedParticle_2D::AddVelocity(const vec3* pVelAdd)
 {
 	AddVec3_Self(&m_velocity, pVelAdd);
 }
 
 
-void AnimatedParticle::UpdateHandle()	//Call when the memory location changes
+void AnimatedParticle_2D::UpdateHandle()	//Call when the memory location changes
 {	
 	CoreObject::UpdateHandle();
     

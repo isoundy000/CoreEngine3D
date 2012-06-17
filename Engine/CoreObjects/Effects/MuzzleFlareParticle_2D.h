@@ -1,19 +1,19 @@
 //
-//  MuzzleFlareParticle.h
+//  MuzzleFlareParticle_2D.h
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 2/26/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#ifndef CoreEngine3D_OSX__MuzzleFlareParticle_h
-#define CoreEngine3D_OSX__MuzzleFlareParticle_h
+#ifndef CoreEngine3D_OSX__MuzzleFlareParticle_2D_h
+#define CoreEngine3D_OSX__MuzzleFlareParticle_2D_h
 
 #include "../CoreObject.h"
 #include "../RenderLayer.h"
 #include "../GraphicsTypes.h"
 
-class MuzzleFlareParticle: public CoreObject
+class MuzzleFlareParticle_2D: public CoreObject
 {
 public:
 	struct ParticleSettings
@@ -43,7 +43,7 @@ public:
 	
 	virtual void UpdateHandle();	//Call when the memory location changes
 	
-	void InitParticle(MuzzleFlareParticle::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex);
+	void InitParticle(MuzzleFlareParticle_2D::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex);
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
 

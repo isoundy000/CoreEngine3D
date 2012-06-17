@@ -1,18 +1,18 @@
 //
-//  MuzzleFlareParticle.cpp
+//  MuzzleFlareParticle_2D.cpp
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 2/26/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#include "MuzzleFlareParticle.h"
+#include "MuzzleFlareParticle_2D.h"
 #include "../OpenGLRenderer.h"
 #include "../matrix.h"
 #include "../MathUtil.h"
 #include "../Game.h"
 
-void MuzzleFlareParticle::InitParticle(MuzzleFlareParticle::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex)
+void MuzzleFlareParticle_2D::InitParticle(MuzzleFlareParticle_2D::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex)
 {
 	m_pSettings = pSettings;
 	
@@ -73,7 +73,7 @@ void MuzzleFlareParticle::InitParticle(MuzzleFlareParticle::ParticleSettings *pS
 }
 
 
-void MuzzleFlareParticle::UpdateAttachment()
+void MuzzleFlareParticle_2D::UpdateAttachment()
 {
 	RenderableGeometry3D* pGeomSelf = GetGeomPointer(m_hRenderable);
 	if(pGeomSelf == NULL)
@@ -103,7 +103,7 @@ void MuzzleFlareParticle::UpdateAttachment()
 }
 
 
-void MuzzleFlareParticle::Update(f32 timeElapsed)
+void MuzzleFlareParticle_2D::Update(f32 timeElapsed)
 {
     RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
     
@@ -159,7 +159,7 @@ void MuzzleFlareParticle::Update(f32 timeElapsed)
 }
 
 
-void MuzzleFlareParticle::Uninit()
+void MuzzleFlareParticle_2D::Uninit()
 {
 	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
 	if(pGeom != NULL)
@@ -171,7 +171,7 @@ void MuzzleFlareParticle::Uninit()
 }
 
 
-void MuzzleFlareParticle::UpdateHandle()	//Call when the memory location changes
+void MuzzleFlareParticle_2D::UpdateHandle()	//Call when the memory location changes
 {	
 	CoreObject::UpdateHandle();
     

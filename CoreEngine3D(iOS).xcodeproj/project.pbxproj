@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		2328343114AD34BF00BEBBD0 /* CoreInput_GamePad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2328342F14AD34BF00BEBBD0 /* CoreInput_GamePad.cpp */; };
 		2328343214AD34BF00BEBBD0 /* CoreInput_GamePad.h in Headers */ = {isa = PBXBuildFile; fileRef = 2328343014AD34BF00BEBBD0 /* CoreInput_GamePad.h */; };
-		2329C75114FB343000DBC1BE /* BasicParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2329C74F14FB343000DBC1BE /* BasicParticle.cpp */; };
-		2329C75214FB343000DBC1BE /* BasicParticle.h in Headers */ = {isa = PBXBuildFile; fileRef = 2329C75014FB343000DBC1BE /* BasicParticle.h */; };
 		2335820614D3A5C300F66DA0 /* CoreDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 233581FC14D3A5C300F66DA0 /* CoreDebug.cpp */; };
 		2335820714D3A5C300F66DA0 /* CoreDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 233581FD14D3A5C300F66DA0 /* CoreDebug.h */; };
 		2335820A14D3A5C300F66DA0 /* CoreObject_Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2335820014D3A5C300F66DA0 /* CoreObject_Manager.cpp */; };
@@ -58,8 +56,6 @@
 		DD408FBD14DB5BD00016BA1A /* ScriptObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DD408FB914DB5BD00016BA1A /* ScriptObject.h */; };
 		DD408FC014DB5D100016BA1A /* CoreObjectFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD408FBE14DB5D100016BA1A /* CoreObjectFactories.cpp */; };
 		DD408FC114DB5D100016BA1A /* CoreObjectFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = DD408FBF14DB5D100016BA1A /* CoreObjectFactories.h */; };
-		DD78DD071557B389003F3E57 /* MuzzleFlareParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD78DD051557B389003F3E57 /* MuzzleFlareParticle.cpp */; };
-		DD78DD081557B389003F3E57 /* MuzzleFlareParticle.h in Headers */ = {isa = PBXBuildFile; fileRef = DD78DD061557B389003F3E57 /* MuzzleFlareParticle.h */; };
 		DD805AAA14D79E59006C6D10 /* Square_Tiled_32.h in Headers */ = {isa = PBXBuildFile; fileRef = DD805AA914D79E59006C6D10 /* Square_Tiled_32.h */; };
 		DDA6F559149C1A930035A1BF /* ArrayUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F49B149C1A920035A1BF /* ArrayUtil.cpp */; };
 		DDA6F55A149C1A930035A1BF /* ArrayUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F49C149C1A920035A1BF /* ArrayUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -150,6 +146,12 @@
 		DDA6F60B149C1A930035A1BF /* TouchInputIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F554149C1A920035A1BF /* TouchInputIOS.mm */; };
 		DDA6F60C149C1A930035A1BF /* ViewFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA6F555149C1A920035A1BF /* ViewFlags.cpp */; };
 		DDA6F60D149C1A930035A1BF /* ViewFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6F556149C1A920035A1BF /* ViewFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DDB3FE96158D667600BA1853 /* AnimatedParticle_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB3FE90158D667600BA1853 /* AnimatedParticle_2D.h */; };
+		DDB3FE97158D667600BA1853 /* BasicParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDB3FE91158D667600BA1853 /* BasicParticle_2D.cpp */; };
+		DDB3FE98158D667600BA1853 /* BasicParticle_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB3FE92158D667600BA1853 /* BasicParticle_2D.h */; };
+		DDB3FE99158D667600BA1853 /* MuzzleFlareParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDB3FE93158D667600BA1853 /* MuzzleFlareParticle_2D.cpp */; };
+		DDB3FE9A158D667600BA1853 /* MuzzleFlareParticle_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB3FE94158D667600BA1853 /* MuzzleFlareParticle_2D.h */; };
+		DDB3FEAC158D674C00BA1853 /* AnimatedParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDB3FEAD158D674C00BA1853 /* AnimatedParticle_2D.cpp */; };
 		DDD059571576832C008B3C4F /* NullObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDD059551576832C008B3C4F /* NullObject.cpp */; };
 		DDD059581576832C008B3C4F /* NullObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DDD059561576832C008B3C4F /* NullObject.h */; };
 		DDD5217514A008B800D6A0BC /* CoreUI_Button.h in Headers */ = {isa = PBXBuildFile; fileRef = DDD5217414A008B800D6A0BC /* CoreUI_Button.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -158,8 +160,6 @@
 		DDD5218D14A024A800D6A0BC /* EngineModels.h in Headers */ = {isa = PBXBuildFile; fileRef = DDD5218B14A024A800D6A0BC /* EngineModels.h */; };
 		DDD521A314A03BEC00D6A0BC /* CoreInput_DeviceInputState.h in Headers */ = {isa = PBXBuildFile; fileRef = DDD521A214A03BEB00D6A0BC /* CoreInput_DeviceInputState.h */; };
 		DDD521A514A03BFE00D6A0BC /* CoreInput_DeviceInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDD521A414A03BFE00D6A0BC /* CoreInput_DeviceInputState.cpp */; };
-		DDF60DD11579372C007C18DA /* AnimatedParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF60DCF1579372C007C18DA /* AnimatedParticle.cpp */; };
-		DDF60DD21579372C007C18DA /* AnimatedParticle.h in Headers */ = {isa = PBXBuildFile; fileRef = DDF60DD01579372C007C18DA /* AnimatedParticle.h */; };
 		DDF73D37149C24D700D5DFB5 /* png.c in Sources */ = {isa = PBXBuildFile; fileRef = DDF73D18149C24D700D5DFB5 /* png.c */; };
 		DDF73D38149C24D700D5DFB5 /* png.h in Headers */ = {isa = PBXBuildFile; fileRef = DDF73D19149C24D700D5DFB5 /* png.h */; };
 		DDF73D39149C24D700D5DFB5 /* pngconf.h in Headers */ = {isa = PBXBuildFile; fileRef = DDF73D1A149C24D700D5DFB5 /* pngconf.h */; };
@@ -192,8 +192,6 @@
 /* Begin PBXFileReference section */
 		2328342F14AD34BF00BEBBD0 /* CoreInput_GamePad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreInput_GamePad.cpp; sourceTree = "<group>"; };
 		2328343014AD34BF00BEBBD0 /* CoreInput_GamePad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInput_GamePad.h; sourceTree = "<group>"; };
-		2329C74F14FB343000DBC1BE /* BasicParticle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = BasicParticle.cpp; path = CoreObjects/BasicParticle.cpp; sourceTree = "<group>"; };
-		2329C75014FB343000DBC1BE /* BasicParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicParticle.h; path = CoreObjects/BasicParticle.h; sourceTree = "<group>"; };
 		233581FC14D3A5C300F66DA0 /* CoreDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreDebug.cpp; sourceTree = "<group>"; };
 		233581FD14D3A5C300F66DA0 /* CoreDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDebug.h; sourceTree = "<group>"; };
 		2335820014D3A5C300F66DA0 /* CoreObject_Manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreObject_Manager.cpp; sourceTree = "<group>"; };
@@ -241,8 +239,6 @@
 		DD408FB914DB5BD00016BA1A /* ScriptObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = ScriptObject.h; path = CoreObjects/ScriptObject.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		DD408FBE14DB5D100016BA1A /* CoreObjectFactories.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CoreObjectFactories.cpp; path = CoreObjects/CoreObjectFactories.cpp; sourceTree = "<group>"; };
 		DD408FBF14DB5D100016BA1A /* CoreObjectFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreObjectFactories.h; path = CoreObjects/CoreObjectFactories.h; sourceTree = "<group>"; };
-		DD78DD051557B389003F3E57 /* MuzzleFlareParticle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = MuzzleFlareParticle.cpp; path = CoreObjects/MuzzleFlareParticle.cpp; sourceTree = "<group>"; };
-		DD78DD061557B389003F3E57 /* MuzzleFlareParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuzzleFlareParticle.h; path = CoreObjects/MuzzleFlareParticle.h; sourceTree = "<group>"; };
 		DD805AA914D79E59006C6D10 /* Square_Tiled_32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square_Tiled_32.h; sourceTree = "<group>"; };
 		DDA6C700151153B30035DE60 /* CoreObjectTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CoreObjectTypes.h; path = CoreObjects/CoreObjectTypes.h; sourceTree = "<group>"; };
 		DDA6F314149C19E10035A1BF /* libCoreEngine3D(iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,6 +331,12 @@
 		DDA6F554149C1A920035A1BF /* TouchInputIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TouchInputIOS.mm; sourceTree = "<group>"; };
 		DDA6F555149C1A920035A1BF /* ViewFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewFlags.cpp; sourceTree = "<group>"; };
 		DDA6F556149C1A920035A1BF /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
+		DDB3FE90158D667600BA1853 /* AnimatedParticle_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnimatedParticle_2D.h; path = CoreObjects/Effects/AnimatedParticle_2D.h; sourceTree = "<group>"; };
+		DDB3FE91158D667600BA1853 /* BasicParticle_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = BasicParticle_2D.cpp; path = CoreObjects/Effects/BasicParticle_2D.cpp; sourceTree = "<group>"; };
+		DDB3FE92158D667600BA1853 /* BasicParticle_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicParticle_2D.h; path = CoreObjects/Effects/BasicParticle_2D.h; sourceTree = "<group>"; };
+		DDB3FE93158D667600BA1853 /* MuzzleFlareParticle_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = MuzzleFlareParticle_2D.cpp; path = CoreObjects/Effects/MuzzleFlareParticle_2D.cpp; sourceTree = "<group>"; };
+		DDB3FE94158D667600BA1853 /* MuzzleFlareParticle_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuzzleFlareParticle_2D.h; path = CoreObjects/Effects/MuzzleFlareParticle_2D.h; sourceTree = "<group>"; };
+		DDB3FEAD158D674C00BA1853 /* AnimatedParticle_2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AnimatedParticle_2D.cpp; path = CoreObjects/Effects/AnimatedParticle_2D.cpp; sourceTree = "<group>"; };
 		DDD059551576832C008B3C4F /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = NullObject.cpp; path = CoreObjects/NullObject.cpp; sourceTree = "<group>"; };
 		DDD059561576832C008B3C4F /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NullObject.h; path = CoreObjects/NullObject.h; sourceTree = "<group>"; };
 		DDD5217414A008B800D6A0BC /* CoreUI_Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreUI_Button.h; sourceTree = "<group>"; };
@@ -343,8 +345,6 @@
 		DDD5218B14A024A800D6A0BC /* EngineModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineModels.h; sourceTree = "<group>"; };
 		DDD521A214A03BEB00D6A0BC /* CoreInput_DeviceInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInput_DeviceInputState.h; sourceTree = "<group>"; };
 		DDD521A414A03BFE00D6A0BC /* CoreInput_DeviceInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreInput_DeviceInputState.cpp; sourceTree = "<group>"; };
-		DDF60DCF1579372C007C18DA /* AnimatedParticle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = AnimatedParticle.cpp; path = CoreObjects/AnimatedParticle.cpp; sourceTree = "<group>"; };
-		DDF60DD01579372C007C18DA /* AnimatedParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnimatedParticle.h; path = CoreObjects/AnimatedParticle.h; sourceTree = "<group>"; };
 		DDF73D18149C24D700D5DFB5 /* png.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = png.c; sourceTree = "<group>"; };
 		DDF73D19149C24D700D5DFB5 /* png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = png.h; sourceTree = "<group>"; };
 		DDF73D1A149C24D700D5DFB5 /* pngconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pngconf.h; sourceTree = "<group>"; };
@@ -389,14 +389,9 @@
 		DD408FB414DB5B730016BA1A /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
-				DDF60DCF1579372C007C18DA /* AnimatedParticle.cpp */,
-				DDF60DD01579372C007C18DA /* AnimatedParticle.h */,
+				DDB3FE8E158D666B00BA1853 /* Effects */,
 				DDD059551576832C008B3C4F /* NullObject.cpp */,
 				DDD059561576832C008B3C4F /* NullObject.h */,
-				DD78DD051557B389003F3E57 /* MuzzleFlareParticle.cpp */,
-				DD78DD061557B389003F3E57 /* MuzzleFlareParticle.h */,
-				2329C74F14FB343000DBC1BE /* BasicParticle.cpp */,
-				2329C75014FB343000DBC1BE /* BasicParticle.h */,
 				DD2A300A1506EAF3007812E4 /* Tile.cpp */,
 				DD2A300B1506EAF3007812E4 /* Tile.h */,
 				DD15B2FC1501B39900B065B0 /* Spawner.cpp */,
@@ -614,6 +609,19 @@
 			path = SOIL;
 			sourceTree = "<group>";
 		};
+		DDB3FE8E158D666B00BA1853 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				DDB3FEAD158D674C00BA1853 /* AnimatedParticle_2D.cpp */,
+				DDB3FE90158D667600BA1853 /* AnimatedParticle_2D.h */,
+				DDB3FE91158D667600BA1853 /* BasicParticle_2D.cpp */,
+				DDB3FE92158D667600BA1853 /* BasicParticle_2D.h */,
+				DDB3FE93158D667600BA1853 /* MuzzleFlareParticle_2D.cpp */,
+				DDB3FE94158D667600BA1853 /* MuzzleFlareParticle_2D.h */,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
 		DDF73D17149C24D700D5DFB5 /* libpng */ = {
 			isa = PBXGroup;
 			children = (
@@ -768,12 +776,12 @@
 				23D9D67414F36648002152D3 /* CoreInput_PCInputState.h in Headers */,
 				233BBC1014F4AF3900BB12FA /* Box2DContactListener.h in Headers */,
 				DD0C294C14F80E8F002EE89F /* Box2DUtil.h in Headers */,
-				2329C75214FB343000DBC1BE /* BasicParticle.h in Headers */,
 				DD15B2FF1501B39900B065B0 /* Spawner.h in Headers */,
 				DD2A300D1506EAF3007812E4 /* Tile.h in Headers */,
-				DD78DD081557B389003F3E57 /* MuzzleFlareParticle.h in Headers */,
 				DDD059581576832C008B3C4F /* NullObject.h in Headers */,
-				DDF60DD21579372C007C18DA /* AnimatedParticle.h in Headers */,
+				DDB3FE96158D667600BA1853 /* AnimatedParticle_2D.h in Headers */,
+				DDB3FE98158D667600BA1853 /* BasicParticle_2D.h in Headers */,
+				DDB3FE9A158D667600BA1853 /* MuzzleFlareParticle_2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -915,12 +923,12 @@
 				233BBC7714F4D3EC00BB12FA /* matrix.cpp in Sources */,
 				233BBC7814F4D3EC00BB12FA /* OpenGLRenderer.cpp in Sources */,
 				DD0C294F14F80E9E002EE89F /* Box2DUtil.cpp in Sources */,
-				2329C75114FB343000DBC1BE /* BasicParticle.cpp in Sources */,
 				DD15B2FE1501B39900B065B0 /* Spawner.cpp in Sources */,
 				DD2A300C1506EAF3007812E4 /* Tile.cpp in Sources */,
-				DD78DD071557B389003F3E57 /* MuzzleFlareParticle.cpp in Sources */,
 				DDD059571576832C008B3C4F /* NullObject.cpp in Sources */,
-				DDF60DD11579372C007C18DA /* AnimatedParticle.cpp in Sources */,
+				DDB3FEAC158D674C00BA1853 /* AnimatedParticle_2D.cpp in Sources */,
+				DDB3FE97158D667600BA1853 /* BasicParticle_2D.cpp in Sources */,
+				DDB3FE99158D667600BA1853 /* MuzzleFlareParticle_2D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

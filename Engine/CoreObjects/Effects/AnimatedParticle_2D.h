@@ -1,53 +1,28 @@
 //
-//  BasicParticle.h
+//  AnimatedParticle_2D.h
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 2/26/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#ifndef CoreEngine3D_OSX__BasicParticle_h
-#define CoreEngine3D_OSX__BasicParticle_h
+#ifndef CoreEngine3D_OSX__AnimatedParticle_2D_h
+#define CoreEngine3D_OSX__AnimatedParticle_2D_h
 
 #include "../CoreObject.h"
 #include "../RenderLayer.h"
 #include "../GraphicsTypes.h"
-#include <Box2D/Box2D.h>
+#include "../AnimationController.h"
+#include "../SpriteSheetAnimator.h"
 
-class BasicParticle: public CoreObject
+
+class AnimatedParticle_2D: public CoreObject
 {
 public:
-	struct Box2D_ParticleSettings
-	{
-		//Pointer to an array of scales in pixels
-		//Must be the same size as the number of panels in
-		//your object
-		f32 collisionRadiusPixels;
-		
-		/// The friction coefficient, usually in the range [0,1].
-		float32 friction;
-		
-		/// The restitution (elasticity) usually in the range [0,1].
-		float32 restitution;
-		
-		/// The density, usually in kg/m^2.
-		float32 density;
-
-		/// The collision category bits. Normally you would just set one bit.
-		uint16 categoryBits;
-		
-		/// The collision mask bits. This states the categories that this
-		/// shape would accept for collision.
-		uint16 maskBits;
-		
-		/// Collision groups allow a certain group of objects to never collide (negative)
-		/// or always collide (positive). Zero means no collision group. Non-zero group
-		/// filtering always wins against the mask bits.
-		int16 groupIndex;
-	};
-	
 	struct ParticleSettings
 	{
+		AnimationSet* pAnimSet;	//required
+		SpriteSheetAnimator* pSpriteAnimator; //required
 		RenderMaterial renderMaterial;
 		u32 renderFlags;
 		BlendMode blendMode;
@@ -68,7 +43,6 @@ public:
 		TextureDescription* pItemArt;
 		RenderLayer renderLayer;
 		u32 categoryFlags;
-		Box2D_ParticleSettings* pBox2D_ParticleSettings;	//Array of settings for each particle index
 	};
 	
 	//static void InitClass(){};
@@ -78,7 +52,7 @@ public:
 	//virtual bool Init(u32 type);
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}
 	//virtual bool PostSpawnInit(void* pSpawnStruct){return true;}
-	void InitParticle(BasicParticle::ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex);
+	void InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, s32 animID, u32 frameOffset, f32 playSpeed);
 	u32 GetCategoryFlags();
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
@@ -90,9 +64,9 @@ private:
 	f32 m_spinSpeed;
 	f32 m_lifeTimer;
 	f32 m_totalLifeTime;
+	f32 m_fadeTime;
 	f32 m_radiusStart;
 	f32 m_radiusEnd;
-	f32 m_fadeTime;
 	vec3 m_velocity;
 	vec3 m_position;
 	vec4 m_diffuseColorStart;
@@ -100,7 +74,7 @@ private:
 	vec2 m_texcoordOffset;
 	f32 m_currSpinAngle;
 	CoreObjectHandle m_hRenderable;
-	b2Body* m_pBody;
+	AnimationPlayer m_animPlayer;
 };
 
 #endif
