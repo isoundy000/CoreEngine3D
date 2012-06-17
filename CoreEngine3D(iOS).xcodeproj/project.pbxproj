@@ -50,8 +50,6 @@
 		DD25DC7414E1E308000ACF15 /* TileAffector.h in Headers */ = {isa = PBXBuildFile; fileRef = DD25DC7014E1E307000ACF15 /* TileAffector.h */; };
 		DD2A300C1506EAF3007812E4 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2A300A1506EAF3007812E4 /* Tile.cpp */; };
 		DD2A300D1506EAF3007812E4 /* Tile.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2A300B1506EAF3007812E4 /* Tile.h */; };
-		DD408FBA14DB5BD00016BA1A /* CollisionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD408FB614DB5BD00016BA1A /* CollisionBox.cpp */; };
-		DD408FBB14DB5BD00016BA1A /* CollisionBox.h in Headers */ = {isa = PBXBuildFile; fileRef = DD408FB714DB5BD00016BA1A /* CollisionBox.h */; };
 		DD408FBC14DB5BD00016BA1A /* ScriptObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD408FB814DB5BD00016BA1A /* ScriptObject.cpp */; };
 		DD408FBD14DB5BD00016BA1A /* ScriptObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DD408FB914DB5BD00016BA1A /* ScriptObject.h */; };
 		DD408FC014DB5D100016BA1A /* CoreObjectFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD408FBE14DB5D100016BA1A /* CoreObjectFactories.cpp */; };
@@ -152,6 +150,8 @@
 		DDB3FE99158D667600BA1853 /* MuzzleFlareParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDB3FE93158D667600BA1853 /* MuzzleFlareParticle_2D.cpp */; };
 		DDB3FE9A158D667600BA1853 /* MuzzleFlareParticle_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB3FE94158D667600BA1853 /* MuzzleFlareParticle_2D.h */; };
 		DDB3FEAC158D674C00BA1853 /* AnimatedParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDB3FEAD158D674C00BA1853 /* AnimatedParticle_2D.cpp */; };
+		DDC567F2158D68F7005A6E7A /* Trigger_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDC567F0158D68F7005A6E7A /* Trigger_2D.cpp */; };
+		DDC567F3158D68F7005A6E7A /* Trigger_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DDC567F1158D68F7005A6E7A /* Trigger_2D.h */; };
 		DDD059571576832C008B3C4F /* NullObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDD059551576832C008B3C4F /* NullObject.cpp */; };
 		DDD059581576832C008B3C4F /* NullObject.h in Headers */ = {isa = PBXBuildFile; fileRef = DDD059561576832C008B3C4F /* NullObject.h */; };
 		DDD5217514A008B800D6A0BC /* CoreUI_Button.h in Headers */ = {isa = PBXBuildFile; fileRef = DDD5217414A008B800D6A0BC /* CoreUI_Button.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -233,8 +233,6 @@
 		DD25DC7014E1E307000ACF15 /* TileAffector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = TileAffector.h; path = CoreObjects/TileAffector.h; sourceTree = "<group>"; };
 		DD2A300A1506EAF3007812E4 /* Tile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Tile.cpp; path = CoreObjects/Tile.cpp; sourceTree = "<group>"; };
 		DD2A300B1506EAF3007812E4 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tile.h; path = CoreObjects/Tile.h; sourceTree = "<group>"; };
-		DD408FB614DB5BD00016BA1A /* CollisionBox.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CollisionBox.cpp; path = CoreObjects/CollisionBox.cpp; sourceTree = "<group>"; };
-		DD408FB714DB5BD00016BA1A /* CollisionBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = CollisionBox.h; path = CoreObjects/CollisionBox.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		DD408FB814DB5BD00016BA1A /* ScriptObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ScriptObject.cpp; path = CoreObjects/ScriptObject.cpp; sourceTree = "<group>"; };
 		DD408FB914DB5BD00016BA1A /* ScriptObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = ScriptObject.h; path = CoreObjects/ScriptObject.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		DD408FBE14DB5D100016BA1A /* CoreObjectFactories.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CoreObjectFactories.cpp; path = CoreObjects/CoreObjectFactories.cpp; sourceTree = "<group>"; };
@@ -337,6 +335,8 @@
 		DDB3FE93158D667600BA1853 /* MuzzleFlareParticle_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = MuzzleFlareParticle_2D.cpp; path = CoreObjects/Effects/MuzzleFlareParticle_2D.cpp; sourceTree = "<group>"; };
 		DDB3FE94158D667600BA1853 /* MuzzleFlareParticle_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MuzzleFlareParticle_2D.h; path = CoreObjects/Effects/MuzzleFlareParticle_2D.h; sourceTree = "<group>"; };
 		DDB3FEAD158D674C00BA1853 /* AnimatedParticle_2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AnimatedParticle_2D.cpp; path = CoreObjects/Effects/AnimatedParticle_2D.cpp; sourceTree = "<group>"; };
+		DDC567F0158D68F7005A6E7A /* Trigger_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Trigger_2D.cpp; path = CoreObjects/Trigger_2D.cpp; sourceTree = "<group>"; };
+		DDC567F1158D68F7005A6E7A /* Trigger_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trigger_2D.h; path = CoreObjects/Trigger_2D.h; sourceTree = "<group>"; };
 		DDD059551576832C008B3C4F /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = NullObject.cpp; path = CoreObjects/NullObject.cpp; sourceTree = "<group>"; };
 		DDD059561576832C008B3C4F /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NullObject.h; path = CoreObjects/NullObject.h; sourceTree = "<group>"; };
 		DDD5217414A008B800D6A0BC /* CoreUI_Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreUI_Button.h; sourceTree = "<group>"; };
@@ -390,6 +390,8 @@
 			isa = PBXGroup;
 			children = (
 				DDB3FE8E158D666B00BA1853 /* Effects */,
+				DDC567F0158D68F7005A6E7A /* Trigger_2D.cpp */,
+				DDC567F1158D68F7005A6E7A /* Trigger_2D.h */,
 				DDD059551576832C008B3C4F /* NullObject.cpp */,
 				DDD059561576832C008B3C4F /* NullObject.h */,
 				DD2A300A1506EAF3007812E4 /* Tile.cpp */,
@@ -404,8 +406,6 @@
 				DD25DC6914E1D6EB000ACF15 /* ObjectGroup.h */,
 				DD408FBE14DB5D100016BA1A /* CoreObjectFactories.cpp */,
 				DD408FBF14DB5D100016BA1A /* CoreObjectFactories.h */,
-				DD408FB614DB5BD00016BA1A /* CollisionBox.cpp */,
-				DD408FB714DB5BD00016BA1A /* CollisionBox.h */,
 				DD408FB814DB5BD00016BA1A /* ScriptObject.cpp */,
 				DD408FB914DB5BD00016BA1A /* ScriptObject.h */,
 				DDA6C700151153B30035DE60 /* CoreObjectTypes.h */,
@@ -765,7 +765,6 @@
 				2335820F14D3A5C300F66DA0 /* Hash.h in Headers */,
 				234BA1E914D4ADAE00784CAE /* Square_Tiled_4.h in Headers */,
 				DD805AAA14D79E59006C6D10 /* Square_Tiled_32.h in Headers */,
-				DD408FBB14DB5BD00016BA1A /* CollisionBox.h in Headers */,
 				DD408FBD14DB5BD00016BA1A /* ScriptObject.h in Headers */,
 				DD408FC114DB5D100016BA1A /* CoreObjectFactories.h in Headers */,
 				DD25DC6B14E1D6EB000ACF15 /* ObjectGroup.h in Headers */,
@@ -782,6 +781,7 @@
 				DDB3FE96158D667600BA1853 /* AnimatedParticle_2D.h in Headers */,
 				DDB3FE98158D667600BA1853 /* BasicParticle_2D.h in Headers */,
 				DDB3FE9A158D667600BA1853 /* MuzzleFlareParticle_2D.h in Headers */,
+				DDC567F3158D68F7005A6E7A /* Trigger_2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -910,7 +910,6 @@
 				2335820A14D3A5C300F66DA0 /* CoreObject_Manager.cpp in Sources */,
 				2335820C14D3A5C300F66DA0 /* CoreObject.cpp in Sources */,
 				2335820E14D3A5C300F66DA0 /* Hash.cpp in Sources */,
-				DD408FBA14DB5BD00016BA1A /* CollisionBox.cpp in Sources */,
 				DD408FBC14DB5BD00016BA1A /* ScriptObject.cpp in Sources */,
 				DD408FC014DB5D100016BA1A /* CoreObjectFactories.cpp in Sources */,
 				DD25DC6A14E1D6EB000ACF15 /* ObjectGroup.cpp in Sources */,
@@ -929,6 +928,7 @@
 				DDB3FEAC158D674C00BA1853 /* AnimatedParticle_2D.cpp in Sources */,
 				DDB3FE97158D667600BA1853 /* BasicParticle_2D.cpp in Sources */,
 				DDB3FE99158D667600BA1853 /* MuzzleFlareParticle_2D.cpp in Sources */,
+				DDC567F2158D68F7005A6E7A /* Trigger_2D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

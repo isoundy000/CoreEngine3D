@@ -14,7 +14,7 @@
 
 #include "../CoreGameObject.h"
 #include "../Game.h"
-#include "CollisionBox.h"
+#include "Trigger_2D.h"
 
 #define ObjectGroup_MAX_OBJECTS 16
 
@@ -26,7 +26,7 @@ public:
 	virtual bool SpawnInit(void* pSpawnStruct);
 	virtual void SetPosition(const vec3* pPosition);
 	
-	bool ObjectsAreContained(CollisionBox* pContainer);
+	bool ObjectsAreContained(Trigger_2D* pContainer);
 	
 private:	
 

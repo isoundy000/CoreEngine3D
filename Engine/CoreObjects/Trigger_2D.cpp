@@ -1,12 +1,12 @@
 //
-//  CollisionBox.cpp
+//  Trigger_2D.cpp
 //  Game(iOS)
 //
 //  Created by Jody McAdams on 12/27/11.
 //  Copyright (c) 2011 Jody McAdams. All rights reserved.
 //
 
-#include "CollisionBox.h"
+#include "Trigger_2D.h"
 
 #include "../Game.h"
 
@@ -16,7 +16,7 @@
 
 #include "CoreObjectFactories.h"
 
-bool CollisionBox::SpawnInit(void* pSpawnStruct)
+bool Trigger_2D::SpawnInit(void* pSpawnStruct)
 {
 	SpawnableEntity* pSpawnableEnt = (SpawnableEntity*)pSpawnStruct;
 	if(pSpawnableEnt == NULL)
@@ -32,7 +32,7 @@ bool CollisionBox::SpawnInit(void* pSpawnStruct)
 	return false;
 }
 
-void CollisionBox::SpawnInit(const vec3* pRefPos, f32 xLeft, f32 xRight, f32 yTop, f32 yBottom)
+void Trigger_2D::SpawnInit(const vec3* pRefPos, f32 xLeft, f32 xRight, f32 yTop, f32 yBottom)
 {
 	CopyVec3(&m_refPos,pRefPos);
 	CopyVec3(&m_currPos,pRefPos);
@@ -46,7 +46,7 @@ void CollisionBox::SpawnInit(const vec3* pRefPos, f32 xLeft, f32 xRight, f32 yTo
 }
 
 
-void CollisionBox::UpdatePosition(const vec3* pPos)
+void Trigger_2D::UpdatePosition(const vec3* pPos)
 {
 	CopyVec3(&m_currPos,pPos);
 	
@@ -54,7 +54,7 @@ void CollisionBox::UpdatePosition(const vec3* pPos)
 }
 
 
-void CollisionBox::UpdateCornerPositions()
+void Trigger_2D::UpdateCornerPositions()
 {
 	//All we can do here is maybe draw something
 	vec3 offset;
@@ -85,17 +85,17 @@ void CollisionBox::UpdateCornerPositions()
 }
 
 
-bool CollisionBox::Init(u32 type)
+bool Trigger_2D::Init(u32 type)
 {
 	CoreObject::Init(type);
 	
-	m_type = (CollisionBoxType)type;
+	m_type = (Trigger_2D_Type)type;
 	
 	return true;
 }
 
 
-bool CollisionBox::GetPositionIsInside(const vec2* pPos)
+bool Trigger_2D::GetPositionIsInside(const vec2* pPos)
 {
 	if(pPos->x > m_boxTL.x
 	   && pPos->x < m_boxBR.x
@@ -108,27 +108,27 @@ bool CollisionBox::GetPositionIsInside(const vec2* pPos)
 	return false;
 }
 
-const vec3* CollisionBox::GetBottomLeft()
+const vec3* Trigger_2D::GetBottomLeft()
 {
 	return &m_boxBL;
 }
 
-const vec3* CollisionBox::GetTopLeft()
+const vec3* Trigger_2D::GetTopLeft()
 {
 	return &m_boxTL;
 }
 
-const vec3* CollisionBox::GetBottomRight()
+const vec3* Trigger_2D::GetBottomRight()
 {
 	return &m_boxBR;
 }
 
-const vec3* CollisionBox::GetBoxCenter()
+const vec3* Trigger_2D::GetBoxCenter()
 {
 	return &m_boxCenter;
 }
 
-bool CollisionBox::CollideWithWorld(u32 collisionTypeFlags, CollisionResult* pOut_Result)
+bool Trigger_2D::CollideWithWorld(u32 collisionTypeFlags, CollisionResult* pOut_Result)
 {
 	//NOTE: This function is probably bad so you probably
 	//shouldn't use it very much
@@ -137,9 +137,9 @@ bool CollisionBox::CollideWithWorld(u32 collisionTypeFlags, CollisionResult* pOu
 	
 	pOut_Result->numBoxes = 0;
 	
-	for(u32 i=0; i<g_Factory_CollisionBox.m_numObjects; ++i)
+	for(u32 i=0; i<g_Factory_Trigger_2D.m_numObjects; ++i)
 	{
-		CollisionBox* pBox = &g_Factory_CollisionBox.m_pObjectList[i];
+		Trigger_2D* pBox = &g_Factory_Trigger_2D.m_pObjectList[i];
 		if(pBox == this)
 		{
 			continue;
@@ -175,7 +175,7 @@ bool CollisionBox::CollideWithWorld(u32 collisionTypeFlags, CollisionResult* pOu
 			}
 			
 			//Stop when we run out of boxes
-			if(pOut_Result->numBoxes == CollisionBox_MAX_COLLISION_RESULTS)
+			if(pOut_Result->numBoxes == Trigger_2D_MAX_COLLISION_RESULTS)
 			{
 				break;
 			}
@@ -186,7 +186,7 @@ bool CollisionBox::CollideWithWorld(u32 collisionTypeFlags, CollisionResult* pOu
 }
 
 
-void CollisionBox::Update(f32 timeElapsed)
+void Trigger_2D::Update(f32 timeElapsed)
 {
 	
 #ifdef _DEBUG	
@@ -195,33 +195,33 @@ void CollisionBox::Update(f32 timeElapsed)
 	
 	vec4 color;
 	
-	switch((CollisionBoxType)m_type)
+	switch((Trigger_2D_Type)m_type)
 	{
-		case CollisionBoxType_Player:
+		case Trigger_2D_Type_Player:
 		{
 			CopyVec4(&color,&color4f_green);
 			
 			break;
 		}
-		case CollisionBoxType_Moving:
+		case Trigger_2D_Type_Moving:
 		{
 			CopyVec4(&color,&color4f_yellow);
 			
 			break;
 		}
-		case CollisionBoxType_Static:
+		case Trigger_2D_Type_Static:
 		{
 			CopyVec4(&color,&color4f_red);
 			
 			break;
 		}
-		case CollisionBoxType_Ghost:
+		case Trigger_2D_Type_Ghost:
 		{
 			CopyVec4(&color,&color4f_pink);
 			
 			break;
 		}
-		case CollisionBoxType_Trigger:
+		case Trigger_2D_Type_Trigger:
 		{
 			CopyVec4(&color,&color4f_white);
 			
@@ -246,7 +246,7 @@ void CollisionBox::Update(f32 timeElapsed)
 	
 }
 
-void CollisionBox::Uninit()
+void Trigger_2D::Uninit()
 {
 	CoreObject::Uninit();
 }

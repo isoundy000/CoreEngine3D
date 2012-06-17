@@ -46,7 +46,7 @@ bool ObjectGroup::SpawnInit(void* pSpawnStruct)
 }
 
 
-bool ObjectGroup::ObjectsAreContained(CollisionBox* pContainer)
+bool ObjectGroup::ObjectsAreContained(Trigger_2D* pContainer)
 {
 	for(u32 i=0; i<m_numObjects; ++i)
 	{

@@ -1,38 +1,38 @@
 //
-//  CollisionBox.h
+//  Trigger_2D.h
 //  Game(iOS)
 //
 //  Created by Jody McAdams on 12/27/11.
 //  Copyright (c) 2011 Jody McAdams. All rights reserved.
 //
 
-#ifndef __CollisionBox_h
-#define __CollisionBox_h
+#ifndef __Trigger_2D_h
+#define __Trigger_2D_h
 
 #include "../MathTypes.h"
 #include "../GraphicsTypes.h"
 
 #include "../CoreObject.h"
 
-#define CollisionBox_MAX_COLLISION_RESULTS 16
+#define Trigger_2D_MAX_COLLISION_RESULTS 16
 
-enum CollisionBoxType
+enum Trigger_2D_Type
 {
-	CollisionBoxType_Player,
-	CollisionBoxType_Moving,
-	CollisionBoxType_Static,
-	CollisionBoxType_Ghost,
-	CollisionBoxType_Trigger,
-	CollisionBoxType_Num,
+	Trigger_2D_Type_Player,
+	Trigger_2D_Type_Moving,
+	Trigger_2D_Type_Static,
+	Trigger_2D_Type_Ghost,
+	Trigger_2D_Type_Trigger,
+	Trigger_2D_Type_Num,
 };
 
 
-class CollisionBox: public CoreObject
+class Trigger_2D: public CoreObject
 {
 public:
 	struct CollisionResult
 	{
-		CollisionBox* pBoxList[CollisionBox_MAX_COLLISION_RESULTS];
+		Trigger_2D* pBoxList[Trigger_2D_MAX_COLLISION_RESULTS];
 		u32 numBoxes;
 	};
 	
@@ -68,12 +68,12 @@ private:
 	
 	vec3 m_boxCenter;
 	
-	CollisionBoxType m_type;
+	Trigger_2D_Type m_type;
 
 	
 	void UpdateCornerPositions();
 };
 
-void CollisionBox_Init();
+void Trigger_2D_Init();
 
 #endif

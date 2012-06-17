@@ -14,7 +14,7 @@
 #include "../OpenGLRenderer.h"
 #include "../CoreObject_Manager.h"
 #include "CoreObjectFactories.h"
-#include "CollisionBox.h"
+#include "Trigger_2D.h"
 
 #include "../Hash.h"
 
@@ -144,7 +144,7 @@ bool ScriptObject::SpawnInit(void* pSpawnStruct)
 		const f32 halfWidth = pSpawnableEnt->scale.x/2.0f;
 		const f32 halfHeight = pSpawnableEnt->scale.y/2.0f;
 
-		CollisionBox* pBox = g_Factory_CollisionBox.CreateObject(CollisionBoxType_Trigger);
+		Trigger_2D* pBox = g_Factory_Trigger_2D.CreateObject(Trigger_2D_Type_Trigger);
 		pBox->SpawnInit(&m_position, -halfWidth+m_position.x, halfWidth+m_position.x, halfHeight+m_position.y, -halfHeight+m_position.y);
 
 		m_hCollisionBox = pBox->GetHandle();
@@ -187,7 +187,7 @@ void ScriptObject::SetPosition(const vec3* pPosition)
 {
 	CopyVec3(&m_position,pPosition);
 	
-	CollisionBox* pBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
+	Trigger_2D* pBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
 	if(pBox != NULL)
 	{
 		pBox->UpdatePosition(pPosition);
@@ -222,7 +222,7 @@ void ScriptObject::AttemptBoxTrigger(CoreGameObject* pObject, const vec3* pPosit
 		return;
 	}
 	
-	CollisionBox* pBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
+	Trigger_2D* pBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
 	if(pBox == NULL)
 	{
 		return;
@@ -292,7 +292,7 @@ void ScriptObject::Trigger(CoreGameObject* pObject)
 	}
 	else if(m_triggerMessage == Hash("SetCamera"))
 	{
-		CollisionBox* pBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
+		Trigger_2D* pBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
 		if(pBox == NULL)
 		{
 			return;
@@ -306,7 +306,7 @@ void ScriptObject::Trigger(CoreGameObject* pObject)
 	}
 	else if(m_triggerMessage == Hash("SetCameraAndParallax"))
 	{
-		CollisionBox* pBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
+		Trigger_2D* pBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
 		if(pBox == NULL)
 		{
 			return;
@@ -322,7 +322,7 @@ void ScriptObject::Trigger(CoreGameObject* pObject)
 	}
 	else if(m_triggerMessage == Hash("MoveCamera"))
 	{
-		CollisionBox* pCameraBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hTriggerObject);
+		Trigger_2D* pCameraBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hTriggerObject);
 		
 		if(pCameraBox != NULL)
 		{
@@ -332,7 +332,7 @@ void ScriptObject::Trigger(CoreGameObject* pObject)
 		}
 		else
 		{
-			CollisionBox* pBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
+			Trigger_2D* pBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
 			if(pBox == NULL)
 			{
 				return;
@@ -437,7 +437,7 @@ void ScriptObject::Update(f32 timeElapsed)
 		}
 		case Action_WaitForObjects:
 		{
-			CollisionBox* pBox = (CollisionBox*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
+			Trigger_2D* pBox = (Trigger_2D*)COREOBJECTMANAGER->GetObjectByHandle(m_hCollisionBox);
 			if(pBox != NULL)
 			{
 				ObjectGroup* pGroup = (ObjectGroup*)COREOBJECTMANAGER->GetObjectByHandle(m_hObjectGroup);

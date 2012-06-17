@@ -2,7 +2,7 @@
 #define __COREOBJECTFACTORIES_H
 
 #include "../CoreObject_Manager.h"
-#include "CollisionBox.h"
+#include "Trigger_2D.h"
 #include "ScriptObject.h"
 #include "ObjectGroup.h"
 #include "SoundPlayer.h"
@@ -13,14 +13,14 @@
 #include "Spawner.h"
 #include "NullObject.h"
 
-extern CoreObjectFactory<CollisionBox> g_Factory_CollisionBox;
+extern CoreObjectFactory<Trigger_2D> g_Factory_Trigger_2D;
 extern CoreObjectFactory<ScriptObject> g_Factory_ScriptObject;
 extern CoreObjectFactory<ObjectGroup> g_Factory_ObjectGroup;
 extern CoreObjectFactory<SoundPlayer> g_Factory_SoundPlayer;
 extern CoreObjectFactory<TileAffector> g_Factory_TileAffector;
-extern CoreObjectFactory<BasicParticle_2D> g_Factory_BasicParticle;
-extern CoreObjectFactory<AnimatedParticle_2D> g_Factory_AnimatedParticle;
-extern CoreObjectFactory<MuzzleFlareParticle_2D> g_Factory_MuzzleFlareParticle;
+extern CoreObjectFactory<BasicParticle_2D> g_Factory_BasicParticle_2D;
+extern CoreObjectFactory<AnimatedParticle_2D> g_Factory_AnimatedParticle_2D;
+extern CoreObjectFactory<MuzzleFlareParticle_2D> g_Factory_MuzzleFlareParticle_2D;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_Normal;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_UI;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_Light;

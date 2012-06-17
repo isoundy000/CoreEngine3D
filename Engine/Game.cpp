@@ -2648,7 +2648,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 						}
 						case g_Type_CollisionBox:
 						{
-							pCurrEnt->pObject = g_Factory_CollisionBox.CreateObject(pCurrEnt->type);
+							pCurrEnt->pObject = g_Factory_Trigger_2D.CreateObject(pCurrEnt->type);
 							
 							break;
 						}
