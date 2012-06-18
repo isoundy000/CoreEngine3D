@@ -53,7 +53,8 @@ public:
 		BlendMode blendMode;
 		f32 lifetimeMin;
 		f32 lifetimeMax;
-		f32 fadeTime;
+		f32 fadeTimeStart;
+		f32 fadeTimeEnd;
 		f32 gravity;
 		f32 moveSpeedMin;
 		f32 moveSpeedMax;
@@ -80,6 +81,7 @@ public:
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}
 	//virtual bool PostSpawnInit(void* pSpawnStruct){return true;}
 	void InitParticle(BasicParticle_2D::ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex);
+	void SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable);
 	u32 GetCategoryFlags();
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
@@ -90,12 +92,14 @@ public:
 	//virtual void ProcessMessage(u32 message){};	//Pass in a hash value
 private:
 	ParticleSettings* m_pSettings;
+	u32 m_numColumns;
 	f32 m_spinSpeed;
 	f32 m_lifeTimer;
 	f32 m_totalLifeTime;
 	f32 m_radiusStart;
 	f32 m_radiusEnd;
-	f32 m_fadeTime;
+	f32 m_fadeTimeStart;
+	f32 m_fadeTimeEnd;
 	vec3 m_velocity;
 	vec3 m_position;
 	vec4 m_diffuseColorStart;
@@ -104,6 +108,7 @@ private:
 	f32 m_currSpinAngle;
 	CoreObjectHandle m_hRenderable;
 	b2Body* m_pBody;
+	CoreObjectHandle m_hParentRenderable;
 };
 
 #endif

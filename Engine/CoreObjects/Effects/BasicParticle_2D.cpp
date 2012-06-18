@@ -17,6 +17,8 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 	m_pSettings = pSettings;
 	
 	TextureAsset* pArtDesc = pSettings->pItemArt;
+	
+	m_hParentRenderable = CoreObjectHandle();
 
 	RenderableGeometry3D* pGeom = NULL;
 	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);
@@ -31,6 +33,7 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 	
 	switch(numColumns)
 	{
+		case 0:
 		case 1:
 		{
 			pModelData = &g_Square1x1_modelData;
@@ -70,8 +73,18 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 	}
 	
 	GLRENDERER->InitRenderableGeometry3D(pGeom, pModelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
-	pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
-	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+	
+	m_numColumns = numColumns;
+	
+	if(m_numColumns < 2)
+	{
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
+	}
+	else
+	{
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
+		pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+	}
 	
 	const f32 radius = rand_FloatRange(pSettings->radiusMin, pSettings->radiusMax);
 	m_radiusStart = radius*pSettings->radiusScale_start;
@@ -85,20 +98,23 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 	
 	const f32 speed = rand_FloatRange(pSettings->moveSpeedMin, pSettings->moveSpeedMax);
 	ScaleVec3(&m_velocity,pDirection,speed);
-	f32 spinSpeed = rand_FloatRange(pSettings->spinSpeedMin, pSettings->spinSpeedMax);
+	
+	m_spinSpeed = rand_FloatRange(pSettings->spinSpeedMin, pSettings->spinSpeedMax);
 	if(pSettings->randomlyFlipSpin)
 	{
-		spinSpeed *= -1.0f;
+		m_spinSpeed *= (rand_Bool() ? -1.0f : 1.0f);
 	}
-	m_spinSpeed = spinSpeed*(rand_Bool() ? -1.0f : 1.0f);
-	m_currSpinAngle = startAngle;
-	m_lifeTimer = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
-	m_totalLifeTime = m_lifeTimer;
 	
-	m_fadeTime = pSettings->fadeTime*m_totalLifeTime;
+	m_currSpinAngle = startAngle;
+	m_lifeTimer = 0.0f;
+	m_totalLifeTime = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
+	
+	m_fadeTimeStart = pSettings->fadeTimeStart*m_totalLifeTime;
+	m_fadeTimeEnd = m_totalLifeTime-pSettings->fadeTimeEnd*m_totalLifeTime;
 	
 	CopyVec4(&m_diffuseColor,&pSettings->diffuseColor);
 	CopyVec4(&m_diffuseColorStart,&m_diffuseColor);
+	
 	
 	switch (texIndex)
 	{
@@ -159,12 +175,26 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 		m_pBody->SetAngularVelocity(m_spinSpeed);
 		m_pBody->SetLinearVelocity(b2Vec2(pDirection->x,pDirection->y));
 	}
+	
+	Update(0.0f);
 }
 
 
 u32 BasicParticle_2D::GetCategoryFlags()
 {
 	return m_pSettings->categoryFlags;
+}
+
+
+void BasicParticle_2D::SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable)
+{
+	m_hParentRenderable = hParentRenderable;
+	
+	RenderableGeometry3D* pGeom = GetGeomPointer(m_hParentRenderable);
+	if(pGeom != NULL)
+	{
+		SubVec3_Self(&m_position, GetGeomPos(pGeom));
+	}
 }
 
 
@@ -177,23 +207,45 @@ void BasicParticle_2D::Update(f32 timeElapsed)
 		return;
 	}
     
-	m_lifeTimer -= timeElapsed;
+	m_lifeTimer += timeElapsed;
 	
-	const f32 breakableAlpha = ClampF(m_lifeTimer/m_fadeTime,0.0f,1.0f);
-    
-	if(m_pSettings->blendMode == BlendMode_Premultiplied)
+	//Calculate alpha based on life time
+	f32 breakableAlpha;
+	if(m_lifeTimer < m_fadeTimeStart)
 	{
-		ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,breakableAlpha);
+		breakableAlpha = m_lifeTimer/m_fadeTimeStart;
+	}
+	else if(m_lifeTimer > m_fadeTimeEnd)
+	{
+		breakableAlpha = 1.0f-(m_lifeTimer-m_fadeTimeEnd)/(m_totalLifeTime-m_fadeTimeEnd);
 	}
 	else
 	{
-		m_diffuseColor.w = m_diffuseColorStart.w*breakableAlpha;
+		breakableAlpha = 1.0f;
+	}
+    
+	switch(m_pSettings->blendMode)
+	{
+		case BlendMode_Add:
+		case BlendMode_DesaturatedAdd:
+		case BlendMode_Premultiplied:
+		{
+			ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,breakableAlpha);
+			
+			break;
+		}
+		default:
+		{
+			m_diffuseColor.w = m_diffuseColorStart.w*breakableAlpha;
+			
+			break;
+		}
 	}
 
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
 	
 	const f32 lerpT = MinF(1.0f,m_lifeTimer/m_totalLifeTime);
-	const f32 radius = Lerp(m_radiusEnd, m_radiusStart, lerpT);
+	const f32 radius = Lerp(m_radiusStart, m_radiusEnd, lerpT);
 	
 	if(m_pBody != NULL)
 	{
@@ -213,14 +265,22 @@ void BasicParticle_2D::Update(f32 timeElapsed)
 		
 		CopyVec3(pPos,&m_position);
 		
-		vec3 velNorm;
-		TryNormalizeVec3(&velNorm,&m_velocity);
-		
 		mat4f_LoadScaledZRotation_IgnoreTranslation(pGeom->worldMat, m_currSpinAngle, radius);
+		
+		//If this particle is relative to a renderable, adjust it's position to be
+		//based off of the position of the parent
+		if(m_hParentRenderable)
+		{
+			RenderableGeometry3D* pParentGeom = GetGeomPointer(m_hParentRenderable);
+			if(pParentGeom != NULL)
+			{
+				AddVec3_Self(pPos, GetGeomPos(pParentGeom));
+			}
+		}
 	}
 	
 	
-	if(m_lifeTimer <= 0.0f)
+	if(m_lifeTimer >= m_totalLifeTime)
 	{
 		this->DeleteObject();
 	}
@@ -269,6 +329,14 @@ void BasicParticle_2D::UpdateHandle()	//Call when the memory location changes
 	CoreObject::UpdateHandle();
     
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
-    pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
-	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+
+	if(m_numColumns < 2)
+	{
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
+	}
+	else
+	{
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
+		pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+	}
 }

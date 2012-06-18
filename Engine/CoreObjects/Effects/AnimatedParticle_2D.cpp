@@ -46,17 +46,18 @@ void AnimatedParticle_2D::InitParticle(ParticleSettings *pSettings, const vec3* 
 	
 	const f32 speed = rand_FloatRange(pSettings->moveSpeedMin, pSettings->moveSpeedMax);
 	ScaleVec3(&m_velocity,pDirection,speed);
-	f32 spinSpeed = rand_FloatRange(pSettings->spinSpeedMin, pSettings->spinSpeedMax);
+	m_spinSpeed = rand_FloatRange(pSettings->spinSpeedMin, pSettings->spinSpeedMax);
 	if(pSettings->randomlyFlipSpin)
 	{
-		spinSpeed *= -1.0f;
+		m_spinSpeed *= (rand_Bool() ? -1.0f : 1.0f);
 	}
-	m_spinSpeed = spinSpeed*(rand_Bool() ? -1.0f : 1.0f);
-	m_currSpinAngle = startAngle;
-	m_lifeTimer = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
-	m_totalLifeTime = m_lifeTimer;
 	
-	m_fadeTime = pSettings->fadeTime*m_totalLifeTime;
+	m_currSpinAngle = startAngle;
+	m_lifeTimer = 0.0f;
+	m_totalLifeTime = rand_FloatRange(pSettings->lifetimeMin,pSettings->lifetimeMax);
+	
+	m_fadeTimeStart = pSettings->fadeTimeStart*m_totalLifeTime;
+	m_fadeTimeEnd = m_totalLifeTime-pSettings->fadeTimeEnd*m_totalLifeTime;
 	
 	CopyVec4(&m_diffuseColor,&pSettings->diffuseColor);
 	CopyVec4(&m_diffuseColorStart,&m_diffuseColor);
@@ -72,6 +73,8 @@ void AnimatedParticle_2D::InitParticle(ParticleSettings *pSettings, const vec3* 
 	{
 		CopyVec2(&m_texcoordOffset,&frameInfo.textureOffset);
 	}
+	
+	Update(0.0f);
 }
 
 
@@ -90,24 +93,46 @@ void AnimatedParticle_2D::Update(f32 timeElapsed)
 		return;
 	}
     
-	m_lifeTimer -= timeElapsed;
+	m_lifeTimer += timeElapsed;
 	
-	const f32 breakableAlpha = ClampF(m_lifeTimer/m_fadeTime,0.0f,1.0f);
-    
-    if(m_pSettings->blendMode == BlendMode_Premultiplied)
+	//Calculate alpha based on life time
+	f32 breakableAlpha;
+	if(m_lifeTimer < m_fadeTimeStart)
 	{
-		ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,breakableAlpha);
+		breakableAlpha = m_lifeTimer/m_fadeTimeStart;
+	}
+	else if(m_lifeTimer > m_fadeTimeEnd)
+	{
+		breakableAlpha = 1.0f-(m_lifeTimer-m_fadeTimeEnd)/(m_totalLifeTime-m_fadeTimeEnd);
 	}
 	else
 	{
-		m_diffuseColor.w = m_diffuseColorStart.w*breakableAlpha;
+		breakableAlpha = 1.0f;
+	}
+    
+    switch(m_pSettings->blendMode)
+	{
+		case BlendMode_Add:
+		case BlendMode_DesaturatedAdd:
+		case BlendMode_Premultiplied:
+		{
+			ScaleVec4(&m_diffuseColor,&m_diffuseColorStart,breakableAlpha);
+			
+			break;
+		}
+		default:
+		{
+			m_diffuseColor.w = m_diffuseColorStart.w*breakableAlpha;
+			
+			break;
+		}
 	}
 
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
 	
 	
 	const f32 lerpT = MinF(1.0f,m_lifeTimer/m_totalLifeTime);
-	const f32 radius = Lerp(m_radiusEnd, m_radiusStart, lerpT);
+	const f32 radius = Lerp(m_radiusStart, m_radiusEnd, lerpT);
 	
 	m_currSpinAngle += m_spinSpeed*timeElapsed;
 
@@ -115,9 +140,6 @@ void AnimatedParticle_2D::Update(f32 timeElapsed)
 	AddScaledVec3_Self(&m_position,&m_velocity,timeElapsed);
 	
 	CopyVec3(pPos,&m_position);
-	
-	vec3 velNorm;
-	TryNormalizeVec3(&velNorm,&m_velocity);
 	
 	mat4f_LoadScaledZRotation_IgnoreTranslation(pGeom->worldMat, m_currSpinAngle, radius);
 	
@@ -137,7 +159,7 @@ void AnimatedParticle_2D::Update(f32 timeElapsed)
 	}
 	
 	
-	if(m_lifeTimer <= 0.0f)
+	if(m_lifeTimer >= m_totalLifeTime)
 	{
 		this->DeleteObject();
 	}

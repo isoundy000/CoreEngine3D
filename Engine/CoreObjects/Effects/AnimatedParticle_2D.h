@@ -28,7 +28,8 @@ public:
 		BlendMode blendMode;
 		f32 lifetimeMin;
 		f32 lifetimeMax;
-		f32 fadeTime;
+		f32 fadeTimeStart;
+		f32 fadeTimeEnd;
 		f32 gravity;
 		f32 moveSpeedMin;
 		f32 moveSpeedMax;
@@ -64,7 +65,8 @@ private:
 	f32 m_spinSpeed;
 	f32 m_lifeTimer;
 	f32 m_totalLifeTime;
-	f32 m_fadeTime;
+	f32 m_fadeTimeStart;
+	f32 m_fadeTimeEnd;
 	f32 m_radiusStart;
 	f32 m_radiusEnd;
 	vec3 m_velocity;
