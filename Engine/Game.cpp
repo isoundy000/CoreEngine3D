@@ -43,8 +43,8 @@ static bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const C
 static const u32 g_Tile_NumAttributes = 2;
 static const AttributeData g_Tile_AttribData[g_Tile_NumAttributes] = 
 {
-	{ATTRIB_VERTEX,GL_FLOAT,3,0},
-	{ATTRIB_TEXCOORD,GL_FLOAT,2,12},
+	{ATTRIB_VERTEX,GL_FLOAT,0,3},
+	{ATTRIB_TEXCOORD,GL_FLOAT,12,2},
 };
 
 

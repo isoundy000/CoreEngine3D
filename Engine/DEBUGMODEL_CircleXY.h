@@ -22,7 +22,7 @@ static PrimitiveData  g_DEBUGMODEL_CircleXY_PrimitiveArray[g_DEBUGMODEL_CircleXY
 
 static AttributeData g_DEBUGMODEL_CircleXY_AttributesArray[g_DEBUGMODEL_CircleXY_numberOfAttributes]=
 {
-	{ATTRIB_VERTEX,GL_FLOAT,3,0},
+	{ATTRIB_VERTEX,GL_FLOAT,0,3},
 };
 
 

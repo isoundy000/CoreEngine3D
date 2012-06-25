@@ -40,7 +40,7 @@ static PrimitiveData g_Cube_PrimitiveArray[g_Cube_numberOfPrimitives]={
 
 static AttributeData g_Cube_AttributesArray[g_Cube_numberOfAttributes]=
 {
-	{ATTRIB_VERTEX,GL_FLOAT,3,0},
+	{ATTRIB_VERTEX,GL_FLOAT,0,3},
 };
 
 

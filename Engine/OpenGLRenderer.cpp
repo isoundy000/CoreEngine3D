@@ -4641,3 +4641,22 @@ vec3* GetGeomUp(RenderableGeometry3D* pGeom)
 {
 	return mat4f_GetUp(pGeom->worldMat);
 }
+
+RenderableGeometry3D* CreateSprite(TextureAsset* pTexture, const vec3* pPosition, f32 width, f32 height, RenderLayer renderLayer, RenderMaterial material, BlendMode blendMode)
+{
+	mat4f scaleMat;
+	mat4f_LoadScaleFromFloats(scaleMat, width*0.5f,height*0.5f,1.0f);
+	
+	RenderableGeometry3D* pGeom = NULL;
+	
+	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, material, &pTexture->textureHandle, scaleMat, renderLayer, blendMode, RenderFlagDefaults_2DTexture_AlphaBlended_UseView);
+	
+	SetGeomPos(pGeom,pPosition);
+	
+	return pGeom;
+}
+
+RenderableGeometry3D* CreateSpriteSimple(TextureAsset* pTexture, const vec3* pPosition, f32 width, f32 height, RenderLayer renderLayer)
+{
+	return CreateSprite(pTexture,pPosition,width,height,renderLayer,MT_TextureOnlySimple,BlendMode_Normal);
+}

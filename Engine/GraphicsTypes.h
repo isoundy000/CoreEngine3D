@@ -368,8 +368,8 @@ struct AttributeData
 {
 	Attributes attribute;
 	u16 type;
-	u8 size;
 	u8 offset;
+	u8 size;
 };
 
 struct ModelData

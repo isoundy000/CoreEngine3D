@@ -56,7 +56,7 @@ static PrimitiveData  g_DEBUGMODEL_Cylinder_PrimitiveArray[g_DEBUGMODEL_Cylinder
 
 static AttributeData g_DEBUGMODEL_Cylinder_AttributesArray[g_DEBUGMODEL_Cylinder_numberOfAttributes]=
 {
-	{ATTRIB_VERTEX,GL_FLOAT,3,0},
+	{ATTRIB_VERTEX,GL_FLOAT,0,3},
 };
 
 

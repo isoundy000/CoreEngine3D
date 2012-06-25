@@ -382,4 +382,6 @@ void SetGeomPos(RenderableGeometry3D* pGeom, const vec3* pPos);
 vec3* GetGeomLeft(RenderableGeometry3D* pGeom);
 vec3* GetGeomUp(RenderableGeometry3D* pGeom);
 void GetGeomNormalizedLeft(RenderableGeometry3D* pGeom, vec3* pOut_left);
+RenderableGeometry3D* CreateSpriteSimple(TextureAsset* pTexture, const vec3* pPosition, f32 width, f32 height, RenderLayer renderLayer);
+RenderableGeometry3D* CreateSprite(TextureAsset* pTexture, const vec3* pPosition, f32 width, f32 height, RenderLayer renderLayer, RenderMaterial material, BlendMode blendMode);
 #endif

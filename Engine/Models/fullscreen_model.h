@@ -19,9 +19,9 @@ static PrimitiveData g_Fullscreen_Model_PrimitiveArray[g_Fullscreen_Model_number
 
 static AttributeData g_Fullscreen_Model_AttributesArray[g_Fullscreen_Model_numberOfVertices]=
 {
-	{ATTRIB_VERTEX,GL_FLOAT,3,0},
-	{ATTRIB_NORMAL,GL_FLOAT,3,12},
-	{ATTRIB_TEXCOORD,GL_FLOAT,2,24},
+	{ATTRIB_VERTEX,GL_FLOAT,0,3},
+	{ATTRIB_NORMAL,GL_FLOAT,12,3},
+	{ATTRIB_TEXCOORD,GL_FLOAT,24,2},
 };
 
 ModelData g_Fullscreen_Model_modelData = {0,g_Fullscreen_Model_AttributesArray,g_Fullscreen_Model_numberOfVertices,32,"Square_TopHalf",g_Fullscreen_Model_PrimitiveArray,g_Fullscreen_Model_numberOfPrimitives,-1};

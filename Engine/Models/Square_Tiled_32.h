@@ -19,8 +19,8 @@ static PrimitiveData g_Square_Tiled_32_PrimitiveArray[g_Square_Tiled_32_numberOf
 
 static AttributeData g_Square_Tiled_32_AttributesArray[g_Square1x1_numberOfAttributes]=
 {
-	{ATTRIB_VERTEX,GL_FLOAT,3,0},
-	{ATTRIB_TEXCOORD,GL_FLOAT,2,12},
+	{ATTRIB_VERTEX,GL_FLOAT,0,3},
+	{ATTRIB_TEXCOORD,GL_FLOAT,12,2},
 };
 
 ModelData g_Square_Tiled_32_modelData = {0,g_Square_Tiled_32_AttributesArray,g_Square_Tiled_32_numberOfAttributes,20,"Square_Tiled_32",g_Square_Tiled_32_PrimitiveArray,g_Square_Tiled_32_numberOfPrimitives,-1};

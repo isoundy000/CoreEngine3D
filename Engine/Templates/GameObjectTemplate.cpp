@@ -16,27 +16,18 @@
 //Game includes
 #include "GameModels.h"
 
-
-//Materials
-/*static const MaterialSettings g_Material_AlphaBlendedUseView =
+//Art
+/*static TextureAsset g_Art_SpaceShip =
 {
+	"ArtResources/Characters/SpaceShip/SpaceShip.png",,
+	ImageType_PNG,
+	0,
 	GL_LINEAR,
 	GL_CLAMP_TO_EDGE,
 	GL_CLAMP_TO_EDGE,
-	MT_TextureOnlySimple,
-	RenderFlagDefaults_2DTexture_AlphaBlended_UseView,
 	true,
 };*/
 
-//Art
-/*static ItemArtDescription g_Art_SpaceShip =
-{
-    "ArtResources/Characters/SpaceShip/SpaceShip.png",
-    ImageType_PNG,
-    0,
-    &g_Material_AlphaBlendedUseView,
-    &g_Square1x1_modelData,
-};*/
 
 //Sound
 /*static ItemSoundDescription g_Sound_SpaceShipBeam =
