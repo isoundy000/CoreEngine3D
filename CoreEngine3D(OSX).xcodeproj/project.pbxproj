@@ -243,7 +243,7 @@
 		23FCBBD714A1E09A00C5EA7C /* DEBUGMODEL_Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_Cylinder.h; sourceTree = "<group>"; };
 		23FCBBD814A1E09A00C5EA7C /* EngineModels.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineModels.cpp; sourceTree = "<group>"; };
 		23FCBBD914A1E09A00C5EA7C /* EngineModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineModels.h; sourceTree = "<group>"; };
-		23FCBBDA14A1E09A00C5EA7C /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		23FCBBDA14A1E09A00C5EA7C /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Game.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		23FCBBDB14A1E09A00C5EA7C /* Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; path = Game.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		23FCBBDC14A1E09A00C5EA7C /* GameUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameUtil.cpp; sourceTree = "<group>"; };
 		23FCBBDD14A1E09A00C5EA7C /* GameUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameUtil.h; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 		DDC567F6158D691F005A6E7A /* Trigger_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trigger_2D.h; sourceTree = "<group>"; };
 		DDC893771530EB610091EB0E /* Box2DUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DUtil.cpp; sourceTree = "<group>"; };
 		DDC893781530EB620091EB0E /* Box2DUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DUtil.h; sourceTree = "<group>"; };
-		DDE051271563736D00820163 /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NullObject.cpp; sourceTree = "<group>"; };
+		DDE051271563736D00820163 /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; path = NullObject.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		DDE051281563736D00820163 /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NullObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 

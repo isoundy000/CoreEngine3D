@@ -206,8 +206,8 @@ public:
 	CoreUI_Button* AddUIButton(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32));
 	void UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTouchPosCurr);
 	void ClearAllButtons();
-	void AddItemArt(TextureAsset* pArtDescription);
-	void AddItemSound(SoundAsset* pSoundDescription);
+	void AddTextureResource(TextureAsset* pArtDescription);
+	void AddSoundResource(SoundAsset* pSoundDescription);
 	s32 AddSongToPlaylist(const char* songFilenameMP3);
 	void PlaySongByID(s32 songID, f32 volume, bool isLooping);
 	void StopSong();

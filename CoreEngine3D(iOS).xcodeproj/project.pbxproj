@@ -246,7 +246,7 @@
 		DDA6F49E149C1A920035A1BF /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		DDA6F49F149C1A920035A1BF /* DEBUGMODEL_CircleXZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_CircleXZ.h; sourceTree = "<group>"; };
 		DDA6F4A0149C1A920035A1BF /* DEBUGMODEL_Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_Cylinder.h; sourceTree = "<group>"; };
-		DDA6F4A1149C1A920035A1BF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		DDA6F4A1149C1A920035A1BF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Game.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		DDA6F4A2149C1A920035A1BF /* Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; path = Game.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		DDA6F4A3149C1A920035A1BF /* GameUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameUtil.cpp; sourceTree = "<group>"; };
 		DDA6F4A4149C1A920035A1BF /* GameUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameUtil.h; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 		DDB3FEAD158D674C00BA1853 /* AnimatedParticle_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; name = AnimatedParticle_2D.cpp; path = CoreObjects/Effects/AnimatedParticle_2D.cpp; sourceTree = "<group>"; };
 		DDC567F0158D68F7005A6E7A /* Trigger_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Trigger_2D.cpp; path = CoreObjects/Trigger_2D.cpp; sourceTree = "<group>"; };
 		DDC567F1158D68F7005A6E7A /* Trigger_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trigger_2D.h; path = CoreObjects/Trigger_2D.h; sourceTree = "<group>"; };
-		DDD059551576832C008B3C4F /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = NullObject.cpp; path = CoreObjects/NullObject.cpp; sourceTree = "<group>"; };
+		DDD059551576832C008B3C4F /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; name = NullObject.cpp; path = CoreObjects/NullObject.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		DDD059561576832C008B3C4F /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NullObject.h; path = CoreObjects/NullObject.h; sourceTree = "<group>"; };
 		DDD5217414A008B800D6A0BC /* CoreUI_Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreUI_Button.h; sourceTree = "<group>"; };
 		DDD5217614A008C600D6A0BC /* CoreUI_Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreUI_Button.cpp; sourceTree = "<group>"; };

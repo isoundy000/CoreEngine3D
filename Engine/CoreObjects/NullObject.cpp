@@ -53,8 +53,8 @@ void NullObject::InitClass()
 //----------------------------------------------------------------
 bool NullObject::LoadResourcesForType(u32 type)
 {
-    //TODO: call GAME->AddItemArt(&g_Art_SpaceShip)
-	//TODO: call GAME->AddItemSound(&g_Sound_SpaceShipBeam)
+    //TODO: call GAME->AddTextureResource(&g_Art_SpaceShip)
+	//TODO: call GAME->AddSoundResource(&g_Sound_SpaceShipBeam)
     
     return true;
 }

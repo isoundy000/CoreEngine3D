@@ -526,7 +526,7 @@ bool Game::WillArtDescriptionBeLoaded(TextureAsset* pArtDesc)
 
 
 //Call many times to prepare art to be loaded later
-void Game::AddItemArt(TextureAsset* pArtDescription)
+void Game::AddTextureResource(TextureAsset* pArtDescription)
 {
     //Make sure this description is not already in the list
     for(u32 i=0; i<m_numArtDescriptionsToLoadTexturesFor; ++i)
@@ -638,7 +638,7 @@ bool Game::WillSoundDescriptionBeLoaded(SoundAsset* pSoundDesc)
 
 
 //Call many times to prepare sound to be loaded later
-void Game::AddItemSound(SoundAsset* pSoundDescription)
+void Game::AddSoundResource(SoundAsset* pSoundDescription)
 {
     //Make sure this description is not already in the list
     for(u32 i=0; i<m_numSoundDescriptionsToLoadWavsFor; ++i)
