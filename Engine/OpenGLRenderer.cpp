@@ -4645,9 +4645,10 @@ vec3* GetGeomUp(RenderableGeometry3D* pGeom)
 RenderableGeometry3D* CreateSprite(TextureAsset* pTexture, const vec3* pPosition, f32 width, f32 height, RenderLayer renderLayer, RenderMaterial material, BlendMode blendMode)
 {
 	mat4f scaleMat;
-	mat4f_LoadScaleFromFloats(scaleMat, width*0.5f,height*0.5f,1.0f);
+	mat4f_LoadScaleFromFloats(scaleMat, width,height,1.0f);
 	
 	RenderableGeometry3D* pGeom = NULL;
+	GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);
 	
 	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, material, &pTexture->textureHandle, scaleMat, renderLayer, blendMode, RenderFlagDefaults_2DTexture_AlphaBlended_UseView);
 	

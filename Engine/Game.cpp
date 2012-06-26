@@ -97,6 +97,7 @@ bool Game::Init()
 	m_Box2D_pWorld = NULL;
 	m_Box2D_pContactListener = NULL;
 	m_Box2D_pDebugDraw = NULL;
+	m_Box2D_defaultCollisionFriction = 1.0f;
 	
 	for(int i=0; i<NumLevelLayers; ++i)
 	{
@@ -1697,6 +1698,10 @@ void Game::Box2D_SetGravity(f32 x, f32 y)
 	m_Box2D_pWorld->SetGravity(b2Vec2(x,y));
 }
 
+void Game::Box2D_SetDefaultCollisionFriction(f32 friction)
+{
+	m_Box2D_defaultCollisionFriction = friction;
+}
 
 b2Body* Game::Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY)
 {
@@ -1710,7 +1715,7 @@ b2Body* Game::Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY)
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1;
-	fixtureDef.friction = 0.4f;
+	fixtureDef.friction = m_Box2D_defaultCollisionFriction;
 	b2PolygonShape polygonShape;
 	polygonShape.SetAsBox(halfTileSize,halfTileSize);
 	fixtureDef.shape = &polygonShape;
@@ -2492,7 +2497,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 							
 							b2FixtureDef fixtureDef;
 							fixtureDef.density = 1;
-							fixtureDef.friction = 0.4f;
+							fixtureDef.friction = m_Box2D_defaultCollisionFriction;
 							
 							b2EdgeShape shape;
 							shape.Set(AsBox2DVec2(polyLinePoints[vertIDX]), AsBox2DVec2(polyLinePoints[vertIDX+1]));
@@ -2526,7 +2531,7 @@ bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidt
 							
 							b2FixtureDef fixtureDef;
 							fixtureDef.density = 1;
-							fixtureDef.friction = 0.4f;
+							fixtureDef.friction = m_Box2D_defaultCollisionFriction;
 							
 							b2EdgeShape shape;
 							shape.Set(AsBox2DVec2(polyLinePoints[numPolyPoints-1]), AsBox2DVec2(polyLinePoints[0]));

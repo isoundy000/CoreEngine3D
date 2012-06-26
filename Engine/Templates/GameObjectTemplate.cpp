@@ -136,3 +136,4 @@ void GameObjectTemplate::ProcessMessage(u32 message)
         }
     }*/
 };
+

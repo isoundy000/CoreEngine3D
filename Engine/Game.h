@@ -174,8 +174,6 @@ public:
 	virtual void LoadLevel(s32 levelNumber){};
 	virtual void ReloadLevel(){};
 	virtual void FinishedCurrentLevel(){};
-	virtual u32 Box2D_GetCollisionFlagsForTileIndex(s32 tileIndex){return 1<<CollisionFilter_Ground;}
-	virtual b2Body* Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY);
 	virtual void TileDestructionCallback(s32 tileIndexX, s32 tileIndexY, const vec2* pHitVel){};
     virtual void LoadResourcesForType(u32 type){}
 #if defined (PLATFORM_IOS)
@@ -188,6 +186,9 @@ public:
 #endif
 	virtual const vec3* GetPlayerPos(s32 playerIndex){return NULL;}
 	virtual void ProcessMessage(u32 message){};	//Pass in a hash value
+	
+	virtual u32 Box2D_GetCollisionFlagsForTileIndex(s32 tileIndex){return 1<<CollisionFilter_Ground;}
+	virtual b2Body* Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY);
 	void Box2D_SetPhysicsIsLocked(bool isLocked);
 	void Box2D_TogglePhysicsDebug(bool allowPhysicsDebugDraw);
 	void ResetCamera();
@@ -195,9 +196,12 @@ public:
 	void Box2D_Init(bool continuousPhysicsEnabled,bool allowObjectsToSleep);
 	b2World* Box2D_GetWorld();
 	b2Body* Box2D_GetGroundBody();
+	void Box2D_SetDefaultCollisionFriction(f32 friction);
 	void Box2D_SetGravity(f32 x, f32 y);
 	void Box2D_SetContactListener(b2ContactListener* pContactListener);
 	void Box2D_ResetWorld();
+	
+	
 	SpawnableEntity* GetSpawnableEntityByTiledUniqueID(u32 tiledUniqueID);
 	CoreUI_Button* AddUIButton(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32));
 	void UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTouchPosCurr);
@@ -298,6 +302,7 @@ private:
 	bool m_Box2D_PhysicsIsLocked;
 	bool m_Box2D_ContinuousPhysicsEnabled;
 	bool m_Box2D_allowObjectsToSleep;
+	f32 m_Box2D_defaultCollisionFriction;
 	
 	Box2DDebugDraw* m_Box2D_pDebugDraw;
 	Box2DContactListener* m_Box2D_pContactListener;
