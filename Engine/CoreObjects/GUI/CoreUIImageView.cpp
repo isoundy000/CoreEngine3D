@@ -12,29 +12,10 @@
 #include "../MathUtil.h"
 #include "../matrix.h"
 #include "../Game.h"
+#include "../Hash.h"
 
 //Game includes
 #include "EngineModels.h"
-
-//Art
-/*static TextureAsset g_Art_SpaceShip =
-{
-	"ArtResources/Characters/SpaceShip/SpaceShip.png",,
-	ImageType_PNG,
-	0,
-	GL_LINEAR,
-	GL_CLAMP_TO_EDGE,
-	GL_CLAMP_TO_EDGE,
-	true,
-};*/
-
-
-//Sound
-/*static ItemSoundDescription g_Sound_SpaceShipBeam =
-{
-	"ArtResources/SFX/SpaceShipBeam.wav",
-	0,//soundBufferID
-};*/
 
 
 //----------------------------------------------------------------
@@ -64,6 +45,7 @@ bool CoreUIImageView::Init(u32 type)
     CoreGameObject::Init(type);
     
     //TODO: other init
+	m_hRenderable = CoreObjectHandle();
     
     return true;
 }
@@ -78,8 +60,22 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 	//First do the standard spawn init to bring
 	//in all the attributes
 	CoreUIView::SpawnInit(pProperties);
-    
-	//TODO: image view specific attributes
+	
+	//Set up the renderable
+	RenderableGeometry3D* pGeom = NULL;
+	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_UI, &pGeom);
+	
+	if(pGeom != NULL)
+	{
+		GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, MT_TextureOnlySimple, NULL, NULL, RenderLayer_Normal, BlendMode_Normal, RenderFlagDefaults_2DTexture_AlphaBlended|RenderFlag_Visible);
+		
+		pugi::xml_attribute texture_Attrib = pProperties->attribute("texture");
+		if(texture_Attrib.empty() == false)
+		{
+			const u32 nameSig = Hash(texture_Attrib.value());
+			pGeom->material.customTexture0 = GAME->GetHUDTextureByNameSig(nameSig);
+		}
+	}
 	
     return true;
 }
@@ -101,6 +97,12 @@ void CoreUIImageView::Uninit()
 {
     //Base class uninit
     CoreGameObject::Uninit();
+	
+	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
+	if(pGeom != NULL)
+	{
+		pGeom->DeleteObject();
+	}
 }
 
 
@@ -140,4 +142,24 @@ void CoreUIImageView::ProcessMessage(u32 message)
         }
     }*/
 };
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
+{
+	CoreUIView::LayoutView(pParentView);
+	
+	//Update renderable to reflect new layout
+	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
+	if(pGeom != NULL)
+	{
+		mat4f_LoadScaleFromFloats(pGeom->worldMat, width, height, 1.0f);
+		vec3* pPos = GetGeomPos(pGeom);
+		
+		pPos->x = position.x;
+		pPos->y = position.y;
+		pPos->z = 0.0f;
+	}
+}
 

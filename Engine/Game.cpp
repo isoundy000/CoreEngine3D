@@ -1886,6 +1886,21 @@ bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const Collisio
 }
 
 
+u32* Game::GetHUDTextureByNameSig(u32 nameSig)
+{
+	for(u32 i=0; i<m_numHUDTextures; ++i)
+	{
+		HUDTexture* pCurrHUDTexture = &m_HUDTextures[i];
+		if(pCurrHUDTexture->nameSig == nameSig)
+		{
+			return &pCurrHUDTexture->textureHandle;
+		}
+	}
+	
+	return NULL;
+}
+
+
 CoreObjectHandle Game::LoadCoreUIViewFromXML(std::string& path, std::string& filename)
 {
 	m_numHUDTextures = 0;
@@ -1950,7 +1965,10 @@ CoreObjectHandle Game::LoadCoreUIViewFromXML(std::string& path, std::string& fil
 		CoreUIView* pView = g_Factory_CoreUIView.CreateObject(0);
 		if(pView != NULL)
 		{
+			//Spawn view using XML settings
 			pView->SpawnInit(&view);
+			
+			pView->LayoutView(NULL);
 			
 			return pView->GetHandle();
 		}

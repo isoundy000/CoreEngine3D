@@ -16,26 +16,6 @@
 //Game includes
 #include "EngineModels.h"
 
-//Art
-/*static TextureAsset g_Art_SpaceShip =
-{
-	"ArtResources/Characters/SpaceShip/SpaceShip.png",,
-	ImageType_PNG,
-	0,
-	GL_LINEAR,
-	GL_CLAMP_TO_EDGE,
-	GL_CLAMP_TO_EDGE,
-	true,
-};*/
-
-
-//Sound
-/*static ItemSoundDescription g_Sound_SpaceShipBeam =
-{
-	"ArtResources/SFX/SpaceShipBeam.wav",
-	0,//soundBufferID
-};*/
-
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
@@ -141,3 +121,11 @@ void CoreUIButton::ProcessMessage(u32 message)
     }*/
 };
 
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIButton::LayoutView(const CoreUIView* pParentView)
+{
+	CoreUIView::LayoutView(pParentView);
+	
+	//TODO: Do more stuff
+}

@@ -76,21 +76,22 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
-	//Set some defaults
+	//DEFAULTS
+	
 	offset.x = 0;
 	offset.y = 0;
-	width = 128;
-	height = 128;
-	angle = 0.0f;
+	width = GLRENDERER->screenWidth_points;
+	height = GLRENDERER->screenHeight_points;
+	//angle = 0.0f;
 	origin = CoreUI_Origin_TopLeft;
-	mode = CoreUI_Mode_Normal;
 	
-	//Load attributes
+	//LOAD ATTRIBUTES
+	
 	pugi::xml_attribute offsetX_Attrib = pProperties->attribute("offsetX");
 	pugi::xml_attribute offsetY_Attrib = pProperties->attribute("offsetY");
 	pugi::xml_attribute width_Attrib = pProperties->attribute("width");
 	pugi::xml_attribute height_Attrib = pProperties->attribute("height");
-	pugi::xml_attribute angle_Attrib = pProperties->attribute("angle");
+	//pugi::xml_attribute angle_Attrib = pProperties->attribute("angle");
 	
 	if(offsetX_Attrib.empty() == false)
 	{
@@ -112,10 +113,10 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		height = atof(height_Attrib.value());
 	}
 	
-	if(angle_Attrib.empty() == false)
+	/*if(angle_Attrib.empty() == false)
 	{
 		angle = atof(angle_Attrib.value());
-	}
+	}*/
 	
 	pugi::xml_attribute origin_Attrib = pProperties->attribute("origin");
 	if(origin_Attrib.empty() == false)
@@ -159,21 +160,9 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 			origin = CoreUI_Origin_BottomRight;
 		}
 	}
+
 	
-	pugi::xml_attribute mode_Attrib = pProperties->attribute("mode");
-	if(mode_Attrib.empty() == false)
-	{
-		const char* modeStr = mode_Attrib.value();
-		
-		if(strcmp(modeStr, "normal") == 0)
-		{
-			mode = CoreUI_Mode_Normal;
-		}
-		else if(strcmp(modeStr, "stretch") == 0)
-		{
-			mode = CoreUI_Mode_Stretch;
-		}
-	}
+	//CREATE SUBVIEWS
 	
 	//Create images
 	for (pugi::xml_node image = pProperties->child("image"); image; image = image.next_sibling("image"))
@@ -213,10 +202,88 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 //----------------------------------------------------------------
 void CoreUIView::LayoutView(const CoreUIView* pParentView)
 {
-	//Layout self
+	//NOTE: the parent position is the center of the object
 	
+	const f32 parentWidth = pParentView?pParentView->width:GLRENDERER->screenWidth_points;
+	const f32 parentHeight = pParentView?pParentView->height:GLRENDERER->screenHeight_pixels;
+	const f32 parentPosX = pParentView?pParentView->position.x:GLRENDERER->screenWidth_points/2;
+	const f32 parentPosY = pParentView?pParentView->position.y:GLRENDERER->screenHeight_points/2;
 	
-	//Layout children
+	const f32 parentHalfWidth = parentWidth*0.5f;
+	const f32 parentHalfHeight = parentHeight*0.5f;
+	
+	switch(origin)
+	{
+		case CoreUI_Origin_Center:
+		{
+			position.x = (f32)parentPosX+offset.x;
+			position.y = (f32)parentPosY+offset.y;
+			
+			break;
+		}
+		case CoreUI_Origin_Left:
+		{
+			position.x = (f32)parentPosX+offset.x-parentHalfWidth;
+			position.y = (f32)parentPosY+offset.y;
+			
+			break;
+		}
+		case CoreUI_Origin_Right:
+		{
+			position.x = (f32)parentPosX+offset.x+parentHalfWidth;
+			position.y = (f32)parentPosY+offset.y;
+			
+			break;
+		}
+		case CoreUI_Origin_Top:
+		{
+			position.x = (f32)parentPosX+offset.x;
+			position.y = (f32)parentPosY+offset.y-parentHalfHeight;
+			
+			break;
+		}
+		case CoreUI_Origin_Bottom:
+		{
+			position.x = (f32)parentPosX+offset.x;
+			position.y = (f32)parentPosY+offset.y+parentHalfHeight;
+			
+			break;
+		}
+		case CoreUI_Origin_TopLeft:
+		{
+			position.x = (f32)parentPosX+offset.x-parentHalfWidth;
+			position.y = (f32)parentPosY+offset.y-parentHalfHeight;
+			
+			break;
+		}
+		case CoreUI_Origin_BottomLeft:
+		{
+			position.x = (f32)parentPosX+offset.x-parentHalfWidth;
+			position.y = (f32)parentPosY+offset.y+parentHalfHeight;
+			
+			break;
+		}
+		case CoreUI_Origin_TopRight:
+		{
+			position.x = (f32)parentPosX+offset.x+parentHalfWidth;
+			position.y = (f32)parentPosY+offset.y-parentHalfHeight;
+			
+			break;
+		}
+		case CoreUI_Origin_BottomRight:
+		{
+			position.x = (f32)parentPosX+offset.x+parentHalfWidth;
+			position.y = (f32)parentPosY+offset.y+parentHalfHeight;
+			
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+	
+	//Layout children (subviews)
 	for(u32 i=0; i<m_numChildren; ++i)
 	{
 		CoreUIView* pSubView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(m_children[i]);

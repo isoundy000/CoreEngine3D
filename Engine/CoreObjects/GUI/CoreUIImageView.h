@@ -29,6 +29,7 @@ public:
     static bool LoadResourcesForType(u32 type); //Load art/sounds
     static void InitClass();	//One-time global init
     
+	virtual void LayoutView(const CoreUIView* pParentView);
 private:
     CoreObjectHandle m_hRenderable;
 };

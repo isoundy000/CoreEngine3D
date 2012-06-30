@@ -208,6 +208,7 @@ public:
 	void Box2D_SetContactListener(b2ContactListener* pContactListener);
 	void Box2D_ResetWorld();
 	
+	u32* GetHUDTextureByNameSig(u32 nameSig);
 	
 	SpawnableEntity* GetSpawnableEntityByTiledUniqueID(u32 tiledUniqueID);
 	void AddTextureResource(TextureAsset* pArtDescription);

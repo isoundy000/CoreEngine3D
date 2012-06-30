@@ -15,11 +15,6 @@
 
 #define CoreUIView_MAX_CHILDREN 32
 
-enum CoreUI_Mode
-{
-	CoreUI_Mode_Normal,	//nothing special
-	CoreUI_Mode_Stretch,//stretches X and Y to as the parent stretches
-};
 
 enum CoreUI_Origin
 {
@@ -49,16 +44,15 @@ public:
     
     static bool LoadResourcesForType(u32 type); //Load art/sounds
     static void InitClass();	//One-time global init
-    
-	CoreUI_Mode mode;
+
 	CoreUI_Origin origin;
 	vec2 offset;
 	f32 width;
 	f32 height;
-	f32 angle;
 	
-protected:
-	void LayoutView(const CoreUIView* pParentView);
+	vec2 position;
+	
+	virtual void LayoutView(const CoreUIView* pParentView);
 private:
     //TODO: put member functions here
     //TODO: put member variables here
