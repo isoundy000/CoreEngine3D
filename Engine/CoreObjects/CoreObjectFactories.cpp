@@ -1,6 +1,9 @@
 #include "CoreObjectFactories.h"
 #include "../OpenGLRenderer.h"
 
+CoreObjectFactory<CoreUIView> g_Factory_CoreUIView;
+CoreObjectFactory<CoreUIImageView> g_Factory_CoreUIImageView;
+CoreObjectFactory<CoreUIButton> g_Factory_CoreUIButton;
 CoreObjectFactory<Trigger_2D> g_Factory_Trigger_2D;
 CoreObjectFactory<ScriptObject> g_Factory_ScriptObject;
 CoreObjectFactory<ObjectGroup> g_Factory_ObjectGroup;

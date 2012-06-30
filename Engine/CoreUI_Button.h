@@ -20,24 +20,25 @@ enum CoreUI_ButtonState
 	CoreUI_ButtonState_Num,
 };
 
-enum CoreUI_AttachSide
+enum CoreUI_Origin
 {
-	CoreUI_AttachSide_None,
-	CoreUI_AttachSide_Left,
-	CoreUI_AttachSide_Right,
-	CoreUI_AttachSide_Top,
-	CoreUI_AttachSide_Bottom,
-	CoreUI_AttachSide_TopLeft,
-	CoreUI_AttachSide_BottomLeft,
-	CoreUI_AttachSide_TopRight,
-	CoreUI_AttachSide_BottomRight,
-	CoreUI_AttachSide_Num,
+	CoreUI_Origin_None,
+	CoreUI_Origin_Center,
+	CoreUI_Origin_Left,
+	CoreUI_Origin_Right,
+	CoreUI_Origin_Top,
+	CoreUI_Origin_Bottom,
+	CoreUI_Origin_TopLeft,
+	CoreUI_Origin_BottomLeft,
+	CoreUI_Origin_TopRight,
+	CoreUI_Origin_BottomRight,
+	CoreUI_Origin_Num,
 };
 
 struct CoreUI_Button
 {
 public:
-	void Init(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32));
+	void Init(u32 width, u32 height, CoreUI_Origin Origin, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32));
 	void PressButton(TouchState touchState, vec2* pBeginTouchPos, vec2* pCurrTouchPo);
 	
 	void Show();
@@ -54,7 +55,7 @@ public:
 	vec4 m_diffuseColor;
 
 	CoreUI_ButtonState m_buttonState;
-	CoreUI_AttachSide m_attachSide;
+	CoreUI_Origin m_Origin;
 	
 	CoreObjectHandle m_handle_r3D_button;
 	

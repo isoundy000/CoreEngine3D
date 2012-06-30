@@ -100,7 +100,7 @@ void CoreUI_Button::PressButton(TouchState touchState, vec2* pBeginTouchPos, vec
 }
 
 
-void CoreUI_Button::Init(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32))
+void CoreUI_Button::Init(u32 width, u32 height, CoreUI_Origin Origin, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32))
 {
 	SetVec4(&m_diffuseColor,1.0f,1.0f,1.0f,1.0f);
 	
@@ -112,71 +112,71 @@ void CoreUI_Button::Init(u32 width, u32 height, CoreUI_AttachSide attachSide, s3
 	m_halfWidth = width/2;
 	m_halfHeight = height/2;
 	
-	m_attachSide = attachSide;
+	m_Origin = Origin;
 
 	m_value = value;
 	
 	m_callback = callback;
 	
-	switch(attachSide)
+	switch(Origin)
 	{
-		case CoreUI_AttachSide_None:
+		case CoreUI_Origin_None:
 		{
 			m_position.x = (f32)offsetX;
 			m_position.y = (f32)offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_Left:
+		case CoreUI_Origin_Left:
 		{
 			m_position.x = (f32)offsetX;
 			m_position.y = (f32)offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_Right:
+		case CoreUI_Origin_Right:
 		{
 			m_position.x = (f32)GLRENDERER->screenWidth_points+offsetX;
 			m_position.y = (f32)offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_Top:
+		case CoreUI_Origin_Top:
 		{
 			m_position.x = (f32)GLRENDERER->screenWidth_points/2+offsetX;
 			m_position.y = (f32)offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_Bottom:
+		case CoreUI_Origin_Bottom:
 		{
 			m_position.x = (f32)GLRENDERER->screenWidth_points/2+offsetX;
 			m_position.y = (f32)GLRENDERER->screenHeight_points+offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_TopLeft:
+		case CoreUI_Origin_TopLeft:
 		{
 			m_position.x = (f32)offsetX;
 			m_position.y = (f32)offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_BottomLeft:
+		case CoreUI_Origin_BottomLeft:
 		{
 			m_position.x = (f32)offsetX;
 			m_position.y = (f32)GLRENDERER->screenHeight_points+offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_TopRight:
+		case CoreUI_Origin_TopRight:
 		{
 			m_position.x = (f32)GLRENDERER->screenWidth_points+offsetX;
 			m_position.y = (f32)offsetY;
 			
 			break;
 		}
-		case CoreUI_AttachSide_BottomRight:
+		case CoreUI_Origin_BottomRight:
 		{
 			m_position.x = (f32)GLRENDERER->screenWidth_points+offsetX;
 			m_position.y = (f32)GLRENDERER->screenHeight_points+offsetY;

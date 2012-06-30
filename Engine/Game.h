@@ -29,8 +29,6 @@
 #include "CoreInput_PCInputState.h"
 #endif
 
-#include "CoreUI_Button.h"
-
 #include "CoreAudio_OpenAL.h"
 
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
@@ -40,6 +38,8 @@
 #include "pugixml/src/pugixml.hpp"
 
 #include "CoreObject_Manager.h"
+
+#include "CoreObjects/GUI/CoreUIView.h"
 
 #include <vector>
 
@@ -59,6 +59,8 @@ class Box2DDebugDraw;
 #define GAME_MAX_SPAWNABLE_ENTITIES 256
 
 #define GAME_MAX_STORED_DELETABLE_TILES 64
+
+#define GAME_MAX_HUD_TEXTURES 32
 
 enum CollisionFilter
 {
@@ -162,6 +164,11 @@ struct CollisionLineSegment
     u32 numPoints;
 };
 
+struct HUDTexture
+{
+	u32 nameSig;
+	u32 textureHandle;
+};
 
 class Game
 {
@@ -203,9 +210,6 @@ public:
 	
 	
 	SpawnableEntity* GetSpawnableEntityByTiledUniqueID(u32 tiledUniqueID);
-	CoreUI_Button* AddUIButton(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32));
-	void UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTouchPosCurr);
-	void ClearAllButtons();
 	void AddTextureResource(TextureAsset* pArtDescription);
 	void AddSoundResource(SoundAsset* pSoundDescription);
 	s32 AddSongToPlaylist(const char* songFilenameMP3);
@@ -245,7 +249,7 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	
 	void SetTileCullingRange(s32 cullingRange);
 	void ConstrainCameraToTiledLevel();
-	bool LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters);
+	bool LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters);
 	void UpdateTiledLevelPosition(vec3* pPosition);
 	void LoadItemArt();	//Call to load all the art in the list
 	void LoadItemSounds();
@@ -256,6 +260,9 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	void ConvertTileID(s32* p_InOut_tileID, TileSetDescription** pOut_tileDesc);
 	void CreateRenderableTile(Tile* pTile, RenderableGeometry3D** pGeom, RenderLayer renderLayer, RenderMaterial material, vec2* pOut_texCoordOffset, bool usesViewMatrix);
 	void CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, RenderLayer renderLayer, RenderMaterial material);
+	
+	CoreObjectHandle LoadCoreUIViewFromXML(std::string& path, std::string& filename);
+	
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 	DeviceInputState m_deviceInputState;
 #endif
@@ -286,7 +293,9 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	s32 m_camExtentBR_X;
 	s32 m_camExtentBR_Y;
 	
+#if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 	bool m_touchIsDisabled[MAX_MULTITOUCH];
+#endif
 	bool m_paused;
 	
 	
@@ -325,10 +334,7 @@ private:
     
     SoundAsset* m_pSoundDescriptionsToLoadWavsFor[GAME_MAX_SOUND_DESCRIPTIONS];
     u32 m_numSoundDescriptionsToLoadWavsFor;
-	
-	CoreUI_Button m_ui_buttons[GAME_MAX_BUTTONS];
-	u32 m_ui_numButtons;
-	
+
 	CoreAudioOpenAL* m_pCoreAudioOpenAL;
 
 	s32 m_currSongID;
@@ -363,6 +369,9 @@ private:
 	u32 m_tileVBOHandle;
 	u32 m_tileVAOHandle;
 	u32 m_tileVertDataSize;
+	
+	HUDTexture m_HUDTextures[GAME_MAX_HUD_TEXTURES];
+	u32 m_numHUDTextures;
 };
 
 #endif

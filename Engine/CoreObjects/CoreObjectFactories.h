@@ -2,17 +2,23 @@
 #define __COREOBJECTFACTORIES_H
 
 #include "../CoreObject_Manager.h"
-#include "Trigger_2D.h"
-#include "ScriptObject.h"
-#include "ObjectGroup.h"
-#include "SoundPlayer.h"
-#include "TileAffector.h"
-#include "BasicParticle_2D.h"
-#include "AnimatedParticle_2D.h"
-#include "MuzzleFlareParticle_2D.h"
-#include "Spawner.h"
-#include "NullObject.h"
+#include "CoreObjects/GUI/CoreUIView.h"
+#include "CoreObjects/GUI/CoreUIImageView.h"
+#include "CoreObjects/GUI/CoreUIButton.h"
+#include "CoreObjects/Trigger_2D.h"
+#include "CoreObjects/ScriptObject.h"
+#include "CoreObjects/ObjectGroup.h"
+#include "CoreObjects/SoundPlayer.h"
+#include "CoreObjects/TileAffector.h"
+#include "CoreObjects/Effects/BasicParticle_2D.h"
+#include "CoreObjects/Effects/AnimatedParticle_2D.h"
+#include "CoreObjects/Effects/MuzzleFlareParticle_2D.h"
+#include "CoreObjects/Spawner.h"
+#include "CoreObjects/NullObject.h"
 
+extern CoreObjectFactory<CoreUIView> g_Factory_CoreUIView;
+extern CoreObjectFactory<CoreUIImageView> g_Factory_CoreUIImageView;
+extern CoreObjectFactory<CoreUIButton> g_Factory_CoreUIButton;
 extern CoreObjectFactory<Trigger_2D> g_Factory_Trigger_2D;
 extern CoreObjectFactory<ScriptObject> g_Factory_ScriptObject;
 extern CoreObjectFactory<ObjectGroup> g_Factory_ObjectGroup;

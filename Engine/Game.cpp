@@ -26,6 +26,10 @@
 
 #include <algorithm>
 
+#if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
+#include "Engine/CoreInput_DeviceInputState.h"
+#endif
+
 #define ENGINE_PATH "Engine/" 
 
 Game* GAME = NULL;
@@ -75,6 +79,8 @@ void Game::ResetCamera()
 bool Game::Init()
 {
 	m_paused = false;
+	
+	m_numHUDTextures = 0;
 	
 	m_cullingRange = 30;
 	
@@ -152,7 +158,6 @@ bool Game::Init()
 	m_numArtDescriptionsToLoadTexturesFor = 0;
 	m_numLoadedSoundDescriptions = 0;
 	m_numSoundDescriptionsToLoadWavsFor = 0;
-	m_ui_numButtons = 0;
 
 	m_numSongsInPlaylist = 0;
 	m_currSongID = -1;
@@ -472,28 +477,9 @@ void Game::PlaySongByID(s32 songID, f32 volume, bool isLooping)
 }
 
 
-CoreUI_Button* Game::AddUIButton(u32 width, u32 height, CoreUI_AttachSide attachSide, s32 offsetX, s32 offsetY, u32* textureHandle, s32 value, void (*callback)(s32))
-{
-	if(m_ui_numButtons == GAME_MAX_BUTTONS)
-	{
-		return NULL;
-	}
-	
-	CoreUI_Button* pButton = &m_ui_buttons[m_ui_numButtons];
-	pButton->Init(width, height, attachSide, offsetX, offsetY, textureHandle, value, callback);
-	
-	++m_ui_numButtons;
-	
-	return pButton;
-}
-
-void Game::ClearAllButtons()
-{
-	m_ui_numButtons = 0;
-}
 
 
-void Game::UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTouchPosCurr)
+/*void Game::UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTouchPosCurr)
 {
 	for(u32 i=0; i<m_ui_numButtons; ++i)
 	{
@@ -502,7 +488,7 @@ void Game::UpdateButtons(TouchState touchState, vec2 *pTouchPosBegin, vec2* pTou
 			m_ui_buttons[i].PressButton(touchState, pTouchPosBegin, pTouchPosCurr);
 		}
 	}
-}
+}*/
 
 
 //Checks if the art will be loaded next time LoadItemArt gets called
@@ -1900,7 +1886,82 @@ bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const Collisio
 }
 
 
-bool Game::LoadTiledLevel(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)
+CoreObjectHandle Game::LoadCoreUIViewFromXML(std::string& path, std::string& filename)
+{
+	m_numHUDTextures = 0;
+	
+	std::string filenameWithPath(path+filename);
+	
+	pugi::xml_parse_result result = m_TMXDoc.load_file(GetPathToFile(filenameWithPath.c_str()).c_str());
+	
+	//Load textures
+	for (pugi::xml_node texture = m_TMXDoc.child("texture"); texture; texture = texture.next_sibling("texture"))
+	{
+		//We can't add unlimited HUD textures
+		if(m_numHUDTextures == GAME_MAX_HUD_TEXTURES)
+		{
+			COREDEBUG_PrintDebugMessage("ERROR: LoadCoreUIViewFromXML->Ran out of texture slots");
+			
+			break;
+		}
+		
+		//Get name signature
+		u32 nameSig = 0;
+		pugi::xml_attribute name_Attrib = texture.attribute("name");
+		if(name_Attrib.empty() == false)
+		{
+			nameSig = Hash(name_Attrib.value());
+		}
+		
+		bool nameFound = false;
+		
+		//Check if it exists
+		for(u32 i=0; i<m_numHUDTextures; ++i)
+		{
+			if(m_HUDTextures[i].nameSig == nameSig)
+			{
+				nameFound = true;
+				break;
+			}
+		}
+		
+		//If the texture was not found, add it
+		if(nameFound == false)
+		{
+			pugi::xml_attribute file_Attrib = texture.attribute("file");
+			if(file_Attrib.empty() == false)
+			{
+				HUDTexture* pCurrTexture = &m_HUDTextures[m_numHUDTextures];
+				pCurrTexture->nameSig = nameSig;
+				
+				std::string textureFileName = file_Attrib.value();
+				std::string texFilenameWithPath(path+textureFileName);
+				
+				GLRENDERER->LoadTexture(texFilenameWithPath.c_str(), ImageType_PNG, &pCurrTexture->textureHandle, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,true);
+				
+				++m_numHUDTextures;
+			}
+		}
+	}
+	
+	//Load views
+	for (pugi::xml_node view = m_TMXDoc.child("view"); view; view = view.next_sibling("view"))
+	{
+		CoreUIView* pView = g_Factory_CoreUIView.CreateObject(0);
+		if(pView != NULL)
+		{
+			pView->SpawnInit(&view);
+			
+			return pView->GetHandle();
+		}
+	}
+
+	//Return invalid handle
+	return CoreObjectHandle();
+}
+
+
+bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)
 {
 	const s32 tilesOnScreenX = GLRENDERER->screenWidth_points/tileWidthPixels;
 	const s32 tilesOnScreenY = GLRENDERER->screenHeight_points/tileWidthPixels;
