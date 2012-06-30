@@ -81,6 +81,25 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 		}
 	}
 	
+	pugi::xml_attribute colorR_Attrib = pProperties->attribute("colorR");
+	pugi::xml_attribute colorG_Attrib = pProperties->attribute("colorG");
+	pugi::xml_attribute colorB_Attrib = pProperties->attribute("colorB");
+	
+	if(colorR_Attrib.empty() == false)
+	{
+		m_diffuseColor.x = atof(colorR_Attrib.value())/255.0f;
+	}
+	
+	if(colorG_Attrib.empty() == false)
+	{
+		m_diffuseColor.y = atof(colorG_Attrib.value())/255.0f;
+	}
+	
+	if(colorB_Attrib.empty() == false)
+	{
+		m_diffuseColor.z = atof(colorB_Attrib.value())/255.0f;
+	}
+	
     return true;
 }
 
