@@ -32,6 +32,7 @@ public:
 	virtual void LayoutView(const CoreUIView* pParentView);
 private:
     CoreObjectHandle m_hRenderable;
+	vec4 m_diffuseColor;
 };
 
 #endif

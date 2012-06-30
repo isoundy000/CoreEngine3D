@@ -47,6 +47,8 @@ bool CoreUIImageView::Init(u32 type)
     //TODO: other init
 	m_hRenderable = CoreObjectHandle();
     
+	CopyVec4(&m_diffuseColor,&color4f_white);
+	
     return true;
 }
 
@@ -67,7 +69,9 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 	
 	if(pGeom != NULL)
 	{
-		GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, MT_TextureOnlySimple, NULL, NULL, RenderLayer_Normal, BlendMode_Normal, RenderFlagDefaults_2DTexture_AlphaBlended|RenderFlag_Visible);
+		GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, MT_TextureAndDiffuseColor, NULL, NULL, RenderLayer_Normal, BlendMode_Normal, RenderFlagDefaults_2DTexture_AlphaBlended|RenderFlag_Visible);
+		
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
 		
 		pugi::xml_attribute texture_Attrib = pProperties->attribute("texture");
 		if(texture_Attrib.empty() == false)
@@ -121,6 +125,12 @@ void CoreUIImageView::UpdateHandle()
 {
     //TODO: update anything that has pointers to local
     //member variables, such as material uniform locations
+	
+	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
+	if(pGeom != NULL)
+	{
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
+	}
 }
 
 
@@ -149,6 +159,8 @@ void CoreUIImageView::ProcessMessage(u32 message)
 void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
 {
 	CoreUIView::LayoutView(pParentView);
+	
+	m_diffuseColor.w = parentOpacity*opacity;
 	
 	//Update renderable to reflect new layout
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);

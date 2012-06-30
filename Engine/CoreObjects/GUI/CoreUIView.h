@@ -52,6 +52,10 @@ public:
 	
 	vec2 position;
 	
+	f32 opacity;
+	
+	f32 parentOpacity;
+	
 	virtual void LayoutView(const CoreUIView* pParentView);
 private:
     //TODO: put member functions here

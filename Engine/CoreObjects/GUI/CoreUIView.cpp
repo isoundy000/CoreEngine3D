@@ -77,6 +77,8 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
 	//DEFAULTS
+	opacity = 1.0f;
+	parentOpacity = 1.0f;
 	
 	offset.x = 0;
 	offset.y = 0;
@@ -92,6 +94,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_attribute width_Attrib = pProperties->attribute("width");
 	pugi::xml_attribute height_Attrib = pProperties->attribute("height");
 	//pugi::xml_attribute angle_Attrib = pProperties->attribute("angle");
+	pugi::xml_attribute opacity_Attrib = pProperties->attribute("opacity");
 	
 	if(offsetX_Attrib.empty() == false)
 	{
@@ -117,6 +120,11 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	{
 		angle = atof(angle_Attrib.value());
 	}*/
+	
+	if(opacity_Attrib.empty() == false)
+	{
+		opacity = atof(opacity_Attrib.value());
+	}
 	
 	pugi::xml_attribute origin_Attrib = pProperties->attribute("origin");
 	if(origin_Attrib.empty() == false)
@@ -211,6 +219,8 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	
 	const f32 parentHalfWidth = parentWidth*0.5f;
 	const f32 parentHalfHeight = parentHeight*0.5f;
+	
+	parentOpacity = pParentView?(pParentView->parentOpacity*pParentView->opacity):1.0f;
 	
 	switch(origin)
 	{

@@ -1901,7 +1901,7 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 }
 
 
-CoreObjectHandle Game::LoadCoreUIViewFromXML(std::string& path, std::string& filename)
+void Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 {
 	m_numHUDTextures = 0;
 	
@@ -1969,13 +1969,8 @@ CoreObjectHandle Game::LoadCoreUIViewFromXML(std::string& path, std::string& fil
 			pView->SpawnInit(&view);
 			
 			pView->LayoutView(NULL);
-			
-			return pView->GetHandle();
 		}
 	}
-
-	//Return invalid handle
-	return CoreObjectHandle();
 }
 
 
