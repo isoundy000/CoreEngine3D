@@ -201,6 +201,15 @@ void CoreUIImageView::RefreshSettings()
 		pPos->x = position.x;
 		pPos->y = position.y;
 		pPos->z = 0.0f;
+		
+		if(parentVisible && visible)
+		{
+			pGeom->material.flags |= RenderFlag_Visible;
+		}
+		else
+		{
+			pGeom->material.flags &= ~RenderFlag_Visible;
+		}
 	}
 }
 

@@ -63,14 +63,16 @@ public:
 	vec2 position;
 	
 	f32 opacity;
-	
-	f32 parentOpacity;
-	
+	bool visible;
+
 	CoreUI_ViewType viewType;
 	
 	virtual void LayoutView(const CoreUIView* pParentView);
 	virtual void RefreshView();
 protected:
+	f32 parentOpacity;
+	bool parentVisible;
+	
 	void LayoutSubViews();
 private:
     //TODO: put member functions here

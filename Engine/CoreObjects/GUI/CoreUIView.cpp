@@ -111,10 +111,12 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
 	//DEFAULTS
+	parentOpacity = 1.0f;
+	parentVisible = true;
+	
 	nameSig = 0;
 	opacity = 1.0f;
-	parentOpacity = 1.0f;
-	
+	visible = true;
 	offset.x = 0;
 	offset.y = 0;
 	width = GLRENDERER->screenWidth_points;
@@ -130,6 +132,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_attribute height_Attrib = pProperties->attribute("height");
 	//pugi::xml_attribute angle_Attrib = pProperties->attribute("angle");
 	pugi::xml_attribute opacity_Attrib = pProperties->attribute("opacity");
+	pugi::xml_attribute visible_Attrib = pProperties->attribute("visible");
 	pugi::xml_attribute name_Attrib = pProperties->attribute("name");
 	
 	if(offsetX_Attrib.empty() == false)
@@ -160,6 +163,14 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	if(opacity_Attrib.empty() == false)
 	{
 		opacity = atof(opacity_Attrib.value());
+	}
+	
+	if(visible_Attrib.empty() == false)
+	{
+		if(strcmp(visible_Attrib.value(),"false") == 0)
+		{
+			visible = false;
+		}
 	}
 	
 	if(name_Attrib.empty() == false)
@@ -277,6 +288,7 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	const f32 parentHalfHeight = parentHeight*0.5f;
 	
 	parentOpacity = pParentView?(pParentView->parentOpacity*pParentView->opacity):1.0f;
+	parentVisible = pParentView?(pParentView->parentVisible && pParentView->visible):true;
 	
 	switch(origin)
 	{
