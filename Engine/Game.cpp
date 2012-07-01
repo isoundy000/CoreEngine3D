@@ -236,6 +236,11 @@ void Game::CleanUp()
 		GLRENDERER->DeleteTexture(&pDesc->loadedTextureID);
 	}
 	
+	for(u32 i=0; i<m_numHUDTextures; ++i)
+	{
+		GLRENDERER->DeleteTexture(&m_HUDTextures[i].textureHandle);
+	}
+	
 	delete m_pCoreAudioOpenAL;
 	delete m_coreObjectManager;
 }
