@@ -1908,7 +1908,7 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 }
 
 
-void Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
+CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 {
 	m_numHUDTextures = 0;
 	
@@ -1966,6 +1966,9 @@ void Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		}
 	}
 	
+	CoreUIView* pMainView = NULL;
+	bool shouldPrintWarning = false;
+	
 	//Load views
 	for (pugi::xml_node view = m_TMXDoc.child("view"); view; view = view.next_sibling("view"))
 	{
@@ -1976,7 +1979,32 @@ void Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 			pView->SpawnInit(&view);
 			
 			pView->LayoutView(NULL);
+			
+			if(pMainView == NULL)
+			{
+				pMainView = pView;
+			}
+			else
+			{
+				shouldPrintWarning = true;
+			}
 		}
+	}
+	
+	if(pMainView != NULL)
+	{
+		if(shouldPrintWarning == true)
+		{
+			COREDEBUG_PrintDebugMessage("ERROR: LoadCoreUIFromXML-> You have more than one root view in the XML file!");
+		}
+		
+		//Return handle to view
+		return pMainView;
+	}
+	else
+	{
+		//Return invalid handle
+		return NULL;
 	}
 }
 

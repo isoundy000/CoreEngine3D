@@ -45,6 +45,8 @@ bool CoreUIImageView::Init(u32 type)
     CoreGameObject::Init(type);
     
     //TODO: other init
+	viewType = CoreUI_ViewType_ImageView;
+	
 	m_hRenderable = CoreObjectHandle();
     
 	CopyVec4(&m_diffuseColor,&color4f_white);
@@ -179,6 +181,14 @@ void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
 {
 	CoreUIView::LayoutView(pParentView);
 	
+	RefreshSettings();
+}
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIImageView::RefreshSettings()
+{
 	m_diffuseColor.w = parentOpacity*opacity;
 	
 	//Update renderable to reflect new layout
@@ -194,3 +204,11 @@ void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
 	}
 }
 
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIImageView::RefreshView()
+{
+	RefreshSettings();
+	LayoutSubViews();
+}

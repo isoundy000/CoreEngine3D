@@ -44,6 +44,7 @@ bool CoreUIButton::Init(u32 type)
     CoreGameObject::Init(type);
     
     //TODO: other init
+	viewType = CoreUI_ViewType_Button;
     
     return true;
 }

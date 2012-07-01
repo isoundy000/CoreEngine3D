@@ -30,7 +30,9 @@ public:
     static void InitClass();	//One-time global init
     
 	virtual void LayoutView(const CoreUIView* pParentView);
+	virtual void RefreshView();
 private:
+	void RefreshSettings();
     CoreObjectHandle m_hRenderable;
 	vec4 m_diffuseColor;
 };

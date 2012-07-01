@@ -16,6 +16,13 @@
 #define CoreUIView_MAX_CHILDREN 32
 
 
+enum CoreUI_ViewType
+{
+	CoreUI_ViewType_View,
+	CoreUI_ViewType_ImageView,
+	CoreUI_ViewType_Button,
+};
+
 enum CoreUI_Origin
 {
 	CoreUI_Origin_Center,
@@ -33,6 +40,7 @@ enum CoreUI_Origin
 class CoreUIView: public CoreGameObject
 {
 public:
+	CoreUIView* GetChildViewByName(u32 nameSig);
     virtual void UpdateHandle();	//Called when the memory location changes
 
 	virtual bool Init(u32 type);	//Init variables
@@ -45,6 +53,8 @@ public:
     static bool LoadResourcesForType(u32 type); //Load art/sounds
     static void InitClass();	//One-time global init
 
+	u32 nameSig;
+	
 	CoreUI_Origin origin;
 	vec2 offset;
 	f32 width;
@@ -56,7 +66,12 @@ public:
 	
 	f32 parentOpacity;
 	
+	CoreUI_ViewType viewType;
+	
 	virtual void LayoutView(const CoreUIView* pParentView);
+	virtual void RefreshView();
+protected:
+	void LayoutSubViews();
 private:
     //TODO: put member functions here
     //TODO: put member variables here

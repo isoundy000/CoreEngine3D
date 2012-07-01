@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../pugixml/src/pugixml.hpp"
 #include "../CoreObjectFactories.h"
+#include "../Hash.h"
 
 //Art
 /*static TextureAsset g_Art_SpaceShip =
@@ -63,8 +64,41 @@ bool CoreUIView::Init(u32 type)
     CoreGameObject::Init(type);
     
     //TODO: other init
-    
+	viewType = CoreUI_ViewType_View;
+	
     return true;
+}
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
+{
+	//Loop through all the child views
+	for(u32 i=0; i<m_numChildren; ++i)
+	{
+		CoreUIView* pCurrView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(m_children[i]);
+		if(pCurrView != NULL)
+		{
+			//We found a match!
+			if(pCurrView->nameSig == nameSig)
+			{
+				return pCurrView;
+			}
+			//We didn't find a match...
+			else
+			{
+				//Recursively find the view
+				CoreUIView* pFoundView = pCurrView->GetChildViewByName(nameSig);
+				if(pFoundView != NULL)
+				{
+					return pFoundView;
+				}
+			}
+		}
+	}
+	
+	return NULL;
 }
 
 
@@ -77,6 +111,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
 	//DEFAULTS
+	nameSig = 0;
 	opacity = 1.0f;
 	parentOpacity = 1.0f;
 	
@@ -95,6 +130,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_attribute height_Attrib = pProperties->attribute("height");
 	//pugi::xml_attribute angle_Attrib = pProperties->attribute("angle");
 	pugi::xml_attribute opacity_Attrib = pProperties->attribute("opacity");
+	pugi::xml_attribute name_Attrib = pProperties->attribute("name");
 	
 	if(offsetX_Attrib.empty() == false)
 	{
@@ -124,6 +160,11 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	if(opacity_Attrib.empty() == false)
 	{
 		opacity = atof(opacity_Attrib.value());
+	}
+	
+	if(name_Attrib.empty() == false)
+	{
+		nameSig = Hash(name_Attrib.value());
 	}
 	
 	pugi::xml_attribute origin_Attrib = pProperties->attribute("origin");
@@ -171,6 +212,21 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 
 	
 	//CREATE SUBVIEWS
+	
+	//Create views
+	for (pugi::xml_node view = pProperties->child("view"); view; view = view.next_sibling("view"))
+	{
+		CoreUIView* pChildView = g_Factory_CoreUIView.CreateObject(0);
+		if(pChildView != NULL)
+		{
+			m_children[m_numChildren] = pChildView->GetHandle();
+			++m_numChildren;
+			
+			assert(m_numChildren < CoreUIView_MAX_CHILDREN);
+			
+			pChildView->SpawnInit(&view);
+		}
+	}
 	
 	//Create images
 	for (pugi::xml_node image = pProperties->child("image"); image; image = image.next_sibling("image"))
@@ -294,6 +350,14 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	}
 	
 	//Layout children (subviews)
+	LayoutSubViews();
+}
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIView::LayoutSubViews()
+{
 	for(u32 i=0; i<m_numChildren; ++i)
 	{
 		CoreUIView* pSubView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(m_children[i]);
@@ -301,6 +365,12 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	}
 }
 
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIView::RefreshView()
+{
+	CoreUIView::LayoutView(this);
+}
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------

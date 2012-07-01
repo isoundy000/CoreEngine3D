@@ -263,7 +263,7 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	void CreateRenderableTile(Tile* pTile, RenderableGeometry3D** pGeom, RenderLayer renderLayer, RenderMaterial material, vec2* pOut_texCoordOffset, bool usesViewMatrix);
 	void CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, RenderLayer renderLayer, RenderMaterial material);
 	
-	void LoadCoreUIFromXML(std::string& path, std::string& filename);
+	CoreUIView* LoadCoreUIFromXML(std::string& path, std::string& filename);
 	
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 	DeviceInputState m_deviceInputState;
