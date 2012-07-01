@@ -207,6 +207,7 @@ public:
 	void Box2D_SetGravity(f32 x, f32 y);
 	void Box2D_SetContactListener(b2ContactListener* pContactListener);
 	void Box2D_ResetWorld();
+	void Box2D_SetNumIterations(u32 velIterations, u32 posIterations);
 	
 	u32* GetHUDTextureByNameSig(u32 nameSig);
 	
@@ -313,6 +314,8 @@ private:
 	bool m_Box2D_ContinuousPhysicsEnabled;
 	bool m_Box2D_allowObjectsToSleep;
 	f32 m_Box2D_defaultCollisionFriction;
+	u32 m_Box2D_NumVelocitySteps;
+	u32 m_Box2D_NumPositionSteps;
 	
 	Box2DDebugDraw* m_Box2D_pDebugDraw;
 	Box2DContactListener* m_Box2D_pContactListener;

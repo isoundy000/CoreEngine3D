@@ -71,14 +71,15 @@ void Game::ResetCamera()
 	
 	m_camLerpTimer = -1.0f;
 	m_camLerpTotalTime = 0.0f;
-	
-	
 }
 
 
 bool Game::Init()
 {
 	m_paused = false;
+	
+	m_Box2D_NumVelocitySteps = 5;
+	m_Box2D_NumPositionSteps = 5;
 	
 	m_numHUDTextures = 0;
 	
@@ -327,11 +328,11 @@ void Game::Update(f32 timeElapsed)
 	{
 		if(m_Box2D_PhysicsIsLocked)
 		{
-			m_Box2D_pWorld->Step(1.0f/60.0f, 5, 5);
+			m_Box2D_pWorld->Step(1.0f/60.0f, m_Box2D_NumVelocitySteps, m_Box2D_NumPositionSteps);
 		}
 		else
 		{
-			m_Box2D_pWorld->Step(timeElapsed, 5, 5);
+			m_Box2D_pWorld->Step(timeElapsed, m_Box2D_NumVelocitySteps, m_Box2D_NumPositionSteps);
 		}
 		
 #ifdef _DEBUG
@@ -1595,6 +1596,12 @@ void Game::DestroyTile(s32 index_x, s32 index_Y, const vec2* pVel)
 	}
 	
 	++m_numTilesToDelete;
+}
+
+void Game::Box2D_SetNumIterations(u32 velIterations, u32 posIterations)
+{
+	m_Box2D_NumVelocitySteps = velIterations;
+	m_Box2D_NumPositionSteps = posIterations;
 }
 
 void Game::Box2D_SetPhysicsIsLocked(bool isLocked)
