@@ -2,19 +2,19 @@
 #define __COREOBJECTFACTORIES_H
 
 #include "../CoreObject_Manager.h"
-#include "CoreObjects/GUI/CoreUIView.h"
-#include "CoreObjects/GUI/CoreUIImageView.h"
-#include "CoreObjects/GUI/CoreUIButton.h"
-#include "CoreObjects/Trigger_2D.h"
-#include "CoreObjects/ScriptObject.h"
-#include "CoreObjects/ObjectGroup.h"
-#include "CoreObjects/SoundPlayer.h"
-#include "CoreObjects/TileAffector.h"
-#include "CoreObjects/Effects/BasicParticle_2D.h"
-#include "CoreObjects/Effects/AnimatedParticle_2D.h"
-#include "CoreObjects/Effects/MuzzleFlareParticle_2D.h"
-#include "CoreObjects/Spawner.h"
-#include "CoreObjects/NullObject.h"
+#include "GUI/CoreUIView.h"
+#include "GUI/CoreUIImageView.h"
+#include "GUI/CoreUIButton.h"
+#include "Trigger_2D.h"
+#include "ScriptObject.h"
+#include "ObjectGroup.h"
+#include "SoundPlayer.h"
+#include "TileAffector.h"
+#include "Effects/BasicParticle_2D.h"
+#include "Effects/AnimatedParticle_2D.h"
+#include "Effects/MuzzleFlareParticle_2D.h"
+#include "Spawner.h"
+#include "NullObject.h"
 
 extern CoreObjectFactory<CoreUIView> g_Factory_CoreUIView;
 extern CoreObjectFactory<CoreUIImageView> g_Factory_CoreUIImageView;

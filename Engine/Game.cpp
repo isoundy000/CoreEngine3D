@@ -27,7 +27,7 @@
 #include <algorithm>
 
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
-#include "Engine/CoreInput_DeviceInputState.h"
+#include "CoreInput_DeviceInputState.h"
 #endif
 
 #define ENGINE_PATH "Engine/" 

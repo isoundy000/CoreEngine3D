@@ -12,7 +12,7 @@
 #include "../MathUtil.h"
 #include "../matrix.h"
 #include "../Game.h"
-#include "pugixml/src/pugixml.hpp"
+#include "../pugixml/src/pugixml.hpp"
 #include "../CoreObjectFactories.h"
 
 //Art
