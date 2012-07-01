@@ -1919,10 +1919,11 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 	
 	std::string filenameWithPath(path+filename);
 	
-	pugi::xml_parse_result result = m_TMXDoc.load_file(GetPathToFile(filenameWithPath.c_str()).c_str());
+	pugi::xml_document xmlDoc;
+	pugi::xml_parse_result result = xmlDoc.load_file(GetPathToFile(filenameWithPath.c_str()).c_str());
 	
 	//Load textures
-	for (pugi::xml_node texture = m_TMXDoc.child("texture"); texture; texture = texture.next_sibling("texture"))
+	for (pugi::xml_node texture = xmlDoc.child("texture"); texture; texture = texture.next_sibling("texture"))
 	{
 		//We can't add unlimited HUD textures
 		if(m_numHUDTextures == GAME_MAX_HUD_TEXTURES)
@@ -1975,7 +1976,7 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 	bool shouldPrintWarning = false;
 	
 	//Load views
-	for (pugi::xml_node view = m_TMXDoc.child("view"); view; view = view.next_sibling("view"))
+	for (pugi::xml_node view = xmlDoc.child("view"); view; view = view.next_sibling("view"))
 	{
 		CoreUIView* pView = g_Factory_CoreUIView.CreateObject(0);
 		if(pView != NULL)
