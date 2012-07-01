@@ -189,7 +189,8 @@ void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
 //----------------------------------------------------------------
 void CoreUIImageView::RefreshSettings()
 {
-	m_diffuseColor.w = parentOpacity*opacity;
+	const f32 finalOpacity = parentOpacity*opacity;
+	m_diffuseColor.w = finalOpacity;
 	
 	//Update renderable to reflect new layout
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
@@ -202,7 +203,7 @@ void CoreUIImageView::RefreshSettings()
 		pPos->y = position.y;
 		pPos->z = 0.0f;
 		
-		if(parentVisible && visible)
+		if(finalOpacity > 0.0f && (parentVisible && visible))
 		{
 			pGeom->material.flags |= RenderFlag_Visible;
 		}
