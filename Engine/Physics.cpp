@@ -13,17 +13,26 @@
 //Update a spring using verlet integration
 //--------------------------------------------------------------------------------------
 //1D springs
-void Spring_Update(Spring* spring, f32 timeElapsedSq)
+void Spring_Update(Spring* spring, f32 timeElapsed)
 {
-	//TODO: use time-corrected Verlet integration
+	const f32 fps = (1.0f/60.0f);
 	
-	const f32 posMinusOld = spring->currPos-spring->oldPos;
+	f32 dtRemaining = timeElapsed;
 	
-	const f32 springForce = spring->springK*(spring->goalPos-spring->currPos) - spring->springDamping*posMinusOld;
-	const f32 springAccel = springForce*timeElapsedSq;
-	
-	spring->oldPos = spring->currPos;
-	spring->currPos += posMinusOld + springAccel;
+	while (timeElapsed > 0.0f)
+	{
+		timeElapsed -= fps;
+		
+		const f32 dt = (dtRemaining > 0.0f) ? fps : (dtRemaining+fps);
+		
+		const f32 posMinusOld = spring->currPos-spring->oldPos;
+		
+		const f32 springForce = spring->springK*(spring->goalPos-spring->currPos) - spring->springDamping*posMinusOld;
+		const f32 springAccel = springForce*dt*dt;
+		
+		spring->oldPos = spring->currPos;
+		spring->currPos += posMinusOld + springAccel;
+	}
 }
 
 

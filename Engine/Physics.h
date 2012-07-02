@@ -32,7 +32,7 @@ typedef struct
 }Spring;
 
 //1D springs
-void Spring_Update(Spring* spring, f32 timeElapsedSq);
+void Spring_Update(Spring* spring, f32 timeElapsed);
 
 //3D springs
 
