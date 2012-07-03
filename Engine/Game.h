@@ -46,6 +46,10 @@
 class Game;
 extern Game* GAME;
 
+#if defined(_DEBUG) && defined (PLATFORM_OSX)
+extern bool g_GUIEditModeOn;
+#endif
+
 class Box2DDebugDraw;
 
 #define GAME_MAX_BUTTONS 16
@@ -196,6 +200,7 @@ public:
 	
 	virtual u32 Box2D_GetCollisionFlagsForTileIndex(s32 tileIndex){return 1<<CollisionFilter_Ground;}
 	virtual b2Body* Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY);
+	void Reset();
 	void Box2D_SetPhysicsIsLocked(bool isLocked);
 	void Box2D_TogglePhysicsDebug(bool allowPhysicsDebugDraw);
 	void ResetCamera();

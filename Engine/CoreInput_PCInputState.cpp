@@ -29,5 +29,6 @@ KeyboardInputState::KeyboardInputState()
 	for(u32 i=0; i<256; ++i)
 	{
 		buttonState[i] = CoreInput_ButtonState_None;
+		skippedBegan[i] = 0;
 	}
 }

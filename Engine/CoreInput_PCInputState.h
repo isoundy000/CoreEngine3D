@@ -35,6 +35,7 @@ struct KeyboardInputState
 {
 	KeyboardInputState();
 	CoreInput_ButtonState buttonState[256];
+	u8 skippedBegan[256];
 };
 
 #endif

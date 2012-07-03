@@ -13,8 +13,15 @@
 #include "../MathTypes.h"
 #include "../GraphicsTypes.h"
 
+#include <string>
+
 #define CoreUIView_MAX_CHILDREN 32
 
+struct CoreUI_Container
+{
+	std::string filepath;
+	CoreObjectHandle rootView;
+};
 
 enum CoreUI_ViewType
 {
@@ -66,6 +73,8 @@ public:
 	bool visible;
 
 	CoreUI_ViewType viewType;
+	
+	u32 sortValue;
 	
 	virtual void LayoutView(const CoreUIView* pParentView);
 	virtual void RefreshView();

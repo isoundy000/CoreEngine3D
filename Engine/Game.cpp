@@ -34,6 +34,11 @@
 
 Game* GAME = NULL;
 
+#if defined(_DEBUG) && defined (PLATFORM_OSX)
+static std::vector<CoreUI_Container> g_GUIContainers;
+bool g_GUIEditModeOn = false;
+#endif
+
 static void DrawFunc_DrawTile_Init();
 static void DrawFunc_DrawTile_Uninit();
 static void DrawFunc_DrawTile(void* pData);
@@ -75,7 +80,7 @@ void Game::ResetCamera()
 
 
 bool Game::Init()
-{
+{	
 	m_paused = false;
 	
 	m_Box2D_NumVelocitySteps = 5;
@@ -261,6 +266,21 @@ void Game::Update(f32 timeElapsed)
 		GLRENDERER->paused = m_paused;
 	}
 	
+#if defined(_DEBUG) && defined (PLATFORM_OSX)
+	if(m_keyboardState.buttonState[5] == CoreInput_ButtonState_Ended)
+	{
+		g_GUIEditModeOn = !g_GUIEditModeOn;
+		if(g_GUIEditModeOn == true)
+		{
+			COREDEBUG_PrintDebugMessage("GUI Edit Mode: On");
+		}
+		else
+		{
+			COREDEBUG_PrintDebugMessage("GUI Edit Mode: Off");
+		}
+	}
+#endif
+	
 	//Update controls
 	
 	for(u32 i=0; i<MOUSESTATE_MAX_MOUSEBUTTONS; ++i)
@@ -286,7 +306,15 @@ void Game::Update(f32 timeElapsed)
 		
 		if(keyState == CoreInput_ButtonState_Began)
 		{
-			m_keyboardState.buttonState[i] = CoreInput_ButtonState_Held;
+			if(m_keyboardState.skippedBegan[i])
+			{
+				m_keyboardState.skippedBegan[i] = 0;
+				m_keyboardState.buttonState[i] = CoreInput_ButtonState_Ended;
+			}
+			else
+			{
+				m_keyboardState.buttonState[i] = CoreInput_ButtonState_Held;
+			}
 		}
 		else if(keyState == CoreInput_ButtonState_Ended)
 		{
@@ -300,7 +328,6 @@ void Game::Update(f32 timeElapsed)
 	{
 		return;
 	}
-	
 
 	if(m_camLerpTimer > 0.0f)
 	{
@@ -396,7 +423,7 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 {
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
 	//NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
+@autoreleasepool{
 	NSString* fileString = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
 	NSString *fullPath = [[NSBundle mainBundle] pathForResource:[fileString lastPathComponent] ofType:nil inDirectory:[fileString stringByDeletingLastPathComponent]];
 	
@@ -413,6 +440,7 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 	//[pool drain];
 	
 	return pathString;
+}
 #endif
 
 #if defined (PLATFORM_WIN)
@@ -1913,10 +1941,14 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 }
 
 
+void Game::Reset()
+{
+	g_GUIContainers.clear();
+}
+
+
 CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 {
-	m_numHUDTextures = 0;
-	
 	std::string filenameWithPath(path+filename);
 	
 	pugi::xml_document xmlDoc;
@@ -2003,6 +2035,14 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		{
 			COREDEBUG_PrintDebugMessage("ERROR: LoadCoreUIFromXML-> You have more than one root view in the XML file!");
 		}
+		
+#if defined (_DEBUG) && defined(PLATFORM_OSX)
+		CoreUI_Container container;
+		container.rootView = pMainView->GetHandle();
+		container.filepath = filenameWithPath;
+		
+		g_GUIContainers.push_back(container);
+#endif
 		
 		//Return handle to view
 		return pMainView;

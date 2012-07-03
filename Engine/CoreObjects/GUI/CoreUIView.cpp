@@ -114,6 +114,8 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	parentOpacity = 1.0f;
 	parentVisible = true;
 	
+	sortValue = 0;
+	
 	nameSig = 0;
 	opacity = 1.0f;
 	visible = true;
@@ -134,6 +136,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_attribute opacity_Attrib = pProperties->attribute("opacity");
 	pugi::xml_attribute visible_Attrib = pProperties->attribute("visible");
 	pugi::xml_attribute name_Attrib = pProperties->attribute("name");
+	pugi::xml_attribute sortValue_Attrib = pProperties->attribute("sortValue");
 	
 	if(offsetX_Attrib.empty() == false)
 	{
@@ -176,6 +179,11 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	if(name_Attrib.empty() == false)
 	{
 		nameSig = Hash(name_Attrib.value());
+	}
+	
+	if(sortValue_Attrib.empty() == false)
+	{
+		sortValue = atoi(sortValue_Attrib.value());
 	}
 	
 	pugi::xml_attribute origin_Attrib = pProperties->attribute("origin");
