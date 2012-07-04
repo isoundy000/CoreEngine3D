@@ -30,6 +30,15 @@
 #include "CoreInput_DeviceInputState.h"
 #endif
 
+#if defined(_DEBUG) && defined(PLATFORM_OSX)
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Output.H>
+#endif
+
 #define ENGINE_PATH "Engine/" 
 
 Game* GAME = NULL;
@@ -81,6 +90,19 @@ void Game::ResetCamera()
 
 bool Game::Init()
 {	
+#if defined(_DEBUG) && defined(PLATFORM_OSX)
+	Fl_Window* win= new Fl_Window(300,200, "Testing 2");
+	win->begin();       
+	Fl_Button*  copy = new Fl_Button( 10, 150, 70, 30, "C&opy"); //child 0   : 1st widget
+	Fl_Button* close = new Fl_Button(100, 150, 70, 30, "&Quit"); //child 1    : 2nd widget
+	Fl_Input*       inp = new Fl_Input(50, 50, 140, 30, "In");              //child 2 : 3rd widget
+	Fl_Output*    out = new Fl_Output(50, 100, 140, 30, "Out");     //child 3   : 4th widget
+	win->end();
+	//copy->callback(  copy_cb );
+	//close->callback( close_cb );
+	win->show();
+#endif
+	
 	m_paused = false;
 	
 	m_Box2D_NumVelocitySteps = 5;
@@ -1998,6 +2020,8 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 				std::string texFilenameWithPath(path+textureFileName);
 				
 				GLRENDERER->LoadTexture(texFilenameWithPath.c_str(), ImageType_PNG, &pCurrTexture->textureHandle, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,true);
+				
+				assert(pCurrTexture->textureHandle);
 				
 				++m_numHUDTextures;
 			}

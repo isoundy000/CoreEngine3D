@@ -360,6 +360,7 @@
 		23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSheetAnimator.h; sourceTree = "<group>"; };
 		23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewFlags.cpp; sourceTree = "<group>"; };
 		23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
+		DD07B49E15A42B1E0068B16D /* libfltk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfltk.a; path = Engine/FL/libfltk.a; sourceTree = "<group>"; };
 		DD78C2611543C48D0029AA56 /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		DD78C2631543C4A30029AA56 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
 		DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square_Tiled_32.h; sourceTree = "<group>"; };
@@ -429,6 +430,7 @@
 		23FCBB9A14A1DFBC00C5EA7C = {
 			isa = PBXGroup;
 			children = (
+				DD07B49E15A42B1E0068B16D /* libfltk.a */,
 				23FCBBCB14A1E09A00C5EA7C /* Engine */,
 				23FCBBAE14A1DFBC00C5EA7C /* CoreEngine3D(OSX) */,
 				23FCBBA714A1DFBC00C5EA7C /* Frameworks */,
@@ -1039,6 +1041,15 @@
 					"DEBUG=1",
 					PLATFORM_OSX,
 				);
+				HEADER_SEARCH_PATHS = (
+					../CoreEngine3D/Engine/Box2D/,
+					/opt/local/include/,
+					../CoreEngine3D/Engine/,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Engine/FL\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1054,6 +1065,15 @@
 					_RELEASE,
 					"RELEASE=1",
 					PLATFORM_OSX,
+				);
+				HEADER_SEARCH_PATHS = (
+					../CoreEngine3D/Engine/Box2D/,
+					/opt/local/include/,
+					../CoreEngine3D/Engine/,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Engine/FL\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
