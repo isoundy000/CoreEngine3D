@@ -1962,7 +1962,9 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 
 void Game::Reset()
 {
+#if defined(_DEBUG) && defined(PLATFORM_OSX)
 	g_GUIContainers.clear();
+#endif
 }
 
 
