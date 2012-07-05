@@ -43,6 +43,16 @@
 
 #include <vector>
 
+#if defined(_DEBUG) && defined(PLATFORM_OSX)
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Browser.H>
+#endif
+
 class Game;
 extern Game* GAME;
 
@@ -381,6 +391,10 @@ private:
 	
 	HUDTexture m_HUDTextures[GAME_MAX_HUD_TEXTURES];
 	u32 m_numHUDTextures;
+	
+#if defined(_DEBUG) && defined(PLATFORM_OSX)
+	Fl_Browser* browser;
+#endif
 };
 
 #endif
