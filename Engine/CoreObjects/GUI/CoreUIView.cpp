@@ -75,9 +75,9 @@ bool CoreUIView::Init(u32 type)
 CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
 {
 	//Loop through all the child views
-	for(u32 i=0; i<m_numChildren; ++i)
+	for(u32 i=0; i<numChildren; ++i)
 	{
-		CoreUIView* pCurrView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(m_children[i]);
+		CoreUIView* pCurrView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(children[i]);
 		if(pCurrView != NULL)
 		{
 			//We found a match!
@@ -106,7 +106,7 @@ CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
 //----------------------------------------------------------------
 bool CoreUIView::SpawnInit(void* pSpawnStruct)
 {
-	m_numChildren = 0;
+	numChildren = 0;
 	
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
@@ -179,6 +179,10 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	if(name_Attrib.empty() == false)
 	{
 		nameSig = Hash(name_Attrib.value());
+		
+#if defined(_DEBUG_PC)
+		nameString = name_Attrib.value();
+#endif
 	}
 	
 	if(sortValue_Attrib.empty() == false)
@@ -238,10 +242,10 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		CoreUIView* pChildView = g_Factory_CoreUIView.CreateObject(0);
 		if(pChildView != NULL)
 		{
-			m_children[m_numChildren] = pChildView->GetHandle();
-			++m_numChildren;
+			children[numChildren] = pChildView->GetHandle();
+			++numChildren;
 			
-			assert(m_numChildren < CoreUIView_MAX_CHILDREN);
+			assert(numChildren < CoreUIView_MAX_CHILDREN);
 			
 			pChildView->SpawnInit(&view);
 		}
@@ -253,10 +257,10 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		CoreUIImageView* pImageView = g_Factory_CoreUIImageView.CreateObject(0);
 		if(pImageView != NULL)
 		{
-			m_children[m_numChildren] = pImageView->GetHandle();
-			++m_numChildren;
+			children[numChildren] = pImageView->GetHandle();
+			++numChildren;
 			
-			assert(m_numChildren < CoreUIView_MAX_CHILDREN);
+			assert(numChildren < CoreUIView_MAX_CHILDREN);
 			
 			pImageView->SpawnInit(&image);
 		}
@@ -268,10 +272,10 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		CoreUIButton* pButton = g_Factory_CoreUIButton.CreateObject(0);
 		if(pButton != NULL)
 		{
-			m_children[m_numChildren] = pButton->GetHandle();
-			++m_numChildren;
+			children[numChildren] = pButton->GetHandle();
+			++numChildren;
 			
-			assert(m_numChildren < CoreUIView_MAX_CHILDREN);
+			assert(numChildren < CoreUIView_MAX_CHILDREN);
 			
 			pButton->SpawnInit(&button);
 		}
@@ -378,9 +382,9 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 //----------------------------------------------------------------
 void CoreUIView::LayoutSubViews()
 {
-	for(u32 i=0; i<m_numChildren; ++i)
+	for(u32 i=0; i<numChildren; ++i)
 	{
-		CoreUIView* pSubView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(m_children[i]);
+		CoreUIView* pSubView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(children[i]);
 		pSubView->LayoutView(this);
 	}
 }

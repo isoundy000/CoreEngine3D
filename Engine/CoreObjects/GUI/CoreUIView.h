@@ -47,6 +47,9 @@ enum CoreUI_Origin
 class CoreUIView: public CoreGameObject
 {
 public:
+#if defined(_DEBUG_PC)
+	std::string nameString;
+#endif
 	CoreUIView* GetChildViewByName(u32 nameSig);
     virtual void UpdateHandle();	//Called when the memory location changes
 
@@ -76,6 +79,9 @@ public:
 	
 	u32 sortValue;
 	
+	u32 numChildren;
+	CoreObjectHandle children[CoreUIView_MAX_CHILDREN];
+	
 	virtual void LayoutView(const CoreUIView* pParentView);
 	virtual void RefreshView();
 protected:
@@ -87,8 +93,7 @@ private:
     //TODO: put member functions here
     //TODO: put member variables here
 	
-	u32 m_numChildren;
-	CoreObjectHandle m_children[CoreUIView_MAX_CHILDREN];
+	
 };
 
 #endif

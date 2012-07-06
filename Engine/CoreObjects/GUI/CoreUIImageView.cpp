@@ -138,7 +138,7 @@ void CoreUIImageView::Uninit()
 void CoreUIImageView::Update(f32 timeElapsed)
 {
     //TODO: update here
-#if defined(_DEBUG) && defined(PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 	if(g_GUIEditModeOn == true)
 	{
 		RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);

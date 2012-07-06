@@ -34,7 +34,7 @@
 
 Game* GAME = NULL;
 
-#if defined(_DEBUG) && defined (PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 static std::vector<CoreUI_Container> g_GUIContainers;
 bool g_GUIEditModeOn = false;
 #endif
@@ -81,23 +81,27 @@ void Game::ResetCamera()
 
 bool Game::Init()
 {	
-#if defined(_DEBUG) && defined(PLATFORM_OSX)
-	Fl_Window* win= new Fl_Window(300,400, "GUI View Selector");
-	win->begin();       
+#if defined(_DEBUG_PC)
+	
+	pWindow_ViewSelect = new Fl_Window(300,400, "GUI View Selector");
+	pWindow_ViewSelect->begin();       
 	/*Fl_Button*  copy = new Fl_Button( 10, 150, 70, 30, "C&opy"); //child 0   : 1st widget
 	Fl_Button* close = new Fl_Button(100, 150, 70, 30, "&Quit"); //child 1    : 2nd widget
 	Fl_Input*       inp = new Fl_Input(50, 50, 140, 30, "In");              //child 2 : 3rd widget
 	Fl_Output*    out = new Fl_Output(50, 100, 140, 30, "Out");     //child 3   : 4th widget*/
-	browser = new Fl_Browser(50,100,140,300,"browser");
-	browser->add("ur");
-	browser->add("gunna");
-	browser->add("die");
+	pBrowser_View = new Fl_Browser(50,100,140,300,"browser");
+	//browser->add("ur");
 	
-	browser->select(0);
-	win->end();
+	pBrowser_View->add("gunna");
+	pBrowser_View->add("die");
+	
+	//browser->select(0);
+	pWindow_ViewSelect->end();
 	//copy->callback(  copy_cb );
 	//close->callback( close_cb );
-	win->show();
+	pWindow_ViewSelect->show();
+	
+	//Fl::run();
 #endif
 	
 	m_paused = false;
@@ -285,7 +289,7 @@ void Game::Update(f32 timeElapsed)
 		GLRENDERER->paused = m_paused;
 	}
 	
-#if defined(_DEBUG) && defined (PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 	if(m_keyboardState.buttonState[5] == CoreInput_ButtonState_Ended)
 	{
 		g_GUIEditModeOn = !g_GUIEditModeOn;
@@ -420,6 +424,8 @@ void Game::Update(f32 timeElapsed)
 	}
 	
 	m_numTilesToDelete = 0;
+
+	
 }
 
 
@@ -1962,7 +1968,7 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 
 void Game::Reset()
 {
-#if defined(_DEBUG) && defined(PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 	g_GUIContainers.clear();
 #endif
 }
@@ -2059,14 +2065,18 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 			COREDEBUG_PrintDebugMessage("ERROR: LoadCoreUIFromXML-> You have more than one root view in the XML file!");
 		}
 		
-#if defined (_DEBUG) && defined(PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 		CoreUI_Container container;
 		container.rootView = pMainView->GetHandle();
 		container.filepath = filenameWithPath;
 		
 		g_GUIContainers.push_back(container);
-#endif
 		
+		GUIEditor_ClearBrowser();
+		GUIEditor_FillBrowser(pMainView);
+		
+#endif
+
 		//Return handle to view
 		return pMainView;
 	}
@@ -2076,6 +2086,48 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		return NULL;
 	}
 }
+
+
+#if defined (_DEBUG_PC)
+void Game::GUIEditor_ClearBrowser()
+{
+	if(pBrowser_View != NULL)
+	{
+		pBrowser_View->clear();
+	}
+}
+
+void Game::GUIEditor_FillBrowser(CoreUIView* pParentView)
+{
+	if(pBrowser_View == NULL)
+	{
+		return;
+	}
+	
+	//Fl_Widget* pWidget = new Fl_Widget(0,0,128,16,pParentView->nameString.c_str());
+	
+	//pBrowser_View->add("die");
+	
+	if(pParentView->nameString.empty())
+	{
+		pBrowser_View->add("Unnamed");
+	}
+	else
+	{
+		pBrowser_View->add(pParentView->nameString.c_str());
+	}
+	
+	
+	for(u32 i=0; i<pParentView->numChildren; ++i)
+	{
+		CoreUIView* pChildView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(pParentView->children[i]);
+		if(pChildView != NULL)
+		{
+			GUIEditor_FillBrowser(pChildView);
+		}
+	}
+}
+#endif
 
 
 bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)

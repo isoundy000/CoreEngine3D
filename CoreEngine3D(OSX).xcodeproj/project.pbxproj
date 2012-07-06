@@ -1040,6 +1040,7 @@
 					_DEBUG,
 					"DEBUG=1",
 					PLATFORM_OSX,
+					_DEBUG_PC,
 				);
 				HEADER_SEARCH_PATHS = (
 					../CoreEngine3D/Engine/Box2D/,

@@ -43,7 +43,7 @@
 
 #include <vector>
 
-#if defined(_DEBUG) && defined(PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
@@ -56,7 +56,7 @@
 class Game;
 extern Game* GAME;
 
-#if defined(_DEBUG) && defined (PLATFORM_OSX)
+#if defined(_DEBUG_PC)
 extern bool g_GUIEditModeOn;
 #endif
 
@@ -314,7 +314,7 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	bool m_touchIsDisabled[MAX_MULTITOUCH];
 #endif
 	bool m_paused;
-	
+	bool m_lastPausedState;
 	
 	
 private:
@@ -392,8 +392,11 @@ private:
 	HUDTexture m_HUDTextures[GAME_MAX_HUD_TEXTURES];
 	u32 m_numHUDTextures;
 	
-#if defined(_DEBUG) && defined(PLATFORM_OSX)
-	Fl_Browser* browser;
+#if defined(_DEBUG_PC)
+	void GUIEditor_ClearBrowser();
+	void GUIEditor_FillBrowser(CoreUIView* pParentView);
+	Fl_Window* pWindow_ViewSelect;
+	Fl_Browser* pBrowser_View;
 #endif
 };
 
