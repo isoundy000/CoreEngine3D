@@ -34,8 +34,10 @@ struct MouseInputState
 struct KeyboardInputState
 {
 	KeyboardInputState();
-	CoreInput_ButtonState buttonState[256];
+	CoreInput_ButtonState buttonState[256];	//TODO: come up with a better way
 	u8 skippedBegan[256];
+	
+	
 };
 
 #endif

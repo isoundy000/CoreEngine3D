@@ -43,7 +43,6 @@
 		23F4266214AC5C0900F27DAB /* DEBUGMODEL_CircleXZ.h in Headers */ = {isa = PBXBuildFile; fileRef = 23F4266014AC5C0900F27DAB /* DEBUGMODEL_CircleXZ.h */; };
 		23F4266514AC8A1E00F27DAB /* CoreInput_DeviceInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F4266314AC8A1D00F27DAB /* CoreInput_DeviceInputState.cpp */; };
 		23F4266614AC8A1E00F27DAB /* CoreInput_DeviceInputState.h in Headers */ = {isa = PBXBuildFile; fileRef = 23F4266414AC8A1D00F27DAB /* CoreInput_DeviceInputState.h */; };
-		23FCBBA914A1DFBC00C5EA7C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FCBBA814A1DFBC00C5EA7C /* Cocoa.framework */; };
 		23FCBCB914A1E09A00C5EA7C /* AnimationController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBBCE14A1E09A00C5EA7C /* AnimationController.cpp */; };
 		23FCBCBA14A1E09A00C5EA7C /* AnimationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBBCF14A1E09A00C5EA7C /* AnimationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23FCBCBB14A1E09A00C5EA7C /* ArrayUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBBD014A1E09A00C5EA7C /* ArrayUtil.cpp */; };
@@ -168,6 +167,8 @@
 		23FCBD8D14A1E09A00C5EA7C /* SpriteSheetAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23FCBD9314A1E09A00C5EA7C /* ViewFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */; };
 		23FCBD9414A1E09A00C5EA7C /* ViewFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD29023F15A8352800794CC8 /* FLTKGLWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD29023D15A8352800794CC8 /* FLTKGLWindow.cpp */; };
+		DD29024015A8352800794CC8 /* FLTKGLWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DD29023E15A8352800794CC8 /* FLTKGLWindow.h */; };
 		DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD78C2631543C4A30029AA56 /* StringUtil.cpp */; };
 		DD805AAD14D79E67006C6D10 /* Square_Tiled_32.h in Headers */ = {isa = PBXBuildFile; fileRef = DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */; };
 		DDA6C705151155980035DE60 /* CoreObjectTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA6C702151155980035DE60 /* CoreObjectTypes.h */; };
@@ -231,10 +232,6 @@
 		23F4266314AC8A1D00F27DAB /* CoreInput_DeviceInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreInput_DeviceInputState.cpp; sourceTree = "<group>"; };
 		23F4266414AC8A1D00F27DAB /* CoreInput_DeviceInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInput_DeviceInputState.h; sourceTree = "<group>"; };
 		23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(OSX).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		23FCBBA814A1DFBC00C5EA7C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		23FCBBAB14A1DFBC00C5EA7C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		23FCBBAC14A1DFBC00C5EA7C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		23FCBBAD14A1DFBC00C5EA7C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D(OSX)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreEngine3D(OSX)-Prefix.pch"; sourceTree = "<group>"; };
 		23FCBBCE14A1E09A00C5EA7C /* AnimationController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationController.cpp; sourceTree = "<group>"; };
 		23FCBBCF14A1E09A00C5EA7C /* AnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationController.h; sourceTree = "<group>"; };
@@ -360,7 +357,8 @@
 		23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSheetAnimator.h; sourceTree = "<group>"; };
 		23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewFlags.cpp; sourceTree = "<group>"; };
 		23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
-		DD07B49E15A42B1E0068B16D /* libfltk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfltk.a; path = Engine/FL/libfltk.a; sourceTree = "<group>"; };
+		DD29023D15A8352800794CC8 /* FLTKGLWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = FLTKGLWindow.cpp; sourceTree = "<group>"; };
+		DD29023E15A8352800794CC8 /* FLTKGLWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLTKGLWindow.h; sourceTree = "<group>"; };
 		DD78C2611543C48D0029AA56 /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		DD78C2631543C4A30029AA56 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
 		DD805AAC14D79E67006C6D10 /* Square_Tiled_32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square_Tiled_32.h; sourceTree = "<group>"; };
@@ -392,7 +390,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23FCBBA914A1DFBC00C5EA7C /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,10 +427,8 @@
 		23FCBB9A14A1DFBC00C5EA7C = {
 			isa = PBXGroup;
 			children = (
-				DD07B49E15A42B1E0068B16D /* libfltk.a */,
 				23FCBBCB14A1E09A00C5EA7C /* Engine */,
 				23FCBBAE14A1DFBC00C5EA7C /* CoreEngine3D(OSX) */,
-				23FCBBA714A1DFBC00C5EA7C /* Frameworks */,
 				23FCBBA614A1DFBC00C5EA7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -444,25 +439,6 @@
 				23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		23FCBBA714A1DFBC00C5EA7C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				23FCBBA814A1DFBC00C5EA7C /* Cocoa.framework */,
-				23FCBBAA14A1DFBC00C5EA7C /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		23FCBBAA14A1DFBC00C5EA7C /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				23FCBBAB14A1DFBC00C5EA7C /* AppKit.framework */,
-				23FCBBAC14A1DFBC00C5EA7C /* CoreData.framework */,
-				23FCBBAD14A1DFBC00C5EA7C /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
 		23FCBBAE14A1DFBC00C5EA7C /* CoreEngine3D(OSX) */ = {
@@ -484,6 +460,8 @@
 		23FCBBCB14A1E09A00C5EA7C /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				DD29023D15A8352800794CC8 /* FLTKGLWindow.cpp */,
+				DD29023E15A8352800794CC8 /* FLTKGLWindow.h */,
 				DDC893771530EB610091EB0E /* Box2DUtil.cpp */,
 				DDC893781530EB620091EB0E /* Box2DUtil.h */,
 				233BBC1214F4B11B00BB12FA /* Box2DContactListener.cpp */,
@@ -829,6 +807,7 @@
 				DDF054D3159EDA8E00BA04F6 /* CoreUIView.h in Headers */,
 				DDF054D7159EDEDA00BA04F6 /* CoreUIImageView.h in Headers */,
 				DDF054DB159EE17100BA04F6 /* CoreUIButton.h in Headers */,
+				DD29024015A8352800794CC8 /* FLTKGLWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -967,6 +946,7 @@
 				DDF054D2159EDA8E00BA04F6 /* CoreUIView.cpp in Sources */,
 				DDF054D6159EDEDA00BA04F6 /* CoreUIImageView.cpp in Sources */,
 				DDF054DA159EE17100BA04F6 /* CoreUIButton.cpp in Sources */,
+				DD29023F15A8352800794CC8 /* FLTKGLWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1050,6 +1030,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Engine/FL\"",
+					"\"$(SRCROOT)/../../../Downloads/fltk-1.3.0/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1075,6 +1056,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Engine/FL\"",
+					"\"$(SRCROOT)/../../../Downloads/fltk-1.3.0/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

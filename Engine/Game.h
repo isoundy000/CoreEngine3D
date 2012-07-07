@@ -43,16 +43,6 @@
 
 #include <vector>
 
-#if defined(_DEBUG_PC)
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_Box.H>
-#include <FL/Fl_Button.H>
-#include <FL/Fl_Input.H>
-#include <FL/Fl_Output.H>
-#include <FL/Fl_Browser.H>
-#endif
-
 class Game;
 extern Game* GAME;
 
@@ -395,8 +385,6 @@ private:
 #if defined(_DEBUG_PC)
 	void GUIEditor_ClearBrowser();
 	void GUIEditor_FillBrowser(CoreUIView* pParentView);
-	Fl_Window* pWindow_ViewSelect;
-	Fl_Browser* pBrowser_View;
 #endif
 };
 

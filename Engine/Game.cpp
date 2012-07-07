@@ -81,29 +81,6 @@ void Game::ResetCamera()
 
 bool Game::Init()
 {	
-#if defined(_DEBUG_PC)
-	
-	pWindow_ViewSelect = new Fl_Window(300,400, "GUI View Selector");
-	pWindow_ViewSelect->begin();       
-	/*Fl_Button*  copy = new Fl_Button( 10, 150, 70, 30, "C&opy"); //child 0   : 1st widget
-	Fl_Button* close = new Fl_Button(100, 150, 70, 30, "&Quit"); //child 1    : 2nd widget
-	Fl_Input*       inp = new Fl_Input(50, 50, 140, 30, "In");              //child 2 : 3rd widget
-	Fl_Output*    out = new Fl_Output(50, 100, 140, 30, "Out");     //child 3   : 4th widget*/
-	pBrowser_View = new Fl_Browser(50,100,140,300,"browser");
-	//browser->add("ur");
-	
-	pBrowser_View->add("gunna");
-	pBrowser_View->add("die");
-	
-	//browser->select(0);
-	pWindow_ViewSelect->end();
-	//copy->callback(  copy_cb );
-	//close->callback( close_cb );
-	pWindow_ViewSelect->show();
-	
-	//Fl::run();
-#endif
-	
 	m_paused = false;
 	
 	m_Box2D_NumVelocitySteps = 5;
@@ -2091,15 +2068,15 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 #if defined (_DEBUG_PC)
 void Game::GUIEditor_ClearBrowser()
 {
-	if(pBrowser_View != NULL)
+	/*if(pBrowser_View != NULL)
 	{
 		pBrowser_View->clear();
-	}
+	}*/
 }
 
 void Game::GUIEditor_FillBrowser(CoreUIView* pParentView)
 {
-	if(pBrowser_View == NULL)
+	/*if(pBrowser_View == NULL)
 	{
 		return;
 	}
@@ -2125,7 +2102,7 @@ void Game::GUIEditor_FillBrowser(CoreUIView* pParentView)
 		{
 			GUIEditor_FillBrowser(pChildView);
 		}
-	}
+	}*/
 }
 #endif
 
