@@ -18,5 +18,6 @@ const u32 g_Type_TileAffector = 1657205277; //TileAffector
 const u32 g_Type_Spawner = 88179141; //Spawner
 const u32 g_Type_Tile = 2089610323; //Tile
 const u32 g_Type_NullObject = 2458776375; //NullObject
+const u32 g_Type_CurvePoints_2D = 621251868; //CurvePoints_2D
 
 #endif

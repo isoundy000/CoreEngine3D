@@ -167,6 +167,8 @@
 		23FCBD8D14A1E09A00C5EA7C /* SpriteSheetAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23FCBD9314A1E09A00C5EA7C /* ViewFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */; };
 		23FCBD9414A1E09A00C5EA7C /* ViewFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD0BF84715A9584F001DE9A4 /* CurvePoints_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */; };
+		DD0BF84815A9584F001DE9A4 /* CurvePoints_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0BF84615A9584F001DE9A4 /* CurvePoints_2D.h */; };
 		DD29023F15A8352800794CC8 /* FLTKGLWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD29023D15A8352800794CC8 /* FLTKGLWindow.cpp */; };
 		DD29024015A8352800794CC8 /* FLTKGLWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DD29023E15A8352800794CC8 /* FLTKGLWindow.h */; };
 		DD78C2641543C4A30029AA56 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD78C2631543C4A30029AA56 /* StringUtil.cpp */; };
@@ -244,7 +246,7 @@
 		23FCBBD914A1E09A00C5EA7C /* EngineModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineModels.h; sourceTree = "<group>"; };
 		23FCBBDA14A1E09A00C5EA7C /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Game.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		23FCBBDB14A1E09A00C5EA7C /* Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; path = Game.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		23FCBBDC14A1E09A00C5EA7C /* GameUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameUtil.cpp; sourceTree = "<group>"; };
+		23FCBBDC14A1E09A00C5EA7C /* GameUtil.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = GameUtil.cpp; sourceTree = "<group>"; };
 		23FCBBDD14A1E09A00C5EA7C /* GameUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameUtil.h; sourceTree = "<group>"; };
 		23FCBBDE14A1E09A00C5EA7C /* GraphicsTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsTypes.cpp; sourceTree = "<group>"; };
 		23FCBBDF14A1E09A00C5EA7C /* GraphicsTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsTypes.h; sourceTree = "<group>"; };
@@ -357,6 +359,8 @@
 		23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSheetAnimator.h; sourceTree = "<group>"; };
 		23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewFlags.cpp; sourceTree = "<group>"; };
 		23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
+		DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CurvePoints_2D.cpp; sourceTree = "<group>"; };
+		DD0BF84615A9584F001DE9A4 /* CurvePoints_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurvePoints_2D.h; sourceTree = "<group>"; };
 		DD29023D15A8352800794CC8 /* FLTKGLWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = FLTKGLWindow.cpp; sourceTree = "<group>"; };
 		DD29023E15A8352800794CC8 /* FLTKGLWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLTKGLWindow.h; sourceTree = "<group>"; };
 		DD78C2611543C48D0029AA56 /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
@@ -401,6 +405,8 @@
 			children = (
 				DDF054CF159EDA8100BA04F6 /* GUI */,
 				DDB3FE9C158D66F800BA1853 /* Effects */,
+				DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */,
+				DD0BF84615A9584F001DE9A4 /* CurvePoints_2D.h */,
 				DDC567F5158D691F005A6E7A /* Trigger_2D.cpp */,
 				DDC567F6158D691F005A6E7A /* Trigger_2D.h */,
 				DDE051271563736D00820163 /* NullObject.cpp */,
@@ -808,6 +814,7 @@
 				DDF054D7159EDEDA00BA04F6 /* CoreUIImageView.h in Headers */,
 				DDF054DB159EE17100BA04F6 /* CoreUIButton.h in Headers */,
 				DD29024015A8352800794CC8 /* FLTKGLWindow.h in Headers */,
+				DD0BF84815A9584F001DE9A4 /* CurvePoints_2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -947,6 +954,7 @@
 				DDF054D6159EDEDA00BA04F6 /* CoreUIImageView.cpp in Sources */,
 				DDF054DA159EE17100BA04F6 /* CoreUIButton.cpp in Sources */,
 				DD29023F15A8352800794CC8 /* FLTKGLWindow.cpp in Sources */,
+				DD0BF84715A9584F001DE9A4 /* CurvePoints_2D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

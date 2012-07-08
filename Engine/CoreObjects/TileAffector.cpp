@@ -29,7 +29,9 @@ bool TileAffector::SpawnInit(void* pSpawnStruct)
 	m_tileIndex_X = pSpawnableEnt->tileIndexX;
 	m_tileIndex_Y = pSpawnableEnt->tileIndexY;
 	
-	for (pugi::xml_node property = pSpawnableEnt->pProperties.child("property"); property; property = property.next_sibling("property"))
+	pugi::xml_node propertiesNode = pSpawnableEnt->node.child("properties");
+	
+	for (pugi::xml_node property = propertiesNode.child("property"); property; property = property.next_sibling("property"))
 	{
 		
 	}

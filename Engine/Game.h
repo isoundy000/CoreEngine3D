@@ -40,6 +40,7 @@
 #include "CoreObject_Manager.h"
 
 #include "CoreObjects/GUI/CoreUIView.h"
+#include "GameUtil.h"
 
 #include <vector>
 
@@ -114,7 +115,7 @@ struct SpawnableEntity
 {
 	u32 type;
 	u32 tiledUniqueID;
-	pugi::xml_node pProperties;
+	pugi::xml_node node;
 	vec3 position;
 	vec2 scale;
 	s32 tileID;
@@ -162,17 +163,12 @@ struct TileDestructionData
 	vec2 hitVel;
 };
 
-struct CollisionLineSegment
-{
-    vec2* pPoints;
-    u32 numPoints;
-};
-
 struct HUDTexture
 {
 	u32 nameSig;
 	u32 textureHandle;
 };
+
 
 class Game
 {
@@ -228,6 +224,7 @@ public:
 	void GetPositionFromTileIndices(s32 index_X, s32 index_Y, vec3* pOut_position);
 	s32 GetCollisionFromTileIndices(s32 index_X, s32 index_Y);
 	void DestroyTile(s32 index_x, s32 index_Y, const vec2* pVel);
+	f32 GetTileUnitConversionScale();
 	f32 GetTileSize();
 	f32 GetHalfTileSize();
 	f32 GetTileSizeMeters(){return m_tileSizeMeters;}
@@ -244,6 +241,7 @@ public:
     void TiledLevel_DeleteObjectIfOffscreen_X(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
     void TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
 	bool TiledLevel_CheckIsOnScreen_X(vec3* pPos, f32 scale);
+	
     TileVert* GetTiledVerts();
 	u32 GetTileVBO();
 	u32 GetTileVAO();
@@ -252,6 +250,8 @@ public:
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 	DeviceInputState* GetDeviceInputState();
 #endif
+	
+	f32 m_Box2D_defaultCollisionFriction;
 protected:	//Only stuff that can be called from the game.cpp goes here
 	
 	void SetTileCullingRange(s32 cullingRange);
@@ -308,7 +308,6 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	
 	
 private:
-	void TMXStringToPoints(const char* valueString, f32 posX, f32 posY, vec2* pOut_Points, u32* pOut_NumPoints);
 	inline void CullTile(Layer* layer, s32 x, s32 y);
 	
 	pugi::xml_document m_TMXDoc;
@@ -318,7 +317,7 @@ private:
 	bool m_Box2D_PhysicsIsLocked;
 	bool m_Box2D_ContinuousPhysicsEnabled;
 	bool m_Box2D_allowObjectsToSleep;
-	f32 m_Box2D_defaultCollisionFriction;
+	
 	u32 m_Box2D_NumVelocitySteps;
 	u32 m_Box2D_NumPositionSteps;
 	

@@ -18,4 +18,4 @@ CoreObjectFactory<AnimatedParticle_2D> g_Factory_AnimatedParticle_2D;
 CoreObjectFactory<MuzzleFlareParticle_2D> g_Factory_MuzzleFlareParticle_2D;
 CoreObjectFactory<Spawner> g_Factory_Spawner;
 CoreObjectFactory<NullObject> g_Factory_NullObject;
-
+CoreObjectFactory<CurvePoints_2D> g_Factory_CurvePoints_2D;

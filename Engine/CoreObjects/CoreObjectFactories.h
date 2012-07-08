@@ -13,6 +13,7 @@
 #include "Effects/BasicParticle_2D.h"
 #include "Effects/AnimatedParticle_2D.h"
 #include "Effects/MuzzleFlareParticle_2D.h"
+#include "CurvePoints_2D.h"
 #include "Spawner.h"
 #include "NullObject.h"
 
@@ -27,11 +28,11 @@ extern CoreObjectFactory<TileAffector> g_Factory_TileAffector;
 extern CoreObjectFactory<BasicParticle_2D> g_Factory_BasicParticle_2D;
 extern CoreObjectFactory<AnimatedParticle_2D> g_Factory_AnimatedParticle_2D;
 extern CoreObjectFactory<MuzzleFlareParticle_2D> g_Factory_MuzzleFlareParticle_2D;
+extern CoreObjectFactory<CurvePoints_2D> g_Factory_CurvePoints_2D;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_Normal;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_UI;
 extern CoreObjectFactory<RenderableGeometry3D> g_Factory_Geometry_Light;
 extern CoreObjectFactory<RenderableSceneObject3D> g_Factory_RenderableSceneObject;
 extern CoreObjectFactory<Spawner> g_Factory_Spawner;
 extern CoreObjectFactory<NullObject> g_Factory_NullObject;
-
 #endif

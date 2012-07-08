@@ -35,7 +35,9 @@ bool Spawner::SpawnInit(void* pSpawnStruct)
 	
 	CopyVec3(&m_position,&pSpawnableEnt->position);
 	
-	for (pugi::xml_node property = pSpawnableEnt->pProperties.child("property"); property; property = property.next_sibling("property"))
+	pugi::xml_node propertiesNode = pSpawnableEnt->node.child("properties");
+	
+	for (pugi::xml_node property = propertiesNode.child("property"); property; property = property.next_sibling("property"))
 	{
 		const char* propNameString = property.attribute("name").value();
 		const char* valueString = property.attribute("value").value();

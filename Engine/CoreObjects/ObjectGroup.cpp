@@ -29,7 +29,9 @@ bool ObjectGroup::SpawnInit(void* pSpawnStruct)
 		return false;
 	}
 	
-	for (pugi::xml_node property = pSpawnableEnt->pProperties.child("property"); property; property = property.next_sibling("property"))
+	pugi::xml_node propertiesNode = pSpawnableEnt->node.child("properties");
+	
+	for (pugi::xml_node property = propertiesNode.child("property"); property; property = property.next_sibling("property"))
 	{
 		const u32 tiledUniqueID = atoi(property.attribute("value").value());
 		

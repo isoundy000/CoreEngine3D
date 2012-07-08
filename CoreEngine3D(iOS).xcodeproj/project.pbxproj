@@ -43,6 +43,8 @@
 		DD0AC1D1159FE4C100EDD195 /* CoreUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0AC1CB159FE4C100EDD195 /* CoreUIImageView.h */; };
 		DD0AC1D2159FE4C100EDD195 /* CoreUIView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0AC1CC159FE4C100EDD195 /* CoreUIView.cpp */; };
 		DD0AC1D3159FE4C100EDD195 /* CoreUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0AC1CD159FE4C100EDD195 /* CoreUIView.h */; };
+		DD0BF86315A97D66001DE9A4 /* CurvePoints_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0BF86115A97D65001DE9A4 /* CurvePoints_2D.cpp */; };
+		DD0BF86415A97D66001DE9A4 /* CurvePoints_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0BF86215A97D66001DE9A4 /* CurvePoints_2D.h */; };
 		DD0C294C14F80E8F002EE89F /* Box2DUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0C294B14F80E8F002EE89F /* Box2DUtil.h */; };
 		DD0C294F14F80E9E002EE89F /* Box2DUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0C294E14F80E9D002EE89F /* Box2DUtil.cpp */; };
 		DD15B2FE1501B39900B065B0 /* Spawner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD15B2FC1501B39900B065B0 /* Spawner.cpp */; };
@@ -230,6 +232,8 @@
 		DD0AC1CB159FE4C100EDD195 /* CoreUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreUIImageView.h; path = CoreObjects/GUI/CoreUIImageView.h; sourceTree = "<group>"; };
 		DD0AC1CC159FE4C100EDD195 /* CoreUIView.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CoreUIView.cpp; path = CoreObjects/GUI/CoreUIView.cpp; sourceTree = "<group>"; };
 		DD0AC1CD159FE4C100EDD195 /* CoreUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreUIView.h; path = CoreObjects/GUI/CoreUIView.h; sourceTree = "<group>"; };
+		DD0BF86115A97D65001DE9A4 /* CurvePoints_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CurvePoints_2D.cpp; path = CoreObjects/CurvePoints_2D.cpp; sourceTree = "<group>"; };
+		DD0BF86215A97D66001DE9A4 /* CurvePoints_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurvePoints_2D.h; path = CoreObjects/CurvePoints_2D.h; sourceTree = "<group>"; };
 		DD0C294B14F80E8F002EE89F /* Box2DUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DUtil.h; sourceTree = "<group>"; };
 		DD0C294E14F80E9D002EE89F /* Box2DUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DUtil.cpp; sourceTree = "<group>"; };
 		DD15B2FC1501B39900B065B0 /* Spawner.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Spawner.cpp; path = CoreObjects/Spawner.cpp; sourceTree = "<group>"; };
@@ -258,7 +262,7 @@
 		DDA6F4A0149C1A920035A1BF /* DEBUGMODEL_Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_Cylinder.h; sourceTree = "<group>"; };
 		DDA6F4A1149C1A920035A1BF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Game.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		DDA6F4A2149C1A920035A1BF /* Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; path = Game.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		DDA6F4A3149C1A920035A1BF /* GameUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameUtil.cpp; sourceTree = "<group>"; };
+		DDA6F4A3149C1A920035A1BF /* GameUtil.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = GameUtil.cpp; sourceTree = "<group>"; };
 		DDA6F4A4149C1A920035A1BF /* GameUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameUtil.h; sourceTree = "<group>"; };
 		DDA6F4A5149C1A920035A1BF /* GraphicsTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsTypes.cpp; sourceTree = "<group>"; };
 		DDA6F4A6149C1A920035A1BF /* GraphicsTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsTypes.h; sourceTree = "<group>"; };
@@ -412,6 +416,8 @@
 			children = (
 				DD0AC1C6159FE48E00EDD195 /* GUI */,
 				DDB3FE8E158D666B00BA1853 /* Effects */,
+				DD0BF86115A97D65001DE9A4 /* CurvePoints_2D.cpp */,
+				DD0BF86215A97D66001DE9A4 /* CurvePoints_2D.h */,
 				DDC567F0158D68F7005A6E7A /* Trigger_2D.cpp */,
 				DDC567F1158D68F7005A6E7A /* Trigger_2D.h */,
 				DDD059551576832C008B3C4F /* NullObject.cpp */,
@@ -804,6 +810,7 @@
 				DD0AC1CF159FE4C100EDD195 /* CoreUIButton.h in Headers */,
 				DD0AC1D1159FE4C100EDD195 /* CoreUIImageView.h in Headers */,
 				DD0AC1D3159FE4C100EDD195 /* CoreUIView.h in Headers */,
+				DD0BF86415A97D66001DE9A4 /* CurvePoints_2D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,6 +960,7 @@
 				DD0AC1CE159FE4C100EDD195 /* CoreUIButton.cpp in Sources */,
 				DD0AC1D0159FE4C100EDD195 /* CoreUIImageView.cpp in Sources */,
 				DD0AC1D2159FE4C100EDD195 /* CoreUIView.cpp in Sources */,
+				DD0BF86315A97D66001DE9A4 /* CurvePoints_2D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
