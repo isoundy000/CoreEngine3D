@@ -12,6 +12,45 @@
 #include "Game.h"
 #include "CoreInput_PCInputState.h"
 
+#if defined(PLATFORM_OSX) || defined(PLATFORM_LIN)
+#include <sys/time.h>
+
+timeval g_lastTimeValue;
+
+#elif defined(PLATFORM_WIN)
+DWORD g_lastTimeValue = 0;
+#endif
+
+f32 g_OneOverFPS = 1.0f/60.0f;
+bool g_StaticTimer = true;
+
+static void Timer_CB(void *userdata) {
+	
+	FLTKGLWindow *mygl = (FLTKGLWindow*)userdata;
+	
+	mygl->redraw();
+	
+	Fl::repeat_timeout(g_OneOverFPS, Timer_CB, userdata);
+	
+}
+
+FLTKGLWindow::FLTKGLWindow(int X, int Y, int W, int H, const char *L, f32 FPS, bool staticTimer)
+: Fl_Gl_Window(X, Y, W, H, L)
+{
+	g_OneOverFPS = 1.0f/FPS;
+	g_StaticTimer = staticTimer;
+	
+#if defined(PLATFORM_OSX) || defined(PLATFORM_LIN)
+	gettimeofday(&g_lastTimeValue, NULL);
+#elif defined(PLATFORM_WIN)
+	//NOTE: won't compile yet
+	const DWORD time = timeGetTime();
+	g_lastTimeValue = time;
+#endif
+	
+	Fl::add_timeout(g_OneOverFPS, Timer_CB, (void*)this);  
+}
+
 //Draw
 void FLTKGLWindow::draw()
 {
@@ -23,6 +62,30 @@ void FLTKGLWindow::draw()
 	
 	if(GAME != NULL)
 	{
+		f32 timeElapsed;
+		
+		if(g_StaticTimer)
+		{
+			timeElapsed = g_OneOverFPS;
+		}
+		else
+		{
+#if defined(PLATFORM_OSX) || defined(PLATFORM_LIN)
+			timeval time;
+			gettimeofday(&time, NULL);
+			timeElapsed = ((time.tv_sec - g_lastTimeValue.tv_sec)*1000000.0f + (time.tv_usec - g_lastTimeValue.tv_usec))/1000000.0f;
+			g_lastTimeValue = time;
+#elif defined(PLATFORM_WIN)
+			//NOTE: won't compile yet
+			const DWORD time = timeGetTime();
+			const DWORD timeDiff = time-g_lastTimeValue;
+			timeElapsed = (f32)timeDiff / 100000.0f;
+			g_lastTimeValue = time;
+#else
+			timeElapsed = g_OneOverFPS;
+#endif	
+		}
+	
 		const bool mouseIsStuck = GAME->m_mouseState.position.x == GAME->m_mouseState.lastPosition.x 
 		&& GAME->m_mouseState.position.y == GAME->m_mouseState.lastPosition.y;
 		
@@ -39,12 +102,12 @@ void FLTKGLWindow::draw()
 			GAME->m_mouseState.sleeping = false;
 		}
 			
-		GAME->Update(1.0f/60.0f);
+		GAME->Update(timeElapsed);
 		
 		//It's valid now so draw things
 		if(GLRENDERER != NULL)
 		{
-			GLRENDERER->Render(1.0f/60.0f);
+			GLRENDERER->Render(timeElapsed);
 		}
 	}
 	

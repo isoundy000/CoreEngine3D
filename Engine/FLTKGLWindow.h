@@ -20,30 +20,15 @@
 #include <FL/Fl_Gl_Window.H>
 #include <FL/Fl.H>
 
-const unsigned int FPS = 60;
-const float ONE_OVER_FPS = 1.0f/60.0f;
+#include "MathTypes.h"
 
-class FLTKGLWindow : public Fl_Gl_Window {
-	static void Timer_CB(void *userdata) {
-		
-        FLTKGLWindow *mygl = (FLTKGLWindow*)userdata;
-		
-       
-        mygl->redraw();
-		
-        Fl::repeat_timeout(ONE_OVER_FPS, Timer_CB, userdata);
-		
-    }
-
+class FLTKGLWindow : public Fl_Gl_Window
+{
 	void draw();
 	int handle(int);
 	
 public:
-	FLTKGLWindow(int X, int Y, int W, int H, const char *L)
-    : Fl_Gl_Window(X, Y, W, H, L)
-	{
-		Fl::add_timeout(ONE_OVER_FPS, Timer_CB, (void*)this);  
-	}
+	FLTKGLWindow(int X, int Y, int W, int H, const char *L, f32 FPS, bool staticTimer);
 private:
 	void UpdateMousePosition();
 };
