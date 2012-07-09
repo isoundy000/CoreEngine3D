@@ -197,7 +197,7 @@ void CoreUIImageView::UpdateHandle()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CoreUIImageView::ProcessMessage(u32 message)
+void CoreUIImageView::ProcessMessage(u32 message, u32 parameter)
 {
     //TODO: switch statement based on message
     

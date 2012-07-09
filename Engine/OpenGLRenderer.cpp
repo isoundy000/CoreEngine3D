@@ -917,14 +917,16 @@ void OpenGLRenderer::Render(f32 timeElapsed)
         //Set normal render target
         //SetRenderTarget(&m_renderTarget_Normal);
         
-        m_clearColorPulseTimer += timeElapsed;
+        /*m_clearColorPulseTimer += timeElapsed;
         if(m_clearColorPulseTimer > 1.0f)
         {
             m_clearColorPulseTimer = 0.0f;
         }
         
         //Clear normal render target using pulse color
-        SetClearColor(m_clearColorPulseTimer, 0, 0);
+        SetClearColor(m_clearColorPulseTimer, 0, 0);*/
+		
+		SetClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z);
         
 		//Make sure we can write to the depth buffer before clearing
 		glEnable(GL_DEPTH_TEST);

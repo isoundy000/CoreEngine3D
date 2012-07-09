@@ -139,7 +139,7 @@ void NullObject::UpdateHandle()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void NullObject::ProcessMessage(u32 message)
+void NullObject::ProcessMessage(u32 message, u32 parameter)
 {
     //TODO: switch statement based on message
     

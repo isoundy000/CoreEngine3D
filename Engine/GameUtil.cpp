@@ -124,7 +124,7 @@ void GU_TMXStringToPoints(const char* valueString, f32 posX, f32 posY, vec2* pOu
 
 //*****************************************************************************
 //*****************************************************************************
-void GU_Create2DPathPointsFromXML(const pugi::xml_node& node, CollisionLineSegment* pOut_CollisionLineSegment, bool isCollision)
+void GU_Create2DPathPointsFromXML(const pugi::xml_node& node, LinePointList* pOut_LinePointList, bool isCollision)
 {
 	vec2 polyLinePoints[64];
 	u32 numPolyPoints;
@@ -149,8 +149,8 @@ void GU_Create2DPathPointsFromXML(const pugi::xml_node& node, CollisionLineSegme
 		GU_TMXStringToPoints(polyLineString, posX, posY, polyLinePoints, &numPolyPoints);
 		
 		//Create a new line segment for use with shadows, etc.
-		pOut_CollisionLineSegment->numPoints = numPolyPoints;
-		pOut_CollisionLineSegment->pPoints = new vec2[numPolyPoints];
+		pOut_LinePointList->numPoints = numPolyPoints;
+		pOut_LinePointList->pPoints = new vec2[numPolyPoints];
 		
 		//Process all the points
 		for(u32 vertIDX=0; vertIDX<numPolyPoints; ++vertIDX)
@@ -159,7 +159,7 @@ void GU_Create2DPathPointsFromXML(const pugi::xml_node& node, CollisionLineSegme
 			
 			//Copy the line version transformation for use with
 			//fancy things like shadows
-			CopyVec2(&pOut_CollisionLineSegment->pPoints[vertIDX],pVec);
+			CopyVec2(&pOut_LinePointList->pPoints[vertIDX],pVec);
 			
 			if(isCollision)
 			{

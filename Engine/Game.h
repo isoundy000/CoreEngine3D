@@ -192,7 +192,7 @@ public:
 	KeyboardInputState m_keyboardState;
 #endif
 	virtual const vec3* GetPlayerPos(s32 playerIndex){return NULL;}
-	virtual void ProcessMessage(u32 message){};	//Pass in a hash value
+	virtual void ProcessMessage(u32 message, u32 parameter){};	//Pass in a hash value
 	
 	virtual u32 Box2D_GetCollisionFlagsForTileIndex(s32 tileIndex){return 1<<CollisionFilter_Ground;}
 	virtual b2Body* Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY);
@@ -370,7 +370,7 @@ private:
 	TileDestructionData m_tilesToDelete[GAME_MAX_STORED_DELETABLE_TILES];
 	s32 m_numTilesToDelete;
     
-    std::vector<CollisionLineSegment> m_collisionLineSegments;
+    std::vector<LinePointList> m_LinePointLists;
 	
 	TileVert* m_pTileVerts;
 	

@@ -19,7 +19,7 @@ class SoundPlayer: public CoreObject
 {
 public:
 	virtual void Uninit();
-	virtual void ProcessMessage(u32 message);	//Pass in a hash value
+	virtual void ProcessMessage(u32 message, u32 parameter);	//Pass in a hash value
 
 	virtual bool SpawnInit(void* pSpawnStruct);
 	

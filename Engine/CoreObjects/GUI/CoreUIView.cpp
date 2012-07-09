@@ -435,7 +435,7 @@ void CoreUIView::UpdateHandle()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CoreUIView::ProcessMessage(u32 message)
+void CoreUIView::ProcessMessage(u32 message, u32 parameter)
 {
     //TODO: switch statement based on message
     

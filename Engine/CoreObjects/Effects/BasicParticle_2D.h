@@ -89,7 +89,7 @@ public:
 	void AddVelocity(const vec3* pVelAdd);
 	void SetVelocity(const vec3* pVel);
 	const ParticleSettings* GetParticleSettings(){return m_pSettings;}
-	//virtual void ProcessMessage(u32 message){};	//Pass in a hash value
+	//virtual void ProcessMessage(u32 message, u32 parameter){};	//Pass in a hash value
 private:
 	ParticleSettings* m_pSettings;
 	u32 m_numColumns;

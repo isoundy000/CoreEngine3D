@@ -59,7 +59,7 @@ public:
 	virtual void Update(f32 timeElapsed);
 	virtual const vec3* GetPosition() const;
 	void AddVelocity(const vec3* pVelAdd);
-	//virtual void ProcessMessage(u32 message){};	//Pass in a hash value
+	//virtual void ProcessMessage(u32 message, u32 parameter){};	//Pass in a hash value
 private:
 	ParticleSettings* m_pSettings;
 	f32 m_spinSpeed;

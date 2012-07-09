@@ -26,18 +26,35 @@ struct CoreObjectHandle
     CoreObjectHandle() : m_index(0), m_counter(0), m_type(0)
     {}
 	
+	CoreObjectHandle(u32 intHandle)
+	{
+		m_composite = intHandle;
+	}
+	
     CoreObjectHandle(u32 index, u32 counter, u32 type)
 	: m_index(index), m_counter(counter), m_type(type)
     {}
 	
     inline operator u32() const
 	{
-		return m_type << 27 | m_counter << 12 | m_index;
+		return m_composite;
 	}
 	
-    u32 m_index : 12;
-    u32 m_counter : 15;
-    u32 m_type : 5;
+	union
+	{
+		struct
+		{
+			u32 m_index : 12;
+			u32 m_counter : 15;
+			u32 m_type : 5;
+		};
+		
+		struct
+		{
+			u32 m_composite;
+		};
+	};
+    
 	
 	bool IsValid() const {return (*this) != 0;}
 };
@@ -62,7 +79,7 @@ public:
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed){};
 	
-	virtual void ProcessMessage(u32 message){};	//Pass in a hash value
+	virtual void ProcessMessage(u32 message, u32 parameter){};	//Pass in a hash value
 	
 	void InvalidateHandle();
 	bool m_markedForDeletion;

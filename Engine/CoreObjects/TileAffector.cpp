@@ -40,7 +40,7 @@ bool TileAffector::SpawnInit(void* pSpawnStruct)
 }
 
 
-void TileAffector::ProcessMessage(u32 message)	//Pass in a hash value
+void TileAffector::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash value
 {
 	if(message == Hash("On"))
 	{

@@ -43,7 +43,7 @@ bool SoundPlayer::SpawnInit(void* pSpawnStruct)
 }
 
 
-void SoundPlayer::ProcessMessage(u32 message)	//Pass in a hash value
+void SoundPlayer::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash value
 {
 	
 }

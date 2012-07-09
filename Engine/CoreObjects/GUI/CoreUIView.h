@@ -58,7 +58,7 @@ public:
 	virtual bool PostSpawnInit(void* pSpawnStruct);	//Link to objects in level
 	virtual void Uninit();	//Delete spawned objects here
 	virtual void Update(f32 timeElapsed);	//Update the object
-	virtual void ProcessMessage(u32 message);	//Receive/Process messages
+	virtual void ProcessMessage(u32 message, u32 parameter);	//Receive/Process messages
     
     static bool LoadResourcesForType(u32 type); //Load art/sounds
     static void InitClass();	//One-time global init

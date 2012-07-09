@@ -24,7 +24,7 @@ public:
 	virtual bool Init(u32 type);
 	virtual void Update(f32 timeElapsed);
 	virtual void Uninit();
-	virtual void ProcessMessage(u32 message);
+	virtual void ProcessMessage(u32 message, u32 parameter);
 	virtual bool SpawnInit(void* pSpawnStruct);
 	//virtual b2Body* Box2D_GetBody(){return m_pBody;}
 	virtual const vec3* GetPosition(){return &m_position;}//HACK: for now it's fine to have this here

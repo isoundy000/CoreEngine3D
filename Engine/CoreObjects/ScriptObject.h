@@ -42,7 +42,7 @@ public:
 		ScriptStatus_Num,
 	};
 
-	virtual void ProcessMessage(u32 message);	//Pass in a hash value
+	virtual void ProcessMessage(u32 message, u32 parameter);	//Pass in a hash value
 
 	virtual const vec3* GetPosition() const;
 	
@@ -90,6 +90,8 @@ private:
 	f32 m_toggleTimeOff;
 	f32 m_toggleTimer;
 	bool m_toggleIsOn;
+	
+	u32 m_triggerParam;
 };
 
 void ScriptObject_Init();

@@ -126,7 +126,7 @@ void Spawner::Update(f32 timeElapsed)
 }
 
 
-void Spawner::ProcessMessage(u32 message)
+void Spawner::ProcessMessage(u32 message, u32 parameter)
 {
 	/*if(message == Hash("AttachPlayer"))
 	{

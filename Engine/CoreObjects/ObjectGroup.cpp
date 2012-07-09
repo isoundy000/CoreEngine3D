@@ -86,14 +86,14 @@ void ObjectGroup::SetPosition(const vec3* pPosition)
 }
 
 
-void ObjectGroup::ProcessMessage(u32 message)	//Pass in a hash value
+void ObjectGroup::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash value
 {
 	for(u32 i=0; i<m_numObjects; ++i)
 	{
 		CoreObject* pObject = COREOBJECTMANAGER->GetObjectByHandle(m_objectHandles[i]);
 		if(pObject != NULL)
 		{
-			pObject->ProcessMessage(message);
+			pObject->ProcessMessage(message,parameter);
 		}
 	}
 }

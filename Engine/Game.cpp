@@ -40,9 +40,9 @@ static std::vector<CoreUI_Container> g_GUIContainers;
 bool g_GUIEditModeOn = false;
 #endif
 
-static bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const CollisionLineSegment& rhs);
+static bool SortLinePointListByX(const LinePointList& lhs, const LinePointList& rhs);
 
-bool SortCollisionLineSegmentByX(const CollisionLineSegment& lhs, const CollisionLineSegment& rhs)
+bool SortLinePointListByX(const LinePointList& lhs, const LinePointList& rhs)
 {
 	return lhs.pPoints[0].x < rhs.pPoints[0].x;
 };
@@ -222,11 +222,11 @@ void Game::CleanUp()
 		}
 	}
     
-    for(u32 i=0; i<m_collisionLineSegments.size(); ++i)
+    for(u32 i=0; i<m_LinePointLists.size(); ++i)
     {
-		if(m_collisionLineSegments[i].pPoints != NULL)
+		if(m_LinePointLists[i].pPoints != NULL)
 		{
-			delete[] m_collisionLineSegments[i].pPoints;
+			delete[] m_LinePointLists[i].pPoints;
 		}
     }
 	
@@ -1829,9 +1829,9 @@ bool Game::TiledLevel_GetGroundPos(vec3* pOut_GroundPos, vec3* pOut_GroundNormal
     //NOTE: this assumes all your points are in left to right order
     
     //Loop through all the collision on the ground
-    for(u32 i=0; i<m_collisionLineSegments.size()-1; ++i)
+    for(u32 i=0; i<m_LinePointLists.size()-1; ++i)
     {
-        CollisionLineSegment* pSegment = &m_collisionLineSegments[i];
+        LinePointList* pSegment = &m_LinePointLists[i];
         
         //If we are farther than the entire segment, skip this segment
         vec2* pVecLast = &pSegment->pPoints[pSegment->numPoints-1];
@@ -2095,15 +2095,15 @@ bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 t
 		}
 	}
 	
-	for(u32 i=0; i<m_collisionLineSegments.size(); ++i)
+	for(u32 i=0; i<m_LinePointLists.size(); ++i)
     {
-		if(m_collisionLineSegments[i].pPoints != NULL)
+		if(m_LinePointLists[i].pPoints != NULL)
 		{
-			delete[] m_collisionLineSegments[i].pPoints;
+			delete[] m_LinePointLists[i].pPoints;
 		}
     }
 	
-    m_collisionLineSegments.clear();
+    m_LinePointLists.clear();
     
 	for(LevelLayer i=(LevelLayer)0; i<NumLevelLayers; ++i)
 	{
@@ -2617,13 +2617,13 @@ bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 t
 			{
 				for (pugi::xml_node object = layer.child("object"); object; object = object.next_sibling("object"))
 				{
-					CollisionLineSegment newSeg;
+					LinePointList newSeg;
 					GU_Create2DPathPointsFromXML(object,&newSeg,true);
-					m_collisionLineSegments.push_back(newSeg);
+					m_LinePointLists.push_back(newSeg);
 				}
 				
 				//Sort the segments
-				std::sort(m_collisionLineSegments.begin(),m_collisionLineSegments.end(),SortCollisionLineSegmentByX);
+				std::sort(m_LinePointLists.begin(),m_LinePointLists.end(),SortLinePointListByX);
 			}
 			//Create objects
 			else

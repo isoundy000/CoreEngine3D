@@ -36,6 +36,7 @@ bool ScriptObject::SpawnInit(void* pSpawnStruct)
 	
 	CopyVec3(&m_position, &pSpawnableEnt->position);
 	
+	m_triggerParam = 0;
 	m_triggerMessage = 0;
 	m_untriggerMessage = 0;
 	m_offMessage = 0;
@@ -73,29 +74,9 @@ bool ScriptObject::SpawnInit(void* pSpawnStruct)
 		{
 			m_offMessage = Hash(valueString);
 		}
-		else if(strcmp(propNameString,"TriggerObject") == 0)
-		{
-			const u32 triggerObject = atoi(valueString);
-			SpawnableEntity* pEnt = GAME->GetSpawnableEntityByTiledUniqueID(triggerObject);
-			if(pEnt != NULL
-			   && pEnt->pObject != NULL)
-			{
-				m_hTriggerObject = pEnt->pObject->GetHandle();
-			}
-		}
 		else if(strcmp(propNameString,"NumAllowedTriggers") == 0)
 		{
 			m_numAllowedTriggers = atoi(valueString);
-		}
-		else if(strcmp(propNameString,"ObjectGroup") == 0)
-		{
-			const u32 objectGroup = atoi(valueString);
-			SpawnableEntity* pEnt = GAME->GetSpawnableEntityByTiledUniqueID(objectGroup);
-			if(pEnt != NULL
-			   && pEnt->pObject != NULL)
-			{
-				m_hObjectGroup = pEnt->pObject->GetHandle();
-			}
 		}
 		else if(strcmp(propNameString,"CollisionType") == 0)
 		{
@@ -180,6 +161,51 @@ bool ScriptObject::PostSpawnInit(void* pSpawnStruct)
 	if(m_action == Action_TriggerOnInit)
 	{
 		Trigger(NULL);
+	}
+	
+	SpawnableEntity* pSpawnableEnt = (SpawnableEntity*)pSpawnStruct;
+	if(pSpawnableEnt == NULL)
+	{
+		return false;
+	}
+	
+	pugi::xml_node propertiesNode = pSpawnableEnt->node.child("properties");
+	
+	for (pugi::xml_node property = propertiesNode.child("property"); property; property = property.next_sibling("property"))
+	{
+		const char* propNameString = property.attribute("name").value();
+		const char* valueString = property.attribute("value").value();
+		
+		if(strcmp(propNameString,"ObjectParam") == 0)
+		{
+			const u32 triggerObject = atoi(valueString);
+			SpawnableEntity* pEnt = GAME->GetSpawnableEntityByTiledUniqueID(triggerObject);
+			if(pEnt != NULL
+			   && pEnt->pObject != NULL)
+			{
+				m_triggerParam = pEnt->pObject->GetHandle();
+			}
+		}
+		else if(strcmp(propNameString,"TriggerObject") == 0)
+		{
+			const u32 triggerObject = atoi(valueString);
+			SpawnableEntity* pEnt = GAME->GetSpawnableEntityByTiledUniqueID(triggerObject);
+			if(pEnt != NULL
+			   && pEnt->pObject != NULL)
+			{
+				m_hTriggerObject = pEnt->pObject->GetHandle();
+			}
+		}
+		else if(strcmp(propNameString,"ObjectGroup") == 0)
+		{
+			const u32 objectGroup = atoi(valueString);
+			SpawnableEntity* pEnt = GAME->GetSpawnableEntityByTiledUniqueID(objectGroup);
+			if(pEnt != NULL
+			   && pEnt->pObject != NULL)
+			{
+				m_hObjectGroup = pEnt->pObject->GetHandle();
+			}
+		}
 	}
 	
 	return true;
@@ -356,7 +382,7 @@ void ScriptObject::Trigger(CoreGameObject* pObject)
 		
 		if(pTriggerObject != NULL)
 		{
-			pTriggerObject->ProcessMessage(m_triggerMessage);
+			pTriggerObject->ProcessMessage(m_triggerMessage,m_triggerParam);
 		}
 	}
 	
@@ -372,7 +398,7 @@ void ScriptObject::Trigger(CoreGameObject* pObject)
 	}
 }
 
-void ScriptObject::ProcessMessage(u32 message)	//Pass in a hash value
+void ScriptObject::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash value
 {
 	if(message == Hash("On"))
 	{
@@ -388,7 +414,7 @@ void ScriptObject::ProcessMessage(u32 message)	//Pass in a hash value
 		
 		if(pObject != NULL)
 		{
-			pObject->ProcessMessage(m_offMessage);
+			pObject->ProcessMessage(m_offMessage,0);
 		}
 	}
 }
@@ -416,12 +442,12 @@ void ScriptObject::Update(f32 timeElapsed)
 					if(m_toggleIsOn)
 					{
 						m_toggleTimer = m_toggleTimeOff;
-						pObject->ProcessMessage(m_untriggerMessage);
+						pObject->ProcessMessage(m_untriggerMessage,0);
 					}
 					else
 					{
 						m_toggleTimer = m_toggleTimeOn;
-						pObject->ProcessMessage(m_triggerMessage);
+						pObject->ProcessMessage(m_triggerMessage,m_triggerParam);
 					}
 					
 					m_toggleIsOn = !m_toggleIsOn;
@@ -451,7 +477,7 @@ void ScriptObject::Update(f32 timeElapsed)
 						CoreObject* pObject = COREOBJECTMANAGER->GetObjectByHandle(m_hTriggerObject);
 						if(pObject != NULL)
 						{
-							pObject->ProcessMessage(m_triggerMessage);
+							pObject->ProcessMessage(m_triggerMessage,m_triggerParam);
 							m_scriptStatus = ScriptStatus_Off;
 						}
 					}

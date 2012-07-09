@@ -105,7 +105,7 @@ void CoreUIButton::UpdateHandle()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CoreUIButton::ProcessMessage(u32 message)
+void CoreUIButton::ProcessMessage(u32 message, u32 parameter)
 {
     //TODO: switch statement based on message
     

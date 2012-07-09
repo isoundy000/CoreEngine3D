@@ -21,7 +21,7 @@
 class ObjectGroup: public CoreGameObject
 {
 public:
-	virtual void ProcessMessage(u32 message);	//Pass in a hash value
+	virtual void ProcessMessage(u32 message, u32 parameter);	//Pass in a hash value
 
 	virtual bool SpawnInit(void* pSpawnStruct);
 	virtual void SetPosition(const vec3* pPosition);

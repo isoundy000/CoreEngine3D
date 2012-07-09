@@ -56,6 +56,14 @@ bool CurvePoints_2D::LoadResourcesForType(u32 type)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
+const LinePointList* CurvePoints_2D::GetPointList()
+{
+	return &m_pointList;
+}
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
 bool CurvePoints_2D::Init(u32 type)
 {
     //Base class init
@@ -140,7 +148,7 @@ void CurvePoints_2D::UpdateHandle()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CurvePoints_2D::ProcessMessage(u32 message)
+void CurvePoints_2D::ProcessMessage(u32 message, u32 parameter)
 {
     //TODO: switch statement based on message
     

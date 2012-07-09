@@ -953,6 +953,21 @@ bool rand_Bool()
 
 
 //The base Catmull-Rom evaluation function which requires 4 points
+void CatmullRom_Evaluate_Vec2(vec2* pOut_result, const vec2* p0, const vec2* p1, const vec2* p2, const vec2* p3, f32 t)
+{
+	const f32 c0 = ((-t + 2.0f) * t - 1.0f) * t * 0.5f;
+	const f32 c1 = (((3.0f * t - 5.0f) * t) * t + 2.0f) * 0.5f;
+	const f32 c2 = ((-3.0f * t + 4.0f) * t + 1.0f) * t * 0.5f;
+	const f32 c3 = ((t - 1.0f) * t * t) * 0.5f;
+	
+	ScaleVec2(pOut_result, p0, c0);
+	AddScaledVec2_Self(pOut_result, p1, c1);
+	AddScaledVec2_Self(pOut_result, p2, c2);
+	AddScaledVec2_Self(pOut_result, p3, c3);
+}
+
+
+//The base Catmull-Rom evaluation function which requires 4 points
 void CatmullRom_Evaluate_Vec3(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t)
 {
 	const f32 c0 = ((-t + 2.0f) * t - 1.0f) * t * 0.5f;
@@ -977,6 +992,26 @@ f32 CatmullRom_Evaluate_F32(f32 p0, f32 p1, f32 p2, f32 p3, f32 t)
 	return c0 * p0 + c1 * p1 + c2 * p2 + c3 * p3;
 }
 
+//Evaluates a curve with any number of points using the Catmull-Rom method
+void CatmullRom_EvaluateCurve_Vec2(vec2* pOut_result, const vec2* pPoints, u32 numPoints, f32 t)
+{
+	const f32 index1F = t * (f32)(numPoints-1);
+	const u32 index1 = (u32)index1F;
+	
+	const f32 remainder = index1F - (f32)index1;
+	
+	const u32 maxIndex = numPoints-1;
+	const u32 index0 = MaxS32(0,index1 - 1);
+	const u32 index2 = MinS32(maxIndex,index1 + 1);
+	const u32 index3 = MinS32(maxIndex,index1 + 2);
+	
+	const vec2* p0 = &pPoints[index0];
+	const vec2* p1 = &pPoints[index1];
+	const vec2* p2 = &pPoints[index2];
+	const vec2* p3 = &pPoints[index3];
+	
+	CatmullRom_Evaluate_Vec2(pOut_result, p0, p1, p2, p3, remainder);
+}
 
 //Evaluates a curve with any number of points using the Catmull-Rom method
 void CatmullRom_EvaluateCurve_Vec3(vec3* pOut_result, const vec3* pPoints, u32 numPoints, f32 t)
@@ -1015,9 +1050,20 @@ f32 CatmullRom_EvaluateCurve_F32(const f32* pPoints, u32 numPoints, f32 t)
 }
 
 
+//Creates the specified number of points along a Catmull-Rom spline (non-uniform)
+void CatmullRom_CreatePoints_Vec2(vec2* pOut_pointArray, u32 numPointsDesired, const vec2* pCurvePoints, u32 numCurvePoints)
+{	
+	const f32 numPointsDesiredMin1 = (f32)(numPointsDesired-1);
+	
+	for(u32 i=0; i<numPointsDesired; ++i)
+	{
+		const f32 t = (f32)i/numPointsDesiredMin1;
+		CatmullRom_EvaluateCurve_Vec2(&pOut_pointArray[i],pCurvePoints,numCurvePoints,t);
+	}
+}
 
 //Creates the specified number of points along a Catmull-Rom spline (non-uniform)
-void CatmullRom_CreatePoints(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints)
+void CatmullRom_CreatePoints_Vec3(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints)
 {	
 	const f32 numPointsDesiredMin1 = (f32)(numPointsDesired-1);
 	
@@ -1030,7 +1076,24 @@ void CatmullRom_CreatePoints(vec3* pOut_pointArray, u32 numPointsDesired, const 
 
 
 //Creates the specified number of points along a Catmull-Rom spline (uniformly spaced)
-void CatmullRom_CreatePoints_Uniform(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries)
+void CatmullRom_CreatePoints_Uniform_Vec2(vec2* pOut_pointArray, u32 numPointsDesired, const vec2* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries)
+{
+	const f32 numPointsDesiredMin1 = (f32)(numPointsDesired-1);
+	const f32 totalLength = pDistTable[numDistTableEntries-1].distance;
+	
+	for(u32 i=0; i<numPointsDesired; ++i)
+	{
+		const f32 distT = (f32)i/(f32)numPointsDesiredMin1;
+		const f32 distance = distT * totalLength;
+		
+		const f32 t = Curve_TValueFromDist(distance,pDistTable,numDistTableEntries);
+		CatmullRom_EvaluateCurve_Vec2(&pOut_pointArray[i],pCurvePoints,numCurvePoints,t);
+	}
+}
+
+
+//Creates the specified number of points along a Catmull-Rom spline (uniformly spaced)
+void CatmullRom_CreatePoints_Uniform_Vec3(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries)
 {
 	const f32 numPointsDesiredMin1 = (f32)(numPointsDesired-1);
 	const f32 totalLength = pDistTable[numDistTableEntries-1].distance;
@@ -1047,7 +1110,7 @@ void CatmullRom_CreatePoints_Uniform(vec3* pOut_pointArray, u32 numPointsDesired
 
 
 //Creates a distance table used by Curve_TValueFromDist below
-void Curve_CreateDistanceTable(DistanceTableEntry* pOut_result, const vec3* pPoints, u32 numPoints)
+f32 Curve_CreateDistanceTable_Vec3(DistanceTableEntry* pOut_result, const vec3* pPoints, u32 numPoints)
 {
 	const u32 numPointsMin1 = numPoints-1;
 	
@@ -1066,6 +1129,33 @@ void Curve_CreateDistanceTable(DistanceTableEntry* pOut_result, const vec3* pPoi
 		pEntry->distance = distSoFar;
 		pEntry->t = (f32)i/(f32)numPointsMin1;
 	}
+	
+	return distSoFar;
+}
+
+
+//Creates a distance table used by Curve_TValueFromDist below
+f32 Curve_CreateDistanceTable_Vec2(DistanceTableEntry* pOut_result, const vec2* pPoints, u32 numPoints)
+{
+	const u32 numPointsMin1 = numPoints-1;
+	
+	f32 distSoFar = 0.0f;
+	
+	pOut_result[0].distance = 0.0f;
+	pOut_result[0].t = 0.0f;
+	
+	for(u32 i=1; i<numPoints; ++i)
+	{
+		const f32 dist = DistVec2(&pPoints[i-1], &pPoints[i]);
+		
+		distSoFar += dist;
+		
+		DistanceTableEntry* pEntry = &pOut_result[i];
+		pEntry->distance = distSoFar;
+		pEntry->t = (f32)i/(f32)numPointsMin1;
+	}
+	
+	return distSoFar;
 }
 
 

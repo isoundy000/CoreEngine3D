@@ -86,16 +86,26 @@ f32 MagnitudeSqVec3(const vec3* vec);
 f32 Ease_InOut_Cubic(f32 t, f32 t5, f32 t4, f32 t3, f32 t2, f32 t1);
 f32 Ease_InOut_Cubic_Simple(f32 t);
 
+void CatmullRom_Evaluate_Vec2(vec2* pOut_result, const vec2* p0, const vec2* p1, const vec2* p2, const vec2* p3, f32 t);
 void CatmullRom_Evaluate_Vec3(vec3* pOut_result, const vec3* p0, const vec3* p1, const vec3* p2, const vec3* p3, f32 t);
 f32 CatmullRom_Evaluate_F32(f32 p0, f32 p1, f32 p2, f32 p3, f32 t);
 
+void CatmullRom_EvaluateCurve_Vec2(vec2* pOut_result, const vec2* pPoints, u32 numPoints, f32 t);
 void CatmullRom_EvaluateCurve_Vec3(vec3* pOut_result, const vec3* pPoints, u32 numPoints, f32 t);
 f32 CatmullRom_EvaluateCurve_F32(const f32* pPoints, u32 numPoints, f32 t);
 
-void CatmullRom_CreatePoints(vec3* pOut_result, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints);
-void CatmullRom_CreatePoints_Uniform(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
+void CatmullRom_CreatePoints_Vec3(vec3* pOut_result, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints);
 
-void Curve_CreateDistanceTable(DistanceTableEntry* pOut_result, const vec3* pPoints, u32 numPoints);
+void CatmullRom_CreatePoints_Vec2(vec2* pOut_result, u32 numPointsDesired, const vec2* pCurvePoints, u32 numCurvePoints);
+
+void CatmullRom_CreatePoints_Uniform_Vec3(vec3* pOut_pointArray, u32 numPointsDesired, const vec3* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
+
+void CatmullRom_CreatePoints_Uniform_Vec2(vec2* pOut_pointArray, u32 numPointsDesired, const vec2* pCurvePoints, u32 numCurvePoints, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
+
+f32 Curve_CreateDistanceTable_Vec3(DistanceTableEntry* pOut_result, const vec3* pPoints, u32 numPoints);
+f32 Curve_TValueFromDist(f32 dist, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
+
+f32 Curve_CreateDistanceTable_Vec2(DistanceTableEntry* pOut_result, const vec2* pPoints, u32 numPoints);
 f32 Curve_TValueFromDist(f32 dist, DistanceTableEntry* pDistTable, u32 numDistTableEntries);
 
 //Projects vec0 onto normalized vec1
