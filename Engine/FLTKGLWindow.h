@@ -22,6 +22,7 @@
 
 #include "MathTypes.h"
 
+
 class FLTKGLWindow : public Fl_Gl_Window
 {
 	void draw();
@@ -29,8 +30,24 @@ class FLTKGLWindow : public Fl_Gl_Window
 	
 public:
 	FLTKGLWindow(int X, int Y, int W, int H, const char *L, f32 FPS, bool staticTimer);
+	void SetCursorHiddenWhenOnScreen(bool isHidden);
 private:
+	
+	enum FullscreenButtonState
+	{
+		FullscreenButtonState_WaitForKeys,
+		FullscreenButtonState_WaitForKeysToBeReleased,
+	};
+	
 	void UpdateMousePosition();
+	void HideCursorIfOnScreen();
+	bool m_cursorIsHiddenWhenOnScreen;
+	s32 m_posX;
+	s32 m_posY;
+	s32 m_width;
+	s32 m_height;
+	bool m_isFullScreen;
+	FullscreenButtonState m_fullScreenButtonState;
 };
 
 #endif
