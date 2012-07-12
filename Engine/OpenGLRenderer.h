@@ -212,8 +212,14 @@ public:
 	s32 screenHeight_points;
 	s32 screenWidth_pixels;
 	s32 screenHeight_pixels;
+	s32 viewportWidth_pixels;
+	s32 viewportHeight_pixels;
+	s32 viewportPosX;
+	s32 viewportPosY;
 	f32 aspectRatio;
 	bool paused;
+	
+	void SetViewport(int posX, int posY, int width, int height);
 	
 	void BindVertexArrayObject(u32 vao);
 	void SetMaterial(RenderMaterial material);

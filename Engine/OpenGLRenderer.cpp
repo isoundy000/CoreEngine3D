@@ -191,6 +191,12 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
 	screenWidth_pixels = screenWidthPixels;
 	screenHeight_pixels = screenHeightPixels;
 	
+	viewportWidth_pixels = screenWidthPoints;
+	viewportHeight_pixels = screenHeightPoints;
+	
+	viewportPosX = 0;
+	viewportPosY = 0;
+	
 	aspectRatio = static_cast<f32>(screenWidthPoints/screenHeightPoints);
 	
 	mat4f_LoadPerspective(m_projMats[ProjMatType_Perspective], 3.14f*0.25f,aspectRatio,1.0f,6000.0f);
@@ -2915,6 +2921,17 @@ void OpenGLRenderer::PrintOpenGLError(const char* callerName)
 		
 		//assert(0);
 	}
+}
+
+
+void OpenGLRenderer::SetViewport(int posX, int posY, int width, int height)
+{
+	glViewport(posX, posY, width, height);
+	
+	viewportPosX = posX;
+	viewportPosY = posY;
+	viewportWidth_pixels = width;
+	viewportHeight_pixels = height;
 }
 
 

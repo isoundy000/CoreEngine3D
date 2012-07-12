@@ -42,6 +42,7 @@ void FLTKGLWindow::SetCursorHiddenWhenOnScreen(bool isHidden)
 FLTKGLWindow::FLTKGLWindow(int X, int Y, int W, int H, const char *L, f32 FPS, bool staticTimer)
 : Fl_Gl_Window(X, Y, W, H, L)
 {
+	
 	m_fullScreenButtonState = FullscreenButtonState_WaitForKeys;
 	
 	m_posX = X;
@@ -86,20 +87,32 @@ void FLTKGLWindow::draw()
 				if(commandKeyState == CoreInput_ButtonState_Held
 				   && FKeyState == CoreInput_ButtonState_Began)
 				{
+					m_fullScreenButtonState = FullscreenButtonState_WaitForKeysToBeReleased;
+
 					m_isFullScreen = !m_isFullScreen;
 					
 					if(m_isFullScreen == true)
 					{
-						//fullscreen();
+						fullscreen();
+						
+						const f32 aspect = (f32)m_width/(f32)m_height;
+						
+						
+						const s32 height = h();
+						const s32 width = (f32)height*(f32)aspect;
+						
+						s32 posX = (w()-width)/2;
+						
+						GLRENDERER->SetViewport(posX,0,width, height);
 					}
 					else
 					{
-						//fullscreen_off(m_posX, m_posY, m_width, m_height);
+						fullscreen_off(m_posX, m_posY, m_width, m_height);
+						
+						GLRENDERER->SetViewport(0,0,m_width, m_height);
 					}
-					
-					m_fullScreenButtonState = FullscreenButtonState_WaitForKeysToBeReleased;
 				}
-				
+
 				break;
 			}
 			case FullscreenButtonState_WaitForKeysToBeReleased:
@@ -173,7 +186,19 @@ void FLTKGLWindow::UpdateMousePosition()
 	GAME->m_mouseState.position.x = mousePosX;
 	GAME->m_mouseState.position.y = mousePosY;
 	
-	if(m_cursorIsHiddenWhenOnScreen)
+	if(m_isFullScreen)
+	{
+		if(mousePosY < 0
+		   )
+		{
+			cursor(FL_CURSOR_DEFAULT);
+		}
+		else
+		{
+			cursor(FL_CURSOR_NONE);
+		}
+	}
+	else if(m_cursorIsHiddenWhenOnScreen)
 	{
 		if(mousePosX < m_posX
 		   || mousePosX > m_posX+m_width
@@ -278,12 +303,21 @@ int FLTKGLWindow::handle(int event) {
 				keyCode -= g_Key_StartHigh;
 			}
 			
-			COREDEBUG_PrintDebugMessage("FLTK Event: FL_KEYDOWN: %d",keyCode);
+			//COREDEBUG_PrintDebugMessage("FLTK Event: FL_KEYDOWN: %d",keyCode);
 			
 			const CoreInput_ButtonState currState = GAME->m_keyboardState.buttonState[keyCode];
 			if(currState != CoreInput_ButtonState_Held)
 			{
 				GAME->m_keyboardState.buttonState[keyCode] = CoreInput_ButtonState_Began;
+			}
+			
+			//If this is the escape key... KILL ALL THE THINGS
+			if(keyCode == 28)
+			{
+				GAME->CleanUp();
+				GLRENDERER->CleanUp();
+				
+				exit(EXIT_SUCCESS);
 			}
 			
 			return 1;
