@@ -642,6 +642,15 @@ void  AddVec2(vec2* out_resultVec, const vec2* vec0, const vec2* vec1)
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
+void  CopyIntVec2(intVec2* out_result, const intVec2* point)
+{
+	out_result->x = point->x;
+	out_result->y = point->y;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void  CopyVec2(vec2* out_result, const vec2* point)
 {
 	out_result->x = point->x;

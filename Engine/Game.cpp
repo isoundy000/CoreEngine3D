@@ -304,7 +304,7 @@ void Game::Update(f32 timeElapsed)
 	}
 	
 	//Save last position for sleep detection
-	CopyVec2(&m_mouseState.lastPosition,&m_mouseState.position);
+	CopyIntVec2(&m_mouseState.lastPosition,&m_mouseState.position);
 	
 	for(u32 i=0; i<256; ++i)
 	{

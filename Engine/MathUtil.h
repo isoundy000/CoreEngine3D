@@ -49,6 +49,7 @@ void  AddScaledVec2_Self(vec2* out_resultVec, const vec2* vec, f32 scale);
 void  AddScaledVec2(vec2* out_resultVec, const vec2* vec0, const vec2* vec1, f32 scale);
 void  SubScaledVec2_Self(vec2* out_resultVec, vec2* vec, f32 scale);
 void  SubScaledVec2(vec2* out_resultVec, vec2* vec0, vec2* vec1, f32 scale);
+void  CopyIntVec2(intVec2* out_result, const intVec2* point);
 void  CopyVec2(vec2* out_result, const vec2* point);
 void  CreatePlaneFromPointsVec2(struct PlaneVec2* out_resultPlane, vec2* p0, vec2* p1);
 bool  PointInsidePlaneVec2(vec2* point,struct PlaneVec2* plane);

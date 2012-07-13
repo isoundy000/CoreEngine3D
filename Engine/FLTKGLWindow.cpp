@@ -149,6 +149,8 @@ void FLTKGLWindow::draw()
 			timeElapsed = g_OneOverFPS;
 #endif	
 		}
+		
+		UpdateMousePosition();
 	
 		const bool mouseIsStuck = GAME->m_mouseState.position.x == GAME->m_mouseState.lastPosition.x 
 		&& GAME->m_mouseState.position.y == GAME->m_mouseState.lastPosition.y;
@@ -180,11 +182,12 @@ void FLTKGLWindow::draw()
 
 void FLTKGLWindow::UpdateMousePosition()
 {
-	const s32 mousePosX = Fl::event_x();
-	const s32 mousePosY = Fl::event_y();
+	Fl::get_mouse(GAME->m_mouseState.position.x, GAME->m_mouseState.position.y);
 	
-	GAME->m_mouseState.position.x = mousePosX;
-	GAME->m_mouseState.position.y = mousePosY;
+	const int mousePosX = GAME->m_mouseState.position.x;
+	const int mousePosY = GAME->m_mouseState.position.y;
+	
+	//COREDEBUG_PrintDebugMessage("Mouse x: %d, y: %d",mousePosX,mousePosY);
 	
 	if(m_isFullScreen)
 	{
@@ -226,9 +229,7 @@ int FLTKGLWindow::handle(int event) {
 		case FL_MOVE:
 		{
 			//COREDEBUG_PrintDebugMessage("FLTK Event: MOVE");
-			
-			UpdateMousePosition();
-			
+
 			return 1;
 		}
 		case FL_PUSH:
@@ -236,9 +237,7 @@ int FLTKGLWindow::handle(int event) {
 			//COREDEBUG_PrintDebugMessage("FLTK Event: PUSH");
 			//... mouse down event ...
 			//... position in Fl::event_x() and Fl::event_y()
-			
-			UpdateMousePosition();
-			
+
 			if(Fl::event_button() == FL_LEFT_MOUSE)
 			{
 				GAME->m_mouseState.buttonState[0] = CoreInput_ButtonState_Began;
@@ -255,9 +254,7 @@ int FLTKGLWindow::handle(int event) {
 		{
 			//COREDEBUG_PrintDebugMessage("FLTK Event: DRAG");
 			//... mouse moved while down event ...
-			
-			UpdateMousePosition();
-			
+
 			return 1;
 		}
 		case FL_RELEASE: 
@@ -265,9 +262,6 @@ int FLTKGLWindow::handle(int event) {
 			//COREDEBUG_PrintDebugMessage("FLTK Event: RELEASE");
 			//... mouse up event ...
 			//... Return 1 if you want keyboard events, 0 otherwise
-			
-			UpdateMousePosition();
-			
 			if(Fl::event_button() == FL_LEFT_MOUSE)
 			{
 				GAME->m_mouseState.buttonState[0] = CoreInput_ButtonState_Ended;
