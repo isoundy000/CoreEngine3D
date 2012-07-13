@@ -1957,12 +1957,16 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 			if(file_Attrib.empty() == false)
 			{
 				HUDTexture* pCurrTexture = &m_HUDTextures[m_numHUDTextures];
+				pCurrTexture->textureHandle = 0;
+				
 				pCurrTexture->nameSig = nameSig;
 				
 				std::string textureFileName = file_Attrib.value();
 				std::string texFilenameWithPath(path+textureFileName);
 				
 				GLRENDERER->LoadTexture(texFilenameWithPath.c_str(), ImageType_PNG, &pCurrTexture->textureHandle, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,true);
+				
+				COREDEBUG_PrintMessage("GUITexture: %s, id: %d",texFilenameWithPath.c_str(),pCurrTexture->textureHandle);
 				
 				assert(pCurrTexture->textureHandle);
 				

@@ -138,8 +138,8 @@ void CoreUIImageView::Uninit()
 void CoreUIImageView::Update(f32 timeElapsed)
 {
     //TODO: update here
-#if defined(_DEBUG_PC)
-	if(g_GUIEditModeOn == true)
+//#if defined(_DEBUG_PC)
+	
 	{
 		RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
 		if(pGeom != NULL)
@@ -176,7 +176,7 @@ void CoreUIImageView::Update(f32 timeElapsed)
 			GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &bottomLeft, &topLeft, &color4f_green);
 		}
 	}
-#endif
+//#endif
 }
 
 

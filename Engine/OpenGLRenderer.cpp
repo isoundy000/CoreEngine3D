@@ -2397,10 +2397,16 @@ bool OpenGLRenderer::LoadTexture(const char* fileName,ImageType imageType, u32* 
 {
 	//You're not allowed to load different textures into one location
     //You're not allowed to load into NULL
-    if (pGLTexture == NULL || *pGLTexture != 0)
+    if (pGLTexture == NULL)
     {       
         return false;
     }
+	else if(*pGLTexture != 0)
+	{
+		COREDEBUG_PrintMessage("LoadTexture->Warning: Possible unitialized texture handle.  This is fine unless you see incorrect textures.");
+		
+		return false;
+	}
 
 	std::string filePath = GAME->GetPathToFile(fileName);
 	
@@ -2436,6 +2442,7 @@ bool OpenGLRenderer::LoadTexture(const char* fileName,ImageType imageType, u32* 
 			{
 				//NEW CODE
 				glGenTextures(1, pGLTexture);
+				//COREDEBUG_PrintMessage("GenTexture: %s id: %d",filePath.c_str(),*pGLTexture);
 				glBindTexture(GL_TEXTURE_2D, *pGLTexture);
 				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,filterMode); 
 				
@@ -2469,6 +2476,7 @@ bool OpenGLRenderer::LoadTexture(const char* fileName,ImageType imageType, u32* 
 			}
 			else
 			{
+				*pGLTexture = 0;
 				COREDEBUG_PrintDebugMessage("INSANE ERROR: LoadTexture failed to load the file: %s",fileName);
 			}
             
@@ -4480,6 +4488,7 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	
 	if (!png_check_sig((unsigned char *) sig, 8))
 	{
+		COREDEBUG_PrintMessage("LoadPNGImage->ERROR: Failed to load PNG: bad sig FILE: %s",fileName);
 		fclose(infile);
 		return false;
 	}
@@ -4490,6 +4499,7 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr)
 	{
+		COREDEBUG_PrintDebugMessage("LoadPNGImage->ERROR: Failed to load PNG: could not create read struct FILE: %s",fileName);
 		fclose(infile);
 		return false;    /* out of memory */
 	}
@@ -4497,6 +4507,7 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr)
 	{
+		COREDEBUG_PrintMessage("LoadPNGImage->ERROR: Failed to load PNG: could not create info struct FILE: %s",fileName);
 		png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
 		fclose(infile);
 		return false;    /* out of memory */
@@ -4509,6 +4520,8 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	 */
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
+		COREDEBUG_PrintMessage("LoadPNGImage->ERROR: Failed to load PNG: no idea (setjump) FILE: %s",fileName);
+		
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		fclose(infile);
 		return false;
@@ -4582,12 +4595,16 @@ bool LoadPNGImage(const char* fileName, int &outWidth, int &outHeight, bool &out
 	/* Allocate the image_data buffer. */
 	if ((image_data = (GLubyte *) malloc(rowbytes * height))==NULL)
 	{
+		COREDEBUG_PrintMessage("LoadPNGImage->ERROR: Failed to load PNG: not enough RAM for image_data FILE: %s",fileName);
+		
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		return false;
     }
 	
 	if ((row_pointers = (png_bytepp)malloc(height*sizeof(png_bytep))) == NULL)
 	{
+		COREDEBUG_PrintMessage("LoadPNGImage->ERROR: Failed to load PNG: not enough RAM for row_pointers FILE: %s",fileName);
+		
         png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
         free(image_data);
         image_data = NULL;
