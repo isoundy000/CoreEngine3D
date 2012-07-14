@@ -137,46 +137,7 @@ void CoreUIImageView::Uninit()
 //----------------------------------------------------------------
 void CoreUIImageView::Update(f32 timeElapsed)
 {
-    //TODO: update here
-//#if defined(_DEBUG_PC)
-	
-	{
-		RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
-		if(pGeom != NULL)
-		{
-			vec3* pGeomPos = GetGeomPos(pGeom);
-			//TODO: replace with a more rotatable solution
-			
-			const f32 halfWidth = width/2;
-			const f32 halfHeight = height/2;
-			
-			vec3 topLeft = *pGeomPos;
-			vec3 topRight = topLeft;
-			vec3 bottomLeft = topLeft;
-			vec3 bottomRight = topLeft;
-			
-			topLeft.x -= halfWidth;
-			topLeft.y -= halfHeight;
-			
-			topRight.x += halfWidth;
-			topRight.y -= halfHeight;
-			
-			bottomLeft.x -= halfWidth;
-			bottomLeft.y += halfHeight;
-			
-			bottomRight.x += halfWidth;
-			bottomRight.y += halfHeight;
-			
-			GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &topLeft, &topRight, &color4f_green);
-			
-			GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &topRight, &bottomRight, &color4f_green);
-			
-			GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &bottomRight, &bottomLeft, &color4f_green);
-			
-			GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &bottomLeft, &topLeft, &color4f_green);
-		}
-	}
-//#endif
+
 }
 
 

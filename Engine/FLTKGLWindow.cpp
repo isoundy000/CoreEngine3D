@@ -15,6 +15,8 @@
 #if defined(PLATFORM_OSX) || defined(PLATFORM_LIN)
 #include <sys/time.h>
 
+Fl_Window* MAINWINDOW = NULL;
+
 timeval g_lastTimeValue;
 
 #elif defined(PLATFORM_WIN)
@@ -42,11 +44,13 @@ void FLTKGLWindow::SetCursorHiddenWhenOnScreen(bool isHidden)
 FLTKGLWindow::FLTKGLWindow(int X, int Y, int W, int H, const char *L, f32 FPS, bool staticTimer)
 : Fl_Gl_Window(X, Y, W, H, L)
 {
+	MAINWINDOW = this;
+	
+	m_savedPosX = 128;
+	m_savedPosY = 128;
 	
 	m_fullScreenButtonState = FullscreenButtonState_WaitForKeys;
 	
-	m_posX = X;
-	m_posY = Y;
 	m_width = W;
 	m_height = H;
 	
@@ -107,7 +111,7 @@ void FLTKGLWindow::draw()
 					}
 					else
 					{
-						fullscreen_off(m_posX, m_posY, m_width, m_height);
+						fullscreen_off(m_savedPosX, m_savedPosY, m_width, m_height);
 						
 						GLRENDERER->SetViewport(0,0,m_width, m_height);
 					}
@@ -184,36 +188,42 @@ void FLTKGLWindow::UpdateMousePosition()
 {
 	Fl::get_mouse(GAME->m_mouseState.position.x, GAME->m_mouseState.position.y);
 	
+	GAME->m_mouseState.position.x -= x();
+	GAME->m_mouseState.position.y -= y();
+	
 	const int mousePosX = GAME->m_mouseState.position.x;
 	const int mousePosY = GAME->m_mouseState.position.y;
 	
 	//COREDEBUG_PrintDebugMessage("Mouse x: %d, y: %d",mousePosX,mousePosY);
 	
-	if(m_isFullScreen)
+	if(m_cursorIsHiddenWhenOnScreen)
 	{
-		if(mousePosY < 0
-		   )
+		if(m_isFullScreen)
 		{
-			cursor(FL_CURSOR_DEFAULT);
+			if(mousePosY < 0
+			   )
+			{
+				cursor(FL_CURSOR_DEFAULT);
+			}
+			else
+			{
+				cursor(FL_CURSOR_NONE);
+			}
 		}
 		else
 		{
-			cursor(FL_CURSOR_NONE);
-		}
-	}
-	else if(m_cursorIsHiddenWhenOnScreen)
-	{
-		if(mousePosX < m_posX
-		   || mousePosX > m_posX+m_width
-		   || mousePosY < m_posY
-		   || mousePosY > m_posY+m_height
-		   )
-		{
-			cursor(FL_CURSOR_DEFAULT);
-		}
-		else
-		{
-			cursor(FL_CURSOR_NONE);
+			if(mousePosX < 0
+			   || GAME->m_mouseState.position.x > m_width
+			   || GAME->m_mouseState.position.y < 0
+			   || GAME->m_mouseState.position.y > m_height
+			   )
+			{
+				cursor(FL_CURSOR_DEFAULT);
+			}
+			else
+			{
+				cursor(FL_CURSOR_NONE);
+			}
 		}
 	}
 }
@@ -297,7 +307,7 @@ int FLTKGLWindow::handle(int event) {
 				keyCode -= g_Key_StartHigh;
 			}
 			
-			//COREDEBUG_PrintDebugMessage("FLTK Event: FL_KEYDOWN: %d",keyCode);
+			COREDEBUG_PrintDebugMessage("FLTK Event: FL_KEYDOWN: %d",keyCode);
 			
 			const CoreInput_ButtonState currState = GAME->m_keyboardState.buttonState[keyCode];
 			if(currState != CoreInput_ButtonState_Held)

@@ -48,6 +48,7 @@ class Game;
 extern Game* GAME;
 
 #if defined(_DEBUG_PC)
+#include "CoreUIEditor.h"
 extern bool g_GUIEditModeOn;
 #endif
 
@@ -382,8 +383,7 @@ private:
 	u32 m_numHUDTextures;
 	
 #if defined(_DEBUG_PC)
-	void GUIEditor_ClearBrowser();
-	void GUIEditor_FillBrowser(CoreUIView* pParentView);
+	CoreUIEditor m_uiEditor;
 #endif
 };
 

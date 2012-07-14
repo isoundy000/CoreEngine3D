@@ -36,7 +36,6 @@
 Game* GAME = NULL;
 
 #if defined(_DEBUG_PC)
-static std::vector<CoreUI_Container> g_GUIContainers;
 bool g_GUIEditModeOn = false;
 #endif
 
@@ -273,16 +272,18 @@ void Game::Update(f32 timeElapsed)
 	}
 	
 #if defined(_DEBUG_PC)
-	if(m_keyboardState.buttonState[5] == CoreInput_ButtonState_Ended)
+	if(m_keyboardState.buttonState[103] == CoreInput_ButtonState_Ended)
 	{
 		g_GUIEditModeOn = !g_GUIEditModeOn;
 		if(g_GUIEditModeOn == true)
 		{
 			COREDEBUG_PrintDebugMessage("GUI Edit Mode: On");
+			UIEDITOR->SetVisible(true);
 		}
 		else
 		{
 			COREDEBUG_PrintDebugMessage("GUI Edit Mode: Off");
+			UIEDITOR->SetVisible(false);
 		}
 	}
 #endif
@@ -989,104 +990,30 @@ static void DrawFunc_DrawTileLayer(void* pData)
 	GLRENDERER->SetTexture(&textureID, 0);
 	
 	glDrawArrays(GL_TRIANGLES, 0, tileVertIndex);
-	
-	
-	//TEST TRIANGLE
-	/*TileVert* pTileVerts = GAME->GetTiledVerts();
-	
-	const u32 textureID = 0;
-	GLRENDERER->SetTexture(&textureID, 1);
-	
-	vec3 pos0 = {-1.0f,-1.0f,0.0f};
-	vec3 pos1 = {1.0f,-1.0f,0.0f};
-	vec3 pos2 = {1.0f,1.0f,0.0f};
-	
-	vec2 uv0 = {0.0f,0.0f};
-	vec2 uv1 = {1.0f,0.0f};
-	vec2 uv2 = {1.0f,1.0f};
-
-	pTileVerts[0].position = pos0;
-	pTileVerts[0].texcoord = uv0;
-	
-	pTileVerts[1].position = pos1;
-	pTileVerts[1].texcoord = uv1;
-	
-	pTileVerts[2].position = pos2;
-	pTileVerts[2].texcoord = uv2;
-		
-	GAME->UpdateTileVBO();
-	
-	for(u32 i=0; i<g_Tile_NumAttributes; ++i)
-	{
-		GLRENDERER->EnableAttribute(&g_Tile_AttribData[i], sizeof(TileVert));
-	}
-	
-	glDrawArrays(GL_TRIANGLES, 0, 3);*/
 }
+
 
 void Game::UpdateTileVBO()
 {
 	GLRENDERER->UpdateVBO(m_tileVBOHandle, m_pTileVerts, m_tileVertDataSize, GL_DYNAMIC_DRAW);
 }
 
+
 TileVert* Game::GetTiledVerts()
 {
 	return m_pTileVerts;
 }
+
 
 u32 Game::GetTileVBO()
 {
 	return m_tileVBOHandle;
 }
 
+
 u32 Game::GetTileVAO()
 {
 	return m_tileVAOHandle;
-}
-
-
-void Game::CreateRenderableTile_NEW(Tile* pTile, RenderableGeometry3D** pGeom, RenderLayer renderLayer, RenderMaterial material)
-{
-	CoreObjectHandle hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,pGeom);
-	if(hRenderable.IsValid() == false)
-	{
-		return;
-	}
-	
-	TileSetDescription* pDesc = pTile->pDesc;
-	
-	vec2 scaleVec = {m_tiledLevelDescription.tileDisplaySizeX,m_tiledLevelDescription.tileDisplaySizeX};
-	
-	if(pTile->flags & TILE_FLIPPED_HORIZONTALLY_FLAG)
-	{
-		scaleVec.x *= -1.0f;
-	}
-	
-	if(pTile->flags & TILE_FLIPPED_VERTICALLY_FLAG)
-	{
-		scaleVec.y *= -1.0f;
-	}
-	
-	if(pTile->flags & TILE_FLIPPED_DIAGONALLY_FLAG)
-	{
-		scaleVec.x *= -1.0f;
-		scaleVec.y *= -1.0f;
-	}
-	
-	CopyVec2(&pTile->scale,&scaleVec);
-	
-	//const u32 baseFlag = RenderFlagDefaults_2DTexture_AlphaBlended;
-	
-	//GLRENDERER->InitRenderableGeometry3D(*pGeom, &g_drawStruct_RenderTile, pTile, MT_WorldSpace_TextureOnly, &pDesc->loadedTextureID, NULL, renderLayer, BlendMode_Normal, baseFlag|RenderFlag_Visible);
-	
-	const s32 tileID_X = pTile->tileID%pDesc->numTextureTilesX;
-	const s32 tileID_Y = pTile->tileID/pDesc->numTextureTilesX;
-	
-	pTile->texCoordOffset.x = (f32)tileID_X/(f32)pDesc->numTextureTilesX;
-	pTile->texCoordOffset.y = (f32)tileID_Y/(f32)pDesc->numTextureTilesY;
-
-	
-	//pTile->hRenderable = hRenderable;
 }
 
 
@@ -1160,10 +1087,12 @@ void Game::CullTile(Layer* layer, s32 x, s32 y)
 	}
 }
 
+
 void Game::SetTileCullingRange(s32 cullingRange)
 {
 	m_cullingRange = cullingRange;
 }
+
 
 void Game::UpdateTiledLevelPosition(vec3* pPosition)
 {
@@ -1195,14 +1124,8 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 			continue;
 		}
 		
-		//const RenderLayer renderLayer = (RenderLayer)(RenderLayer_Background0+i);
-		//const RenderMaterial renderMaterial = pCurrLayer->material;
-		
 		//If this is the collision layer, it should move at the same rate as the main layer
 		const s32 adjustedIndex = (currLayer==LevelLayer_Main0 || currLayer==LevelLayer_Collision || currLayer==LevelLayer_TileObjectArt)?(s32)LevelLayer_Main1:i;
-		//const s32 scrollIndex = (s32)LevelLayer_Main1-adjustedIndex;	//TODO: index into an array of values maybe
-		
-		//ScaleVec3(&pCurrLayer->position,&position,1.0f/(f32)scrollIndex);
 		
 		CopyVec3(&pCurrLayer->position,&position);
 		
@@ -1216,167 +1139,6 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 	}
 }
 
-//TODO: OPTIMIZE! This is the slowest function in the whole game
-/*void Game::UpdateTiledLevelPosition(vec3* pPosition)
-{
-	vec3 position;
-	ScaleVec3(&position,pPosition,-1.0f);
-
-	vec3 negPosition;
-	CopyVec3(&negPosition,&position);
-	negPosition.y = -position.y;
-	
-	for(s32 i=0; i<NumLevelLayers; ++i)
-	{
-		const LevelLayer currLayer = (LevelLayer)i;
-		
-#ifndef _DEBUG
-		if(currLayer == LevelLayer_Collision)
-		{
-			continue;
-		}
-#endif
-		if(currLayer == LevelLayer_CameraExtents)
-		{
-			continue;
-		}
-
-		Layer* pCurrLayer = &m_layers[i];
-		if(pCurrLayer->pLevelData == NULL)
-		{
-			continue;
-		}
-		
-		const RenderLayer renderLayer = (RenderLayer)(RenderLayer_Background0+i);
-		const RenderMaterial renderMaterial = pCurrLayer->material;
-		
-		//If this is the collision layer, it should move at the same rate as the main layer
-		const s32 adjustedIndex = (currLayer==LevelLayer_Main0 || currLayer==LevelLayer_Collision || currLayer==LevelLayer_TileObjectArt)?(s32)LevelLayer_Main1:i;
-		//const s32 scrollIndex = (s32)LevelLayer_Main1-adjustedIndex;	//TODO: index into an array of values maybe
-
-		//ScaleVec3(&pCurrLayer->position,&position,1.0f/(f32)scrollIndex);
-
-		CopyVec3(&pCurrLayer->position,&position);
-		
-		if(m_parallaxScale != 0.0f)
-		{
-			vec3 parallaxDiffVec;
-			
-			SubVec3(&parallaxDiffVec,&m_parallaxBasePos,&negPosition);
-			SubScaledVec3_Self(&pCurrLayer->position,&parallaxDiffVec,(f32)(adjustedIndex-LevelLayer_Main1)*m_parallaxScale);
-		}
-		
-		//TODO: figure out the slight difference that makes the other game cull too much
-		
-		const s32 numTilesX = pCurrLayer->numTilesX;
-		const s32 numTilesY = pCurrLayer->numTilesY;
-		
-		
-		const s32 tilePosX = (s32)(-pCurrLayer->position.x/GAME->GetTileSize());
-		
-		const s32 numScreenTilesX = (f32)GLRENDERER->screenWidth_points/GAME->GetTileSize()+0.5f;
-		
-		//const s32 testCullingBuffer = 4;
-		
-		int xStart = ClampS32(tilePosX, 0, numTilesX);
-		int xEnd = ClampS32(tilePosX+numScreenTilesX+1, 0, numTilesX);
-		
-		assert(xEnd < numTilesX+1);
-		
-		const s32 tilePosY = (s32)(-pCurrLayer->position.y/GAME->GetTileSize());
-		
-		const s32 numScreenTilesY = (f32)GLRENDERER->screenHeight_points/GAME->GetTileSize()+0.5f;
-		
-		const s32 yStart = ClampS32(tilePosY, 0, numTilesY);
-		const s32 yEnd = ClampS32(tilePosY+numScreenTilesY+1, 0, numTilesY);
-
-		//If it's the TileObjectArt layer, just update the uniforms
-		
-		//If it's any other layer, do the whole delete/create tiles thing
-		
-		
-		
-		const s32 cullLoopStartX = MaxS32(xStart-m_cullingRange,0);
-		const s32 cullLoopEndX = MinS32(xEnd+m_cullingRange,numTilesX);
-		
-		const s32 cullLoopStartY = MaxS32(yStart-m_cullingRange,0);
-		const s32 cullLoopEndY = MinS32(yEnd+m_cullingRange,numTilesY);
-		
-		//CULLING
-		
-		//TOP AND BOTTOM
-		for(s32 y=cullLoopStartY; y<yStart; ++y)
-		{
-			for(s32 x=xStart; x<xEnd; ++x)
-			{
-				CullTile(pCurrLayer,x,y);
-			}
-		}
-		
-		for(s32 y=yEnd; y<cullLoopEndY; ++y)
-		{
-			for(s32 x=xStart; x<xEnd; ++x)
-			{
-				CullTile(pCurrLayer,x,y);
-			}
-		}
-		
-		//SIDES
-		for(s32 x=cullLoopStartX; x<xStart; ++x)
-		{
-			for(s32 y=0; y<numTilesY; ++y)
-			{
-				CullTile(pCurrLayer,x,y);
-			}
-		}
-		
-		for(s32 x=xEnd; x<cullLoopEndX; ++x)
-		{
-			for(s32 y=0; y<numTilesY; ++y)
-			{
-				CullTile(pCurrLayer,x,y);
-			}
-		}
-		
-		const s32 baseX = m_tiledLevelDescription.halfTileDisplaySizeX+((s32)pCurrLayer->position.x);
-		const s32 baseY = m_tiledLevelDescription.halfTileDisplaySizeY+((s32)pCurrLayer->position.y);
-		
-		for(s32 y=yStart; y<yEnd; ++y)
-		{
-			const s32 tileBasePosY = y*m_tiledLevelDescription.tileDisplaySizeY+baseY;
-	
-			for(s32 x=xStart; x<xEnd; ++x)
-			{
-				Tile* pTile = &ARRAY2D(pCurrLayer->tiles, x, y, numTilesX);
-				if(pTile->tileID == -1)
-				{
-					continue;
-				}
-				
-				RenderableGeometry3D* pCurrRenderable = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(pTile->hRenderable);
-				//Create new renderable
-				
-				if(pCurrRenderable == NULL)
-				{
-					CreateRenderableTile_NEW(pTile,&pCurrRenderable,renderLayer,renderMaterial);
-	
-					if(pCurrRenderable == NULL)
-					{
-						COREDEBUG_PrintDebugMessage("Running out of tile renderables. Use SetTileCullingRange to increase the limit.");
-						continue;
-					}
-					
-					//TODO: do something better than this if possible
-					pCurrRenderable->material.uniqueUniformValues[0] = (u8*)&pTile->texCoordOffset;
-				}
-
-				const s32 tileBasePosX = x*m_tiledLevelDescription.tileDisplaySizeX+baseX;
-				
-				SetVec2(&pTile->position,tileBasePosX,tileBasePosY);
-			}
-		}
-	}
-}*/
 
 const vec3* Game::GetCameraPosition()
 {
@@ -1413,12 +1175,14 @@ void Game::SetCameraPosition(const vec3* pCamPos, f32 lerpTime)
 	}
 }
 
+
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 DeviceInputState* Game::GetDeviceInputState()
 {
 	return &m_deviceInputState;
 }
 #endif
+
 
 void Game::GetTileIndicesFromScreenPosition(const vec2* pPosition, u32* pOut_X, u32* pOut_Y)
 {
@@ -1493,22 +1257,6 @@ void Game::ConstrainCameraToTiledLevel()
 	const f32 maxCameraX = m_camExtentBR_X-GLRENDERER->screenWidth_points;
 	const f32 minCameraY = m_camExtentTL_Y;
 	const f32 maxCameraY = m_camExtentBR_Y-GLRENDERER->screenHeight_points;
-
-	
-	//const f32 tileSize = GetTileSize();
-	
-	/*const f32 maxCameraY = tileSize*0.5f*pMainLayer->numTilesY-GLRENDERER->screenHeight_points;
-	if(m_camPos.y > maxCameraY)
-	{
-		m_camPos.y = maxCameraY;
-	}*/
-
-	/*const f32 maxCameraX = tileSize*pMainLayer->numTilesX-GLRENDERER->screenWidth_points;
-	if(m_camPos.x > maxCameraX)
-	{
-		m_camPos.x = maxCameraX;
-	}*/
-	 
 	
 	if(m_camPos.x < minCameraX)
 	{
@@ -1604,6 +1352,7 @@ void Game::ToggleTileVisibility(Tile* pTile, bool isVisible)
 		}
 	}
 }
+
 								 
 void Game::ToggleTileVisibility(LevelLayer levelLayer,u32 tileIndex_X,u32 tileIndex_Y,bool isVisible)
 {
@@ -1611,10 +1360,12 @@ void Game::ToggleTileVisibility(LevelLayer levelLayer,u32 tileIndex_X,u32 tileIn
 	ToggleTileVisibility(pTile,isVisible);
 }
 
+
 void Game::SetFollowCamTarget(const vec3* pFollowCamPos)
 {
 	CopyVec3(&m_followCamPos,pFollowCamPos);
 }
+
 
 void Game::SetCameraMode(CameraMode mode)
 {
@@ -1645,11 +1396,13 @@ void Game::DestroyTile(s32 index_x, s32 index_Y, const vec2* pVel)
 	++m_numTilesToDelete;
 }
 
+
 void Game::Box2D_SetNumIterations(u32 velIterations, u32 posIterations)
 {
 	m_Box2D_NumVelocitySteps = velIterations;
 	m_Box2D_NumPositionSteps = posIterations;
 }
+
 
 void Game::Box2D_SetPhysicsIsLocked(bool isLocked)
 {
@@ -1670,6 +1423,7 @@ void Game::Box2D_TogglePhysicsDebug(bool allowPhysicsDebugDraw)
 	}
 #endif
 }
+
 
 void Game::Box2D_ResetWorld()
 {
@@ -1723,25 +1477,30 @@ b2World* Game::Box2D_GetWorld()
 	return m_Box2D_pWorld;
 }
 
+
 void Game::Box2D_SetContactListener(b2ContactListener* pContactListener)
 {
 	m_Box2D_pWorld->SetContactListener(pContactListener);
 }
+
 
 b2Body* Game::Box2D_GetGroundBody()
 {
 	return m_Box2D_pGroundBody;
 }
 
+
 void Game::Box2D_SetGravity(f32 x, f32 y)
 {
 	m_Box2D_pWorld->SetGravity(b2Vec2(x,y));
 }
 
+
 void Game::Box2D_SetDefaultCollisionFriction(f32 friction)
 {
 	m_Box2D_defaultCollisionFriction = friction;
 }
+
 
 b2Body* Game::Box2D_CreateBodyForTileIndex(s32 tileIndex, s32 posX, s32 posY)
 {
@@ -1785,6 +1544,7 @@ void Game::TiledLevel_DeleteObjectIfOffscreen_X(CoreObject* pObject, vec3* pPos,
         pObject->DeleteObject();
     }
 }
+
 
 void Game::TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck)
 {
@@ -1907,7 +1667,7 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 void Game::Reset()
 {
 #if defined(_DEBUG_PC)
-	g_GUIContainers.clear();
+	UIEDITOR->Clear();
 #endif
 }
 
@@ -2012,11 +1772,7 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		container.rootView = pMainView->GetHandle();
 		container.filepath = filenameWithPath;
 		
-		g_GUIContainers.push_back(container);
-		
-		GUIEditor_ClearBrowser();
-		GUIEditor_FillBrowser(pMainView);
-		
+		UIEDITOR->AddViewContainer(container);
 #endif
 
 		//Return handle to view
@@ -2028,48 +1784,6 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		return NULL;
 	}
 }
-
-
-#if defined (_DEBUG_PC)
-void Game::GUIEditor_ClearBrowser()
-{
-	/*if(pBrowser_View != NULL)
-	{
-		pBrowser_View->clear();
-	}*/
-}
-
-void Game::GUIEditor_FillBrowser(CoreUIView* pParentView)
-{
-	/*if(pBrowser_View == NULL)
-	{
-		return;
-	}
-	
-	//Fl_Widget* pWidget = new Fl_Widget(0,0,128,16,pParentView->nameString.c_str());
-	
-	//pBrowser_View->add("die");
-	
-	if(pParentView->nameString.empty())
-	{
-		pBrowser_View->add("Unnamed");
-	}
-	else
-	{
-		pBrowser_View->add(pParentView->nameString.c_str());
-	}
-	
-	
-	for(u32 i=0; i<pParentView->numChildren; ++i)
-	{
-		CoreUIView* pChildView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(pParentView->children[i]);
-		if(pChildView != NULL)
-		{
-			GUIEditor_FillBrowser(pChildView);
-		}
-	}*/
-}
-#endif
 
 
 bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters)
