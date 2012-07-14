@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
+#if defined(_DEBUG_PC)
+
 #include "CoreUIEditor.h"
 #include "FLTKGLWindow.h"
 #include "CoreObject_Manager.h"
@@ -106,3 +108,5 @@ void CoreUIEditor::AddViewContainer(const CoreUI_Container& container)
 
 	AddChildViews(pParentView);
 }
+
+#endif
