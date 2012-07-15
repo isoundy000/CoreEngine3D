@@ -31,7 +31,7 @@ CoreUIEditor::CoreUIEditor()
 	
     m_toolWindow->begin();
 	
-	m_toolWindowBrowser = new Fl_Browser(0,0,width,height,"uibrowser");
+	m_toolWindowBrowser = new Fl_Tree(0,0,width,height,"uibrowser");
 	
     m_toolWindow->end();
 	
@@ -66,8 +66,12 @@ void CoreUIEditor::SetVisible(bool isVisible)
 }
 
 
-void CoreUIEditor::AddChildViews(CoreUIView* pParentView)
+void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path)
 {
+	const std::string appendedPath = path + '/';
+	const std::string defaultPath = appendedPath+"Unnamed";
+	std::string itemPath;
+	
 	for(u32 i=0; i<pParentView->numChildren; ++i)
 	{
 		CoreUIView* pChildView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(pParentView->children[i]);
@@ -78,14 +82,15 @@ void CoreUIEditor::AddChildViews(CoreUIView* pParentView)
 		
 		if(pChildView->nameString.empty())
 		{
-			m_toolWindowBrowser->add("Unnamed");
+			itemPath = defaultPath;
 		}
 		else
 		{
-			m_toolWindowBrowser->add(pChildView->nameString.c_str());
+			itemPath = appendedPath+pChildView->nameString;	
 		}
 		
-		AddChildViews(pChildView);
+		m_toolWindowBrowser->add(itemPath.c_str());
+		AddChildViews(pChildView, itemPath);
 	}
 }
 
@@ -106,7 +111,7 @@ void CoreUIEditor::AddViewContainer(const CoreUI_Container& container)
 		m_toolWindowBrowser->add(pParentView->nameString.c_str());
 	}
 
-	AddChildViews(pParentView);
+	AddChildViews(pParentView,pParentView->nameString);
 }
 
 #endif

@@ -112,6 +112,8 @@ void FLTKGLWindow::draw()
 					else
 					{
 						fullscreen_off(m_savedPosX, m_savedPosY, m_width, m_height);
+						border(1);
+						redraw();
 						
 						GLRENDERER->SetViewport(0,0,m_width, m_height);
 					}

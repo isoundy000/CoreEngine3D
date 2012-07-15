@@ -14,7 +14,7 @@
 #include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
-#include <FL/Fl_Browser.H>
+#include <FL/Fl_Tree.H>
 
 class CoreUIEditor;
 extern CoreUIEditor* UIEDITOR;
@@ -35,8 +35,8 @@ public:
 	void SetVisible(bool isVisible);
 private:
 	Fl_Window* m_toolWindow;
-	Fl_Browser* m_toolWindowBrowser;
-	void AddChildViews(CoreUIView* pParentView);
+	Fl_Tree* m_toolWindowBrowser;
+	void AddChildViews(CoreUIView* pParentView,const std::string& path);
 };
 
 #endif
