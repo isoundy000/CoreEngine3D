@@ -1099,10 +1099,6 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 	vec3 position;
 	ScaleVec3(&position,pPosition,-1.0f);
 	
-	vec3 negPosition;
-	CopyVec3(&negPosition,&position);
-	negPosition.y = -position.y;
-	
 	for(s32 i=0; i<NumLevelLayers; ++i)
 	{
 		const LevelLayer currLayer = (LevelLayer)i;
@@ -1133,7 +1129,7 @@ void Game::UpdateTiledLevelPosition(vec3* pPosition)
 		{
 			vec3 parallaxDiffVec;
 			
-			SubVec3(&parallaxDiffVec,&m_parallaxBasePos,&negPosition);
+			SubVec3(&parallaxDiffVec,&m_parallaxBasePos,&position);
 			SubScaledVec3_Self(&pCurrLayer->position,&parallaxDiffVec,(f32)(adjustedIndex-LevelLayer_Main1)*m_parallaxScale);
 		}
 	}

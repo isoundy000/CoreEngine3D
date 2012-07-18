@@ -72,6 +72,13 @@ bool CoreUIView::Init(u32 type)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
+CoreUIView::Properties* CoreUIView::GetProperties()
+{
+	return &m_properties;
+}
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
 CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
 {
 	//Loop through all the child views
@@ -111,20 +118,20 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
 	//DEFAULTS
+	
 	parentOpacity = 1.0f;
 	parentVisible = true;
 	
-	sortValue = 0;
+	memset(&m_properties, 0, sizeof(CoreUIView::Properties));
+	m_properties.opacity = 1.0f;
+	opacity = 1.0f;
 	
 	nameSig = 0;
-	opacity = 1.0f;
 	visible = true;
-	offset.x = 0;
-	offset.y = 0;
-	width = GLRENDERER->screenWidth_points;
-	height = GLRENDERER->screenHeight_points;
+	m_properties.width = GLRENDERER->screenWidth_points;
+	m_properties.height = GLRENDERER->screenHeight_points;
 	//angle = 0.0f;
-	origin = CoreUI_Origin_TopLeft;
+	m_properties.origin = CoreUI_Origin_TopLeft;
 	
 	//LOAD ATTRIBUTES
 	
@@ -140,22 +147,22 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	
 	if(offsetX_Attrib.empty() == false)
 	{
-		offset.x = atof(offsetX_Attrib.value());
+		m_properties.offsetX = atof(offsetX_Attrib.value());
 	}
 	
 	if(offsetY_Attrib.empty() == false)
 	{
-		offset.y = atof(offsetY_Attrib.value());
+		m_properties.offsetY = atof(offsetY_Attrib.value());
 	}
 	
 	if(width_Attrib.empty() == false)
 	{
-		width = atof(width_Attrib.value());
+		m_properties.width = atof(width_Attrib.value());
 	}
 	
 	if(height_Attrib.empty() == false)
 	{
-		height = atof(height_Attrib.value());
+		m_properties.height = atof(height_Attrib.value());
 	}
 	
 	/*if(angle_Attrib.empty() == false)
@@ -165,7 +172,8 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	
 	if(opacity_Attrib.empty() == false)
 	{
-		opacity = atof(opacity_Attrib.value());
+		m_properties.opacity = atof(opacity_Attrib.value());
+		opacity = m_properties.opacity;
 	}
 	
 	if(visible_Attrib.empty() == false)
@@ -187,7 +195,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	
 	if(sortValue_Attrib.empty() == false)
 	{
-		sortValue = atoi(sortValue_Attrib.value());
+		m_properties.sortValue = atoi(sortValue_Attrib.value());
 	}
 	
 	pugi::xml_attribute origin_Attrib = pProperties->attribute("origin");
@@ -197,42 +205,42 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		
 		if(strcmp(originStr, "center") == 0)
 		{
-			origin = CoreUI_Origin_Center;
+			m_properties.origin = CoreUI_Origin_Center;
 		}
 		else if(strcmp(originStr, "left") == 0)
 		{
-			origin = CoreUI_Origin_Left;
+			m_properties.origin = CoreUI_Origin_Left;
 		}
 		else if(strcmp(originStr, "right") == 0)
 		{
-			origin = CoreUI_Origin_Right;
+			m_properties.origin = CoreUI_Origin_Right;
 		}
 		else if(strcmp(originStr, "top") == 0)
 		{
-			origin = CoreUI_Origin_Top;
+			m_properties.origin = CoreUI_Origin_Top;
 		}
 		else if(strcmp(originStr, "bottom") == 0)
 		{
-			origin = CoreUI_Origin_Bottom;
+			m_properties.origin = CoreUI_Origin_Bottom;
 		}
 		else if(strcmp(originStr, "topLeft") == 0)
 		{
-			origin = CoreUI_Origin_TopLeft;
+			m_properties.origin = CoreUI_Origin_TopLeft;
 		}
 		else if(strcmp(originStr, "bottomLeft") == 0)
 		{
-			origin = CoreUI_Origin_BottomLeft;
+			m_properties.origin = CoreUI_Origin_BottomLeft;
 		}
 		else if(strcmp(originStr, "topRight") == 0)
 		{
-			origin = CoreUI_Origin_TopRight;
+			m_properties.origin = CoreUI_Origin_TopRight;
 		}
 		else if(strcmp(originStr, "bottomRight") == 0)
 		{
-			origin = CoreUI_Origin_BottomRight;
+			m_properties.origin = CoreUI_Origin_BottomRight;
 		}
 	}
-
+	
 	
 	//CREATE SUBVIEWS
 	
@@ -291,8 +299,8 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 {
 	//NOTE: the parent position is the center of the object
 	
-	const f32 parentWidth = pParentView?pParentView->width:GLRENDERER->screenWidth_points;
-	const f32 parentHeight = pParentView?pParentView->height:GLRENDERER->screenHeight_pixels;
+	const f32 parentWidth = pParentView?pParentView->m_properties.width:GLRENDERER->screenWidth_points;
+	const f32 parentHeight = pParentView?pParentView->m_properties.height:GLRENDERER->screenHeight_pixels;
 	const f32 parentPosX = pParentView?pParentView->position.x:GLRENDERER->screenWidth_points/2;
 	const f32 parentPosY = pParentView?pParentView->position.y:GLRENDERER->screenHeight_points/2;
 	
@@ -302,68 +310,68 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	parentOpacity = pParentView?(pParentView->parentOpacity*pParentView->opacity):1.0f;
 	parentVisible = pParentView?(pParentView->parentVisible && pParentView->visible):true;
 	
-	switch(origin)
+	switch(m_properties.origin)
 	{
 		case CoreUI_Origin_Center:
 		{
-			position.x = (f32)parentPosX+offset.x;
-			position.y = (f32)parentPosY+offset.y;
+			position.x = (f32)parentPosX+m_properties.offsetX;
+			position.y = (f32)parentPosY+m_properties.offsetY;
 			
 			break;
 		}
 		case CoreUI_Origin_Left:
 		{
-			position.x = (f32)parentPosX+offset.x-parentHalfWidth;
-			position.y = (f32)parentPosY+offset.y;
+			position.x = (f32)parentPosX+m_properties.offsetX-parentHalfWidth;
+			position.y = (f32)parentPosY+m_properties.offsetY;
 			
 			break;
 		}
 		case CoreUI_Origin_Right:
 		{
-			position.x = (f32)parentPosX+offset.x+parentHalfWidth;
-			position.y = (f32)parentPosY+offset.y;
+			position.x = (f32)parentPosX+m_properties.offsetX+parentHalfWidth;
+			position.y = (f32)parentPosY+m_properties.offsetY;
 			
 			break;
 		}
 		case CoreUI_Origin_Top:
 		{
-			position.x = (f32)parentPosX+offset.x;
-			position.y = (f32)parentPosY+offset.y-parentHalfHeight;
+			position.x = (f32)parentPosX+m_properties.offsetX;
+			position.y = (f32)parentPosY+m_properties.offsetY-parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_Bottom:
 		{
-			position.x = (f32)parentPosX+offset.x;
-			position.y = (f32)parentPosY+offset.y+parentHalfHeight;
+			position.x = (f32)parentPosX+m_properties.offsetX;
+			position.y = (f32)parentPosY+m_properties.offsetY+parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_TopLeft:
 		{
-			position.x = (f32)parentPosX+offset.x-parentHalfWidth;
-			position.y = (f32)parentPosY+offset.y-parentHalfHeight;
+			position.x = (f32)parentPosX+m_properties.offsetX-parentHalfWidth;
+			position.y = (f32)parentPosY+m_properties.offsetY-parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_BottomLeft:
 		{
-			position.x = (f32)parentPosX+offset.x-parentHalfWidth;
-			position.y = (f32)parentPosY+offset.y+parentHalfHeight;
+			position.x = (f32)parentPosX+m_properties.offsetX-parentHalfWidth;
+			position.y = (f32)parentPosY+m_properties.offsetY+parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_TopRight:
 		{
-			position.x = (f32)parentPosX+offset.x+parentHalfWidth;
-			position.y = (f32)parentPosY+offset.y-parentHalfHeight;
+			position.x = (f32)parentPosX+m_properties.offsetX+parentHalfWidth;
+			position.y = (f32)parentPosY+m_properties.offsetY-parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_BottomRight:
 		{
-			position.x = (f32)parentPosX+offset.x+parentHalfWidth;
-			position.y = (f32)parentPosY+offset.y+parentHalfHeight;
+			position.x = (f32)parentPosX+m_properties.offsetX+parentHalfWidth;
+			position.y = (f32)parentPosY+m_properties.offsetY+parentHalfHeight;
 			
 			break;
 		}

@@ -41,9 +41,21 @@ enum CoreUI_Origin
 class CoreUIView: public CoreGameObject
 {
 public:
+	struct Properties
+	{
+		CoreUI_Origin origin;
+		s32 offsetX;
+		s32 offsetY;
+		s32 width;
+		s32 height;
+		f32 opacity;
+		s32 sortValue;
+	};
+	
 #if defined(_DEBUG_PC)
 	std::string nameString;
 #endif
+	Properties* GetProperties();
 	CoreUIView* GetChildViewByName(u32 nameSig);
     virtual void UpdateHandle();	//Called when the memory location changes
 
@@ -58,21 +70,15 @@ public:
     static void InitClass();	//One-time global init
 
 	u32 nameSig;
-	
-	CoreUI_Origin origin;
-	vec2 offset;
-	f32 width;
-	f32 height;
-	
+
 	vec2 position;
-	
-	f32 opacity;
+
 	bool visible;
 
 	CoreUI_ViewType viewType;
 	
-	u32 sortValue;
-	
+	f32 opacity;
+
 	u32 numChildren;
 	CoreObjectHandle children[CoreUIView_MAX_CHILDREN];
 	
@@ -81,6 +87,8 @@ public:
 protected:
 	f32 parentOpacity;
 	bool parentVisible;
+	
+	CoreUIView::Properties m_properties;
 	
 	void LayoutSubViews();
 private:

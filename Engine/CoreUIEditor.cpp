@@ -74,7 +74,8 @@ void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path
 	
 	for(u32 i=0; i<pParentView->numChildren; ++i)
 	{
-		CoreUIView* pChildView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(pParentView->children[i]);
+		const CoreObjectHandle  childObjectHandle = pParentView->children[i];
+		CoreUIView* pChildView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(childObjectHandle);
 		if(pChildView == NULL)
 		{
 			continue;
@@ -89,7 +90,9 @@ void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path
 			itemPath = appendedPath+pChildView->nameString;	
 		}
 		
-		m_toolWindowBrowser->add(itemPath.c_str());
+		Fl_Tree_Item* pItem = m_toolWindowBrowser->add(itemPath.c_str());
+		pItem->user_data((void*)(u32)childObjectHandle);
+		
 		AddChildViews(pChildView, itemPath);
 	}
 }
@@ -99,18 +102,22 @@ void CoreUIEditor::AddViewContainer(const CoreUI_Container& container)
 {
 	containers.push_back(container);
 	
-	CoreUIView* pParentView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(container.rootView);
+	const CoreObjectHandle parentObjectHandle = container.rootView;
+	CoreUIView* pParentView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(parentObjectHandle);
 		 
-	 
+	std::string itemPath;
 	if(pParentView->nameString.empty())
 	{
-		m_toolWindowBrowser->add("Unnamed");
+		itemPath = "Unnamed";
 	}
 	else
 	{
-		m_toolWindowBrowser->add(pParentView->nameString.c_str());
+		itemPath = pParentView->nameString;	
 	}
 
+	Fl_Tree_Item* pItem = m_toolWindowBrowser->add(itemPath.c_str());
+	pItem->user_data((void*)(u32)parentObjectHandle);
+	
 	AddChildViews(pParentView,pParentView->nameString);
 }
 
