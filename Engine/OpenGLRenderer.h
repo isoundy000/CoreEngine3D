@@ -199,6 +199,7 @@ public:
 
 	void DRAW_DrawTexturedLine(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* pDiffuseColor, u32 texturedID, f32 lineWidth0, f32 lineWidth1, f32 texcoordYStart, f32 texcoordYEnd);
 	void DEBUGDRAW_DrawRay(DebugDrawMode drawMode, const vec3* p0, const vec3* direction, f32 length, const vec4* color);
+	void DEBUGDRAW_DrawVector(DebugDrawMode drawMode, const vec3* p0, const vec3* pVector, const vec4* color);
 	void DEBUGDRAW_DrawLineSegment(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* color);
 	void DEBUGDRAW_DrawLineSegment(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* color1, const vec4* color2);
 	void DEBUGDRAW_DrawCircleXY(DebugDrawMode drawMode, mat4f matrix4x4, const vec4* color);

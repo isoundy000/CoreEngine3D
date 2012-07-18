@@ -2549,6 +2549,30 @@ void OpenGLRenderer::DEBUGDRAW_DrawRay(DebugDrawMode drawMode, const vec3* p0, c
 }
 
 
+void OpenGLRenderer::DEBUGDRAW_DrawVector(DebugDrawMode drawMode, const vec3* p0, const vec3* pVector, const vec4* color)
+{
+#ifdef DEBUG_DRAW
+	//TODO: put safety check in here
+	const u32 numPoints = m_numDebugLinePoints[drawMode];
+	
+	if(numPoints+2 > DEBUGDRAW_MAXLINESPOINTS)
+	{
+		return;
+	}
+	
+    CopyVec3(&m_debugLinePoints[drawMode][numPoints].position,p0);
+    CopyVec4(&m_debugLinePoints[drawMode][numPoints].color,color);
+    
+	vec3 p1;
+	AddVec3(&p1, p0, pVector);
+	
+    CopyVec3(&m_debugLinePoints[drawMode][numPoints+1].position,&p1);
+    CopyVec4(&m_debugLinePoints[drawMode][numPoints+1].color,color);
+    
+    m_numDebugLinePoints[drawMode] += 2;
+#endif
+}
+
 void OpenGLRenderer::DEBUGDRAW_DrawLineSegment(DebugDrawMode drawMode, const vec3* p0, const vec3* p1, const vec4* color)
 {
 #ifdef DEBUG_DRAW
