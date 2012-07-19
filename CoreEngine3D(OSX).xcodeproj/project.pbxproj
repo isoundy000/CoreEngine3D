@@ -382,6 +382,7 @@
 		DDC567F6158D691F005A6E7A /* Trigger_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trigger_2D.h; sourceTree = "<group>"; };
 		DDC893771530EB610091EB0E /* Box2DUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DUtil.cpp; sourceTree = "<group>"; };
 		DDC893781530EB620091EB0E /* Box2DUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DUtil.h; sourceTree = "<group>"; };
+		DDD3BCFC15B7D6EE009C7B27 /* CoreObjectAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreObjectAttribute.h; sourceTree = "<group>"; };
 		DDE051271563736D00820163 /* NullObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; lineEnding = 0; path = NullObject.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		DDE051281563736D00820163 /* NullObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NullObject.h; sourceTree = "<group>"; };
 		DDF054D0159EDA8E00BA04F6 /* CoreUIView.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CoreUIView.cpp; path = GUI/CoreUIView.cpp; sourceTree = "<group>"; };
@@ -406,6 +407,7 @@
 		236904CD14E0F41B0014F02D /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
+				DDD3BCFC15B7D6EE009C7B27 /* CoreObjectAttribute.h */,
 				DDF054CF159EDA8100BA04F6 /* GUI */,
 				DDB3FE9C158D66F800BA1853 /* Effects */,
 				DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */,

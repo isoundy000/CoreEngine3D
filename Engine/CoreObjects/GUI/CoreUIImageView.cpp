@@ -82,7 +82,7 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 			pGeom->material.customTexture0 = GAME->GetHUDTextureByNameSig(nameSig);
 		}
 		
-		pGeom->sortValue = m_properties.sortValue;
+		pGeom->sortValue = m_attributes.sortValue.value;
 	}
 	
 	pugi::xml_attribute colorR_Attrib = pProperties->attribute("colorR");
@@ -197,7 +197,7 @@ void CoreUIImageView::RefreshSettings()
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
 	if(pGeom != NULL)
 	{
-		mat4f_LoadScaleFromFloats(pGeom->worldMat, m_properties.width, m_properties.height, 1.0f);
+		mat4f_LoadScaleFromFloats(pGeom->worldMat, m_attributes.width.value, m_attributes.height.value, 1.0f);
 		vec3* pPos = GetGeomPos(pGeom);
 		
 		pPos->x = position.x;

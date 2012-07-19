@@ -12,6 +12,7 @@
 #include "../CoreGameObject.h"
 #include "../MathTypes.h"
 #include "../GraphicsTypes.h"
+#include "../CoreObjectAttribute.h"
 
 #include <string>
 
@@ -24,38 +25,26 @@ enum CoreUI_ViewType
 	CoreUI_ViewType_Button,
 };
 
-enum CoreUI_Origin
-{
-	CoreUI_Origin_Center,
-	CoreUI_Origin_Left,
-	CoreUI_Origin_Right,
-	CoreUI_Origin_Top,
-	CoreUI_Origin_Bottom,
-	CoreUI_Origin_TopLeft,
-	CoreUI_Origin_BottomLeft,
-	CoreUI_Origin_TopRight,
-	CoreUI_Origin_BottomRight,
-	CoreUI_Origin_Num,
-};
+
 
 class CoreUIView: public CoreGameObject
 {
 public:
-	struct Properties
+	struct Attributes
 	{
-		CoreUI_Origin origin;
-		s32 offsetX;
-		s32 offsetY;
-		s32 width;
-		s32 height;
-		f32 opacity;
-		s32 sortValue;
+		Attrib_CoreUIOrigin origin;
+		Attrib_S32 offsetX;
+		Attrib_S32 offsetY;
+		Attrib_S32 width;
+		Attrib_S32 height;
+		Attrib_F32 opacity;
+		Attrib_S32 sortValue;
 	};
 	
 #if defined(_DEBUG_PC)
 	std::string nameString;
 #endif
-	Properties* GetProperties();
+	Attributes* GetAttributes();
 	CoreUIView* GetChildViewByName(u32 nameSig);
     virtual void UpdateHandle();	//Called when the memory location changes
 
@@ -88,7 +77,7 @@ protected:
 	f32 parentOpacity;
 	bool parentVisible;
 	
-	CoreUIView::Properties m_properties;
+	CoreUIView::Attributes m_attributes;
 	
 	void LayoutSubViews();
 private:
