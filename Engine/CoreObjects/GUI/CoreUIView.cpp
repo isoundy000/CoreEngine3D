@@ -70,17 +70,17 @@ bool CoreUIView::Init(u32 type)
 	attributes.Init(m_attribData,1024);
 	
 	//cache attributes that are used often
-	m_attrib_name = attributes.Add(CoreObjectAttribute_Char32("name","Unnamed"));
+	attrib_name = attributes.Add(CoreObjectAttribute_Char32("name","Unnamed"));
 	
-	m_attrib_origin = attributes.Add(CoreObjectAttribute_CoreUI_Origin("origin"));
-	m_attrib_offsetX = attributes.Add(CoreObjectAttribute_S32("offsetX",0));
-	m_attrib_offsetY = attributes.Add(CoreObjectAttribute_S32("offsetY",0));
+	attrib_origin = attributes.Add(CoreObjectAttribute_CoreUI_Origin("origin"));
+	attrib_offsetX = attributes.Add(CoreObjectAttribute_S32("offsetX",0));
+	attrib_offsetY = attributes.Add(CoreObjectAttribute_S32("offsetY",0));
 	
 	//TODO: get a better way to say this view is full screen
-	m_attrib_width = attributes.Add(CoreObjectAttribute_S32("width",GLRENDERER->screenWidth_points));
-	m_attrib_height = attributes.Add(CoreObjectAttribute_S32("height",GLRENDERER->screenHeight_points));
-	m_attrib_opacity = attributes.Add(CoreObjectAttribute_F32("opacity",1.0f));
-	m_attrib_sortValue = attributes.Add(CoreObjectAttribute_S32("sortValue",0));
+	attrib_width = attributes.Add(CoreObjectAttribute_S32("width",GLRENDERER->screenWidth_points));
+	attrib_height = attributes.Add(CoreObjectAttribute_S32("height",GLRENDERER->screenHeight_points));
+	attrib_opacity = attributes.Add(CoreObjectAttribute_F32("opacity",1.0f));
+	attrib_sortValue = attributes.Add(CoreObjectAttribute_S32("sortValue",0));
 	
     return true;
 }
@@ -96,7 +96,7 @@ CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
 		CoreUIView* pCurrView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(children[i]);
 		if(pCurrView != NULL)
 		{
-			CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pCurrView->attributes[m_attrib_name];
+			CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pCurrView->attributes[attrib_name];
 			
 			//We found a match!
 			if(pNameAttrib->hashedValue == nameSig)
@@ -143,7 +143,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		++attribIter;
 	}
 	
-	CoreObjectAttribute_F32* pOpacityAttrib = (CoreObjectAttribute_F32*)attributes[m_attrib_opacity];
+	CoreObjectAttribute_F32* pOpacityAttrib = (CoreObjectAttribute_F32*)attributes[attrib_opacity];
 	opacity = pOpacityAttrib->value;
 	
 	//CREATE SUBVIEWS
@@ -204,9 +204,9 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	const CoreObjectAttributeList* parentAttribs = pParentView?(&pParentView->attributes):NULL;
 	
 	//NOTE: the parent position is the center of the object
-	CoreObjectAttribute_S32* pParentWidthAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs)[m_attrib_width]:NULL;
+	CoreObjectAttribute_S32* pParentWidthAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs)[attrib_width]:NULL;
 	
-	CoreObjectAttribute_S32* pParentHeightAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs)[m_attrib_height]:NULL;
+	CoreObjectAttribute_S32* pParentHeightAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs)[attrib_height]:NULL;
 	
 	const f32 parentWidth = pParentView?pParentWidthAttrib->value:GLRENDERER->screenWidth_points;
 	const f32 parentHeight = pParentView?pParentHeightAttrib->value:GLRENDERER->screenHeight_pixels;
@@ -219,10 +219,10 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	parentOpacity = pParentView?(pParentView->parentOpacity*pParentView->opacity):1.0f;
 	parentVisible = pParentView?(pParentView->parentVisible && pParentView->visible):true;
 	
-	CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)attributes[m_attrib_origin];
+	CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)attributes[attrib_origin];
 	
-	CoreObjectAttribute_S32* pOffsetXAttrib = (CoreObjectAttribute_S32*)attributes[m_attrib_offsetX];
-	CoreObjectAttribute_S32* pOffsetYAttrib = (CoreObjectAttribute_S32*)attributes[m_attrib_offsetY];
+	CoreObjectAttribute_S32* pOffsetXAttrib = (CoreObjectAttribute_S32*)attributes[attrib_offsetX];
+	CoreObjectAttribute_S32* pOffsetYAttrib = (CoreObjectAttribute_S32*)attributes[attrib_offsetY];
 	
 	const s32 offsetX = pOffsetXAttrib->value;
 	const s32 offsetY = pOffsetYAttrib->value;

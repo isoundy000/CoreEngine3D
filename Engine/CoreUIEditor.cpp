@@ -17,6 +17,44 @@ CoreUIEditor* UIEDITOR = NULL;
 
 static std::vector<CoreUI_Container> containers;
 
+static void AttributeBrowserCallback (Fl_Widget *pWidget, void* hi)
+{
+	Fl_Tree* pTree = (Fl_Tree*)pWidget;
+	
+	switch(pTree->callback_reason())
+	{
+		case FL_TREE_REASON_NONE:
+		{
+			break;
+		}
+		case FL_TREE_REASON_SELECTED:
+		{
+			Fl_Tree_Item* pItem = pTree->callback_item();
+			const unsigned long data = (unsigned long)pItem->user_data();
+			const CoreObjectHandle handle = data;
+			CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(handle);
+			
+			CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pView->attributes[pView->attrib_name];
+			
+			COREDEBUG_PrintMessage("Selected item: %s",(const char*)pNameAttrib->value);
+			
+			break;
+		}
+		case FL_TREE_REASON_DESELECTED:
+		{
+			break;
+		}
+		case FL_TREE_REASON_OPENED:
+		{
+			break;
+		}
+		case FL_TREE_REASON_CLOSED:
+		{
+			break;
+		}
+	}
+}
+
 CoreUIEditor::CoreUIEditor()
 {
 	UIEDITOR = this;
@@ -35,6 +73,7 @@ CoreUIEditor::CoreUIEditor()
 	const s32 halfHeight = height/2;
 	
 	m_toolWindowBrowser = new Fl_Tree(0,0,width,halfHeight,"uibrowser");
+	m_toolWindowBrowser->callback(AttributeBrowserCallback,this);
 	
 	m_attributeScrollView = new Fl_Scroll(0,halfHeight,width,halfHeight,"uiscrollview");
 	
@@ -49,11 +88,13 @@ CoreUIEditor::CoreUIEditor()
 	
 	MAINWINDOW->take_focus();
 	
-	for(u32 i=0; i<32; ++i)
+	/*for(u32 i=0; i<32; ++i)
 	{
 		Fl_Text_Display* pLabel = new Fl_Text_Display(0,i*32,width,32,"hi");
 		m_attributeScrollView->add(pLabel);
-	}
+	}*/
+	
+	m_attributeYCurr = 0;
 }
 
 

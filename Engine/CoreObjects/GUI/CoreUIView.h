@@ -68,20 +68,20 @@ public:
 	
 	virtual void LayoutView(const CoreUIView* pParentView);
 	virtual void RefreshView();
+	
+	s32 attrib_name;
+	s32 attrib_offsetX;
+	s32 attrib_offsetY;
+	s32 attrib_width;
+	s32 attrib_height;
+	s32 attrib_origin;
+	s32 attrib_opacity;
+	s32 attrib_sortValue;
 protected:
 	f32 parentOpacity;
 	bool parentVisible;
 	
 	void LayoutSubViews();
-	
-	s32 m_attrib_name;
-	s32 m_attrib_offsetX;
-	s32 m_attrib_offsetY;
-	s32 m_attrib_width;
-	s32 m_attrib_height;
-	s32 m_attrib_origin;
-	s32 m_attrib_opacity;
-	s32 m_attrib_sortValue;
 	
 	u8 m_attribData[1024];
 	

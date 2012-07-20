@@ -31,10 +31,12 @@ public:
     
 	virtual void LayoutView(const CoreUIView* pParentView);
 	virtual void RefreshView();
+	
+	s32 attrib_colorR;
+	s32 attrib_colorG;
+	s32 attrib_colorB;
 protected:
-	s32 m_attrib_colorR;
-	s32 m_attrib_colorG;
-	s32 m_attrib_colorB;
+	
 private:
 	void RefreshSettings();
     CoreObjectHandle m_hRenderable;

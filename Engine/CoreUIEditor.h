@@ -40,6 +40,7 @@ private:
 	Fl_Tree* m_toolWindowBrowser;
 	Fl_Scroll* m_attributeScrollView;
 	void AddChildViews(CoreUIView* pParentView,const std::string& path);
+	s32 m_attributeYCurr;
 };
 
 #endif
