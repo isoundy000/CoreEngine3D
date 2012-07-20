@@ -83,7 +83,7 @@ void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path
 		}
 		
 		//TODO: should use cache to look up
-		CoreObjectAttribute_Char256* pNameAttrib = (CoreObjectAttribute_Char256*)pChildView->attributes.GetAttributeByName("name");
+		CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pChildView->attributes.GetAttributeByName("name");
 		
 		itemPath = appendedPath+std::string((const char*)pNameAttrib->value);
 		
@@ -103,7 +103,7 @@ void CoreUIEditor::AddViewContainer(const CoreUI_Container& container)
 	CoreUIView* pParentView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(parentObjectHandle);
 		 
 	//TODO: should use cache to look up
-	CoreObjectAttribute_Char256* pNameAttrib = (CoreObjectAttribute_Char256*)pParentView->attributes.GetAttributeByName("name");
+	CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pParentView->attributes.GetAttributeByName("name");
 
 	std::string itemPath = std::string((const char*)pNameAttrib->value);
 

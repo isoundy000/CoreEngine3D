@@ -167,6 +167,8 @@
 		23FCBD8D14A1E09A00C5EA7C /* SpriteSheetAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23FCBD9314A1E09A00C5EA7C /* ViewFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */; };
 		23FCBD9414A1E09A00C5EA7C /* ViewFlags.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD04CE9B15B9071700BE66F7 /* CoreObjectAttribute_FLTK.h in Headers */ = {isa = PBXBuildFile; fileRef = DD04CE9A15B9071700BE66F7 /* CoreObjectAttribute_FLTK.h */; };
+		DD04CE9E15B9096800BE66F7 /* CoreObjectAttribute_FLTK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD04CE9D15B9096800BE66F7 /* CoreObjectAttribute_FLTK.cpp */; };
 		DD0BF84715A9584F001DE9A4 /* CurvePoints_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */; };
 		DD0BF84815A9584F001DE9A4 /* CurvePoints_2D.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0BF84615A9584F001DE9A4 /* CurvePoints_2D.h */; };
 		DD21944C15B1E590007388F8 /* CoreUIEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD21944B15B1E590007388F8 /* CoreUIEditor.cpp */; };
@@ -360,6 +362,8 @@
 		23FCBCAB14A1E09A00C5EA7C /* SpriteSheetAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSheetAnimator.h; sourceTree = "<group>"; };
 		23FCBCB514A1E09A00C5EA7C /* ViewFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewFlags.cpp; sourceTree = "<group>"; };
 		23FCBCB614A1E09A00C5EA7C /* ViewFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFlags.h; sourceTree = "<group>"; };
+		DD04CE9A15B9071700BE66F7 /* CoreObjectAttribute_FLTK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreObjectAttribute_FLTK.h; sourceTree = "<group>"; };
+		DD04CE9D15B9096800BE66F7 /* CoreObjectAttribute_FLTK.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreObjectAttribute_FLTK.cpp; sourceTree = "<group>"; };
 		DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CurvePoints_2D.cpp; sourceTree = "<group>"; };
 		DD0BF84615A9584F001DE9A4 /* CurvePoints_2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurvePoints_2D.h; sourceTree = "<group>"; };
 		DD21944915B1E57C007388F8 /* CoreUIEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreUIEditor.h; sourceTree = "<group>"; };
@@ -408,6 +412,8 @@
 			isa = PBXGroup;
 			children = (
 				DDD3BCFC15B7D6EE009C7B27 /* CoreObjectAttribute.h */,
+				DD04CE9D15B9096800BE66F7 /* CoreObjectAttribute_FLTK.cpp */,
+				DD04CE9A15B9071700BE66F7 /* CoreObjectAttribute_FLTK.h */,
 				DDF054CF159EDA8100BA04F6 /* GUI */,
 				DDB3FE9C158D66F800BA1853 /* Effects */,
 				DD0BF84515A9584F001DE9A4 /* CurvePoints_2D.cpp */,
@@ -822,6 +828,7 @@
 				DDF054DB159EE17100BA04F6 /* CoreUIButton.h in Headers */,
 				DD29024015A8352800794CC8 /* FLTKGLWindow.h in Headers */,
 				DD0BF84815A9584F001DE9A4 /* CurvePoints_2D.h in Headers */,
+				DD04CE9B15B9071700BE66F7 /* CoreObjectAttribute_FLTK.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -963,6 +970,7 @@
 				DD29023F15A8352800794CC8 /* FLTKGLWindow.cpp in Sources */,
 				DD0BF84715A9584F001DE9A4 /* CurvePoints_2D.cpp in Sources */,
 				DD21944C15B1E590007388F8 /* CoreUIEditor.cpp in Sources */,
+				DD04CE9E15B9096800BE66F7 /* CoreObjectAttribute_FLTK.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

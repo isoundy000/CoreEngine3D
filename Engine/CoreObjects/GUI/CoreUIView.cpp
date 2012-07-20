@@ -70,7 +70,7 @@ bool CoreUIView::Init(u32 type)
 	attributes.Init(m_attribData,1024);
 	
 	//cache attributes that are used often
-	m_attrib_name = attributes.Add(CoreObjectAttribute_Char256("name","Unnamed"));
+	m_attrib_name = attributes.Add(CoreObjectAttribute_Char32("name","Unnamed"));
 	
 	m_attrib_origin = attributes.Add(CoreObjectAttribute_CoreUI_Origin("origin"));
 	m_attrib_offsetX = attributes.Add(CoreObjectAttribute_S32("offsetX",0));
@@ -96,7 +96,7 @@ CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
 		CoreUIView* pCurrView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(children[i]);
 		if(pCurrView != NULL)
 		{
-			CoreObjectAttribute_Char256* pNameAttrib = (CoreObjectAttribute_Char256*)pCurrView->attributes[m_attrib_name];
+			CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pCurrView->attributes[m_attrib_name];
 			
 			//We found a match!
 			if(pNameAttrib->hashedValue == nameSig)

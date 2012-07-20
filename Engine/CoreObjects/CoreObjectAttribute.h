@@ -1,18 +1,20 @@
 //
-//  CoreObjectProperties.h
+//  CoreObjectAttribute.h
 //  CoreEngine3D(OSX)
 //
 //  Created by Jody McAdams on 7/18/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#ifndef CoreEngine3D_OSX__CoreObjectProperties_h
-#define CoreEngine3D_OSX__CoreObjectProperties_h
+#ifndef CoreEngine3D_OSX__CoreObjectAttribute_h
+#define CoreEngine3D_OSX__CoreObjectAttribute_h
 
 #include <string>
 #include <sstream>
+#include <cassert>
 
 #include "../MathTypes.h"
+#include "../MathUtil.h"
 #include "../Hash.h"
 #include "../CoreDebug.h"
 
@@ -36,7 +38,7 @@ enum CoreObjectAttributeType
 	CoreObjectAttributeType_S32,
 	CoreObjectAttributeType_F32,
 	CoreObjectAttributeType_CoreUI_Origin,
-	CoreObjectAttributeType_Char256,
+	CoreObjectAttributeType_Char32,
 };
 
 //Attribute class
@@ -73,24 +75,24 @@ private:
 //Specializations for each attribute type
 
 //ShortText
-class CoreObjectAttribute_Char256 : public CoreObjectAttribute
+class CoreObjectAttribute_Char32 : public CoreObjectAttribute
 {
 public:
-	CoreObjectAttribute_Char256(const char* name)
+	CoreObjectAttribute_Char32(const char* name)
 	{
-		Init(name,CoreObjectAttributeType_Char256);
-		m_classSizeBytes = sizeof(CoreObjectAttribute_Char256);
-		memset(value, 0, 256);
+		Init(name,CoreObjectAttributeType_Char32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_Char32);
+		memset(value, 0, 32);
 		
 		hashedValue = 0;
 	}
 	
-	CoreObjectAttribute_Char256(const char* name, const char* defaultValue)
+	CoreObjectAttribute_Char32(const char* name, const char* defaultValue)
 	{
 		Init(name,CoreObjectAttributeType_U32);
-		m_classSizeBytes = sizeof(CoreObjectAttribute_Char256);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_Char32);
 		
-		const u32 numChars = MinU32(255,strlen(defaultValue));	//anti-buffer overrun
+		const u32 numChars = MinU32(31,strlen(defaultValue));	//anti-buffer overrun
 		memcpy(value, defaultValue, numChars);
 		value[numChars] = 0;	//Sanity check
 		
@@ -101,7 +103,7 @@ public:
 	
 	void SetValueFromCString(const char* cStr)
 	{
-		const u32 numChars = MinU32(255,strlen(cStr));	//anti-buffer overrun
+		const u32 numChars = MinU32(31,strlen(cStr));	//anti-buffer overrun
 		memcpy(value, cStr, numChars);
 		value[numChars] = 0;	//Sanity check
 		
