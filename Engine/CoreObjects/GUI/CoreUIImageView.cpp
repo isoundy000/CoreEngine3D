@@ -46,9 +46,9 @@ bool CoreUIImageView::Init(u32 type)
 	
 	//Add special attributes that are just for CoreUIImageView
 	
-	m_attrib_colorR = m_attributes.Add(CoreObjectAttribute_U32("colorR",255));
-	m_attrib_colorG = m_attributes.Add(CoreObjectAttribute_U32("colorG",255));
-	m_attrib_colorB = m_attributes.Add(CoreObjectAttribute_U32("colorB",255));
+	m_attrib_colorR = attributes.Add(CoreObjectAttribute_U32("colorR",255));
+	m_attrib_colorG = attributes.Add(CoreObjectAttribute_U32("colorG",255));
+	m_attrib_colorB = attributes.Add(CoreObjectAttribute_U32("colorB",255));
     
     //TODO: other init
 	viewType = CoreUI_ViewType_ImageView;
@@ -88,18 +88,18 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 			pGeom->material.customTexture0 = GAME->GetHUDTextureByNameSig(nameSig);
 		}
 		
-		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_sortValue];
+		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)attributes[m_attrib_sortValue];
 		
 		pGeom->sortValue = pSortValueAttrib?pSortValueAttrib->value:0;
 	}
 	
-	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)m_attributes[m_attrib_colorR];
+	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)attributes[m_attrib_colorR];
 	m_diffuseColor.x = pRedAttrib->value/255.0f;
 	
-	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)m_attributes[m_attrib_colorG];
+	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)attributes[m_attrib_colorG];
 	m_diffuseColor.y = pGreenAttrib->value/255.0f;
 	
-	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)m_attributes[m_attrib_colorB];
+	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)attributes[m_attrib_colorB];
 	m_diffuseColor.z = pBlueAttrib->value/255.0f;
 	
     return true;
@@ -195,8 +195,8 @@ void CoreUIImageView::RefreshSettings()
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
 	if(pGeom != NULL)
 	{
-		CoreObjectAttribute_S32* pWidthAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_width];		
-		CoreObjectAttribute_S32* pHeightAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_height];
+		CoreObjectAttribute_S32* pWidthAttrib = (CoreObjectAttribute_S32*)attributes[m_attrib_width];		
+		CoreObjectAttribute_S32* pHeightAttrib = (CoreObjectAttribute_S32*)attributes[m_attrib_height];
 		
 		mat4f_LoadScaleFromFloats(pGeom->worldMat, pWidthAttrib->value, pHeightAttrib->value, 1.0f);
 		vec3* pPos = GetGeomPos(pGeom);

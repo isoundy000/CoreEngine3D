@@ -36,6 +36,7 @@ enum CoreObjectAttributeType
 	CoreObjectAttributeType_S32,
 	CoreObjectAttributeType_F32,
 	CoreObjectAttributeType_CoreUI_Origin,
+	CoreObjectAttributeType_Char256,
 };
 
 //Attribute class
@@ -57,9 +58,6 @@ public:
 	
 	virtual void SetValueFromCString(const char* cStr) = 0;
 	
-	//Quick and dirty way to get the value
-	virtual void* GetValuePointer() = 0;
-	
 	//std::string name;
 	u32 nameHash;
 	
@@ -73,6 +71,48 @@ private:
 
 
 //Specializations for each attribute type
+
+//ShortText
+class CoreObjectAttribute_Char256 : public CoreObjectAttribute
+{
+public:
+	CoreObjectAttribute_Char256(const char* name)
+	{
+		Init(name,CoreObjectAttributeType_Char256);
+		m_valueSize = sizeof(CoreObjectAttribute_Char256);
+		memset(value, 0, 256);
+		
+		hashedValue = 0;
+	}
+	
+	CoreObjectAttribute_Char256(const char* name, const char* defaultValue)
+	{
+		Init(name,CoreObjectAttributeType_U32);
+		m_valueSize = sizeof(CoreObjectAttribute_Char256);
+		
+		const u32 numChars = MinU32(255,strlen(defaultValue));	//anti-buffer overrun
+		memcpy(value, defaultValue, numChars);
+		value[numChars] = 0;	//Sanity check
+		
+		COREDEBUG_PrintDebugMessage("Hello: %s",value);
+		
+		hashedValue = Hash((const char*)value);
+	}
+	
+	void SetValueFromCString(const char* cStr)
+	{
+		const u32 numChars = MinU32(255,strlen(cStr));	//anti-buffer overrun
+		memcpy(value, cStr, numChars);
+		value[numChars] = 0;	//Sanity check
+		
+		COREDEBUG_PrintDebugMessage("Hi: %s",value);
+		
+		hashedValue = Hash((const char*)value);
+	}
+	
+	u8 value[256];
+	u32 hashedValue;
+};
 
 //F32
 class CoreObjectAttribute_F32 : public CoreObjectAttribute
@@ -94,11 +134,6 @@ public:
 	void SetValueFromCString(const char* cStr)
 	{
 		value = atof(cStr);
-	}
-	
-	virtual void* GetValuePointer()
-	{
-		return &value;
 	}
 	
 	f32 value;
@@ -127,11 +162,6 @@ public:
 		value = atoi(cStr);
 	}
 	
-	virtual void* GetValuePointer()
-	{
-		return &value;
-	}
-	
 	s32 value;
 };
 
@@ -156,11 +186,6 @@ public:
 	void SetValueFromCString(const char* cStr)
 	{
 		value = atoi(cStr);
-	}
-	
-	virtual void* GetValuePointer()
-	{
-		return &value;
 	}
 	
 	u32 value;
@@ -228,11 +253,6 @@ public:
 		}
 	}
 	
-	virtual void* GetValuePointer()
-	{
-		return &value;
-	}
-	
 	CoreUI_Origin value;
 };
 
@@ -271,6 +291,8 @@ public:
 		if(sizeBytes + m_currDataSizeBytes >= m_maxDataSizeBytes)
 		{
 			COREDEBUG_PrintDebugMessage("ERROR: AttributeList->Max attributes reached.  Please increase the memory size.");
+			
+			assert(0);
 			return -1;
 		}
 		

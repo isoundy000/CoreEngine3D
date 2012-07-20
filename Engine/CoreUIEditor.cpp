@@ -11,6 +11,7 @@
 #include "CoreUIEditor.h"
 #include "FLTKGLWindow.h"
 #include "CoreObject_Manager.h"
+#include "CoreObjectAttribute.h"
 
 CoreUIEditor* UIEDITOR = NULL;
 
@@ -81,14 +82,10 @@ void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path
 			continue;
 		}
 		
-		if(pChildView->nameString.empty())
-		{
-			itemPath = defaultPath;
-		}
-		else
-		{
-			itemPath = appendedPath+pChildView->nameString;	
-		}
+		//TODO: should use cache to look up
+		CoreObjectAttribute_Char256* pNameAttrib = (CoreObjectAttribute_Char256*)pChildView->attributes.GetAttributeByName("name");
+		
+		itemPath = appendedPath+std::string((const char*)pNameAttrib->value);
 		
 		Fl_Tree_Item* pItem = m_toolWindowBrowser->add(itemPath.c_str());
 		pItem->user_data((void*)(u32)childObjectHandle);
@@ -105,20 +102,15 @@ void CoreUIEditor::AddViewContainer(const CoreUI_Container& container)
 	const CoreObjectHandle parentObjectHandle = container.rootView;
 	CoreUIView* pParentView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(parentObjectHandle);
 		 
-	std::string itemPath;
-	if(pParentView->nameString.empty())
-	{
-		itemPath = "Unnamed";
-	}
-	else
-	{
-		itemPath = pParentView->nameString;	
-	}
+	//TODO: should use cache to look up
+	CoreObjectAttribute_Char256* pNameAttrib = (CoreObjectAttribute_Char256*)pParentView->attributes.GetAttributeByName("name");
+
+	std::string itemPath = std::string((const char*)pNameAttrib->value);
 
 	Fl_Tree_Item* pItem = m_toolWindowBrowser->add(itemPath.c_str());
 	pItem->user_data((void*)(u32)parentObjectHandle);
 	
-	AddChildViews(pParentView,pParentView->nameString);
+	AddChildViews(pParentView,itemPath);
 }
 
 #endif
