@@ -48,12 +48,12 @@ public:
 		//this->name = name;
 		nameHash = Hash(name);
 		this->type = type;
-		m_valueSize = 0;
+		m_classSizeBytes = 0;
 	}
 	
 	u32 GetSizeBytes() const
 	{
-		return m_valueSize;
+		return m_classSizeBytes;
 	}
 	
 	virtual void SetValueFromCString(const char* cStr) = 0;
@@ -63,7 +63,7 @@ public:
 	
 	CoreObjectAttributeType type;
 protected:
-	u32 m_valueSize;
+	u32 m_classSizeBytes;
 private:
 	
 };
@@ -79,7 +79,7 @@ public:
 	CoreObjectAttribute_Char256(const char* name)
 	{
 		Init(name,CoreObjectAttributeType_Char256);
-		m_valueSize = sizeof(CoreObjectAttribute_Char256);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_Char256);
 		memset(value, 0, 256);
 		
 		hashedValue = 0;
@@ -88,7 +88,7 @@ public:
 	CoreObjectAttribute_Char256(const char* name, const char* defaultValue)
 	{
 		Init(name,CoreObjectAttributeType_U32);
-		m_valueSize = sizeof(CoreObjectAttribute_Char256);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_Char256);
 		
 		const u32 numChars = MinU32(255,strlen(defaultValue));	//anti-buffer overrun
 		memcpy(value, defaultValue, numChars);
@@ -121,13 +121,13 @@ public:
 	CoreObjectAttribute_F32(const char* name)
 	{
 		Init(name,CoreObjectAttributeType_F32);
-		m_valueSize = sizeof(CoreObjectAttribute_F32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_F32);
 		value = 0.0f;
 	}
 	CoreObjectAttribute_F32(const char* name, f32 defaultValue)
 	{
 		Init(name,CoreObjectAttributeType_F32);
-		m_valueSize = sizeof(CoreObjectAttribute_F32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_F32);
 		value = defaultValue;
 	}
 	
@@ -146,14 +146,14 @@ public:
 	CoreObjectAttribute_S32(const char* name)
 	{
 		Init(name,CoreObjectAttributeType_S32);
-		m_valueSize = sizeof(CoreObjectAttribute_S32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
 		value = 0;
 	}
 	
 	CoreObjectAttribute_S32(const char* name, s32 defaultValue)
 	{
 		Init(name,CoreObjectAttributeType_S32);
-		m_valueSize = sizeof(CoreObjectAttribute_S32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
 		value = defaultValue;
 	}
 	
@@ -172,14 +172,14 @@ public:
 	CoreObjectAttribute_U32(const char* name)
 	{
 		Init(name,CoreObjectAttributeType_U32);
-		m_valueSize = sizeof(CoreObjectAttribute_U32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_U32);
 		value = 0;
 	}
 	
 	CoreObjectAttribute_U32(const char* name, u32 defaultValue)
 	{
 		Init(name,CoreObjectAttributeType_U32);
-		m_valueSize = sizeof(CoreObjectAttribute_U32);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_U32);
 		value = defaultValue;
 	}
 	
@@ -198,14 +198,14 @@ public:
 	CoreObjectAttribute_CoreUI_Origin(const char* name)
 	{
 		Init(name,CoreObjectAttributeType_CoreUI_Origin);
-		m_valueSize = sizeof(CoreObjectAttribute_CoreUI_Origin);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_CoreUI_Origin);
 		value = CoreUI_Origin_Center;
 	}
 	
 	CoreObjectAttribute_CoreUI_Origin(const char* name, CoreUI_Origin defaultValue)
 	{
 		Init(name,CoreObjectAttributeType_CoreUI_Origin);
-		m_valueSize = sizeof(CoreObjectAttribute_CoreUI_Origin);
+		m_classSizeBytes = sizeof(CoreObjectAttribute_CoreUI_Origin);
 		value = defaultValue;
 	}
 	
