@@ -47,12 +47,16 @@ enum CoreObjectAttributeType
 class CoreObjectAttribute
 {
 public:
-	void Init(const char* name, CoreObjectAttributeType type)
+	void Init(const char* attribName, CoreObjectAttributeType type)
 	{
 		//this->name = name;
-		nameHash = Hash(name);
+		nameHash = Hash(attribName);
 		this->type = type;
 		m_classSizeBytes = 0;
+		
+		const u32 numChars = MinU32(15,strlen(attribName));	//anti-buffer overrun
+		memcpy(name, attribName, numChars);
+		name[numChars] = 0;	//Sanity check
 	}
 	
 	u32 GetSizeBytes() const
@@ -64,6 +68,7 @@ public:
 	
 	//std::string name;
 	u32 nameHash;
+	u8 name[16];
 	
 	CoreObjectAttributeType type;
 protected:
