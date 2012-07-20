@@ -10,7 +10,9 @@
 
 #include "CoreObjectAttribute_FLTK.h"
 
-Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib)
+#include <FL/Fl_Text_Display.H>
+
+Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posY, s32 width)
 {
 	switch(pAttrib->type)
 	{
@@ -32,9 +34,23 @@ Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib)
 		}
 		case CoreObjectAttributeType_Char32:
 		{
+			CoreObjectAttribute_Char32* pCurrAttrib = (CoreObjectAttribute_Char32*)pAttrib;
+			Fl_Text_Display* pTextDisplay = new Fl_Text_Display(0,posY,width,32,0);
+			Fl_Text_Buffer* pBuffer = new Fl_Text_Buffer();
+			pBuffer->text((const char*)pCurrAttrib->value);
+			pTextDisplay->buffer(pBuffer);
+			
+			return pTextDisplay;
+			
+			break;
+		}
+		default:
+		{
 			break;
 		}
 	}
+	
+	return NULL;
 }
 
 

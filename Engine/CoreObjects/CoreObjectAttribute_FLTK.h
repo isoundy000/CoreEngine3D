@@ -15,7 +15,7 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Widget.H>
 
-Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib);
+Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posY, s32 width);
 
 #endif
 

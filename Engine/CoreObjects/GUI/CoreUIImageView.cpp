@@ -88,18 +88,18 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 			pGeom->material.customTexture0 = GAME->GetHUDTextureByNameSig(nameSig);
 		}
 		
-		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)attributes[attrib_sortValue];
+		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_sortValue);
 		
 		pGeom->sortValue = pSortValueAttrib?pSortValueAttrib->value:0;
 	}
 	
-	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)attributes[attrib_colorR];
+	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorR);
 	m_diffuseColor.x = pRedAttrib->value/255.0f;
 	
-	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)attributes[attrib_colorG];
+	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorG);
 	m_diffuseColor.y = pGreenAttrib->value/255.0f;
 	
-	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)attributes[attrib_colorB];
+	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorB);
 	m_diffuseColor.z = pBlueAttrib->value/255.0f;
 	
     return true;
@@ -195,8 +195,8 @@ void CoreUIImageView::RefreshSettings()
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
 	if(pGeom != NULL)
 	{
-		CoreObjectAttribute_S32* pWidthAttrib = (CoreObjectAttribute_S32*)attributes[attrib_width];		
-		CoreObjectAttribute_S32* pHeightAttrib = (CoreObjectAttribute_S32*)attributes[attrib_height];
+		CoreObjectAttribute_S32* pWidthAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_width);		
+		CoreObjectAttribute_S32* pHeightAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_height);
 		
 		mat4f_LoadScaleFromFloats(pGeom->worldMat, pWidthAttrib->value, pHeightAttrib->value, 1.0f);
 		vec3* pPos = GetGeomPos(pGeom);

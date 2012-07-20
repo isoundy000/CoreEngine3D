@@ -18,6 +18,8 @@
 #include "../Hash.h"
 #include "../CoreDebug.h"
 
+static const u32 CoreObjectAttribute_MaxAttributes = 16;
+
 enum CoreUI_Origin
 {
 	CoreUI_Origin_Center,
@@ -89,14 +91,14 @@ public:
 	
 	CoreObjectAttribute_Char32(const char* name, const char* defaultValue)
 	{
-		Init(name,CoreObjectAttributeType_U32);
+		Init(name,CoreObjectAttributeType_Char32);
 		m_classSizeBytes = sizeof(CoreObjectAttribute_Char32);
 		
 		const u32 numChars = MinU32(31,strlen(defaultValue));	//anti-buffer overrun
 		memcpy(value, defaultValue, numChars);
 		value[numChars] = 0;	//Sanity check
 		
-		COREDEBUG_PrintDebugMessage("Hello: %s",value);
+		//COREDEBUG_PrintDebugMessage("Hello: %s",value);
 		
 		hashedValue = Hash((const char*)value);
 	}
@@ -107,7 +109,7 @@ public:
 		memcpy(value, cStr, numChars);
 		value[numChars] = 0;	//Sanity check
 		
-		COREDEBUG_PrintDebugMessage("Hi: %s",value);
+		//COREDEBUG_PrintDebugMessage("Hi: %s",value);
 		
 		hashedValue = Hash((const char*)value);
 	}
@@ -268,26 +270,38 @@ public:
 		m_data = pDataBuffer;
 		m_currDataSizeBytes = 0;
 		m_maxDataSizeBytes = numBytes;
-		m_numAttributes = 0;
+		numAttributes = 0;
 	}
 
 	void Uninit()
 	{
 		m_data = NULL;
-		m_numAttributes = 0;
+		numAttributes = 0;
 		m_currDataSizeBytes = 0;
 		m_maxDataSizeBytes = 0;
 	}
 	
-	const CoreObjectAttribute* operator[](s32 byteIndex) const
+	const CoreObjectAttribute* operator[](s32 index) const
 	{
-		return GetAttributeByByteIndex(byteIndex);
+		return GetAttributeByByteIndex(m_byteIndices[index]);
 	}
-
+	
+	CoreObjectAttribute* operator[](s32 index)
+	{
+		return GetAttributeByByteIndex(m_byteIndices[index]);
+	}
 	
 	//Returns the byte index for quick access to the attribute
 	s32 Add(const CoreObjectAttribute& attrib)
 	{
+		if(numAttributes == CoreObjectAttribute_MaxAttributes)
+		{
+			COREDEBUG_PrintDebugMessage("ERROR: AttributeList->Max cannot create more than %d attributes",CoreObjectAttribute_MaxAttributes);
+			
+			assert(0);
+			return -1;
+		}
+		
 		//Make sure we don't add beyond the memory we have
 		const u32 sizeBytes = attrib.GetSizeBytes();
 		if(sizeBytes + m_currDataSizeBytes >= m_maxDataSizeBytes)
@@ -302,18 +316,26 @@ public:
 		memcpy(&m_data[m_currDataSizeBytes], (u8*)&attrib, sizeBytes);
 		
 		const u32 byteIndexOut = m_currDataSizeBytes;
+		
+		m_byteIndices[numAttributes] = byteIndexOut;
 	
 		//Keep track of the memory we are using
 		m_currDataSizeBytes += sizeBytes;
 		
 		//Keep track of how many attributes we're adding
-		++m_numAttributes;
+		++numAttributes;
 		
 		return byteIndexOut;
 	}
 	
 	
 	const CoreObjectAttribute* GetAttributeByByteIndex(u32 byteIndex) const
+	{
+		CoreObjectAttribute* pAttrib = (CoreObjectAttribute*)&m_data[byteIndex];
+		return pAttrib;
+	}
+	
+	CoreObjectAttribute* GetAttributeByByteIndex(u32 byteIndex)
 	{
 		CoreObjectAttribute* pAttrib = (CoreObjectAttribute*)&m_data[byteIndex];
 		return pAttrib;
@@ -359,12 +381,13 @@ public:
 		}
 	}
 	
+	u32 numAttributes;
 	
 private:
 	u8* m_data;
 	u32 m_maxDataSizeBytes;
 	u32 m_currDataSizeBytes;
-	u32 m_numAttributes;
+	u32 m_byteIndices[CoreObjectAttribute_MaxAttributes];
 };
 
 

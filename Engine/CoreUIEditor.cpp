@@ -13,12 +13,18 @@
 #include "CoreObject_Manager.h"
 #include "CoreObjectAttribute.h"
 
+#include "CoreObjectAttribute_FLTK.h"
+
 CoreUIEditor* UIEDITOR = NULL;
+
+static const s32 UIEDITOR_WindowWidth = 256;
 
 static std::vector<CoreUI_Container> containers;
 
-static void AttributeBrowserCallback (Fl_Widget *pWidget, void* hi)
+static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 {
+	CoreUIEditor* pEditor = (CoreUIEditor*)pClassPointer;
+	
 	Fl_Tree* pTree = (Fl_Tree*)pWidget;
 	
 	switch(pTree->callback_reason())
@@ -38,6 +44,8 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* hi)
 			
 			COREDEBUG_PrintMessage("Selected item: %s",(const char*)pNameAttrib->value);
 			
+			pEditor->DisplayAttributes(pView->attributes);
+			
 			break;
 		}
 		case FL_TREE_REASON_DESELECTED:
@@ -55,6 +63,38 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* hi)
 	}
 }
 
+void CoreUIEditor::DisplayAttributes(CoreObjectAttributeList& attribList)
+{
+	COREDEBUG_PrintMessage("Here be some attribs");
+	
+	m_attributeScrollView->clear();
+	
+	m_attributeYCurr = 0;
+	
+	const u32 numAttribs = attribList.numAttributes;
+	for(u32 i=0; i<numAttribs; ++i)
+	{
+		CoreObjectAttribute* pAttrib = attribList[i];
+		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,m_attributeYCurr,UIEDITOR_WindowWidth);
+		
+		if(pWidget != NULL)
+		{
+			m_attributeScrollView->add(pWidget);
+		
+			m_attributeYCurr += pWidget->h();
+		}
+	}
+	
+	/*for(u32 i=0; i<2; ++i)
+	{
+		Fl_Text_Display* pLabel = new Fl_Text_Display(0,i*32,UIEDITOR_WindowWidth,32,"hi");
+		m_attributeScrollView->add(pLabel);
+	}*/
+	
+	m_attributeScrollView->redraw();
+}
+
+
 CoreUIEditor::CoreUIEditor()
 {
 	UIEDITOR = this;
@@ -62,27 +102,23 @@ CoreUIEditor::CoreUIEditor()
 	//Just a sanity check
 	assert(MAINWINDOW != NULL);
 
-	const s32 width = 256;
 	const s32 height = MAINWINDOW->h();
 	
-	m_toolWindow = new Fl_Window( MAINWINDOW->x()+MAINWINDOW->w() + 32,0,width,height,"UI Elements" );
+	m_toolWindow = new Fl_Window( MAINWINDOW->x()+MAINWINDOW->w() + 32,0,UIEDITOR_WindowWidth,height,"UI Elements" );
 
 	
     m_toolWindow->begin();
 	
 	const s32 halfHeight = height/2;
 	
-	m_toolWindowBrowser = new Fl_Tree(0,0,width,halfHeight,"uibrowser");
+	m_toolWindowBrowser = new Fl_Tree(0,0,UIEDITOR_WindowWidth,halfHeight,"uibrowser");
 	m_toolWindowBrowser->callback(AttributeBrowserCallback,this);
 	
-	m_attributeScrollView = new Fl_Scroll(0,halfHeight,width,halfHeight,"uiscrollview");
+	m_attributeScrollView = new Fl_Scroll(0,halfHeight,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
 	
 	m_attributeScrollView->box(FL_DOWN_BOX);
 	m_attributeScrollView->color((Fl_Color) FL_WHITE);
 	m_attributeScrollView->type(Fl_Scroll::VERTICAL);
-	m_attributeScrollView->begin();
-	
-	m_attributeScrollView->end();
 	
     m_toolWindow->end();
 	

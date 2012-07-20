@@ -35,6 +35,7 @@ public:
 	void Clear();
 	void AddViewContainer(const CoreUI_Container& container);
 	void SetVisible(bool isVisible);
+	void DisplayAttributes(CoreObjectAttributeList& attribList);
 private:
 	Fl_Window* m_toolWindow;
 	Fl_Tree* m_toolWindowBrowser;
