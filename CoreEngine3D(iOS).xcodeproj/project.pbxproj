@@ -37,6 +37,7 @@
 		23EB371514F240BE00F36E7C /* CoreGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 23EB371414F240BE00F36E7C /* CoreGameObject.h */; };
 		23F4265E14AC5BEE00F27DAB /* DEBUGMODEL_CircleXY.h in Headers */ = {isa = PBXBuildFile; fileRef = 23F4265D14AC5BEE00F27DAB /* DEBUGMODEL_CircleXY.h */; };
 		23FCBE5C14A1E8A300C5EA7C /* CoreEngine3D-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 23FCBE5B14A1E8A300C5EA7C /* CoreEngine3D-Prefix.pch */; };
+		DD04CE8215B8D93E00BE66F7 /* CoreObjectAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = DD04CE8115B8D93E00BE66F7 /* CoreObjectAttribute.h */; };
 		DD0AC1CE159FE4C100EDD195 /* CoreUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0AC1C8159FE4C100EDD195 /* CoreUIButton.cpp */; };
 		DD0AC1CF159FE4C100EDD195 /* CoreUIButton.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0AC1C9159FE4C100EDD195 /* CoreUIButton.h */; };
 		DD0AC1D0159FE4C100EDD195 /* CoreUIImageView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0AC1CA159FE4C100EDD195 /* CoreUIImageView.cpp */; };
@@ -226,6 +227,7 @@
 		23EB371414F240BE00F36E7C /* CoreGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGameObject.h; sourceTree = "<group>"; };
 		23F4265D14AC5BEE00F27DAB /* DEBUGMODEL_CircleXY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_CircleXY.h; sourceTree = "<group>"; };
 		23FCBE5B14A1E8A300C5EA7C /* CoreEngine3D-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CoreEngine3D-Prefix.pch"; path = "CoreEngine3D(iOS)/CoreEngine3D-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		DD04CE8115B8D93E00BE66F7 /* CoreObjectAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreObjectAttribute.h; path = CoreObjects/CoreObjectAttribute.h; sourceTree = "<group>"; };
 		DD0AC1C8159FE4C100EDD195 /* CoreUIButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CoreUIButton.cpp; path = CoreObjects/GUI/CoreUIButton.cpp; sourceTree = "<group>"; };
 		DD0AC1C9159FE4C100EDD195 /* CoreUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreUIButton.h; path = CoreObjects/GUI/CoreUIButton.h; sourceTree = "<group>"; };
 		DD0AC1CA159FE4C100EDD195 /* CoreUIImageView.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = CoreUIImageView.cpp; path = CoreObjects/GUI/CoreUIImageView.cpp; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 		DD408FB414DB5B730016BA1A /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
+				DD04CE8115B8D93E00BE66F7 /* CoreObjectAttribute.h */,
 				DD0AC1C6159FE48E00EDD195 /* GUI */,
 				DDB3FE8E158D666B00BA1853 /* Effects */,
 				DD0BF86115A97D65001DE9A4 /* CurvePoints_2D.cpp */,
@@ -811,6 +814,7 @@
 				DD0AC1D1159FE4C100EDD195 /* CoreUIImageView.h in Headers */,
 				DD0AC1D3159FE4C100EDD195 /* CoreUIView.h in Headers */,
 				DD0BF86415A97D66001DE9A4 /* CurvePoints_2D.h in Headers */,
+				DD04CE8215B8D93E00BE66F7 /* CoreObjectAttribute.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

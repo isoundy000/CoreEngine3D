@@ -66,16 +66,23 @@ bool CoreUIView::Init(u32 type)
     //TODO: other init
 	viewType = CoreUI_ViewType_View;
 	
+	//Add attributes
+	m_attributes.Init(m_attribData,256);
+	
+	//cache attributes that are used often
+	m_attrib_origin = m_attributes.Add(CoreObjectAttribute_CoreUI_Origin("origin"));
+	m_attrib_offsetX = m_attributes.Add(CoreObjectAttribute_S32("offsetX",0));
+	m_attrib_offsetY = m_attributes.Add(CoreObjectAttribute_S32("offsetY",0));
+	
+	//TODO: get a better way to say this view is full screen
+	m_attrib_width = m_attributes.Add(CoreObjectAttribute_S32("width",GLRENDERER->screenWidth_points));
+	m_attrib_height = m_attributes.Add(CoreObjectAttribute_S32("height",GLRENDERER->screenHeight_points));
+	m_attrib_opacity = m_attributes.Add(CoreObjectAttribute_F32("opacity",1.0f));
+	m_attrib_sortValue = m_attributes.Add(CoreObjectAttribute_S32("sortValue",0));
+	
     return true;
 }
 
-
-//----------------------------------------------------------------
-//----------------------------------------------------------------
-CoreUIView::Attributes* CoreUIView::GetAttributes()
-{
-	return &m_attributes;
-}
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
@@ -121,126 +128,20 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 	
 	parentOpacity = 1.0f;
 	parentVisible = true;
-	
-	memset(&m_attributes, 0, sizeof(CoreUIView::Attributes));
-	m_attributes.opacity.value = 1.0f;
-	opacity = 1.0f;
-	
+
 	nameSig = 0;
 	visible = true;
-	m_attributes.width.value = GLRENDERER->screenWidth_points;
-	m_attributes.height.value = GLRENDERER->screenHeight_points;
-	//angle = 0.0f;
-	m_attributes.origin.value = CoreUI_Origin_TopLeft;
-	
+
 	//LOAD ATTRIBUTES
-	
-	pugi::xml_attribute offsetX_Attrib = pProperties->attribute("offsetX");
-	pugi::xml_attribute offsetY_Attrib = pProperties->attribute("offsetY");
-	pugi::xml_attribute width_Attrib = pProperties->attribute("width");
-	pugi::xml_attribute height_Attrib = pProperties->attribute("height");
-	//pugi::xml_attribute angle_Attrib = pProperties->attribute("angle");
-	pugi::xml_attribute opacity_Attrib = pProperties->attribute("opacity");
-	pugi::xml_attribute visible_Attrib = pProperties->attribute("visible");
-	pugi::xml_attribute name_Attrib = pProperties->attribute("name");
-	pugi::xml_attribute sortValue_Attrib = pProperties->attribute("sortValue");
-	
-	if(offsetX_Attrib.empty() == false)
+	pugi::xml_node::attribute_iterator attribIter = pProperties->attributes_begin();
+	while(attribIter != pProperties->attributes_end())
 	{
-		m_attributes.offsetX.value = atof(offsetX_Attrib.value());
+		m_attributes.SetValueForAttribByCString(attribIter->name(), attribIter->value());
+		++attribIter;
 	}
 	
-	if(offsetY_Attrib.empty() == false)
-	{
-		m_attributes.offsetY.value = atof(offsetY_Attrib.value());
-	}
-	
-	if(width_Attrib.empty() == false)
-	{
-		m_attributes.width.value = atof(width_Attrib.value());
-	}
-	
-	if(height_Attrib.empty() == false)
-	{
-		m_attributes.height.value = atof(height_Attrib.value());
-	}
-	
-	/*if(angle_Attrib.empty() == false)
-	{
-		angle = atof(angle_Attrib.value());
-	}*/
-	
-	if(opacity_Attrib.empty() == false)
-	{
-		m_attributes.opacity.value = atof(opacity_Attrib.value());
-		opacity = m_attributes.opacity.value;
-	}
-	
-	if(visible_Attrib.empty() == false)
-	{
-		if(strcmp(visible_Attrib.value(),"false") == 0)
-		{
-			visible = false;
-		}
-	}
-	
-	if(name_Attrib.empty() == false)
-	{
-		nameSig = Hash(name_Attrib.value());
-		
-#if defined(_DEBUG_PC)
-		nameString = name_Attrib.value();
-#endif
-	}
-	
-	if(sortValue_Attrib.empty() == false)
-	{
-		m_attributes.sortValue.value = atoi(sortValue_Attrib.value());
-	}
-	
-	pugi::xml_attribute origin_Attrib = pProperties->attribute("origin");
-	if(origin_Attrib.empty() == false)
-	{
-		const char* originStr = origin_Attrib.value();
-		
-		if(strcmp(originStr, "center") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_Center;
-		}
-		else if(strcmp(originStr, "left") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_Left;
-		}
-		else if(strcmp(originStr, "right") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_Right;
-		}
-		else if(strcmp(originStr, "top") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_Top;
-		}
-		else if(strcmp(originStr, "bottom") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_Bottom;
-		}
-		else if(strcmp(originStr, "topLeft") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_TopLeft;
-		}
-		else if(strcmp(originStr, "bottomLeft") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_BottomLeft;
-		}
-		else if(strcmp(originStr, "topRight") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_TopRight;
-		}
-		else if(strcmp(originStr, "bottomRight") == 0)
-		{
-			m_attributes.origin.value = CoreUI_Origin_BottomRight;
-		}
-	}
-	
+	CoreObjectAttribute_F32* pOpacityAttrib = (CoreObjectAttribute_F32*)m_attributes[m_attrib_opacity];
+	opacity = pOpacityAttrib->value;
 	
 	//CREATE SUBVIEWS
 	
@@ -297,10 +198,15 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 //----------------------------------------------------------------
 void CoreUIView::LayoutView(const CoreUIView* pParentView)
 {
-	//NOTE: the parent position is the center of the object
+	const CoreObjectAttributeList* parentAttribs = pParentView?(&pParentView->m_attributes):NULL;
 	
-	const f32 parentWidth = pParentView?pParentView->m_attributes.width.value:GLRENDERER->screenWidth_points;
-	const f32 parentHeight = pParentView?pParentView->m_attributes.height.value:GLRENDERER->screenHeight_pixels;
+	//NOTE: the parent position is the center of the object
+	CoreObjectAttribute_S32* pParentWidthAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs)[m_attrib_width]:NULL;
+	
+	CoreObjectAttribute_S32* pParentHeightAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs)[m_attrib_height]:NULL;
+	
+	const f32 parentWidth = pParentView?pParentWidthAttrib->value:GLRENDERER->screenWidth_points;
+	const f32 parentHeight = pParentView?pParentHeightAttrib->value:GLRENDERER->screenHeight_pixels;
 	const f32 parentPosX = pParentView?pParentView->position.x:GLRENDERER->screenWidth_points/2;
 	const f32 parentPosY = pParentView?pParentView->position.y:GLRENDERER->screenHeight_points/2;
 	
@@ -310,68 +216,76 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	parentOpacity = pParentView?(pParentView->parentOpacity*pParentView->opacity):1.0f;
 	parentVisible = pParentView?(pParentView->parentVisible && pParentView->visible):true;
 	
-	switch(m_attributes.origin.value)
+	CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)m_attributes[m_attrib_origin];
+	
+	CoreObjectAttribute_S32* pOffsetXAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_offsetX];
+	CoreObjectAttribute_S32* pOffsetYAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_offsetY];
+	
+	const s32 offsetX = pOffsetXAttrib->value;
+	const s32 offsetY = pOffsetYAttrib->value;
+	
+	switch(pOriginAttrib->value)
 	{
 		case CoreUI_Origin_Center:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value;
+			position.x = (f32)parentPosX+offsetX;
+			position.y = (f32)parentPosY+offsetY;
 			
 			break;
 		}
 		case CoreUI_Origin_Left:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value-parentHalfWidth;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value;
+			position.x = (f32)parentPosX+offsetX-parentHalfWidth;
+			position.y = (f32)parentPosY+offsetY;
 			
 			break;
 		}
 		case CoreUI_Origin_Right:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value+parentHalfWidth;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value;
+			position.x = (f32)parentPosX+offsetX+parentHalfWidth;
+			position.y = (f32)parentPosY+offsetY;
 			
 			break;
 		}
 		case CoreUI_Origin_Top:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value-parentHalfHeight;
+			position.x = (f32)parentPosX+offsetX;
+			position.y = (f32)parentPosY+offsetY-parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_Bottom:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value+parentHalfHeight;
+			position.x = (f32)parentPosX+offsetX;
+			position.y = (f32)parentPosY+offsetY+parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_TopLeft:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value-parentHalfWidth;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value-parentHalfHeight;
+			position.x = (f32)parentPosX+offsetX-parentHalfWidth;
+			position.y = (f32)parentPosY+offsetY-parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_BottomLeft:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value-parentHalfWidth;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value+parentHalfHeight;
+			position.x = (f32)parentPosX+offsetX-parentHalfWidth;
+			position.y = (f32)parentPosY+offsetY+parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_TopRight:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value+parentHalfWidth;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value-parentHalfHeight;
+			position.x = (f32)parentPosX+offsetX+parentHalfWidth;
+			position.y = (f32)parentPosY+offsetY-parentHalfHeight;
 			
 			break;
 		}
 		case CoreUI_Origin_BottomRight:
 		{
-			position.x = (f32)parentPosX+m_attributes.offsetX.value+parentHalfWidth;
-			position.y = (f32)parentPosY+m_attributes.offsetY.value+parentHalfHeight;
+			position.x = (f32)parentPosX+offsetX+parentHalfWidth;
+			position.y = (f32)parentPosY+offsetY+parentHalfHeight;
 			
 			break;
 		}
@@ -418,6 +332,8 @@ bool CoreUIView::PostSpawnInit(void* pSpawnStruct)
 //----------------------------------------------------------------
 void CoreUIView::Uninit()
 {
+	m_attributes.Uninit();
+	
     //Base class uninit
     CoreGameObject::Uninit();
 }

@@ -42,7 +42,13 @@ bool CoreUIImageView::LoadResourcesForType(u32 type)
 bool CoreUIImageView::Init(u32 type)
 {
     //Base class init
-    CoreGameObject::Init(type);
+    CoreUIView::Init(type);
+	
+	//Add special attributes that are just for CoreUIImageView
+	
+	m_attrib_colorR = m_attributes.Add(CoreObjectAttribute_U32("colorR",255));
+	m_attrib_colorG = m_attributes.Add(CoreObjectAttribute_U32("colorG",255));
+	m_attrib_colorB = m_attributes.Add(CoreObjectAttribute_U32("colorB",255));
     
     //TODO: other init
 	viewType = CoreUI_ViewType_ImageView;
@@ -82,27 +88,19 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 			pGeom->material.customTexture0 = GAME->GetHUDTextureByNameSig(nameSig);
 		}
 		
-		pGeom->sortValue = m_attributes.sortValue.value;
+		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_sortValue];
+		
+		pGeom->sortValue = pSortValueAttrib?pSortValueAttrib->value:0;
 	}
 	
-	pugi::xml_attribute colorR_Attrib = pProperties->attribute("colorR");
-	pugi::xml_attribute colorG_Attrib = pProperties->attribute("colorG");
-	pugi::xml_attribute colorB_Attrib = pProperties->attribute("colorB");
+	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)m_attributes[m_attrib_colorR];
+	m_diffuseColor.x = pRedAttrib->value/255.0f;
 	
-	if(colorR_Attrib.empty() == false)
-	{
-		m_diffuseColor.x = atof(colorR_Attrib.value())/255.0f;
-	}
+	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)m_attributes[m_attrib_colorG];
+	m_diffuseColor.y = pGreenAttrib->value/255.0f;
 	
-	if(colorG_Attrib.empty() == false)
-	{
-		m_diffuseColor.y = atof(colorG_Attrib.value())/255.0f;
-	}
-	
-	if(colorB_Attrib.empty() == false)
-	{
-		m_diffuseColor.z = atof(colorB_Attrib.value())/255.0f;
-	}
+	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)m_attributes[m_attrib_colorB];
+	m_diffuseColor.z = pBlueAttrib->value/255.0f;
 	
     return true;
 }
@@ -197,7 +195,10 @@ void CoreUIImageView::RefreshSettings()
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hRenderable);
 	if(pGeom != NULL)
 	{
-		mat4f_LoadScaleFromFloats(pGeom->worldMat, m_attributes.width.value, m_attributes.height.value, 1.0f);
+		CoreObjectAttribute_S32* pWidthAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_width];		
+		CoreObjectAttribute_S32* pHeightAttrib = (CoreObjectAttribute_S32*)m_attributes[m_attrib_height];
+		
+		mat4f_LoadScaleFromFloats(pGeom->worldMat, pWidthAttrib->value, pHeightAttrib->value, 1.0f);
 		vec3* pPos = GetGeomPos(pGeom);
 		
 		pPos->x = position.x;

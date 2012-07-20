@@ -41,7 +41,7 @@ bool CoreUIButton::LoadResourcesForType(u32 type)
 bool CoreUIButton::Init(u32 type)
 {
     //Base class init
-    CoreGameObject::Init(type);
+    CoreUIView::Init(type);
     
     //TODO: other init
 	viewType = CoreUI_ViewType_Button;

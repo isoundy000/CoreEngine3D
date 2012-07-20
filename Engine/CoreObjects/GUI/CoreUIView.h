@@ -26,11 +26,10 @@ enum CoreUI_ViewType
 };
 
 
-
 class CoreUIView: public CoreGameObject
 {
 public:
-	struct Attributes
+	/*struct Attributes
 	{
 		Attrib_CoreUIOrigin origin;
 		Attrib_S32 offsetX;
@@ -39,12 +38,11 @@ public:
 		Attrib_S32 height;
 		Attrib_F32 opacity;
 		Attrib_S32 sortValue;
-	};
+	};*/
 	
 #if defined(_DEBUG_PC)
 	std::string nameString;
 #endif
-	Attributes* GetAttributes();
 	CoreUIView* GetChildViewByName(u32 nameSig);
     virtual void UpdateHandle();	//Called when the memory location changes
 
@@ -77,14 +75,23 @@ protected:
 	f32 parentOpacity;
 	bool parentVisible;
 	
-	CoreUIView::Attributes m_attributes;
+	CoreObjectAttributeList m_attributes;
 	
 	void LayoutSubViews();
+	
+	s32 m_attrib_offsetX;
+	s32 m_attrib_offsetY;
+	s32 m_attrib_width;
+	s32 m_attrib_height;
+	s32 m_attrib_origin;
+	s32 m_attrib_opacity;
+	s32 m_attrib_sortValue;
+	
+	u8 m_attribData[256];
+	
 private:
     //TODO: put member functions here
     //TODO: put member variables here
-	
-	
 };
 
 #endif
