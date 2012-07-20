@@ -32,11 +32,28 @@ CoreUIEditor::CoreUIEditor()
 	
     m_toolWindow->begin();
 	
-	m_toolWindowBrowser = new Fl_Tree(0,0,width,height,"uibrowser");
+	const s32 halfHeight = height/2;
+	
+	m_toolWindowBrowser = new Fl_Tree(0,0,width,halfHeight,"uibrowser");
+	
+	m_attributeScrollView = new Fl_Scroll(0,halfHeight,width,halfHeight,"uiscrollview");
+	
+	m_attributeScrollView->box(FL_DOWN_BOX);
+	m_attributeScrollView->color((Fl_Color) FL_WHITE);
+	m_attributeScrollView->type(Fl_Scroll::VERTICAL);
+	m_attributeScrollView->begin();
+	
+	m_attributeScrollView->end();
 	
     m_toolWindow->end();
 	
 	MAINWINDOW->take_focus();
+	
+	for(u32 i=0; i<32; ++i)
+	{
+		Fl_Text_Display* pLabel = new Fl_Text_Display(0,i*32,width,32,"hi");
+		m_attributeScrollView->add(pLabel);
+	}
 }
 
 

@@ -15,6 +15,8 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Tree.H>
+#include <FL/Fl_Scroll.H>
+#include <FL/Fl_Text_Display.H>
 
 class CoreUIEditor;
 extern CoreUIEditor* UIEDITOR;
@@ -36,6 +38,7 @@ public:
 private:
 	Fl_Window* m_toolWindow;
 	Fl_Tree* m_toolWindowBrowser;
+	Fl_Scroll* m_attributeScrollView;
 	void AddChildViews(CoreUIView* pParentView,const std::string& path);
 };
 
