@@ -90,7 +90,7 @@ void CoreUIButton::Uninit()
 void CoreUIButton::Update(f32 timeElapsed)
 {
     //TODO: update here
-    
+    CoreUIView::Update(timeElapsed);
 }
 
 

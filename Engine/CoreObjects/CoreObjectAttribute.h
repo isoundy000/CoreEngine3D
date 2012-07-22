@@ -133,11 +133,13 @@ public:
 		m_classSizeBytes = sizeof(CoreObjectAttribute_F32);
 		value = 0.0f;
 	}
-	CoreObjectAttribute_F32(const char* name, f32 defaultValue)
+	CoreObjectAttribute_F32(const char* name, f32 defaultValue, f32 minValue = 0.0f, f32 maxValue = 1.0f)
 	{
 		Init(name,CoreObjectAttributeType_F32);
 		m_classSizeBytes = sizeof(CoreObjectAttribute_F32);
 		value = defaultValue;
+		this->minValue = minValue;
+		this->maxValue = maxValue;
 	}
 	
 	void SetValueFromCString(const char* cStr)
@@ -146,6 +148,8 @@ public:
 	}
 	
 	f32 value;
+	f32 minValue;
+	f32 maxValue;
 };
 
 //S32
@@ -159,11 +163,13 @@ public:
 		value = 0;
 	}
 	
-	CoreObjectAttribute_S32(const char* name, s32 defaultValue)
+	CoreObjectAttribute_S32(const char* name, s32 defaultValue, s32 minValue = 0, s32 maxValue = 1024)
 	{
 		Init(name,CoreObjectAttributeType_S32);
 		m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
 		value = defaultValue;
+		this->minValue = minValue;
+		this->maxValue = maxValue;
 	}
 	
 	void SetValueFromCString(const char* cStr)
@@ -172,6 +178,8 @@ public:
 	}
 	
 	s32 value;
+	s32 minValue;
+	s32 maxValue;
 };
 
 //U32
@@ -185,11 +193,13 @@ public:
 		value = 0;
 	}
 	
-	CoreObjectAttribute_U32(const char* name, u32 defaultValue)
+	CoreObjectAttribute_U32(const char* name, u32 defaultValue, u32 minValue = 0, u32 maxValue = 1024)
 	{
 		Init(name,CoreObjectAttributeType_U32);
 		m_classSizeBytes = sizeof(CoreObjectAttribute_U32);
 		value = defaultValue;
+		this->minValue = minValue;
+		this->maxValue = maxValue;
 	}
 	
 	void SetValueFromCString(const char* cStr)
@@ -198,6 +208,8 @@ public:
 	}
 	
 	u32 value;
+	u32 minValue;
+	u32 maxValue;
 };
 
 //CoreUI_Origin

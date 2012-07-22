@@ -46,9 +46,9 @@ bool CoreUIImageView::Init(u32 type)
 	
 	//Add special attributes that are just for CoreUIImageView
 	
-	attrib_colorR = attributes.Add(CoreObjectAttribute_U32("colorR",255));
-	attrib_colorG = attributes.Add(CoreObjectAttribute_U32("colorG",255));
-	attrib_colorB = attributes.Add(CoreObjectAttribute_U32("colorB",255));
+	attrib_colorR = attributes.Add(CoreObjectAttribute_U32("colorR",255,0,255));
+	attrib_colorG = attributes.Add(CoreObjectAttribute_U32("colorG",255,0,255));
+	attrib_colorB = attributes.Add(CoreObjectAttribute_U32("colorB",255,0,255));
     
     //TODO: other init
 	viewType = CoreUI_ViewType_ImageView;
@@ -135,7 +135,7 @@ void CoreUIImageView::Uninit()
 //----------------------------------------------------------------
 void CoreUIImageView::Update(f32 timeElapsed)
 {
-
+	CoreUIView::Update(timeElapsed);
 }
 
 

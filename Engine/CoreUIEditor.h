@@ -38,6 +38,7 @@ public:
 	void DisplayAttributes(CoreObjectAttributeList& attribList);
 private:
 	Fl_Window* m_toolWindow;
+	Fl_Scroll* m_toolWindowBrowserScrollView;
 	Fl_Tree* m_toolWindowBrowser;
 	Fl_Scroll* m_attributeScrollView;
 	void AddChildViews(CoreUIView* pParentView,const std::string& path);

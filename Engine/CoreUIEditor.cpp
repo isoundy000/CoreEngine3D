@@ -40,16 +40,39 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 			const CoreObjectHandle handle = data;
 			CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(handle);
 			
+			if(pView == NULL)
+			{
+				break;
+			}
+			
 			CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pView->attributes[pView->attrib_name];
 			
 			COREDEBUG_PrintMessage("Selected item: %s",(const char*)pNameAttrib->value);
 			
 			pEditor->DisplayAttributes(pView->attributes);
 			
+			pView->DEBUG_SetDebugVisible(true);
+			
 			break;
 		}
 		case FL_TREE_REASON_DESELECTED:
 		{
+			Fl_Tree_Item* pItem = pTree->callback_item();
+			const unsigned long data = (unsigned long)pItem->user_data();
+			const CoreObjectHandle handle = data;
+			CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(handle);
+			
+			if(pView == NULL)
+			{
+				break;
+			}
+			
+			CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pView->attributes[pView->attrib_name];
+			
+			COREDEBUG_PrintMessage("Deselected item: %s",(const char*)pNameAttrib->value);
+
+			pView->DEBUG_SetDebugVisible(false);
+			
 			break;
 		}
 		case FL_TREE_REASON_OPENED:
@@ -69,19 +92,21 @@ void CoreUIEditor::DisplayAttributes(CoreObjectAttributeList& attribList)
 	
 	m_attributeScrollView->clear();
 	
-	m_attributeYCurr = 0;
+	const s32 labelHeight = 24;
+	
+	m_attributeYCurr = labelHeight;
 	
 	const u32 numAttribs = attribList.numAttributes;
 	for(u32 i=0; i<numAttribs; ++i)
 	{
 		CoreObjectAttribute* pAttrib = attribList[i];
-		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,m_attributeYCurr,UIEDITOR_WindowWidth);
+		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,0,m_attributeYCurr,UIEDITOR_WindowWidth-24,32);
 		
 		if(pWidget != NULL)
 		{
 			m_attributeScrollView->add(pWidget);
 		
-			m_attributeYCurr += pWidget->h();
+			m_attributeYCurr += pWidget->h()+24;
 		}
 	}
 	
@@ -105,20 +130,34 @@ CoreUIEditor::CoreUIEditor()
 	const s32 height = MAINWINDOW->h();
 	
 	m_toolWindow = new Fl_Window( MAINWINDOW->x()+MAINWINDOW->w() + 32,0,UIEDITOR_WindowWidth,height,"UI Elements" );
-
+	
+	//Make window resizable
+	m_toolWindow->resizable(m_toolWindow);
 	
     m_toolWindow->begin();
 	
 	const s32 halfHeight = height/2;
 	
+	m_toolWindowBrowserScrollView = new Fl_Scroll(0,0,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
+	
+	m_toolWindowBrowserScrollView->labeltype(FL_NO_LABEL);
+	m_toolWindowBrowserScrollView->box(FL_NO_BOX);
+	m_toolWindowBrowserScrollView->color((Fl_Color) FL_WHITE);
+	m_toolWindowBrowserScrollView->type(Fl_Scroll::VERTICAL_ALWAYS);
+	
+	m_toolWindowBrowserScrollView->begin();
+	
 	m_toolWindowBrowser = new Fl_Tree(0,0,UIEDITOR_WindowWidth,halfHeight,"uibrowser");
 	m_toolWindowBrowser->callback(AttributeBrowserCallback,this);
+	
+	m_toolWindowBrowserScrollView->end();
 	
 	m_attributeScrollView = new Fl_Scroll(0,halfHeight,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
 	
 	m_attributeScrollView->box(FL_DOWN_BOX);
+	m_attributeScrollView->labeltype(FL_NO_LABEL);
 	m_attributeScrollView->color((Fl_Color) FL_WHITE);
-	m_attributeScrollView->type(Fl_Scroll::VERTICAL);
+	m_attributeScrollView->type(Fl_Scroll::VERTICAL_ALWAYS);
 	
     m_toolWindow->end();
 	

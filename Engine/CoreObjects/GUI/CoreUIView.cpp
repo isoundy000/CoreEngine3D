@@ -82,7 +82,17 @@ bool CoreUIView::Init(u32 type)
 	attrib_opacity = attributes.Add(CoreObjectAttribute_F32("opacity",1.0f));
 	attrib_sortValue = attributes.Add(CoreObjectAttribute_S32("sortValue",0));
 	
+	m_debugVisible = false;
+	
     return true;
+}
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
+void CoreUIView::DEBUG_SetDebugVisible(bool isVisible)
+{
+	m_debugVisible = isVisible;
 }
 
 
@@ -346,8 +356,50 @@ void CoreUIView::Uninit()
 //----------------------------------------------------------------
 void CoreUIView::Update(f32 timeElapsed)
 {
+	if(m_debugVisible == false)
+	{
+		return;
+	}
+	
+	CoreObjectAttribute_S32* widthAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_width);
+	
+	CoreObjectAttribute_S32* heightAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_height);
+	
+	const s32 halfWidth = widthAttrib->value/2;
+	const s32 halfHeight = heightAttrib->value/2;
+	
     //TODO: update here
-    
+	vec3 pos3D;
+	pos3D.x = position.x;
+	pos3D.y = position.y;
+	pos3D.z = 0.0f;
+	
+    vec3 topLeft = pos3D;
+	vec3 topRight = pos3D;
+	vec3 bottomLeft = pos3D;
+	vec3 bottomRight = pos3D;
+	
+	topLeft.x -= halfWidth;
+	topLeft.y -= halfHeight;
+	
+	topRight.x += halfWidth;
+	topRight.y -= halfHeight;
+	
+	bottomLeft.x -= halfWidth;
+	bottomLeft.y += halfHeight;
+	
+	bottomRight.x += halfWidth;
+	bottomRight.y += halfHeight;
+
+	
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &topLeft, &topRight, &color4f_green);
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &topRight, &bottomRight, &color4f_green);
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &bottomRight, &bottomLeft, &color4f_green);
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_Screen2D, &bottomLeft, &topLeft, &color4f_green);
+	
+	
+	
+	GLRENDERER->DEBUGDRAW_DrawCircleXY(DebugDrawMode_Screen2D, &pos3D, 64.0f, &color4f_red);
 }
 
 

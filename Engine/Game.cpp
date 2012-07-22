@@ -288,6 +288,13 @@ void Game::Update(f32 timeElapsed)
 	}
 #endif
 	
+	//Make sure if you're editingthe UI that debug lines
+	//will always draw
+	if(g_GUIEditModeOn == true)
+	{
+		GLRENDERER->paused = false;
+	}
+	
 	//Update controls
 	
 	for(u32 i=0; i<MOUSESTATE_MAX_MOUSEBUTTONS; ++i)

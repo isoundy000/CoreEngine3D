@@ -42,6 +42,8 @@ public:
 		Attrib_S32 sortValue;
 	};*/
 	
+	void DEBUG_SetDebugVisible(bool isVisible);
+	
 	CoreUIView* GetChildViewByName(u32 nameSig);
     virtual void UpdateHandle();	//Called when the memory location changes
 
@@ -86,6 +88,7 @@ protected:
 	u8 m_attribData[1024];
 	
 private:
+	bool m_debugVisible;
     //TODO: put member functions here
     //TODO: put member variables here
 };
