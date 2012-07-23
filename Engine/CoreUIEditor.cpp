@@ -17,7 +17,7 @@
 
 CoreUIEditor* UIEDITOR = NULL;
 
-static const s32 UIEDITOR_WindowWidth = 256;
+static const s32 UIEDITOR_WindowWidth = 400;
 
 static std::vector<CoreUI_Container> containers;
 
@@ -86,30 +86,38 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 	}
 }
 
+
 void CoreUIEditor::DisplayAttributes(CoreObjectAttributeList& attribList)
 {
 	COREDEBUG_PrintMessage("Here be some attribs");
 	
 	m_attributeScrollView->clear();
 	
-	const s32 labelHeight = 24;
+	const s32 verticalSpacing = 16;
+	const s32 horizontalSpacing = 16;
 	
-	m_attributeYCurr = labelHeight;
+	const s32 widgetWidth = UIEDITOR_WindowWidth/1.5f;
+	
+	m_attributeYCurr = verticalSpacing;
 	
 	const u32 numAttribs = attribList.numAttributes;
 	for(u32 i=0; i<numAttribs; ++i)
 	{
 		CoreObjectAttribute* pAttrib = attribList[i];
-		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,0,m_attributeYCurr,UIEDITOR_WindowWidth-24,32);
+		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,horizontalSpacing,m_attributeYCurr,widgetWidth,32);
+		
 		
 		if(pWidget != NULL)
 		{
+			pWidget->align(FL_ALIGN_RIGHT);
+			
 			m_attributeScrollView->add(pWidget);
 		
 			m_attributeYCurr += pWidget->h()+24;
 		}
 	}
 	
+	m_attributeScrollView->scroll_to(0, -m_toolWindowBrowserScrollView->h());	//I think this is right :)
 	m_attributeScrollView->redraw();
 }
 

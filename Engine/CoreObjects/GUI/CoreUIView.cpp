@@ -73,8 +73,8 @@ bool CoreUIView::Init(u32 type)
 	attrib_name = attributes.Add(CoreObjectAttribute_Char32("name","Unnamed"));
 	
 	attrib_origin = attributes.Add(CoreObjectAttribute_CoreUI_Origin("origin"));
-	attrib_offsetX = attributes.Add(CoreObjectAttribute_S32("offsetX",0));
-	attrib_offsetY = attributes.Add(CoreObjectAttribute_S32("offsetY",0));
+	attrib_offsetX = attributes.Add(CoreObjectAttribute_S32("offsetX",0,-1024,1024));
+	attrib_offsetY = attributes.Add(CoreObjectAttribute_S32("offsetY",0,-1024,1024));
 	
 	//TODO: get a better way to say this view is full screen
 	attrib_width = attributes.Add(CoreObjectAttribute_S32("width",GLRENDERER->screenWidth_points));
