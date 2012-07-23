@@ -110,12 +110,6 @@ void CoreUIEditor::DisplayAttributes(CoreObjectAttributeList& attribList)
 		}
 	}
 	
-	/*for(u32 i=0; i<2; ++i)
-	{
-		Fl_Text_Display* pLabel = new Fl_Text_Display(0,i*32,UIEDITOR_WindowWidth,32,"hi");
-		m_attributeScrollView->add(pLabel);
-	}*/
-	
 	m_attributeScrollView->redraw();
 }
 
@@ -128,46 +122,57 @@ CoreUIEditor::CoreUIEditor()
 	assert(MAINWINDOW != NULL);
 
 	const s32 height = MAINWINDOW->h();
+	const s32 halfHeight = height/2;
 	
+	//Create main tool window
 	m_toolWindow = new Fl_Window( MAINWINDOW->x()+MAINWINDOW->w() + 32,0,UIEDITOR_WindowWidth,height,"UI Elements" );
 	
 	//Make window resizable
 	m_toolWindow->resizable(m_toolWindow);
 	
+	//Everything past this will be added as a child of the main window
     m_toolWindow->begin();
 	
-	const s32 halfHeight = height/2;
+	m_windowTile = new Fl_Tile(0,0,UIEDITOR_WindowWidth,height);
 	
-	m_toolWindowBrowserScrollView = new Fl_Scroll(0,0,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
+	{
+		//Create a scroll view for the hierarchical object list
+		m_toolWindowBrowserScrollView = new Fl_Scroll(0,0,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
+		
+		m_toolWindowBrowserScrollView->labeltype(FL_NO_LABEL);
+		m_toolWindowBrowserScrollView->box(FL_DOWN_BOX);
+		m_toolWindowBrowserScrollView->color((Fl_Color) FL_WHITE);
+		m_toolWindowBrowserScrollView->type(Fl_Scroll::VERTICAL_ALWAYS);
+		
+		//Everything inside begin will be added as a child of m_toolWindowBrowserScrollView
+		m_toolWindowBrowserScrollView->begin();
+		
+		{
+			//Create the hierarchical object browser inside the scroll view
+			m_toolWindowBrowser = new Fl_Tree(0,0,UIEDITOR_WindowWidth,halfHeight,"uibrowser");
+			m_toolWindowBrowser->callback(AttributeBrowserCallback,this);
+			m_toolWindowBrowser->box(FL_NO_BOX);
+		}
+		
+		//End
+		m_toolWindowBrowserScrollView->end();
+		
+		//Create a scroll view to hold the attribute list
+		//It will be blank for now
+		m_attributeScrollView = new Fl_Scroll(0,halfHeight,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
+		
+		m_attributeScrollView->box(FL_DOWN_BOX);
+		m_attributeScrollView->labeltype(FL_NO_LABEL);
+		m_attributeScrollView->color((Fl_Color) FL_WHITE);
+		m_attributeScrollView->type(Fl_Scroll::VERTICAL_ALWAYS);
+	}
 	
-	m_toolWindowBrowserScrollView->labeltype(FL_NO_LABEL);
-	m_toolWindowBrowserScrollView->box(FL_NO_BOX);
-	m_toolWindowBrowserScrollView->color((Fl_Color) FL_WHITE);
-	m_toolWindowBrowserScrollView->type(Fl_Scroll::VERTICAL_ALWAYS);
-	
-	m_toolWindowBrowserScrollView->begin();
-	
-	m_toolWindowBrowser = new Fl_Tree(0,0,UIEDITOR_WindowWidth,halfHeight,"uibrowser");
-	m_toolWindowBrowser->callback(AttributeBrowserCallback,this);
-	
-	m_toolWindowBrowserScrollView->end();
-	
-	m_attributeScrollView = new Fl_Scroll(0,halfHeight,UIEDITOR_WindowWidth,halfHeight,"uiscrollview");
-	
-	m_attributeScrollView->box(FL_DOWN_BOX);
-	m_attributeScrollView->labeltype(FL_NO_LABEL);
-	m_attributeScrollView->color((Fl_Color) FL_WHITE);
-	m_attributeScrollView->type(Fl_Scroll::VERTICAL_ALWAYS);
-	
+	//End main window
     m_toolWindow->end();
 	
+	//We just popped up a window so it will take focus
+	//We want to give focus back to the game so you don't lose control
 	MAINWINDOW->take_focus();
-	
-	/*for(u32 i=0; i<32; ++i)
-	{
-		Fl_Text_Display* pLabel = new Fl_Text_Display(0,i*32,width,32,"hi");
-		m_attributeScrollView->add(pLabel);
-	}*/
 	
 	m_attributeYCurr = 0;
 }
