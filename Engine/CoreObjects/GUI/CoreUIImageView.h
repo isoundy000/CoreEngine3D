@@ -38,6 +38,7 @@ public:
 protected:
 	
 private:
+	void UpdateDiffuseColor();
 	void RefreshSettings();
     CoreObjectHandle m_hRenderable;
 	vec4 m_diffuseColor;

@@ -49,7 +49,7 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 			
 			COREDEBUG_PrintMessage("Selected item: %s",(const char*)pNameAttrib->value);
 			
-			pEditor->DisplayAttributes(pView->attributes);
+			pEditor->DisplayAttributes(pView);
 			
 			pView->DEBUG_SetDebugVisible(true);
 			
@@ -87,8 +87,23 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 }
 
 
-void CoreUIEditor::DisplayAttributes(CoreObjectAttributeList& attribList)
+static void SliderCallback (Fl_Widget *pWidget, void* pClassPointer)
 {
+	CoreUIEditor* pEditor = (CoreUIEditor*)pClassPointer;
+	
+	Slider_Int_Input* pIntInput = (Slider_Int_Input*)pWidget;
+	
+	/*switch(pIntInput->callback_reason())
+	{
+		
+	}*/
+}
+
+
+void CoreUIEditor::DisplayAttributes(CoreUIView* pView)
+{
+	assert(pView != NULL);
+	
 	COREDEBUG_PrintMessage("Here be some attribs");
 	
 	m_attributeScrollView->clear();
@@ -100,12 +115,13 @@ void CoreUIEditor::DisplayAttributes(CoreObjectAttributeList& attribList)
 	
 	m_attributeYCurr = verticalSpacing;
 	
+	CoreObjectAttributeList& attribList = pView->attributes;
+	
 	const u32 numAttribs = attribList.numAttributes;
 	for(u32 i=0; i<numAttribs; ++i)
 	{
 		CoreObjectAttribute* pAttrib = attribList[i];
-		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,horizontalSpacing,m_attributeYCurr,widgetWidth,32);
-		
+		Fl_Widget* pWidget = CreateWidgetForAttribute(pAttrib,horizontalSpacing,m_attributeYCurr,widgetWidth,32,pView->GetHandle(),i);
 		
 		if(pWidget != NULL)
 		{

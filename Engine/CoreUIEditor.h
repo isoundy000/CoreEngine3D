@@ -36,7 +36,7 @@ public:
 	void Clear();
 	void AddViewContainer(const CoreUI_Container& container);
 	void SetVisible(bool isVisible);
-	void DisplayAttributes(CoreObjectAttributeList& attribList);
+	void DisplayAttributes(CoreUIView* pView);
 private:
 	Fl_Window* m_toolWindow;
 	Fl_Scroll* m_toolWindowBrowserScrollView;

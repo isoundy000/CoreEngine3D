@@ -11,89 +11,183 @@
 #include "CoreObjectAttribute_FLTK.h"
 
 #include <FL/Fl_Text_Display.H>
-
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
-#include <FL/Fl_Int_Input.H>
-#include <FL/Fl_Slider.H>
-#include <stdio.h>
+#include <cstdio>
+
+#include "GUI/CoreUIView.h"
+#include "GUI/CoreUIImageView.h"
+#include "GUI/CoreUIButton.h"
+
+CoreObjectAttributeWidgetLink::CoreObjectAttributeWidgetLink()
+{
+	viewHandle = 0;
+	attributeIndex = 0;
+}
+
+void CoreObjectAttributeWidgetLink::LinkAttribute(CoreObjectHandle viewHandle, s32 attributeIndex)
+{
+	this->viewHandle = viewHandle;
+	this->attributeIndex = attributeIndex;
+}
 
 // sliderinput -- simple example of tying an fltk slider and input widget together
 // 1.00 erco 10/17/04
 
-class Slider_Int_Input : public Fl_Group {
-    Fl_Int_Input *input;
-    Fl_Slider    *slider;
+// CALLBACK HANDLERS
+//    These 'attach' the input and slider's values together.
+//
+void Slider_Int_Input::Slider_CB2()
+{
+	static int recurse = 0;
 	
-    // CALLBACK HANDLERS
-    //    These 'attach' the input and slider's values together.
-    //
-    void Slider_CB2() {
-        static int recurse = 0;
-        if ( recurse ) { 
-            return;
-        } else {
-            recurse = 1;
-            char s[80];
-            sprintf(s, "%d", (int)(slider->value() + .5));
-            // fprintf(stderr, "SPRINTF(%d) -> '%s'\n", (int)(slider->value()+.5), s);
-            input->value(s);          // pass slider's value to input
-            recurse = 0;
-        }
-    }
-	
-    static void Slider_CB(Fl_Widget *w, void *data) {
-        ((Slider_Int_Input*)data)->Slider_CB2();
-    }
-	
-    void Input_CB2() {
-        static int recurse = 0;
-        if ( recurse ) {
-            return;
-        } else {
-            recurse = 1;
-            int val = 0;
-            if ( sscanf(input->value(), "%d", &val) != 1 ) {
-                val = 0;
-            }
-            // fprintf(stderr, "SCANF('%s') -> %d\n", input->value(), val);
-            slider->value(val);         // pass input's value to slider
-            recurse = 0;
-        }
-    }
-    static void Input_CB(Fl_Widget *w, void *data) {
-        ((Slider_Int_Input*)data)->Input_CB2();
-    }
-	
-public:
-    // CTOR
-    Slider_Int_Input(int x, int y, int w, int h, const char *l=0) : Fl_Group(x,y,w,h,l) {
-        int in_w = 40;
-        input  = new Fl_Int_Input(x, y, in_w, h);
-        input->callback(Input_CB, (void*)this);
-        input->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
+	if ( recurse )
+	{ 
+		return;
+	}
+	else
+	{
+		recurse = 1;
+		char s[80];
+		sprintf(s, "%d", (int)(slider->value() + .5));
+		// fprintf(stderr, "SPRINTF(%d) -> '%s'\n", (int)(slider->value()+.5), s);
+		input->value(s);          // pass slider's value to input
+		recurse = 0;
 		
-        slider = new Fl_Slider(x+in_w, y, w-in_w, h);
-        slider->type(1);
-        slider->callback(Slider_CB, (void*)this);
+		CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(widgetLink.viewHandle);
+		if(pView != NULL)
+		{
+			CoreObjectAttribute* pAttrib = pView->attributes[widgetLink.attributeIndex];
+			
+			if(pAttrib->type == CoreObjectAttributeType_U32)
+			{
+				CoreObjectAttribute_U32* pAttribU32 = (CoreObjectAttribute_U32*)pAttrib;
+				pAttribU32->value = slider->value();
+			}
+			//Must by S32
+			else
+			{
+				CoreObjectAttribute_S32* pAttribS32 = (CoreObjectAttribute_S32*)pAttrib;
+				pAttribS32->value = slider->value();
+			}
+			
+			switch (pView->viewType)
+			{
+				case CoreUI_ViewType_View:
+				{
+					pView->RefreshView();
+					
+					break;
+				}
+				case CoreUI_ViewType_ImageView:
+				{
+					CoreUIImageView* pImageView = (CoreUIImageView*)pView;
+					pImageView->RefreshView();
+					
+					break;
+				}
+				case CoreUI_ViewType_Button:
+				{
+					CoreUIImageView* pButtonView = (CoreUIImageView*)pView;
+					pButtonView->RefreshView();
+					
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+			
+		}
 		
-        bounds(1, 10);     // some usable default
-        value(5);          // some usable default
-        end();             // close the group
-    }
+		//COREDEBUG_PrintMessage("Changed value!");
+	}
+}
+
+void Slider_Int_Input::Slider_CB(Fl_Widget *w, void *data)
+{
+	((Slider_Int_Input*)data)->Slider_CB2();
+}
+
+void Slider_Int_Input::Input_CB2()
+{
+	static int recurse = 0;
+	if ( recurse ) {
+		return;
+	} else {
+		recurse = 1;
+		int val = 0;
+		if ( sscanf(input->value(), "%d", &val) != 1 ) {
+			val = 0;
+		}
+		// fprintf(stderr, "SCANF('%s') -> %d\n", input->value(), val);
+		slider->value(val);         // pass input's value to slider
+		recurse = 0;
+	}
+}
+
+void Slider_Int_Input::Input_CB(Fl_Widget *w, void *data)
+{
+	((Slider_Int_Input*)data)->Input_CB2();
+}
+
+// CTOR
+Slider_Int_Input::Slider_Int_Input(int x, int y, int w, int h, const char *l) : Fl_Group(x,y,w,h,l)
+{
+	int in_w = 40;
+	input  = new Fl_Int_Input(x, y, in_w, h);
+	input->callback(Input_CB, (void*)this);
+	input->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
 	
-    // MINIMAL ACCESSORS --  Add your own as needed
-    int  value() const    { return((int)(slider->value() + 0.5)); }
-    void value(int val)   { slider->value(val); Slider_CB2(); }
-    void minumum(int val) { slider->minimum(val); }
-    int  minumum() const  { return((int)slider->minimum()); }
-    void maximum(int val) { slider->maximum(val); }
-    int  maximum() const  { return((int)slider->maximum()); }
-    void bounds(int low, int high) { slider->bounds(low, high); }
-};
+	slider = new Fl_Slider(x+in_w, y, w-in_w, h);
+	slider->type(1);
+	slider->callback(Slider_CB, (void*)this);
+	
+	bounds(1, 10);     // some usable default
+	value(5);          // some usable default
+	end();             // close the group
+}
+
+// MINIMAL ACCESSORS --  Add your own as needed
+int  Slider_Int_Input::value() const
+{ 
+	return ((int)(slider->value() + 0.5));
+}
+
+void Slider_Int_Input::value(int val)
+{
+	slider->value(val);
+	Slider_CB2();
+}
+
+void Slider_Int_Input::minumum(int val)
+{
+	slider->minimum(val);
+}
+
+int  Slider_Int_Input::minumum() const
+{
+	return((int)slider->minimum());
+}
+
+void Slider_Int_Input::maximum(int val)
+{
+	slider->maximum(val);
+}
+
+int  Slider_Int_Input::maximum() const
+{
+	return((int)slider->maximum());
+}
+
+void Slider_Int_Input::bounds(int low, int high)
+{
+	slider->bounds(low, high);
+}
 
 
-Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 posY, s32 width, s32 height)
+Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 posY, s32 width, s32 height, CoreObjectHandle viewHandle, s32 attribIndex)
 {
 	//Fl_Group* pGroup = new Fl_Group(0,posY,width,64,0);
 	/*Fl_Text_Display* pNameText = new Fl_Text_Display(0,posY,width,32,NULL);
@@ -119,9 +213,9 @@ Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 
 			si->bounds(pCurrAttrib->minValue,pCurrAttrib->maxValue);       // set min/max for slider
 			si->value(pCurrAttrib->value);           // set initial value
 			
-			return si;
+			si->widgetLink.LinkAttribute(viewHandle,attribIndex);
 			
-			break;
+			return si;
 		}
 		case CoreObjectAttributeType_S32:
 		{
@@ -131,9 +225,9 @@ Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 
 			si->bounds(pCurrAttrib->minValue,pCurrAttrib->maxValue);       // set min/max for slider
 			si->value(pCurrAttrib->value);           // set initial value
 			
-			return si;
+			si->widgetLink.LinkAttribute(viewHandle,attribIndex);
 			
-			break;
+			return si;
 		}
 		case CoreObjectAttributeType_CoreUI_Origin:
 		{

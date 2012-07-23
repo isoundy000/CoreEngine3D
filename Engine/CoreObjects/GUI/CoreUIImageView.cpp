@@ -93,14 +93,7 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
 		pGeom->sortValue = pSortValueAttrib?pSortValueAttrib->value:0;
 	}
 	
-	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorR);
-	m_diffuseColor.x = pRedAttrib->value/255.0f;
-	
-	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorG);
-	m_diffuseColor.y = pGreenAttrib->value/255.0f;
-	
-	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorB);
-	m_diffuseColor.z = pBlueAttrib->value/255.0f;
+	UpdateDiffuseColor();
 	
     return true;
 }
@@ -186,6 +179,21 @@ void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
+void CoreUIImageView::UpdateDiffuseColor()
+{
+	CoreObjectAttribute_U32* pRedAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorR);
+	m_diffuseColor.x = pRedAttrib->value/255.0f;
+	
+	CoreObjectAttribute_U32* pGreenAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorG);
+	m_diffuseColor.y = pGreenAttrib->value/255.0f;
+	
+	CoreObjectAttribute_U32* pBlueAttrib = (CoreObjectAttribute_U32*)attributes.GetAttributeByByteIndex(attrib_colorB);
+	m_diffuseColor.z = pBlueAttrib->value/255.0f;
+}
+
+
+//----------------------------------------------------------------
+//----------------------------------------------------------------
 void CoreUIImageView::RefreshSettings()
 {
 	const f32 finalOpacity = parentOpacity*opacity;
@@ -214,6 +222,8 @@ void CoreUIImageView::RefreshSettings()
 			pGeom->material.flags &= ~RenderFlag_Visible;
 		}
 	}
+	
+	UpdateDiffuseColor();
 }
 
 

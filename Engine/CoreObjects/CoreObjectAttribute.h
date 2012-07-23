@@ -49,7 +49,6 @@ class CoreObjectAttribute
 public:
 	void Init(const char* attribName, CoreObjectAttributeType type)
 	{
-		//this->name = name;
 		nameHash = Hash(attribName);
 		this->type = type;
 		m_classSizeBytes = 0;
@@ -66,7 +65,6 @@ public:
 	
 	virtual void SetValueFromCString(const char* cStr) = 0;
 	
-	//std::string name;
 	u32 nameHash;
 	u8 name[16];
 	
