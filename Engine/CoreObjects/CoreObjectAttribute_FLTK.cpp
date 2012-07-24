@@ -151,6 +151,7 @@ Slider_Int_Input::Slider_Int_Input(int x, int y, int w, int h, const char *l) : 
 	slider = new Fl_Slider(x+in_w, y, w-in_w, h);
 	slider->type(1);
 	slider->callback(Slider_CB, (void*)this);
+	slider->step(1);
 	
 	bounds(1, 10);     // some usable default
 	value(5);          // some usable default
@@ -305,6 +306,7 @@ Slider_Float_Input::Slider_Float_Input(int x, int y, int w, int h, const char *l
 	slider = new Fl_Slider(x+in_w, y, w-in_w, h);
 	slider->type(1);
 	slider->callback(Slider_CB, (void*)this);
+	slider->step(0.01);
 	
 	bounds(1, 10);     // some usable default
 	value(5);          // some usable default
