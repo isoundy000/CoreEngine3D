@@ -254,7 +254,7 @@ void Slider_Float_Input::Slider_CB2()
 	{
 		recurse = 1;
 		char s[80];
-		sprintf(s, "%f", slider->value());
+		sprintf(s, "%.2f", slider->value());
 		// fprintf(stderr, "SPRINTF(%d) -> '%s'\n", (int)(slider->value()+.5), s);
 		input->value(s);          // pass slider's value to input
 		recurse = 0;
@@ -278,7 +278,7 @@ void Slider_Float_Input::Input_CB2()
 	} else {
 		recurse = 1;
 		int val = 0;
-		if ( sscanf(input->value(), "%f", &val) != 1 ) {
+		if ( sscanf(input->value(), "%.2f", &val) != 1 ) {
 			val = 0;
 		}
 		// fprintf(stderr, "SCANF('%s') -> %d\n", input->value(), val);
