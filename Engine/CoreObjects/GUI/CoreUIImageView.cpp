@@ -226,7 +226,7 @@ void CoreUIImageView::RefreshSettings()
 		
 		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_sortValue);
 		
-		pGeom->sortValue = pSortValueAttrib?pSortValueAttrib->value:0;
+		pGeom->postRenderLayerSortValue = pSortValueAttrib?pSortValueAttrib->value:0;
 	}
 	
 	UpdateDiffuseColor();
