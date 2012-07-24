@@ -79,7 +79,7 @@ bool CoreUIView::Init(u32 type)
 	//TODO: get a better way to say this view is full screen
 	attrib_width = attributes.Add(CoreObjectAttribute_S32("width",GLRENDERER->screenWidth_points));
 	attrib_height = attributes.Add(CoreObjectAttribute_S32("height",GLRENDERER->screenHeight_points));
-	attrib_opacity = attributes.Add(CoreObjectAttribute_F32("opacity",1.0f));
+	attrib_opacity = attributes.Add(CoreObjectAttribute_F32("opacity",1.0f,0.0f,1.0f));
 	attrib_sortValue = attributes.Add(CoreObjectAttribute_S32("sortValue",0));
 	
 	m_debugVisible = false;
@@ -132,17 +132,17 @@ CoreUIView* CoreUIView::GetChildViewByName(u32 nameSig)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool CoreUIView::SpawnInit(void* pSpawnStruct)
+bool CoreUIView::SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent)
 {
+	this->hParent = hParent;
+	
 	numChildren = 0;
+	
+	fadeAlpha = 1.0f;
 	
 	pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
 	//DEFAULTS
-	
-	parentOpacity = 1.0f;
-	parentVisible = true;
-
 	visible = true;
 
 	//LOAD ATTRIBUTES
@@ -152,9 +152,6 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 		attributes.SetValueForAttribByCString(attribIter->name(), attribIter->value());
 		++attribIter;
 	}
-	
-	CoreObjectAttribute_F32* pOpacityAttrib = (CoreObjectAttribute_F32*)attributes.GetAttributeByByteIndex(attrib_opacity);
-	opacity = pOpacityAttrib->value;
 	
 	//CREATE SUBVIEWS
 	
@@ -169,7 +166,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 			
 			assert(numChildren < CoreUIView_MAX_CHILDREN);
 			
-			pChildView->SpawnInit(&view);
+			pChildView->SpawnInit(&view, GetHandle());
 		}
 	}
 	
@@ -184,7 +181,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 			
 			assert(numChildren < CoreUIView_MAX_CHILDREN);
 			
-			pImageView->SpawnInit(&image);
+			pImageView->SpawnInit(&image, GetHandle());
 		}
 	}
 	
@@ -199,7 +196,7 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 			
 			assert(numChildren < CoreUIView_MAX_CHILDREN);
 			
-			pButton->SpawnInit(&button);
+			pButton->SpawnInit(&button, GetHandle());
 		}
 	}
     
@@ -209,14 +206,18 @@ bool CoreUIView::SpawnInit(void* pSpawnStruct)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CoreUIView::LayoutView(const CoreUIView* pParentView)
+void CoreUIView::LayoutView()
 {
+	const CoreUIView* pParentView = (const CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(hParent);
+	
 	const CoreObjectAttributeList* parentAttribs = pParentView?(&pParentView->attributes):NULL;
 	
 	//NOTE: the parent position is the center of the object
 	CoreObjectAttribute_S32* pParentWidthAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs).GetAttributeByByteIndex(attrib_width):NULL;
 	
 	CoreObjectAttribute_S32* pParentHeightAttrib = parentAttribs?(CoreObjectAttribute_S32*)(*parentAttribs).GetAttributeByByteIndex(attrib_height):NULL;
+	
+	CoreObjectAttribute_F32* pParentOpacityAttrib = parentAttribs?(CoreObjectAttribute_F32*)(*parentAttribs).GetAttributeByByteIndex(attrib_opacity):NULL;
 	
 	const f32 parentWidth = pParentView?pParentWidthAttrib->value:GLRENDERER->screenWidth_points;
 	const f32 parentHeight = pParentView?pParentHeightAttrib->value:GLRENDERER->screenHeight_pixels;
@@ -226,7 +227,7 @@ void CoreUIView::LayoutView(const CoreUIView* pParentView)
 	const f32 parentHalfWidth = parentWidth*0.5f;
 	const f32 parentHalfHeight = parentHeight*0.5f;
 	
-	parentOpacity = pParentView?(pParentView->parentOpacity*pParentView->opacity):1.0f;
+	parentOpacity = pParentView?(pParentView->parentOpacity*pParentOpacityAttrib->value*pParentView->fadeAlpha):1.0f;
 	parentVisible = pParentView?(pParentView->parentVisible && pParentView->visible):true;
 	
 	CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)attributes.GetAttributeByByteIndex(attrib_origin);
@@ -320,16 +321,10 @@ void CoreUIView::LayoutSubViews()
 	for(u32 i=0; i<numChildren; ++i)
 	{
 		CoreUIView* pSubView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(children[i]);
-		pSubView->LayoutView(this);
+		pSubView->LayoutView();
 	}
 }
 
-//----------------------------------------------------------------
-//----------------------------------------------------------------
-void CoreUIView::RefreshView()
-{
-	CoreUIView::LayoutView(this);
-}
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------

@@ -52,13 +52,13 @@ bool CoreUIButton::Init(u32 type)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool CoreUIButton::SpawnInit(void* pSpawnStruct)
+bool CoreUIButton::SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent)
 {
     pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
 	
 	//First do the standard spawn init to bring
 	//in all the attributes
-	CoreUIView::SpawnInit(pProperties);
+	CoreUIView::SpawnInit(pProperties, hParent);
     
 	//TODO: button specific attributes
 	
@@ -124,9 +124,9 @@ void CoreUIButton::ProcessMessage(u32 message, u32 parameter)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CoreUIButton::LayoutView(const CoreUIView* pParentView)
+void CoreUIButton::LayoutView()
 {
-	CoreUIView::LayoutView(pParentView);
+	CoreUIView::LayoutView();
 	
 	//TODO: Do more stuff
 }

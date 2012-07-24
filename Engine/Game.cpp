@@ -1748,7 +1748,7 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		if(pView != NULL)
 		{
 			//Spawn view using XML settings
-			pView->SpawnInit(&view);
+			pView->SpawnInit(&view, NULL);
 			
 			if(pMainView == NULL)
 			{
@@ -1776,7 +1776,7 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		UIEDITOR->AddViewContainer(container);
 #endif
 		
-		pMainView->LayoutView(NULL);
+		pMainView->LayoutView();
 
 		//Return handle to view
 		return pMainView;

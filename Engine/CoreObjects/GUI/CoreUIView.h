@@ -48,7 +48,7 @@ public:
     virtual void UpdateHandle();	//Called when the memory location changes
 
 	virtual bool Init(u32 type);	//Init variables
-	virtual bool SpawnInit(void* pSpawnStruct);	//Create object from data
+	virtual bool SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent);	//Create object from data
 	virtual bool PostSpawnInit(void* pSpawnStruct);	//Link to objects in level
 	virtual void Uninit();	//Delete spawned objects here
 	virtual void Update(f32 timeElapsed);	//Update the object
@@ -63,13 +63,17 @@ public:
 
 	CoreUI_ViewType viewType;
 	
-	f32 opacity;
-
+	CoreObjectHandle hParent;
+	f32 fadeAlpha;	//Lets you fade out a view (separate from opacity)
+	
 	u32 numChildren;
 	CoreObjectHandle children[CoreUIView_MAX_CHILDREN];
 	
-	virtual void LayoutView(const CoreUIView* pParentView);
-	virtual void RefreshView();
+	virtual void LayoutView();
+	//virtual void RefreshView();
+	
+	f32 parentOpacity;
+	bool parentVisible;
 	
 	s32 attrib_name;
 	s32 attrib_offsetX;
@@ -80,8 +84,6 @@ public:
 	s32 attrib_opacity;
 	s32 attrib_sortValue;
 protected:
-	f32 parentOpacity;
-	bool parentVisible;
 	
 	void LayoutSubViews();
 	

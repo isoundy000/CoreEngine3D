@@ -20,7 +20,7 @@ public:
     virtual void UpdateHandle();	//Called when the memory location changes
 
 	virtual bool Init(u32 type);	//Init variables
-	virtual bool SpawnInit(void* pSpawnStruct);	//Create object from data
+	virtual bool SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent);	//Create object from data
 	virtual bool PostSpawnInit(void* pSpawnStruct);	//Link to objects in level
 	virtual void Uninit();	//Delete spawned objects here
 	virtual void Update(f32 timeElapsed);	//Update the object
@@ -29,9 +29,8 @@ public:
     static bool LoadResourcesForType(u32 type); //Load art/sounds
     static void InitClass();	//One-time global init
     
-	virtual void LayoutView(const CoreUIView* pParentView);
-	virtual void RefreshView();
-	
+	virtual void LayoutView();
+
 	s32 attrib_colorR;
 	s32 attrib_colorG;
 	s32 attrib_colorB;

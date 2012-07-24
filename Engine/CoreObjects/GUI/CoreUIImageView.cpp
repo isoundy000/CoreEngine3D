@@ -63,13 +63,13 @@ bool CoreUIImageView::Init(u32 type)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool CoreUIImageView::SpawnInit(void* pSpawnStruct)
+bool CoreUIImageView::SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent)
 {
     pugi::xml_node* pProperties = (pugi::xml_node*)pSpawnStruct;
     
 	//First do the standard spawn init to bring
 	//in all the attributes
-	CoreUIView::SpawnInit(pProperties);
+	CoreUIView::SpawnInit(pProperties, hParent);
 	
 	//Set up the renderable
 	RenderableGeometry3D* pGeom = NULL;
@@ -169,9 +169,9 @@ void CoreUIImageView::ProcessMessage(u32 message, u32 parameter)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CoreUIImageView::LayoutView(const CoreUIView* pParentView)
+void CoreUIImageView::LayoutView()
 {
-	CoreUIView::LayoutView(pParentView);
+	CoreUIView::LayoutView();
 	
 	RefreshSettings();
 }
@@ -196,7 +196,9 @@ void CoreUIImageView::UpdateDiffuseColor()
 //----------------------------------------------------------------
 void CoreUIImageView::RefreshSettings()
 {
-	const f32 finalOpacity = parentOpacity*opacity;
+	CoreObjectAttribute_F32* pOpacityAttrib = (CoreObjectAttribute_F32*)attributes.GetAttributeByByteIndex(attrib_opacity);
+	
+	const f32 finalOpacity = parentOpacity*pOpacityAttrib->value*fadeAlpha;
 	m_diffuseColor.w = finalOpacity;
 	
 	//Update renderable to reflect new layout
@@ -221,16 +223,14 @@ void CoreUIImageView::RefreshSettings()
 		{
 			pGeom->material.flags &= ~RenderFlag_Visible;
 		}
+		
+		CoreObjectAttribute_S32* pSortValueAttrib = (CoreObjectAttribute_S32*)attributes.GetAttributeByByteIndex(attrib_sortValue);
+		
+		pGeom->sortValue = pSortValueAttrib?pSortValueAttrib->value:0;
 	}
 	
 	UpdateDiffuseColor();
+	
+	GLRENDERER->ForceRenderablesNeedSorting(RenderableObjectType_UI);
 }
 
-
-//----------------------------------------------------------------
-//----------------------------------------------------------------
-void CoreUIImageView::RefreshView()
-{
-	RefreshSettings();
-	LayoutSubViews();
-}
