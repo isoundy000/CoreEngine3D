@@ -286,7 +286,6 @@ void Game::Update(f32 timeElapsed)
 			UIEDITOR->SetVisible(false);
 		}
 	}
-#endif
 	
 	//Make sure if you're editingthe UI that debug lines
 	//will always draw
@@ -294,6 +293,7 @@ void Game::Update(f32 timeElapsed)
 	{
 		GLRENDERER->paused = false;
 	}
+#endif
 	
 	//Update controls
 	
