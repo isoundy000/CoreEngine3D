@@ -56,6 +56,7 @@ public:
 	void PlayAnimation(s32 animID,u32 frameOffset, f32 playSpeed);
 	void SetSpeed(f32 speed);
 	bool GetAnimIsDone();
+	f32 GetAnimSpeed();
 	f32 GetCurrentFrame();
 	s32 GetCurrentAnimationID();
 	f32 m_currFrame;

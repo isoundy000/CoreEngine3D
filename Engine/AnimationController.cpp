@@ -91,6 +91,11 @@ bool AnimationPlayer::GetAnimIsDone()
 	return m_animIsDone;
 }
 
+f32 AnimationPlayer::GetAnimSpeed()
+{
+	return m_playSpeed;
+}
+
 s32 AnimationPlayer::GetCurrentAnimationID()
 {
 	return m_pCurrAnim->animID;

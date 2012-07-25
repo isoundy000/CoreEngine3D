@@ -323,14 +323,7 @@
 		DDC6127815BD151500532A39 /* gl_draw.H in Headers */ = {isa = PBXBuildFile; fileRef = DDC611E115BD151500532A39 /* gl_draw.H */; };
 		DDC6127915BD151500532A39 /* glu.h in Headers */ = {isa = PBXBuildFile; fileRef = DDC611E215BD151500532A39 /* glu.h */; };
 		DDC6127A15BD151500532A39 /* glut.H in Headers */ = {isa = PBXBuildFile; fileRef = DDC611E315BD151500532A39 /* glut.H */; };
-		DDC6127B15BD151500532A39 /* libfltk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC611E415BD151500532A39 /* libfltk.a */; };
-		DDC6127C15BD151500532A39 /* libfltk_forms.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC611E515BD151500532A39 /* libfltk_forms.a */; };
-		DDC6127D15BD151500532A39 /* libfltk_gl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC611E615BD151500532A39 /* libfltk_gl.a */; };
-		DDC6127E15BD151500532A39 /* libfltk_images.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC611E715BD151500532A39 /* libfltk_images.a */; };
-		DDC6127F15BD151500532A39 /* libfltk_jpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC611E815BD151500532A39 /* libfltk_jpeg.a */; };
-		DDC6128015BD151500532A39 /* libfltk_png.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC611E915BD151500532A39 /* libfltk_png.a */; };
 		DDC6128115BD151500532A39 /* mac.H in Headers */ = {isa = PBXBuildFile; fileRef = DDC611EA15BD151500532A39 /* mac.H */; };
-		DDC6128215BD151500532A39 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = DDC611EB15BD151500532A39 /* Makefile */; };
 		DDC6128315BD151500532A39 /* math.h in Headers */ = {isa = PBXBuildFile; fileRef = DDC611ED15BD151500532A39 /* math.h */; };
 		DDC6128415BD151500532A39 /* names.h in Headers */ = {isa = PBXBuildFile; fileRef = DDC611EE15BD151500532A39 /* names.h */; };
 		DDC6128515BD151500532A39 /* win32.H in Headers */ = {isa = PBXBuildFile; fileRef = DDC611F015BD151500532A39 /* win32.H */; };
@@ -669,18 +662,9 @@
 		DDC611E115BD151500532A39 /* gl_draw.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = gl_draw.H; sourceTree = "<group>"; };
 		DDC611E215BD151500532A39 /* glu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glu.h; sourceTree = "<group>"; };
 		DDC611E315BD151500532A39 /* glut.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = glut.H; sourceTree = "<group>"; };
-		DDC611E415BD151500532A39 /* libfltk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfltk.a; sourceTree = "<group>"; };
-		DDC611E515BD151500532A39 /* libfltk_forms.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfltk_forms.a; sourceTree = "<group>"; };
-		DDC611E615BD151500532A39 /* libfltk_gl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfltk_gl.a; sourceTree = "<group>"; };
-		DDC611E715BD151500532A39 /* libfltk_images.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfltk_images.a; sourceTree = "<group>"; };
-		DDC611E815BD151500532A39 /* libfltk_jpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfltk_jpeg.a; sourceTree = "<group>"; };
-		DDC611E915BD151500532A39 /* libfltk_png.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfltk_png.a; sourceTree = "<group>"; };
 		DDC611EA15BD151500532A39 /* mac.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mac.H; sourceTree = "<group>"; };
-		DDC611EB15BD151500532A39 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		DDC611EC15BD151500532A39 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		DDC611ED15BD151500532A39 /* math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = math.h; sourceTree = "<group>"; };
 		DDC611EE15BD151500532A39 /* names.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = names.h; sourceTree = "<group>"; };
-		DDC611EF15BD151500532A39 /* README.Xcode */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.Xcode; sourceTree = "<group>"; };
 		DDC611F015BD151500532A39 /* win32.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = win32.H; sourceTree = "<group>"; };
 		DDC611F115BD151500532A39 /* x.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = x.H; sourceTree = "<group>"; };
 		DDC611F215BD151500532A39 /* Xutf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xutf8.h; sourceTree = "<group>"; };
@@ -702,12 +686,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDC6127B15BD151500532A39 /* libfltk.a in Frameworks */,
-				DDC6127C15BD151500532A39 /* libfltk_forms.a in Frameworks */,
-				DDC6127D15BD151500532A39 /* libfltk_gl.a in Frameworks */,
-				DDC6127E15BD151500532A39 /* libfltk_images.a in Frameworks */,
-				DDC6127F15BD151500532A39 /* libfltk_jpeg.a in Frameworks */,
-				DDC6128015BD151500532A39 /* libfltk_png.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1154,18 +1132,9 @@
 				DDC611E115BD151500532A39 /* gl_draw.H */,
 				DDC611E215BD151500532A39 /* glu.h */,
 				DDC611E315BD151500532A39 /* glut.H */,
-				DDC611E415BD151500532A39 /* libfltk.a */,
-				DDC611E515BD151500532A39 /* libfltk_forms.a */,
-				DDC611E615BD151500532A39 /* libfltk_gl.a */,
-				DDC611E715BD151500532A39 /* libfltk_images.a */,
-				DDC611E815BD151500532A39 /* libfltk_jpeg.a */,
-				DDC611E915BD151500532A39 /* libfltk_png.a */,
 				DDC611EA15BD151500532A39 /* mac.H */,
-				DDC611EB15BD151500532A39 /* Makefile */,
-				DDC611EC15BD151500532A39 /* Makefile.in */,
 				DDC611ED15BD151500532A39 /* math.h */,
 				DDC611EE15BD151500532A39 /* names.h */,
-				DDC611EF15BD151500532A39 /* README.Xcode */,
 				DDC611F015BD151500532A39 /* win32.H */,
 				DDC611F115BD151500532A39 /* x.H */,
 				DDC611F215BD151500532A39 /* Xutf8.h */,
@@ -1578,7 +1547,6 @@
 				DD0BF84715A9584F001DE9A4 /* CurvePoints_2D.cpp in Sources */,
 				DD21944C15B1E590007388F8 /* CoreUIEditor.cpp in Sources */,
 				DD04CE9E15B9096800BE66F7 /* CoreObjectAttribute_FLTK.cpp in Sources */,
-				DDC6128215BD151500532A39 /* Makefile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
