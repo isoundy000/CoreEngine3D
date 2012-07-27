@@ -39,6 +39,7 @@ typedef vec3 color3f;
 typedef vec4 color4f;
 
 extern const color3f color3f_black;
+extern const color4f color4f_black;
 extern const color4f color4f_yellow;
 extern const color4f color4f_red;
 extern const color4f color4f_white;
