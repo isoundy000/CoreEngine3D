@@ -24,7 +24,6 @@
 #include "RenderLayer.h"
 #include "RenderState.h"
 #include "ViewFlags.h"
-#include "PowerVR/PVRTModelPOD.h"
 #include "CoreObject.h"
 
 #define MAX_SHARED_CONST_UNIFORM_VALUES 4
@@ -569,7 +568,7 @@ public:
 };
 
 
-struct RenderableScene3D: public CoreObject
+/*struct RenderableScene3D: public CoreObject
 {
 	SceneMesh* pSceneMesh;
 	u32 numSceneMeshes;
@@ -591,12 +590,12 @@ struct RenderableScene3D: public CoreObject
 		
 		//TODO: make go invisible
 	}
-};
+};*/
 
 class RenderableSceneObject3D: public CoreObject
 {
 public:
-	RenderableScene3D* pScene;
+	//RenderableScene3D* pScene;
 	mat4f worldMat;   //16 bytes
 	RenderableMaterial material;	//optional
 	RenderableMaterial* pMaterialOverride;
@@ -613,7 +612,7 @@ public:
 	}
 };
 
-struct AnimatedPOD
+/*struct AnimatedPOD
 {
 	void Update(f32 timeElapsed);
 	f32 currFrame;
@@ -621,7 +620,7 @@ struct AnimatedPOD
 	RenderableScene3D* pScene;
 	CPVRTModelPOD* pPod;
 	f32 worldMat[16];   //16 bytes
-};
+};*/
 
 enum ParticleFlags
 {

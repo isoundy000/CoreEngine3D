@@ -1682,6 +1682,12 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 	pugi::xml_document xmlDoc;
 	pugi::xml_parse_result result = xmlDoc.load_file(GetPathToFile(filenameWithPath.c_str()).c_str());
 	
+	if(result.status != pugi::status_ok)
+	{
+		COREDEBUG_PrintDebugMessage("ERROR: LoadCoreUIViewFromXML->Failed to parse file: %s",filenameWithPath.c_str());
+		return NULL;
+	}
+	
 	//Load textures
 	for (pugi::xml_node texture = xmlDoc.child("texture"); texture; texture = texture.next_sibling("texture"))
 	{

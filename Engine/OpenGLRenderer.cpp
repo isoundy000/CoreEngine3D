@@ -223,7 +223,7 @@ void OpenGLRenderer::Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 scre
 	
 	m_numTexturedLines = 0;
 	
-	m_numAnimatedPods = 0;
+	//m_numAnimatedPods = 0;
 	
 
 #ifdef PLATFORM_OSX
@@ -702,8 +702,12 @@ void OpenGLRenderer::RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableO
 			
 			for(unsigned int primIDX=0; primIDX<pModelData->numPrimitives; ++primIDX)
 			{
-				
 				const PrimitiveData* currPrim = &pModelData->primitiveArray[primIDX];
+				
+#if defined (_DEBUG)
+				assert(currPrim->vertexData != NULL);
+#endif
+
 				if (currPrim->vertexData != vertexData)
 				{
 					vertexData = currPrim->vertexData;
@@ -1610,7 +1614,7 @@ CoreObjectHandle OpenGLRenderer::CreateRenderableGeometry3D(RenderableObjectType
 }
 
 
-void OpenGLRenderer::InitRenderableSceneObject3D_Simple(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, mat4f matrix4x4, u32 viewFlags)
+/*void OpenGLRenderer::InitRenderableSceneObject3D_Simple(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, mat4f matrix4x4, u32 viewFlags)
 {
 	renderableObject->pScene = pScene;
 	renderableObject->pMaterialOverride = NULL;
@@ -1656,7 +1660,7 @@ void OpenGLRenderer::InitRenderableSceneObject3D(RenderableSceneObject3D* render
 	{
 		mat4f_Copy(renderableObject->worldMat,matrix4x4);
 	}
-}
+}*/
 
 void OpenGLRenderer::InitRenderableGeometry3D_Shared(RenderableGeometry3D* renderableObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags)
 {
@@ -1686,6 +1690,18 @@ void OpenGLRenderer::InitRenderableGeometry3D_Shared(RenderableGeometry3D* rende
 
 void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags)
 {
+	if(renderableObject == NULL)
+	{
+		COREDEBUG_PrintDebugMessage("INSANE ERROR: You are tried to initialize a NULL renderable!  Skipping...");
+		return;
+	}
+	
+	if(pDrawStruct == NULL)
+	{
+		COREDEBUG_PrintDebugMessage("INSANE ERROR: You are tried to initialize a renderable with a NULL draw structure!  Skipping...");
+		return;
+	}
+	
 	renderableObject->pDrawStruct = pDrawStruct;
 	renderableObject->drawObject = drawObject;
 	
@@ -1695,7 +1711,13 @@ void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableOb
 
 void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags)
 {
-	if(pModel->modelID == -1)
+	if(renderableObject == NULL)
+	{
+		COREDEBUG_PrintDebugMessage("INSANE ERROR: You are tried to initialize a NULL renderable!  Skipping...");
+		return;
+	}
+	
+	if(pModel == NULL || pModel->modelID == -1)
 	{
 		COREDEBUG_PrintDebugMessage("INSANE ERROR: You are tried to initialize a renderable with an unregistered model '%s'!  Skipping...",pModel->modelName);
 		return;
@@ -1710,10 +1732,6 @@ void OpenGLRenderer::InitRenderableGeometry3D(RenderableGeometry3D* renderableOb
 
 void OpenGLRenderer::SortRenderableGeometry3DList(RenderableObjectType type)
 {
-	const u32 allOnes = 0xFFFFFFFF;
-	
-	//Array_ObjectInsertionSort
-
 	if(type == RenderableObjectType_UI)
 	{
 		//SORT UI
@@ -1732,13 +1750,9 @@ void OpenGLRenderer::SortRenderableGeometry3DList(RenderableObjectType type)
 			
 			GU_InsertPositiveValueAsBits(&sortValue,pGeom->postRenderLayerSortValue,4,5);
 			
-			if(pGeom->drawObject != NULL)
+			//This used to do more but lets do less for now
 			{
-				GU_InsertPositiveValueAsBits(&sortValue,allOnes,9,5);
-			}
-			else
-			{
-				GU_InsertPositiveValueAsBits(&sortValue,pGeom->pModel->modelID,9,5);
+				GU_InsertPositiveValueAsBits(&sortValue,0,9,5);
 			}
 			
 			GU_InsertPositiveValueAsBits(&sortValue,pGeom->material.materialID,14,5);
@@ -1767,13 +1781,9 @@ void OpenGLRenderer::SortRenderableGeometry3DList(RenderableObjectType type)
 			
 			GU_InsertPositiveValueAsBits(&sortValue,pGeom->postRenderLayerSortValue,4,5);
 			
-			if(pGeom->drawObject != NULL)
+			//This used to do more but lets do less for now
 			{
 				GU_InsertPositiveValueAsBits(&sortValue,0,9,5);
-			}
-			else
-			{
-				GU_InsertPositiveValueAsBits(&sortValue,pGeom->pModel->modelID,9,5);
 			}
 			
 			GU_InsertPositiveValueAsBits(&sortValue,pGeom->material.materialID,14,5);
@@ -2349,7 +2359,7 @@ void OpenGLRenderer::ShakeScreen(f32 shakeAmount,f32 shakeSpeed, f32 shakeTime)
 }
 
 
-void OpenGLRenderer::DeleteScene(RenderableScene3D* pScene)
+/*void OpenGLRenderer::DeleteScene(RenderableScene3D* pScene)
 {
 	//Delete all scene meshes
 	delete[] pScene->pSceneMesh;
@@ -2385,7 +2395,7 @@ void OpenGLRenderer::DeleteScene(RenderableScene3D* pScene)
 	{
 		pScene->pPod->Destroy();
 	}
-}
+}*/
 
 void OpenGLRenderer::CleanUp()
 {
@@ -3520,7 +3530,7 @@ void OpenGLRenderer::UploadUniqueUniforms(u8* const * pValuePointerArray)
 		
 		const s32 sizeOfData = g_UniformSizes[type];
 		
-#if defined(DEBUG) || defined (_DEBUG)
+#if defined (_DEBUG)
 		assert(byteIndex + sizeOfData < 256);	//Why are you uploading like 256 bytes of uniforms?
 		//Seriously that's like 4, 4x4 matrices
 #endif
@@ -3776,7 +3786,7 @@ void OpenGLRenderer::AddUniform_Shared(RenderMaterial renderMaterial, const char
 }
 
 
-CPVRTModelPOD* OpenGLRenderer::LoadPOD(const char* fileName)
+/*CPVRTModelPOD* OpenGLRenderer::LoadPOD(const char* fileName)
 {
 	CPVRTModelPOD* newPod = new CPVRTModelPOD;
 	
@@ -3966,7 +3976,7 @@ void OpenGLRenderer::DrawSceneObject(RenderableSceneObject3D* pSceneObject)
 			}
 		}
 	}
-}
+}*/
 
 
 void OpenGLRenderer::DeleteTexture(u32* pTextureID)
@@ -3979,7 +3989,7 @@ void OpenGLRenderer::DeleteTexture(u32* pTextureID)
 }
 
 
-void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
+/*void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 {
 	bool hasUploadedWorldMat = false;
 	
@@ -4048,10 +4058,10 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 			pCurrMaterial->uniqueUniformValues[1] = (u8*)&Mesh.sBoneIdx.n;
 			//COREDEBUG_PrintDebugMessage("Num bones: %d",Mesh.sBoneIdx.n);
 			
-			/*
-			 If the current mesh has bone index and weight data then we need to
-			 set up some additional variables in the shaders.
-			 */
+			
+			 //If the current mesh has bone index and weight data then we need to
+			 //set up some additional variables in the shaders.
+			 
 			
 			// Go through the bones for the current bone batch
 			PVRTMat4 amBoneWorld[8];
@@ -4075,12 +4085,12 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 			
 			//Draw the primitive!
 			
-			/*
-			 As we are using bone batching we don't want to draw all the faces contained within pMesh, we only want
-			 to draw the ones that are in the current batch. To do this we pass to the drawMesh function the offset
-			 to the start of the current batch of triangles (Mesh.sBoneBatches.pnBatchOffset[i32Batch]) and the
-			 total number of triangles to draw (i32Tris)
-			 */
+			
+			 //As we are using bone batching we don't want to draw all the faces contained within pMesh, we only want
+			 //to draw the ones that are in the current batch. To do this we pass to the drawMesh function the offset
+			 //to the start of the current batch of triangles (Mesh.sBoneBatches.pnBatchOffset[i32Batch]) and the
+			 //total number of triangles to draw (i32Tris)
+			 
 			
 			pCurrMaterial->uniqueUniformValues[2] = (u8*)amBoneWorld[0].ptr();
 			pCurrMaterial->uniqueUniformValues[3] = (u8*)afBoneWorldIT[0].ptr();
@@ -4097,13 +4107,13 @@ void OpenGLRenderer::DrawAnimatedPOD(AnimatedPOD* pAnimatedPod)
 			//VAOs don't save this I guess?
 			BindIndexData(pCurrPrim);
 			
-			//PrintOpenGLError("/*** Tried to render something ***/");
+			//PrintOpenGLError("Tried to render something");
 			const u32 batchOffset = Mesh.sBoneBatches.pnBatchOffset[i32Batch]*3*sizeof(u16);
 			//COREDEBUG_PrintDebugMessage("Batch offset: %d, Tris: %d",batchOffset,i32Tris * 3);
 			glDrawElements(pCurrPrim->drawMethod, i32Tris * 3, GL_UNSIGNED_SHORT, BUFFER_OFFSET(batchOffset));
 		}
 	}
-}
+}*/
 
 
 bool OpenGLRenderer::GetSupportsVAOs()
@@ -4112,7 +4122,7 @@ bool OpenGLRenderer::GetSupportsVAOs()
 }
 
 
-bool OpenGLRenderer::InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* pPod, u32 viewFlags, const char* relativePath)
+/*bool OpenGLRenderer::InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* pPod, u32 viewFlags, const char* relativePath)
 {
 	const size_t pathLen = relativePath ? strlen(relativePath):0;
 	
@@ -4450,24 +4460,24 @@ bool OpenGLRenderer::InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* 
 			
 
 			//DEBUG!
-			/*COREDEBUG_PrintDebugMessage("****************Num indices: %d, Triangles: %d****************",pSceneMesh->pModelData->primitiveArray[0].numVerts,pSceneMesh->pModelData->primitiveArray[0].numVerts/3);
-			for(int indexIDX=0; indexIDX<pSceneMesh->pModelData->primitiveArray[0].numVerts; ++indexIDX)
-			{
-				const u32 index = pSceneMesh->pModelData->primitiveArray[0].indexData[indexIDX];
-				COREDEBUG_PrintDebugMessage("Index %d: %d",indexIDX,index);
+			//COREDEBUG_PrintDebugMessage("****************Num indices: %d, Triangles: %d****************",pSceneMesh->pModelData->primitiveArray[0].numVerts,pSceneMesh->pModelData->primitiveArray[0].numVerts/3);
+			//for(int indexIDX=0; indexIDX<pSceneMesh->pModelData->primitiveArray[0].numVerts; ++indexIDX)
+			//{
+			//	const u32 index = pSceneMesh->pModelData->primitiveArray[0].indexData[indexIDX];
+			//	COREDEBUG_PrintDebugMessage("Index %d: %d",indexIDX,index);
 
-				u8* pData = &pSceneMesh->pModelData->primitiveArray[0].vertexData[index*pSceneMesh->pModelData->stride];
-				vec3* pPos = (vec3*)&pData[0];
-				vec2* pUV = (vec2*)&pData[12];
-				COREDEBUG_PrintDebugMessage("Vert: V:<%f,%f,%f>, T:<%f,%f>",pPos->x,pPos->y,pPos->z,pUV->x,pUV->y);
-			}*/
+			//	u8* pData = &pSceneMesh->pModelData->primitiveArray[0].vertexData[index*pSceneMesh->pModelData->stride];
+			//	vec3* pPos = (vec3*)&pData[0];
+			//	vec2* pUV = (vec2*)&pData[12];
+			//	COREDEBUG_PrintDebugMessage("Vert: V:<%f,%f,%f>, T:<%f,%f>",pPos->x,pPos->y,pPos->z,pUV->x,pUV->y);
+			//}
 		}
 		
 		return true;
 	}
 	
 	return false;
-}
+}*/
 
 
 
@@ -4734,6 +4744,10 @@ RenderableGeometry3D* CreateSprite(TextureAsset* pTexture, const vec3* pPosition
 	RenderableGeometry3D* pGeom = NULL;
 	GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);
 	
+#if defined (_DEBUG)
+	assert(pGeom != NULL);
+#endif
+
 	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, material, &pTexture->textureHandle, scaleMat, renderLayer, blendMode, RenderFlagDefaults_2DTexture_AlphaBlended_UseView);
 	
 	SetGeomPos(pGeom,pPosition);

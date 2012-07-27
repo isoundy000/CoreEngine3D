@@ -38,7 +38,7 @@ extern OpenGLRenderer* GLRENDERER;
 #include "MaterialDeclarations.h"
 #include "ArrayUtil.h"
 
-#include "PowerVR/PVRTModelPOD.h"
+//#include "PowerVR/PVRTModelPOD.h"
 
 #include "EngineModels.h"
 
@@ -150,7 +150,7 @@ public:
 	//public functions
 	
 	void Init(u32 screenWidthPixels, u32 screenHeightPixels,u32 screenWidthPoints, u32 screenHeightPoints);
-	bool InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* pPod, u32 viewFlags, const char* relativePath);
+	//bool InitSceneFromPOD(RenderableScene3D* pScene, CPVRTModelPOD* pPod, u32 viewFlags, const char* relativePath);
 	void CleanUp();
     CoreObjectHandle CreateRenderableGeometry3D(RenderableObjectType renderableType,RenderableGeometry3D** pOut_Geom);
 	
@@ -163,10 +163,10 @@ public:
 	void SetGravityDir(const vec3* pNewGravityDir);
 	void SetSortRenderablesByZ(bool sortRenderablesByZ, RenderLayer layerStart, RenderLayer layerEnd);
 	void Render(f32 timeElapsed);
-	void DrawAnimatedPOD(AnimatedPOD* pAnimatedPod);
+	//void DrawAnimatedPOD(AnimatedPOD* pAnimatedPod);
 	void DrawSceneObject(RenderableSceneObject3D* pScene);
-	CPVRTModelPOD* LoadPOD(const char* fileName);
-	AnimatedPOD* AddAnimatedPOD(CPVRTModelPOD* pPod, RenderableScene3D* pScene, mat4f matrix4x4);
+	//CPVRTModelPOD* LoadPOD(const char* fileName);
+	//AnimatedPOD* AddAnimatedPOD(CPVRTModelPOD* pPod, RenderableScene3D* pScene, mat4f matrix4x4);
 	CoreObjectHandle CreateRenderableSceneObject3D(RenderableSceneObject3D** pOut_SceneObject);
 	bool LoadTextureFromData(u32* out_textureName,const void* data,u32 texWidth, u32 texHeight, u32 format, u32 type, u32 filterMode, u32 wrapModeU, u32 wrapModeV);
 	bool UpdateTextureFromData(u32* out_textureName, const void* data, u32 texWidth, u32 texHeight, u32 format, u32 type);
@@ -175,8 +175,8 @@ public:
 	void UpdateVBO(u32 VBO, void* pVerts, u32 dataSize, GLenum useage);
 	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, ModelData* pModel, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
 	void InitRenderableGeometry3D(RenderableGeometry3D* renderableObject, DrawFunctionStruct* pDrawStruct, void* drawObject, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, BlendMode blendMode, u32 renderFlags);
-	void InitRenderableSceneObject3D(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);
-	void InitRenderableSceneObject3D_Simple(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, mat4f matrix4x4, u32 viewFlags);
+	//void InitRenderableSceneObject3D(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, RenderMaterial materialID, u32* customTexture, mat4f matrix4x4, RenderLayer renderLayer, u32 viewFlags, u32 renderFlags);
+	//void InitRenderableSceneObject3D_Simple(RenderableSceneObject3D* renderableObject, RenderableScene3D* pScene, mat4f matrix4x4, u32 viewFlags);
 	void SortRenderableGeometry3DList(RenderableObjectType type);
 	void CreateMaterials();
 	void SetViewMatrixForIndex(f32* pCameraMatrix, u32 viewIndex);
@@ -235,7 +235,7 @@ private:
 	void SortRenderablesWithMaterialByZ(RenderMaterial materialID);
 	void SortRenderablesInLayerRangeByZ(RenderLayer layerBegin, RenderLayer layerEnd);
 	
-	void DeleteScene(RenderableScene3D* pScene);
+	//void DeleteScene(RenderableScene3D* pScene);
 	void PostProcess(RenderMaterial ppMaterial, RenderTarget* renderTarget, PPDrawArea drawArea, u32* texture0, u32* texture1, u32* texture2);
 	void PrintOpenGLError(const char* callerName);
     void PrintOpenGLFrameBufferStatus(bool printSuccess);
@@ -316,8 +316,8 @@ private:
     u32 m_currTextureUnit;
     SinCosBucket m_sinCosBuckets[NUM_SINCOS_BUCKETS];
 
-	AnimatedPOD m_animatedPODs[MAX_ANIMATED_PODS];
-	u32 m_numAnimatedPods;
+	//AnimatedPOD m_animatedPODs[MAX_ANIMATED_PODS];
+	//u32 m_numAnimatedPods;
 
     PointData m_debugLinePoints[DebugDrawMode_Num][DEBUGDRAW_MAXLINESPOINTS];
     s32 m_numDebugLinePoints[DebugDrawMode_Num];

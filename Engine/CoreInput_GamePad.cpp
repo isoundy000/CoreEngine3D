@@ -10,6 +10,8 @@
 
 #include "MathUtil.h"
 #include "matrix.h"
+#include "MathTypes.h"
+#include <cmath>
 
 #include "OpenGLRenderer.h"
 
