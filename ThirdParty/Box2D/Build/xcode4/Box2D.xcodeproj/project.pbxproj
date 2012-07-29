@@ -209,7 +209,7 @@
 		80BB8983141C3E5900F1753A /* b2WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WheelJoint.h; sourceTree = "<group>"; };
 		80BB8985141C3E5900F1753A /* b2Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Rope.cpp; sourceTree = "<group>"; };
 		80BB8986141C3E5900F1753A /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
-		80FF01D2141C3D980059E59D /* libBox2D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libBox2D(OSX).a"; path = libBox2D.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		80FF01D2141C3D980059E59D /* libBox2D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBox2D.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDEEC7B415C50E950074A634 /* libBox2D(iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "libBox2D(iOS)-Prefix.pch"; sourceTree = "<group>"; };
 		DDEEC7B515C50E950074A634 /* libBox2D_iOS_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libBox2D_iOS_.h; sourceTree = "<group>"; };
 		DDEEC7B715C50E950074A634 /* libBox2D_iOS_.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libBox2D_iOS_.m; sourceTree = "<group>"; };
@@ -407,7 +407,7 @@
 		80FF01D3141C3D980059E59D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				80FF01D2141C3D980059E59D /* libBox2D(OSX).a */,
+				80FF01D2141C3D980059E59D /* libBox2D.a */,
 				DDEEC7C115C50EB70074A634 /* libBox2D(iOS).a */,
 			);
 			name = Products;
@@ -522,7 +522,7 @@
 			);
 			name = "Box2D(OSX)";
 			productName = Box2D;
-			productReference = 80FF01D2141C3D980059E59D /* libBox2D(OSX).a */;
+			productReference = 80FF01D2141C3D980059E59D /* libBox2D.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		DDEEC7C015C50EB70074A634 /* Box2D(iOS) */ = {
@@ -548,7 +548,7 @@
 		80FF01C9141C3D980059E59D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = 80FF01CC141C3D980059E59D /* Build configuration list for PBXProject "Box2D" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -682,6 +682,7 @@
 		80FF01D7141C3D980059E59D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = Box2D;
 			};
@@ -690,6 +691,7 @@
 		80FF01D8141C3D980059E59D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = Box2D;
 			};
@@ -762,6 +764,7 @@
 				DDEEC7CC15C50EB70074A634 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

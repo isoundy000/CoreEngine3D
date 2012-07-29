@@ -70,6 +70,7 @@ private:
 #if defined(PLATFORM_WIN)
 	bool CheckForALUTError();
 #endif
+	
 	ALCcontext* m_context;
 	ALCdevice* m_device;
 	f32 m_maxSoundDistance;
