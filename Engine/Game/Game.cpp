@@ -903,7 +903,7 @@ static void DrawFunc_DrawTileLayer(void* pData)
 			}
 			
 			const s32 tileBasePosX = x*tileSize+baseX;
-			vec2 position = {tileBasePosX,tileBasePosY};
+			vec2 position = {(f32)tileBasePosX,(f32)tileBasePosY};
 			
 			//Create vert!
 			const TileSetDescription* pDesc = pTile->pDesc;
@@ -1034,7 +1034,7 @@ void Game::CreateRenderableTile(Tile* pTile, RenderableGeometry3D** pGeom, Rende
 	
 	TileSetDescription* pDesc = pTile->pDesc;
 	
-	vec3 scaleVec = {m_tiledLevelDescription.tileDisplaySizeX,m_tiledLevelDescription.tileDisplaySizeX,m_tiledLevelDescription.tileDisplaySizeX};
+	vec3 scaleVec = {(f32)m_tiledLevelDescription.tileDisplaySizeX,(f32)m_tiledLevelDescription.tileDisplaySizeX,(f32)m_tiledLevelDescription.tileDisplaySizeX};
 	
 	if(pTile->flags & TILE_FLIPPED_HORIZONTALLY_FLAG)
 	{

@@ -1023,7 +1023,7 @@ void mat4f_Multiply(mat4f pOut_matrix, const mat4f a, const mat4f b)
 #if DEBUG
     if(pOut_matrix == a || pOut_matrix == b)
     {
-        printf("INSANE ERROR!  You are using mat4f_Multiply incorrectly! pOut_matrix is overwriting itself!\n");
+        //printf("INSANE ERROR!  You are using mat4f_Multiply incorrectly! pOut_matrix is overwriting itself!\n");
     }
 #endif
     
@@ -1318,7 +1318,7 @@ void mat3f_Multiply(mat4f pOut_matrix, const mat4f a, const mat4f b)
     #if DEBUG
         if(pOut_matrix == a || pOut_matrix == b)
         {
-            printf("INSANE ERROR!  You are using mat3f_Multiply incorrectly! pOut_matrix is overwriting itself!\n");
+            //printf("INSANE ERROR!  You are using mat3f_Multiply incorrectly! pOut_matrix is overwriting itself!\n");
         }
     #endif
     

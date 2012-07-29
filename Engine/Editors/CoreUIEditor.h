@@ -9,7 +9,7 @@
 #ifndef CoreEngine3D_OSX__CoreUIEditor_h
 #define CoreEngine3D_OSX__CoreUIEditor_h && !defined(_DEBUG_PC)
 
-#include "GUI/CoreUIView.h"
+#include "CoreObjects/GUI/CoreUIView.h"
 #include <string>
 #include <vector>
 #include <FL/Fl.H>

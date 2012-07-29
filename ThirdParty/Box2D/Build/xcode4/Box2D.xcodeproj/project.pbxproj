@@ -98,7 +98,22 @@
 		80BB89DF141C3E5900F1753A /* b2WheelJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* b2WheelJoint.h */; };
 		80BB89E0141C3E5900F1753A /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8985141C3E5900F1753A /* b2Rope.cpp */; };
 		80BB89E1141C3E5900F1753A /* b2Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* b2Rope.h */; };
+		DDEEC7C715C50EB70074A634 /* Box2D_iOS_.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DDEEC7C615C50EB70074A634 /* Box2D_iOS_.h */; };
+		DDEEC7C915C50EB70074A634 /* Box2D_iOS_.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEC7C815C50EB70074A634 /* Box2D_iOS_.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DDEEC7BF15C50EB70074A634 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				DDEEC7C715C50EB70074A634 /* Box2D_iOS_.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		80BB8923141C3E5900F1753A /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -194,11 +209,25 @@
 		80BB8983141C3E5900F1753A /* b2WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WheelJoint.h; sourceTree = "<group>"; };
 		80BB8985141C3E5900F1753A /* b2Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Rope.cpp; sourceTree = "<group>"; };
 		80BB8986141C3E5900F1753A /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
-		80FF01D2141C3D980059E59D /* libBox2D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D(OSX).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80FF01D2141C3D980059E59D /* libBox2D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libBox2D(OSX).a"; path = libBox2D.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDEEC7B415C50E950074A634 /* libBox2D(iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "libBox2D(iOS)-Prefix.pch"; sourceTree = "<group>"; };
+		DDEEC7B515C50E950074A634 /* libBox2D_iOS_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libBox2D_iOS_.h; sourceTree = "<group>"; };
+		DDEEC7B715C50E950074A634 /* libBox2D_iOS_.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libBox2D_iOS_.m; sourceTree = "<group>"; };
+		DDEEC7C115C50EB70074A634 /* libBox2D(iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D(iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDEEC7C515C50EB70074A634 /* Box2D(iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Box2D(iOS)-Prefix.pch"; sourceTree = "<group>"; };
+		DDEEC7C615C50EB70074A634 /* Box2D_iOS_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2D_iOS_.h; sourceTree = "<group>"; };
+		DDEEC7C815C50EB70074A634 /* Box2D_iOS_.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Box2D_iOS_.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		80FF01CF141C3D980059E59D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDEEC7BE15C50EB70074A634 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -369,6 +398,8 @@
 			isa = PBXGroup;
 			children = (
 				80BB8922141C3E5900F1753A /* Box2D */,
+				DDEEC7B215C50E950074A634 /* libBox2D(iOS) */,
+				DDEEC7C315C50EB70074A634 /* Box2D(iOS) */,
 				80FF01D3141C3D980059E59D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -377,8 +408,45 @@
 			isa = PBXGroup;
 			children = (
 				80FF01D2141C3D980059E59D /* libBox2D(OSX).a */,
+				DDEEC7C115C50EB70074A634 /* libBox2D(iOS).a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DDEEC7B215C50E950074A634 /* libBox2D(iOS) */ = {
+			isa = PBXGroup;
+			children = (
+				DDEEC7B515C50E950074A634 /* libBox2D_iOS_.h */,
+				DDEEC7B715C50E950074A634 /* libBox2D_iOS_.m */,
+				DDEEC7B315C50E950074A634 /* Supporting Files */,
+			);
+			path = "libBox2D(iOS)";
+			sourceTree = "<group>";
+		};
+		DDEEC7B315C50E950074A634 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DDEEC7B415C50E950074A634 /* libBox2D(iOS)-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DDEEC7C315C50EB70074A634 /* Box2D(iOS) */ = {
+			isa = PBXGroup;
+			children = (
+				DDEEC7C615C50EB70074A634 /* Box2D_iOS_.h */,
+				DDEEC7C815C50EB70074A634 /* Box2D_iOS_.m */,
+				DDEEC7C415C50EB70074A634 /* Supporting Files */,
+			);
+			path = "Box2D(iOS)";
+			sourceTree = "<group>";
+		};
+		DDEEC7C415C50EB70074A634 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DDEEC7C515C50EB70074A634 /* Box2D(iOS)-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -440,9 +508,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		80FF01D1141C3D980059E59D /* Box2D */ = {
+		80FF01D1141C3D980059E59D /* Box2D(OSX) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Box2D" */;
+			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Box2D(OSX)" */;
 			buildPhases = (
 				80FF01CE141C3D980059E59D /* Sources */,
 				80FF01CF141C3D980059E59D /* Frameworks */,
@@ -452,9 +520,26 @@
 			);
 			dependencies = (
 			);
-			name = Box2D;
+			name = "Box2D(OSX)";
 			productName = Box2D;
 			productReference = 80FF01D2141C3D980059E59D /* libBox2D(OSX).a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		DDEEC7C015C50EB70074A634 /* Box2D(iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDEEC7CA15C50EB70074A634 /* Build configuration list for PBXNativeTarget "Box2D(iOS)" */;
+			buildPhases = (
+				DDEEC7BD15C50EB70074A634 /* Sources */,
+				DDEEC7BE15C50EB70074A634 /* Frameworks */,
+				DDEEC7BF15C50EB70074A634 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Box2D(iOS)";
+			productName = "Box2D(iOS)";
+			productReference = DDEEC7C115C50EB70074A634 /* libBox2D(iOS).a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -477,7 +562,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80FF01D1141C3D980059E59D /* Box2D */,
+				80FF01D1141C3D980059E59D /* Box2D(OSX) */,
+				DDEEC7C015C50EB70074A634 /* Box2D(iOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -532,6 +618,14 @@
 				80BB89DC141C3E5900F1753A /* b2WeldJoint.cpp in Sources */,
 				80BB89DE141C3E5900F1753A /* b2WheelJoint.cpp in Sources */,
 				80BB89E0141C3E5900F1753A /* b2Rope.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDEEC7BD15C50EB70074A634 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDEEC7C915C50EB70074A634 /* Box2D_iOS_.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +695,45 @@
 			};
 			name = Release;
 		};
+		DDEEC7CB15C50EB70074A634 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/Box2D_iOS_.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Box2D(iOS)/Box2D(iOS)-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		DDEEC7CC15C50EB70074A634 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/Box2D_iOS_.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Box2D(iOS)/Box2D(iOS)-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -613,7 +746,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Box2D" */ = {
+		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Box2D(OSX)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80FF01D7141C3D980059E59D /* Debug */,
@@ -621,6 +754,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		DDEEC7CA15C50EB70074A634 /* Build configuration list for PBXNativeTarget "Box2D(iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDEEC7CB15C50EB70074A634 /* Debug */,
+				DDEEC7CC15C50EB70074A634 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

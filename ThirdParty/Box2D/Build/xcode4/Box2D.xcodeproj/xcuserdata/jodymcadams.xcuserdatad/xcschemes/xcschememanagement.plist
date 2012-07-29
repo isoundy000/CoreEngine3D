@@ -3,7 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>SchemeUserState</key>
-	<dict/>
+	<dict>
+		<key>Box2D.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>80BB8900141C3E1800F1753A</key>
@@ -22,6 +28,16 @@
 			<true/>
 		</dict>
 		<key>80FF01D1141C3D980059E59D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DDEEC7AD15C50E950074A634</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DDEEC7C015C50EB70074A634</key>
 		<dict>
 			<key>primary</key>
 			<true/>
