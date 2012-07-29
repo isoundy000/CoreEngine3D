@@ -209,7 +209,7 @@
 		80BB8983141C3E5900F1753A /* b2WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WheelJoint.h; sourceTree = "<group>"; };
 		80BB8985141C3E5900F1753A /* b2Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Rope.cpp; sourceTree = "<group>"; };
 		80BB8986141C3E5900F1753A /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
-		80FF01D2141C3D980059E59D /* libBox2D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBox2D.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		80FF01D2141C3D980059E59D /* libBox2D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libBox2D.a; path = "libBox2D(OSX).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDEEC7B415C50E950074A634 /* libBox2D(iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "libBox2D(iOS)-Prefix.pch"; sourceTree = "<group>"; };
 		DDEEC7B515C50E950074A634 /* libBox2D_iOS_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libBox2D_iOS_.h; sourceTree = "<group>"; };
 		DDEEC7B715C50E950074A634 /* libBox2D_iOS_.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libBox2D_iOS_.m; sourceTree = "<group>"; };
@@ -683,8 +683,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/OSX/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = Box2D;
+				PRODUCT_NAME = "Box2D(OSX)";
 			};
 			name = Debug;
 		};
@@ -692,8 +693,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/OSX/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = Box2D;
+				PRODUCT_NAME = "Box2D(OSX)";
 			};
 			name = Release;
 		};
@@ -704,6 +706,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/IOS/$(CONFIGURATION)";
 				DSTROOT = /tmp/Box2D_iOS_.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Box2D(iOS)/Box2D(iOS)-Prefix.pch";
@@ -723,6 +726,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/IOS/$(CONFIGURATION)";
 				DSTROOT = /tmp/Box2D_iOS_.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Box2D(iOS)/Box2D(iOS)-Prefix.pch";

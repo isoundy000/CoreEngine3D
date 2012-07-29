@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DDEEC7D015C50F1A0074A634"
-               BuildableName = "libCoreEngine3D(iOS).a"
-               BlueprintName = "CoreEngine3D(iOS)"
-               ReferencedContainer = "container:CoreEngine3D.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "23FCBBA414A1DFBC00C5EA7C"
-               BuildableName = "libCoreEngine3D.a"
-               BlueprintName = "CoreEngine3D(OSX)"
-               ReferencedContainer = "container:CoreEngine3D.xcodeproj">
+               BlueprintIdentifier = "80FF01D1141C3D980059E59D"
+               BuildableName = "libBox2D(OSX).a"
+               BlueprintName = "Box2D(OSX)"
+               ReferencedContainer = "container:Box2D.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

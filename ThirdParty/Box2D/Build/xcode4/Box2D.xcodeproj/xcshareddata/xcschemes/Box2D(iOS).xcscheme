@@ -14,20 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80FF01D1141C3D980059E59D"
-               BuildableName = "libBox2D.a"
-               BlueprintName = "Box2D(OSX)"
-               ReferencedContainer = "container:Box2D.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "DDEEC7C015C50EB70074A634"
                BuildableName = "libBox2D(iOS).a"
                BlueprintName = "Box2D(iOS)"
