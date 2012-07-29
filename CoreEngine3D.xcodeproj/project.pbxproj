@@ -80,8 +80,6 @@
 		DD0D60DA15C5022600029420 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = DD0D60D215C5021E00029420 /* SOIL.c */; };
 		DD0D60DB15C5022600029420 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = DD0D60D415C5021E00029420 /* stb_image_aug.c */; };
 		DD0D60DC15C5022600029420 /* stbi_DDS_aug_c.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */; };
-		DDEEC7D715C50F1A0074A634 /* CoreEngine3D_iOS_.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DDEEC7D615C50F1A0074A634 /* CoreEngine3D_iOS_.h */; };
-		DDEEC7D915C50F1A0074A634 /* CoreEngine3D_iOS_.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEC7D815C50F1A0074A634 /* CoreEngine3D_iOS_.m */; };
 		DDEEC82915C517B90074A634 /* ArrayUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D606F15C4EEF700029420 /* ArrayUtil.cpp */; };
 		DDEEC82A15C517B90074A634 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D607115C4EEF700029420 /* base64.cpp */; };
 		DDEEC82B15C517B90074A634 /* Box2DContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D607315C4EEF700029420 /* Box2DContactListener.cpp */; };
@@ -286,15 +284,13 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				DDEEC7D715C50F1A0074A634 /* CoreEngine3D_iOS_.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libCoreEngine3D.a; path = "libCoreEngine3D(OSX).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreEngine3D-Prefix.pch"; sourceTree = "<group>"; };
+		23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(OSX).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD0D5F7B15C4E42E00029420 /* png.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = png.c; sourceTree = "<group>"; };
 		DD0D5F7C15C4E42E00029420 /* png.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = png.h; sourceTree = "<group>"; };
 		DD0D5F7D15C4E42E00029420 /* pngconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pngconf.h; sourceTree = "<group>"; };
@@ -536,9 +532,6 @@
 		DD0D60D615C5021E00029420 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug.h; sourceTree = "<group>"; };
 		DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
 		DDEEC7D115C50F1A0074A634 /* libCoreEngine3D(iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDEEC7D515C50F1A0074A634 /* CoreEngine3D(iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreEngine3D(iOS)-Prefix.pch"; sourceTree = "<group>"; };
-		DDEEC7D615C50F1A0074A634 /* CoreEngine3D_iOS_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreEngine3D_iOS_.h; sourceTree = "<group>"; };
-		DDEEC7D815C50F1A0074A634 /* CoreEngine3D_iOS_.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreEngine3D_iOS_.m; sourceTree = "<group>"; };
 		DDEEC87215C518E20074A634 /* Fl.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl.H; sourceTree = "<group>"; };
 		DDEEC87315C518E20074A634 /* Fl_Adjuster.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl_Adjuster.H; sourceTree = "<group>"; };
 		DDEEC87415C518E20074A634 /* fl_ask.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fl_ask.H; sourceTree = "<group>"; };
@@ -691,8 +684,6 @@
 			children = (
 				DD0D5E4C15C4E3DA00029420 /* ThirdParty */,
 				23FCBBCB14A1E09A00C5EA7C /* Engine */,
-				23FCBBAE14A1DFBC00C5EA7C /* CoreEngine3D(OSX) */,
-				DDEEC7D315C50F1A0074A634 /* CoreEngine3D(iOS) */,
 				23FCBBA614A1DFBC00C5EA7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -700,26 +691,10 @@
 		23FCBBA614A1DFBC00C5EA7C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D.a */,
+				23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */,
 				DDEEC7D115C50F1A0074A634 /* libCoreEngine3D(iOS).a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		23FCBBAE14A1DFBC00C5EA7C /* CoreEngine3D(OSX) */ = {
-			isa = PBXGroup;
-			children = (
-				23FCBBAF14A1DFBC00C5EA7C /* Supporting Files */,
-			);
-			path = "CoreEngine3D(OSX)";
-			sourceTree = "<group>";
-		};
-		23FCBBAF14A1DFBC00C5EA7C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		23FCBBCB14A1E09A00C5EA7C /* Engine */ = {
@@ -1132,24 +1107,6 @@
 			path = ThirdParty/SOIL;
 			sourceTree = "<group>";
 		};
-		DDEEC7D315C50F1A0074A634 /* CoreEngine3D(iOS) */ = {
-			isa = PBXGroup;
-			children = (
-				DDEEC7D615C50F1A0074A634 /* CoreEngine3D_iOS_.h */,
-				DDEEC7D815C50F1A0074A634 /* CoreEngine3D_iOS_.m */,
-				DDEEC7D415C50F1A0074A634 /* Supporting Files */,
-			);
-			path = "CoreEngine3D(iOS)";
-			sourceTree = "<group>";
-		};
-		DDEEC7D415C50F1A0074A634 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				DDEEC7D515C50F1A0074A634 /* CoreEngine3D(iOS)-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		DDEEC86E15C518E20074A634 /* FL */ = {
 			isa = PBXGroup;
 			children = (
@@ -1441,7 +1398,7 @@
 			);
 			name = "CoreEngine3D(OSX)";
 			productName = "CoreEngine3D(OSX)";
-			productReference = 23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D.a */;
+			productReference = 23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		DDEEC7D015C50F1A0074A634 /* CoreEngine3D(iOS) */ = {
@@ -1570,7 +1527,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDEEC7D915C50F1A0074A634 /* CoreEngine3D_iOS_.m in Sources */,
 				DDEEC82915C517B90074A634 /* ArrayUtil.cpp in Sources */,
 				DDEEC82A15C517B90074A634 /* base64.cpp in Sources */,
 				DDEEC82B15C517B90074A634 /* Box2DContactListener.cpp in Sources */,
@@ -1705,10 +1661,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "CoreEngine3D(OSX)/CoreEngine3D-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_DEBUG,
@@ -1738,10 +1694,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "CoreEngine3D(OSX)/CoreEngine3D-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_RELEASE,
@@ -1772,13 +1728,13 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				DSTROOT = /tmp/CoreEngine3D_iOS_.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "CoreEngine3D(iOS)/CoreEngine3D(iOS)-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_DEBUG,
@@ -1810,13 +1766,13 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				DSTROOT = /tmp/CoreEngine3D_iOS_.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "CoreEngine3D(iOS)/CoreEngine3D(iOS)-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_RELEASE,
