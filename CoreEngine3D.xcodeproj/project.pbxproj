@@ -210,8 +210,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(OSX).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D(OSX)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreEngine3D(OSX)-Prefix.pch"; sourceTree = "<group>"; };
+		23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libCoreEngine3D(OSX).a"; path = libCoreEngine3D.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreEngine3D-Prefix.pch"; sourceTree = "<group>"; };
 		DD0D5E5115C4E3FC00029420 /* Fl.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl.H; sourceTree = "<group>"; };
 		DD0D5E5215C4E3FC00029420 /* Fl_Adjuster.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl_Adjuster.H; sourceTree = "<group>"; };
 		DD0D5E5315C4E3FC00029420 /* fl_ask.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fl_ask.H; sourceTree = "<group>"; };
@@ -642,7 +642,7 @@
 		23FCBBAF14A1DFBC00C5EA7C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D(OSX)-Prefix.pch */,
+				23FCBBB014A1DFBC00C5EA7C /* CoreEngine3D-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1383,9 +1383,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		23FCBBA414A1DFBC00C5EA7C /* CoreEngine3D(OSX) */ = {
+		23FCBBA414A1DFBC00C5EA7C /* CoreEngine3D */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 23FCBBB614A1DFBC00C5EA7C /* Build configuration list for PBXNativeTarget "CoreEngine3D(OSX)" */;
+			buildConfigurationList = 23FCBBB614A1DFBC00C5EA7C /* Build configuration list for PBXNativeTarget "CoreEngine3D" */;
 			buildPhases = (
 				23FCBBA114A1DFBC00C5EA7C /* Sources */,
 				23FCBBA214A1DFBC00C5EA7C /* Frameworks */,
@@ -1395,7 +1395,7 @@
 			);
 			dependencies = (
 			);
-			name = "CoreEngine3D(OSX)";
+			name = CoreEngine3D;
 			productName = "CoreEngine3D(OSX)";
 			productReference = 23FCBBA514A1DFBC00C5EA7C /* libCoreEngine3D(OSX).a */;
 			productType = "com.apple.product-type.library.static";
@@ -1406,9 +1406,9 @@
 		23FCBB9C14A1DFBC00C5EA7C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 			};
-			buildConfigurationList = 23FCBB9F14A1DFBC00C5EA7C /* Build configuration list for PBXProject "CoreEngine3D(OSX)" */;
+			buildConfigurationList = 23FCBB9F14A1DFBC00C5EA7C /* Build configuration list for PBXProject "CoreEngine3D" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1420,7 +1420,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				23FCBBA414A1DFBC00C5EA7C /* CoreEngine3D(OSX) */,
+				23FCBBA414A1DFBC00C5EA7C /* CoreEngine3D */,
 			);
 		};
 /* End PBXProject section */
@@ -1593,10 +1593,11 @@
 		23FCBBB714A1DFBC00C5EA7C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreEngine3D(OSX)/CoreEngine3D(OSX)-Prefix.pch";
+				GCC_PREFIX_HEADER = "CoreEngine3D(OSX)/CoreEngine3D-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_DEBUG,
 					"DEBUG=1",
@@ -1614,7 +1615,7 @@
 					"\"$(SRCROOT)/../../../Downloads/fltk-1.3.0/lib\"",
 					"\"$(SRCROOT)/ThirdParty/FL\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoreEngine3D;
 				USER_HEADER_SEARCH_PATHS = "../CoreEngine3D/Engine/ ../CoreEngine3D/";
 			};
 			name = Debug;
@@ -1622,10 +1623,11 @@
 		23FCBBB814A1DFBC00C5EA7C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreEngine3D(OSX)/CoreEngine3D(OSX)-Prefix.pch";
+				GCC_PREFIX_HEADER = "CoreEngine3D(OSX)/CoreEngine3D-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_RELEASE,
 					"RELEASE=1",
@@ -1642,7 +1644,7 @@
 					"\"$(SRCROOT)/../../../Downloads/fltk-1.3.0/lib\"",
 					"\"$(SRCROOT)/ThirdParty/FL\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoreEngine3D;
 				USER_HEADER_SEARCH_PATHS = "../CoreEngine3D/Engine/ ../CoreEngine3D/";
 			};
 			name = Release;
@@ -1650,7 +1652,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		23FCBB9F14A1DFBC00C5EA7C /* Build configuration list for PBXProject "CoreEngine3D(OSX)" */ = {
+		23FCBB9F14A1DFBC00C5EA7C /* Build configuration list for PBXProject "CoreEngine3D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				23FCBBB414A1DFBC00C5EA7C /* Debug */,
@@ -1659,7 +1661,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		23FCBBB614A1DFBC00C5EA7C /* Build configuration list for PBXNativeTarget "CoreEngine3D(OSX)" */ = {
+		23FCBBB614A1DFBC00C5EA7C /* Build configuration list for PBXNativeTarget "CoreEngine3D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				23FCBBB714A1DFBC00C5EA7C /* Debug */,

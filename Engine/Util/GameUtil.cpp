@@ -84,7 +84,7 @@ void GU_TMXStringToPoints(const char* valueString, f32 posX, f32 posY, vec2* pOu
 	u32 numPoints = 0;
 	bufferIndex = 0;
 	bool leftNumber = true;
-	const s32 strLen = strlen(valueString);
+	const s32 strLen = (s32)strlen(valueString);
 	for(u32 strIDX=0; strIDX<strLen+1; ++strIDX)
 	{
 		const char currChar = valueString[strIDX];
