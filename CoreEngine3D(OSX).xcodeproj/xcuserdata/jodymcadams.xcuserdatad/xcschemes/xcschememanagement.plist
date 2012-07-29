@@ -3,21 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>SchemeUserState</key>
-	<dict>
-		<key>CoreEngine3D(OSX) - DEBUG.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
-		<key>CoreEngine3D(OSX) - RELEASE.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-	</dict>
+	<dict/>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>23FCBBA414A1DFBC00C5EA7C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD0D610C15C5077100029420</key>
 		<dict>
 			<key>primary</key>
 			<true/>

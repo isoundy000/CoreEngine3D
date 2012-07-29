@@ -581,6 +581,23 @@
 		DD0D60D515C5021E00029420 /* stb_image_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image_aug.h; sourceTree = "<group>"; };
 		DD0D60D615C5021E00029420 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug.h; sourceTree = "<group>"; };
 		DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
+		DD0D611015C5077100029420 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		DD0D611215C5077100029420 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		DD0D611415C5077100029420 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		DD0D611615C5077100029420 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
+		DD0D611815C5077100029420 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
+		DD0D611C15C5077200029420 /* Crow-Regime(iOS)-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Crow-Regime(iOS)-Info.plist"; sourceTree = "<group>"; };
+		DD0D611E15C5077200029420 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DD0D612015C5077200029420 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DD0D612215C5077200029420 /* Crow-Regime(iOS)-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Crow-Regime(iOS)-Prefix.pch"; sourceTree = "<group>"; };
+		DD0D612315C5077200029420 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		DD0D612415C5077200029420 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		DD0D612715C5077200029420 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		DD0D612A15C5077200029420 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		DD0D612C15C5077200029420 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		DD0D612E15C5077200029420 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		DD0D613015C5077200029420 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		DD0D613115C5077200029420 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -600,6 +617,8 @@
 				DD0D5E4C15C4E3DA00029420 /* ThirdParty */,
 				23FCBBCB14A1E09A00C5EA7C /* Engine */,
 				23FCBBAE14A1DFBC00C5EA7C /* CoreEngine3D(OSX) */,
+				DD0D611A15C5077100029420 /* Crow-Regime(iOS) */,
+				DD0D610F15C5077100029420 /* Frameworks */,
 				23FCBBA614A1DFBC00C5EA7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -1183,6 +1202,45 @@
 			path = ThirdParty/SOIL;
 			sourceTree = "<group>";
 		};
+		DD0D610F15C5077100029420 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD0D611015C5077100029420 /* UIKit.framework */,
+				DD0D611215C5077100029420 /* Foundation.framework */,
+				DD0D611415C5077100029420 /* CoreGraphics.framework */,
+				DD0D611615C5077100029420 /* GLKit.framework */,
+				DD0D611815C5077100029420 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD0D611A15C5077100029420 /* Crow-Regime(iOS) */ = {
+			isa = PBXGroup;
+			children = (
+				DD0D612315C5077200029420 /* AppDelegate.h */,
+				DD0D612415C5077200029420 /* AppDelegate.m */,
+				DD0D612615C5077200029420 /* MainStoryboard_iPhone.storyboard */,
+				DD0D612915C5077200029420 /* MainStoryboard_iPad.storyboard */,
+				DD0D612C15C5077200029420 /* Shader.fsh */,
+				DD0D612E15C5077200029420 /* Shader.vsh */,
+				DD0D613015C5077200029420 /* ViewController.h */,
+				DD0D613115C5077200029420 /* ViewController.m */,
+				DD0D611B15C5077200029420 /* Supporting Files */,
+			);
+			path = "Crow-Regime(iOS)";
+			sourceTree = "<group>";
+		};
+		DD0D611B15C5077200029420 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DD0D611C15C5077200029420 /* Crow-Regime(iOS)-Info.plist */,
+				DD0D611D15C5077200029420 /* InfoPlist.strings */,
+				DD0D612015C5077200029420 /* main.m */,
+				DD0D612215C5077200029420 /* Crow-Regime(iOS)-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1447,6 +1505,33 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DD0D611D15C5077200029420 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD0D611E15C5077200029420 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DD0D612615C5077200029420 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD0D612715C5077200029420 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		DD0D612915C5077200029420 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD0D612A15C5077200029420 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		23FCBBB414A1DFBC00C5EA7C /* Debug */ = {
