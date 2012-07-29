@@ -9,9 +9,9 @@
 #include "CoreUIButton.h"
 
 //Engine includes
-#include "../MathUtil.h"
-#include "../matrix.h"
-#include "../Game.h"
+#include "Math/MathUtil.h"
+#include "Math/matrix.h"
+#include "Game/Game.h"
 
 //Game includes
 #include "EngineModels.h"

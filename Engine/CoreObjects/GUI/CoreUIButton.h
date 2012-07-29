@@ -9,9 +9,9 @@
 #ifndef Game_OSX__CoreUIButton_h
 #define Game_OSX__CoreUIButton_h
 
-#include "../CoreGameObject.h"
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "CoreObjects/CoreGameObject.h"
+#include "MathTypes.h"
+#include "GraphicsTypes.h"
 #include "CoreUIView.h"
 
 class CoreUIButton: public CoreUIView

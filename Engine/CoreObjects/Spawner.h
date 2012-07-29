@@ -9,13 +9,13 @@
 #ifndef __Spawner_h
 #define __Spawner_h
 
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 
-#include "../CoreAudio_OpenAL.h"
-#include "../CoreGameObject.h"
+#include "Sound/CoreAudio_OpenAL.h"
+#include "CoreObjects/CoreGameObject.h"
 
-#include "../Game.h"
+#include "Game/Game.h"
 
 class Spawner: public CoreGameObject
 {

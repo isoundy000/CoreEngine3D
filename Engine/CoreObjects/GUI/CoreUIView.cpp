@@ -9,12 +9,12 @@
 #include "CoreUIView.h"
 
 //Engine includes
-#include "../MathUtil.h"
-#include "../matrix.h"
-#include "../Game.h"
-#include "../pugixml/src/pugixml.hpp"
-#include "../CoreObjectFactories.h"
-#include "../Hash.h"
+#include "Math/MathUtil.h"
+#include "Math/matrix.h"
+#include "Game/Game.h"
+#include "ThirdParty/pugixml/src/pugixml.hpp"
+#include "CoreObjects/CoreObjectFactories.h"
+#include "Util/Hash.h"
 
 //Art
 /*static TextureAsset g_Art_SpaceShip =

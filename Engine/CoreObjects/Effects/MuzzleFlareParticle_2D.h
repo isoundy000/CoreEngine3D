@@ -9,9 +9,9 @@
 #ifndef CoreEngine3D_OSX__MuzzleFlareParticle_2D_h
 #define CoreEngine3D_OSX__MuzzleFlareParticle_2D_h
 
-#include "../CoreObject.h"
-#include "../RenderLayer.h"
-#include "../GraphicsTypes.h"
+#include "CoreObjects/CoreObject.h"
+#include "Graphics/RenderLayer.h"
+#include "Graphics/GraphicsTypes.h"
 
 class MuzzleFlareParticle_2D: public CoreObject
 {

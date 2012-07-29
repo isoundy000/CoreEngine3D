@@ -9,13 +9,13 @@
 #include "CoreUIImageView.h"
 
 //Engine includes
-#include "../MathUtil.h"
-#include "../matrix.h"
-#include "../Game.h"
-#include "../Hash.h"
+#include "Math/MathUtil.h"
+#include "Math/matrix.h"
+#include "Game/Game.h"
+#include "Util/Hash.h"
 
 //Game includes
-#include "EngineModels.h"
+#include "Models/EngineModels.h"
 
 
 //----------------------------------------------------------------

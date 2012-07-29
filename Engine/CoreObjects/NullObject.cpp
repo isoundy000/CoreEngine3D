@@ -9,7 +9,7 @@
 #include "NullObject.h"
 
 //Engine includes
-#include "../Game.h"
+#include "Game/Game.h"
 
 
 //Materials

@@ -9,10 +9,10 @@
 #include "CurvePoints_2D.h"
 
 //Engine includes
-#include "MathUtil.h"
-#include "matrix.h"
-#include "Game.h"
-#include "GameUtil.h"
+#include "Math/MathUtil.h"
+#include "Math/matrix.h"
+#include "Game/Game.h"
+#include "Util/GameUtil.h"
 
 //Art
 /*static TextureAsset g_Art_SpaceShip =

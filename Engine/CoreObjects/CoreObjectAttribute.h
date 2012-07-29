@@ -13,10 +13,10 @@
 #include <sstream>
 #include <cassert>
 
-#include "../MathTypes.h"
-#include "../MathUtil.h"
-#include "../Hash.h"
-#include "../CoreDebug.h"
+#include "Math/MathTypes.h"
+#include "Math/MathUtil.h"
+#include "Util/Hash.h"
+#include "Util/CoreDebug.h"
 
 static const u32 CoreObjectAttribute_MaxAttributes = 16;
 
@@ -53,7 +53,7 @@ public:
 		this->type = type;
 		m_classSizeBytes = 0;
 		
-		const u32 numChars = MinU32(15,strlen(attribName));	//anti-buffer overrun
+		const u32 numChars = MinU32(15,(u32)strlen(attribName));	//anti-buffer overrun
 		memcpy(name, attribName, numChars);
 		name[numChars] = 0;	//Sanity check
 	}
@@ -97,7 +97,7 @@ public:
 		Init(name,CoreObjectAttributeType_Char32);
 		m_classSizeBytes = sizeof(CoreObjectAttribute_Char32);
 		
-		const u32 numChars = MinU32(31,strlen(defaultValue));	//anti-buffer overrun
+		const u32 numChars = MinU32(31,(u32)strlen(defaultValue));	//anti-buffer overrun
 		memcpy(value, defaultValue, numChars);
 		value[numChars] = 0;	//Sanity check
 		
@@ -108,7 +108,7 @@ public:
 	
 	void SetValueFromCString(const char* cStr)
 	{
-		const u32 numChars = MinU32(31,strlen(cStr));	//anti-buffer overrun
+		const u32 numChars = MinU32(31,(u32)strlen(cStr));	//anti-buffer overrun
 		memcpy(value, cStr, numChars);
 		value[numChars] = 0;	//Sanity check
 		

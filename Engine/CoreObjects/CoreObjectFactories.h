@@ -1,7 +1,7 @@
 #ifndef __COREOBJECTFACTORIES_H
 #define __COREOBJECTFACTORIES_H
 
-#include "../CoreObject_Manager.h"
+#include "CoreObjects/CoreObject_Manager.h"
 #include "GUI/CoreUIView.h"
 #include "GUI/CoreUIImageView.h"
 #include "GUI/CoreUIButton.h"

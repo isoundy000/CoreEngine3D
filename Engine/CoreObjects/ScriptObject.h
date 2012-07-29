@@ -9,11 +9,11 @@
 #ifndef __ScriptObject_h
 #define __ScriptObject_h
 
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 
-#include "../CoreGameObject.h"
-#include "../Game.h"
+#include "CoreObjects/CoreGameObject.h"
+#include "Game/Game.h"
 
 class ScriptObject: public CoreGameObject
 {

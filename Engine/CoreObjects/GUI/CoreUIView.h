@@ -9,10 +9,10 @@
 #ifndef Game_OSX__CoreUIView_h
 #define Game_OSX__CoreUIView_h
 
-#include "../CoreGameObject.h"
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
-#include "../CoreObjectAttribute.h"
+#include "CoreObjects/CoreGameObject.h"
+#include "MathTypes.h"
+#include "GraphicsTypes.h"
+#include "CoreObjects/CoreObjectAttribute.h"
 
 #include <string>
 

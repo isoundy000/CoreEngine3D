@@ -9,11 +9,11 @@
 #ifndef __ObjectGroup_h
 #define __ObjectGroup_h
 
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 
-#include "../CoreGameObject.h"
-#include "../Game.h"
+#include "CoreObjects/CoreGameObject.h"
+#include "Game/Game.h"
 #include "Trigger_2D.h"
 
 #define ObjectGroup_MAX_OBJECTS 16

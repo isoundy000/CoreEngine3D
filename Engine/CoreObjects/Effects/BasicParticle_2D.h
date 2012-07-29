@@ -9,9 +9,9 @@
 #ifndef CoreEngine3D_OSX__BasicParticle_2D_h
 #define CoreEngine3D_OSX__BasicParticle_2D_h
 
-#include "../CoreObject.h"
-#include "../RenderLayer.h"
-#include "../GraphicsTypes.h"
+#include "CoreObjects/CoreObject.h"
+#include "Graphics/RenderLayer.h"
+#include "Graphics/GraphicsTypes.h"
 #include <Box2D/Box2D.h>
 
 class BasicParticle_2D: public CoreObject

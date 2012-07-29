@@ -7,10 +7,10 @@
 //
 
 #include "BasicParticle_2D.h"
-#include "../OpenGLRenderer.h"
-#include "../matrix.h"
-#include "../MathUtil.h"
-#include "../Game.h"
+#include "Graphics/OpenGLRenderer.h"
+#include "Math/matrix.h"
+#include "Math/MathUtil.h"
+#include "Game/Game.h"
 
 void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex)
 {

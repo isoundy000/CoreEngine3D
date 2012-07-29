@@ -9,9 +9,9 @@
 #ifndef Game_OSX__NullObject_h
 #define Game_OSX__NullObject_h
 
-#include "../CoreGameObject.h"
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "CoreObjects/CoreGameObject.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 
 class NullObject: public CoreGameObject
 {

@@ -7,10 +7,10 @@
 //
 
 #include "AnimatedParticle_2D.h"
-#include "../OpenGLRenderer.h"
-#include "../matrix.h"
-#include "../MathUtil.h"
-#include "../Game.h"
+#include "Graphics/OpenGLRenderer.h"
+#include "Math/matrix.h"
+#include "Math/MathUtil.h"
+#include "Game/Game.h"
 
 void AnimatedParticle_2D::InitParticle(ParticleSettings *pSettings, const vec3* pPosition, const vec3* pDirection, f32 startAngle, s32 animID, u32 frameOffset, f32 playSpeed)
 {

@@ -1,5 +1,5 @@
 #include "CoreObjectFactories.h"
-#include "../OpenGLRenderer.h"
+#include "Graphics/OpenGLRenderer.h"
 
 CoreObjectFactory<CoreUIView> g_Factory_CoreUIView;
 CoreObjectFactory<CoreUIImageView> g_Factory_CoreUIImageView;

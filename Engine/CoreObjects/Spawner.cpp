@@ -8,11 +8,11 @@
 
 #include "Spawner.h"
 
-#include "../Hash.h"
-#include "../matrix.h"
-#include "../OpenGLRenderer.h"
-#include "../CoreObject_Manager.h"
-#include "CoreObjectFactories.h"
+#include "Util/Hash.h"
+#include "Math/matrix.h"
+#include "Graphics/OpenGLRenderer.h"
+#include "CoreObjects/CoreObject_Manager.h"
+#include "CoreObjects/CoreObjectFactories.h"
 
 static const f32 g_Spawner_mass = 64.0f;
 

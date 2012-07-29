@@ -9,11 +9,11 @@
 #ifndef CoreEngine3D_OSX__AnimatedParticle_2D_h
 #define CoreEngine3D_OSX__AnimatedParticle_2D_h
 
-#include "../CoreObject.h"
-#include "../RenderLayer.h"
-#include "../GraphicsTypes.h"
-#include "../AnimationController.h"
-#include "../SpriteSheetAnimator.h"
+#include "CoreObjects/CoreObject.h"
+#include "Graphics/RenderLayer.h"
+#include "Graphics/GraphicsTypes.h"
+#include "Animation/AnimationController.h"
+#include "Animation/SpriteSheetAnimator.h"
 
 
 class AnimatedParticle_2D: public CoreObject

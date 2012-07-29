@@ -9,10 +9,10 @@
 #ifndef __Trigger_2D_h
 #define __Trigger_2D_h
 
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 
-#include "../CoreObject.h"
+#include "CoreObjects/CoreObject.h"
 
 #define Trigger_2D_MAX_COLLISION_RESULTS 16
 

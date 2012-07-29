@@ -9,10 +9,10 @@
 #ifndef __Tile_h
 #define __Tile_h
 
-#include "../MathTypes.h"
-#include "../GraphicsTypes.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 
-#include "../CoreGameObject.h"
+#include "CoreObjects/CoreGameObject.h"
 #include <Box2D/Box2D.h>
 
 const u8 TILE_FLIPPED_HORIZONTALLY_FLAG = 0x80;
