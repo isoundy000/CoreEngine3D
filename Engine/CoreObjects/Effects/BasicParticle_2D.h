@@ -81,7 +81,7 @@ public:
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}
 	//virtual bool PostSpawnInit(void* pSpawnStruct){return true;}
 	void InitParticle(BasicParticle_2D::ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex);
-	void SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable, const vec3* pRelativePos = NULL);
+	void SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable, const vec3* pRelativePos);
 	u32 GetCategoryFlags();
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);

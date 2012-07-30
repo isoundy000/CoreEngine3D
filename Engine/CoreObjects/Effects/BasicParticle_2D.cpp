@@ -198,21 +198,7 @@ u32 BasicParticle_2D::GetCategoryFlags()
 void BasicParticle_2D::SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable, const vec3* pRelativePos)
 {
 	m_hParentRenderable = hParentRenderable;
-	
-	RenderableGeometry3D* pGeom = GetGeomPointer(m_hParentRenderable);
-	if(pGeom != NULL)
-	{
-		//Position passed in so use it
-		if(pRelativePos != NULL)
-		{
-			m_position = *pRelativePos;
-		}
-		//No position passed in so calculate one
-		else
-		{
-			SubVec3_Self(&m_position, GetGeomPos(pGeom));
-		}
-	}
+	m_position = *pRelativePos;
 }
 
 void BasicParticle_2D::UpdateParticle(f32 timeElapsed)
@@ -286,12 +272,23 @@ void BasicParticle_2D::UpdateParticle(f32 timeElapsed)
 		
 		//If this particle is relative to a renderable, adjust it's position to be
 		//based off of the position of the parent
+		
+		//If you're wondering why I don't use a matrix... I am keeping the size
+		//of this particle as low as I can.  If you really need to use a matrix,
+		//try MuzzleFlareParticle or make a new particle
 		if(m_hParentRenderable)
 		{
 			RenderableGeometry3D* pParentGeom = GetGeomPointer(m_hParentRenderable);
 			if(pParentGeom != NULL)
 			{
-				AddVec3_Self(pPos, GetGeomPos(pParentGeom));
+				vec3 parentLeft;
+				vec3 parentUp;
+				
+				TryNormalizeVec3(&parentLeft, GetGeomLeft(pParentGeom));
+				TryNormalizeVec3(&parentUp, GetGeomUp(pParentGeom));
+				
+				AddScaledVec3(pPos, GetGeomPos(pParentGeom),&parentLeft, m_position.x);
+				AddScaledVec3_Self(pPos, &parentUp, m_position.y);
 			}
 		}
 	}
