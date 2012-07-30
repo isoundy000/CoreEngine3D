@@ -81,7 +81,7 @@ public:
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}
 	//virtual bool PostSpawnInit(void* pSpawnStruct){return true;}
 	void InitParticle(BasicParticle_2D::ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex);
-	void SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable);
+	void SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable, const vec3* pRelativePos = NULL);
 	u32 GetCategoryFlags();
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
@@ -91,6 +91,8 @@ public:
 	const ParticleSettings* GetParticleSettings(){return m_pSettings;}
 	//virtual void ProcessMessage(u32 message, u32 parameter){};	//Pass in a hash value
 private:
+	void UpdateParticle(f32 timeElapsed);
+	
 	ParticleSettings* m_pSettings;
 	u32 m_numColumns;
 	f32 m_spinSpeed;
@@ -106,6 +108,7 @@ private:
 	vec4 m_diffuseColor;
 	vec2 m_texcoordOffset;
 	f32 m_currSpinAngle;
+	f32 m_currRadius;
 	CoreObjectHandle m_hRenderable;
 	b2Body* m_pBody;
 	CoreObjectHandle m_hParentRenderable;

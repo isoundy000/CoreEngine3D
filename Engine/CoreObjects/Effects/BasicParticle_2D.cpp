@@ -18,7 +18,7 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 	
 	TextureAsset* pArtDesc = pSettings->pItemArt;
 	
-	m_hParentRenderable = CoreObjectHandle();
+	m_hParentRenderable = 0;
 
 	RenderableGeometry3D* pGeom = NULL;
 	m_hRenderable = GLRENDERER->CreateRenderableGeometry3D(RenderableObjectType_Normal,&pGeom);
@@ -86,15 +86,24 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 		pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
 	}
 	
-	const f32 radius = rand_FloatRange(pSettings->radiusMin, pSettings->radiusMax);
-	m_radiusStart = radius*pSettings->radiusScale_start;
-	m_radiusEnd = radius*pSettings->radiusScale_end;
+	m_currRadius = rand_FloatRange(pSettings->radiusMin, pSettings->radiusMax);
+	m_radiusStart = m_currRadius*pSettings->radiusScale_start;
+	m_radiusEnd = m_currRadius*pSettings->radiusScale_end;
 		
 	mat4f_LoadScale(pGeom->worldMat, m_radiusStart);
 	
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
-	CopyVec3(pPos, pPosition);
-	CopyVec3(&m_position,pPosition);
+	
+	if(pPosition != NULL)
+	{
+		CopyVec3(pPos, pPosition);
+		CopyVec3(&m_position,pPosition);
+	}
+	else
+	{
+		CopyVec3(pPos,&vec3_zero);
+		CopyVec3(&m_position,&vec3_zero);
+	}
 	
 	const f32 speed = rand_FloatRange(pSettings->moveSpeedMin, pSettings->moveSpeedMax);
 	ScaleVec3(&m_velocity,pDirection,speed);
@@ -176,7 +185,7 @@ void BasicParticle_2D::InitParticle(ParticleSettings *pSettings, u32 numColumns,
 		m_pBody->SetLinearVelocity(b2Vec2(pDirection->x,pDirection->y));
 	}
 	
-	Update(0.0f);
+	UpdateParticle(0.0f);
 }
 
 
@@ -186,21 +195,29 @@ u32 BasicParticle_2D::GetCategoryFlags()
 }
 
 
-void BasicParticle_2D::SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable)
+void BasicParticle_2D::SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable, const vec3* pRelativePos)
 {
 	m_hParentRenderable = hParentRenderable;
 	
 	RenderableGeometry3D* pGeom = GetGeomPointer(m_hParentRenderable);
 	if(pGeom != NULL)
 	{
-		SubVec3_Self(&m_position, GetGeomPos(pGeom));
+		//Position passed in so use it
+		if(pRelativePos != NULL)
+		{
+			m_position = *pRelativePos;
+		}
+		//No position passed in so calculate one
+		else
+		{
+			SubVec3_Self(&m_position, GetGeomPos(pGeom));
+		}
 	}
 }
 
-
-void BasicParticle_2D::Update(f32 timeElapsed)
+void BasicParticle_2D::UpdateParticle(f32 timeElapsed)
 {
-    RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
+	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
     
     if(pGeom == NULL)
 	{
@@ -241,7 +258,7 @@ void BasicParticle_2D::Update(f32 timeElapsed)
 			break;
 		}
 	}
-
+	
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
 	
 	const f32 lerpT = MinF(1.0f,m_lifeTimer/m_totalLifeTime);
@@ -259,7 +276,7 @@ void BasicParticle_2D::Update(f32 timeElapsed)
 	else
 	{
 		m_currSpinAngle += m_spinSpeed*timeElapsed;
-
+		
 		m_velocity.y -= m_pSettings->gravity*timeElapsed;
 		AddScaledVec3_Self(&m_position,&m_velocity,timeElapsed);
 		
@@ -284,9 +301,23 @@ void BasicParticle_2D::Update(f32 timeElapsed)
 	{
 		this->DeleteObject();
 	}
+}
+
+
+void BasicParticle_2D::Update(f32 timeElapsed)
+{
+	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
+    vec3* pPos = mat4f_GetPos(pGeom->worldMat);
+	
+    if(pGeom == NULL)
+	{
+		return;
+	}
+	
+    UpdateParticle(timeElapsed);
     
-    GAME->TiledLevel_DeleteObjectIfOffscreen_X(this,pPos,radius,0.0f);
-    GAME->TiledLevel_DeleteObjectIfOffscreen_Y(this,pPos,radius,0.0f);
+    GAME->TiledLevel_DeleteObjectIfOffscreen_X(this,pPos,m_currRadius,0.0f);
+    GAME->TiledLevel_DeleteObjectIfOffscreen_Y(this,pPos,m_currRadius,0.0f);
 }
 
 

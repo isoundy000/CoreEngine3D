@@ -32,8 +32,7 @@ void MuzzleFlareParticle_2D::InitParticle(MuzzleFlareParticle_2D::ParticleSettin
 	}
 	
 	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, pSettings->renderMaterial, &pArtDesc->textureHandle, NULL, pSettings->renderLayer, pSettings->blendMode, pSettings->renderFlags|RenderFlag_Visible);
-	pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
-	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+	pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
 	
 	m_radius = rand_FloatRange(pSettings->radiusMin, pSettings->radiusMax);
 	
@@ -42,34 +41,6 @@ void MuzzleFlareParticle_2D::InitParticle(MuzzleFlareParticle_2D::ParticleSettin
 	
 	SetVec4(&m_diffuseColor,1.0f,1.0f,1.0f,1.0f);
 	CopyVec4(&m_diffuseColorStart,&m_pSettings->diffuseColor);
-	
-	switch (texIndex)
-	{
-		case 0:
-		{
-			SetVec2(&m_texcoordOffset, 0.0f, 0.0f);
-			break;
-		}
-		case 1:
-		{
-			SetVec2(&m_texcoordOffset, 0.5f, 0.0f);
-			break;
-		}
-		case 2:
-		{
-			SetVec2(&m_texcoordOffset, 0.0f, 0.5f);
-			break;
-		}
-		case 3:
-		{
-			SetVec2(&m_texcoordOffset, 0.5f, 0.5f);
-			break;
-		}
-		default:
-		{
-			break;
-		}
-	}
 }
 
 
@@ -176,6 +147,5 @@ void MuzzleFlareParticle_2D::UpdateHandle()	//Call when the memory location chan
 	CoreObject::UpdateHandle();
     
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
-    pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
-	pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+	pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
 }

@@ -59,7 +59,6 @@ private:
 	vec3 m_dir;
 	vec4 m_diffuseColorStart;
 	vec4 m_diffuseColor;
-	vec2 m_texcoordOffset;
 	CoreObjectHandle m_hRenderable;
 	f32 m_heightScale;
 	f32 m_widthScale;
