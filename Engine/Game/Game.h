@@ -218,6 +218,7 @@ public:
 	void AddSoundResource(SoundAsset* pSoundDescription);
 	s32 AddSongToPlaylist(const char* songFilenameMP3);
 	void PlaySongByID(s32 songID, f32 volume, bool isLooping);
+	void SetGlobalSongVolume(f32 volume);
 	void StopSong();
 	std::string GetPathToFile(const char* filename, bool fromEngine=false);
 	void GetTileIndicesFromScreenPosition(const vec2* pPosition, u32* pOut_X, u32* pOut_Y);
@@ -254,7 +255,7 @@ public:
 	
 	f32 m_Box2D_defaultCollisionFriction;
 protected:	//Only stuff that can be called from the game.cpp goes here
-	
+	virtual void HandlePauseStatus(){};
 	void SetTileCullingRange(s32 cullingRange);
 	void ConstrainCameraToTiledLevel();
 	bool LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 tileWidthPixels, f32 tileSizeMeters);
@@ -381,6 +382,9 @@ private:
 	
 	HUDTexture m_HUDTextures[GAME_MAX_HUD_TEXTURES];
 	u32 m_numHUDTextures;
+	
+	f32 m_songVolume;
+	f32 m_globalSongVolume;
 	
 #if defined(_DEBUG_PC)
 	CoreUIEditor m_uiEditor;

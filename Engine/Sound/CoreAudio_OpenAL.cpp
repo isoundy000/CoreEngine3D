@@ -36,6 +36,8 @@ bool CoreAudioOpenAL::Init()
 {
 	OPENALAUDIO = this;
 	
+	m_numContexts = GameAudioContext_NumContexts;
+	
 #if defined (PLATFORM_WIN)
 	alutInitWithoutContext(NULL,NULL);
 #endif
@@ -47,16 +49,27 @@ bool CoreAudioOpenAL::Init()
 	
 	if (m_device)
 	{
-		m_context = alcCreateContext(m_device,NULL);
-		CheckForOpenALError();
-		
-		alcMakeContextCurrent(m_context);
+		for(u32 i=0; i<m_numContexts; ++i)
+		{
+			m_context[i] = alcCreateContext(m_device,NULL);
+			CheckForOpenALError();
+		}
+	
+		alcMakeContextCurrent(m_context[0]);
 		CheckForOpenALError();
 		
 		return true;
 	}
 	
 	return false;
+}
+
+void CoreAudioOpenAL::SwitchContext(GameAudioContext contextIndex)
+{
+	assert(contextIndex < m_numContexts);
+	
+	alcMakeContextCurrent(m_context[contextIndex]);
+	CheckForOpenALError();
 }
 
 void CoreAudioOpenAL::SetMaxSoundDistance(f32 maxDistance)
@@ -68,7 +81,10 @@ void CoreAudioOpenAL::SetMaxSoundDistance(f32 maxDistance)
 void CoreAudioOpenAL::CleanUp()
 {
 	// destroy the context
-	alcDestroyContext(m_context);
+	for(u32 i=0; i<m_numContexts; ++i)
+	{
+		alcDestroyContext(m_context[i]);
+	}
 	
 	// close the device
 	alcCloseDevice(m_device);

@@ -91,6 +91,9 @@ bool Game::Init()
 	m_Box2D_NumVelocitySteps = 5;
 	m_Box2D_NumPositionSteps = 5;
 	
+	m_globalSongVolume = 1.0f;
+	m_songVolume = 0.0f;
+	
 	m_numHUDTextures = 0;
 	
 	m_cullingRange = 30;
@@ -269,6 +272,8 @@ void Game::Update(f32 timeElapsed)
 		//fancy UI effects that won't draw any more because
 		//you paused the graphics
 		GLRENDERER->paused = m_paused;
+		
+		HandlePauseStatus();
 	}
 	
 #if defined(_DEBUG_PC)
@@ -438,7 +443,6 @@ s32 Game::AddSongToPlaylist(const char* songFilenameMP3)
 std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 {
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
-	//NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 @autoreleasepool{
 	NSString* fileString = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
 	NSString *fullPath = [[NSBundle mainBundle] pathForResource:[fileString lastPathComponent] ofType:nil inDirectory:[fileString stringByDeletingLastPathComponent]];
@@ -452,8 +456,6 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 	{
 		pathString = [fullPath UTF8String];
 	}
-
-	//[pool drain];
 	
 	return pathString;
 }
@@ -468,11 +470,19 @@ std::string Game::GetPathToFile(const char* filename, bool fromEngine)
 void Game::StopSong()
 {
 	[m_pAudioPlayer stop];
-	//[m_pAudioPlayer release];
 	
 	m_pAudioPlayer = nil;
 	
 	m_currSongID = -1;
+}
+
+void Game::SetGlobalSongVolume(f32 volume)
+{
+	m_globalSongVolume = volume;
+	
+#if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
+	[m_pAudioPlayer setVolume:m_songVolume*m_globalSongVolume];
+#endif
 }
 
 void Game::PlaySongByID(s32 songID, f32 volume, bool isLooping)
@@ -489,7 +499,6 @@ void Game::PlaySongByID(s32 songID, f32 volume, bool isLooping)
 	
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
 	[m_pAudioPlayer stop];
-	//[m_pAudioPlayer release];
 	
 	NSString* fileString = [NSString stringWithCString:m_songPlaylist[songID] encoding:NSUTF8StringEncoding];
 	NSString *fullPath = [[NSBundle mainBundle] pathForResource:[fileString lastPathComponent] ofType:nil inDirectory:[fileString stringByDeletingLastPathComponent]];
@@ -499,8 +508,11 @@ void Game::PlaySongByID(s32 songID, f32 volume, bool isLooping)
 	
 	//m_pAudioPlayer = CreateAudioPlayer(fullPath,@"",YES,1.0f);
 	NSError* error;
+	
+	m_songVolume = 1.0f;
+	
 	m_pAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:&error];
-	m_pAudioPlayer.volume = volume;
+	m_pAudioPlayer.volume = m_songVolume*m_globalSongVolume;
 	m_pAudioPlayer.numberOfLoops = isLooping?-1:0;
 	
 	[m_pAudioPlayer play];

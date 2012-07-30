@@ -21,6 +21,13 @@ extern CoreAudioOpenAL* OPENALAUDIO;
 #include <alc.h>
 #endif
 
+enum GameAudioContext
+{
+	GameAudioContext_Normal,
+	GameAudioContext_UI,
+	GameAudioContext_NumContexts,
+};
+
 struct CoreAudioFileInfo
 {
 	u8* data;
@@ -35,10 +42,13 @@ struct SoundAsset
     u32			soundBufferID;
 };
 
+#define COREAUDIO_MAX_CONTEXTS 6
+
 class CoreAudioOpenAL
 {
 public:
 	bool Init();
+	void SwitchContext(GameAudioContext contextIndex);
 	void CleanUp();
 	bool CreateSoundBufferFromFile(const char* filename, u32* pSoundBufferID);
 	u32 CreateSoundSourceFromBuffer(u32 bufferID);
@@ -71,7 +81,8 @@ private:
 	bool CheckForALUTError();
 #endif
 	
-	ALCcontext* m_context;
+	ALCcontext* m_context[COREAUDIO_MAX_CONTEXTS];
+	u32 m_numContexts;
 	ALCdevice* m_device;
 	f32 m_maxSoundDistance;
 };
