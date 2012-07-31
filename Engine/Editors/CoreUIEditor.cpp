@@ -15,9 +15,13 @@
 
 #include "CoreObjectAttribute_FLTK.h"
 
+#include <sstream>
+
 CoreUIEditor* UIEDITOR = NULL;
 
 static const s32 UIEDITOR_WindowWidth = 400;
+
+static const u32 g_UIEDITOR_HashedString_Unnamed = 2607469549; //Unnamed
 
 static std::vector<CoreUI_Container> containers;
 
@@ -84,19 +88,6 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 			break;
 		}
 	}
-}
-
-
-static void SliderCallback (Fl_Widget *pWidget, void* pClassPointer)
-{
-	CoreUIEditor* pEditor = (CoreUIEditor*)pClassPointer;
-	
-	Slider_Int_Input* pIntInput = (Slider_Int_Input*)pWidget;
-	
-	/*switch(pIntInput->callback_reason())
-	{
-		
-	}*/
 }
 
 
@@ -231,9 +222,10 @@ void CoreUIEditor::SetVisible(bool isVisible)
 
 void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path)
 {
-	const std::string appendedPath = path + '/';
-	const std::string defaultPath = appendedPath+"Unnamed";
-	std::string itemPath;
+	std::stringstream appendedPath;
+	appendedPath << path << "/";
+	
+	u32 defaultAppendNum = 0;
 	
 	for(u32 i=0; i<pParentView->numChildren; ++i)
 	{
@@ -247,12 +239,19 @@ void CoreUIEditor::AddChildViews(CoreUIView* pParentView,const std::string& path
 		//TODO: should use cache to look up
 		CoreObjectAttribute_Char32* pNameAttrib = (CoreObjectAttribute_Char32*)pChildView->attributes.GetAttributeByName("name");
 		
-		itemPath = appendedPath+std::string((const char*)pNameAttrib->value);
+		std::stringstream itemPath;
+		itemPath << appendedPath.str() << std::string((const char*)pNameAttrib->value);
 		
-		Fl_Tree_Item* pItem = m_toolWindowBrowser->add(itemPath.c_str());
+		if(pNameAttrib->hashedValue == g_UIEDITOR_HashedString_Unnamed)
+		{
+			itemPath << defaultAppendNum;
+			++defaultAppendNum;
+		}
+		
+		Fl_Tree_Item* pItem = m_toolWindowBrowser->add(itemPath.str().c_str());
 		pItem->user_data((void*)(u32)childObjectHandle);
 		
-		AddChildViews(pChildView, itemPath);
+		AddChildViews(pChildView, itemPath.str());
 	}
 }
 

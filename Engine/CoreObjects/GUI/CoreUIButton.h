@@ -13,15 +13,24 @@
 #include "MathTypes.h"
 #include "GraphicsTypes.h"
 #include "CoreUIView.h"
+#include "Input/CoreInput_DeviceInputState.h"
 
 class CoreUIButton: public CoreUIView
 {
 public:
+	enum CoreUI_ButtonState
+	{
+		CoreUI_ButtonState_Idle,
+		CoreUI_ButtonState_Hover,
+		CoreUI_ButtonState_Pressed,
+		CoreUI_ButtonState_Num,
+	};
+	
     virtual void UpdateHandle();	//Called when the memory location changes
 
 	virtual bool Init(u32 type);	//Init variables
 	virtual bool SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent);	//Create object from data
-	virtual bool PostSpawnInit(void* pSpawnStruct);	//Link to objects in level
+	
 	virtual void Uninit();	//Delete spawned objects here
 	virtual void Update(f32 timeElapsed);	//Update the object
 	virtual void ProcessMessage(u32 message, u32 parameter);	//Receive/Process messages
@@ -30,8 +39,15 @@ public:
     static void InitClass();	//One-time global init
     
 	virtual void LayoutView();
+	
+	bool UpdateButton(bool buttonIsDown, intVec2* pBeginTouchPos, intVec2* pCurrTouchPos);
+
 private:
-    CoreObjectHandle m_hRenderable;
+    CoreObjectHandle m_hView_Idle;
+	CoreObjectHandle m_hView_Hover;
+	CoreObjectHandle m_hView_Pressed;
+	
+	CoreUI_ButtonState m_buttonState;
 };
 
 #endif

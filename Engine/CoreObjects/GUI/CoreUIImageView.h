@@ -21,7 +21,7 @@ public:
 
 	virtual bool Init(u32 type);	//Init variables
 	virtual bool SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent);	//Create object from data
-	virtual bool PostSpawnInit(void* pSpawnStruct);	//Link to objects in level
+
 	virtual void Uninit();	//Delete spawned objects here
 	virtual void Update(f32 timeElapsed);	//Update the object
 	virtual void ProcessMessage(u32 message, u32 parameter);	//Receive/Process messages
@@ -34,6 +34,7 @@ public:
 	s32 attrib_colorR;
 	s32 attrib_colorG;
 	s32 attrib_colorB;
+	s32 attrib_imageType;
 protected:
 	
 private:

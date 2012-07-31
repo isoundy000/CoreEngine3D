@@ -49,6 +49,8 @@ bool CoreUIImageView::Init(u32 type)
 	attrib_colorR = attributes.Add(CoreObjectAttribute_U32("colorR",255,0,255));
 	attrib_colorG = attributes.Add(CoreObjectAttribute_U32("colorG",255,0,255));
 	attrib_colorB = attributes.Add(CoreObjectAttribute_U32("colorB",255,0,255));
+	
+	attrib_imageType = attributes.Add(CoreObjectAttribute_Char32("imageType","default"));
     
     //TODO: other init
 	viewType = CoreUI_ViewType_ImageView;
@@ -95,16 +97,6 @@ bool CoreUIImageView::SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent)
 	
 	UpdateDiffuseColor();
 	
-    return true;
-}
-
-
-//----------------------------------------------------------------
-//----------------------------------------------------------------
-bool CoreUIImageView::PostSpawnInit(void* pSpawnStruct)
-{
-    //TODO: save any links to other objects here
-    
     return true;
 }
 

@@ -17,6 +17,7 @@
 #include <string>
 
 #define CoreUIView_MAX_CHILDREN 32
+#define CoreUIView_AttribMemSize 1280
 
 enum CoreUI_ViewType
 {
@@ -49,7 +50,6 @@ public:
 
 	virtual bool Init(u32 type);	//Init variables
 	virtual bool SpawnInit(void* pSpawnStruct, CoreObjectHandle hParent);	//Create object from data
-	virtual bool PostSpawnInit(void* pSpawnStruct);	//Link to objects in level
 	virtual void Uninit();	//Delete spawned objects here
 	virtual void Update(f32 timeElapsed);	//Update the object
 	virtual void ProcessMessage(u32 message, u32 parameter);	//Receive/Process messages
@@ -87,7 +87,7 @@ protected:
 	
 	void LayoutSubViews();
 	
-	u8 m_attribData[1024];
+	u8 m_attribData[CoreUIView_AttribMemSize];
 	
 private:
 	bool m_debugVisible;

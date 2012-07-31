@@ -67,7 +67,7 @@ bool CoreUIView::Init(u32 type)
 	viewType = CoreUI_ViewType_View;
 	
 	//Add attributes
-	attributes.Init(m_attribData,1024);
+	attributes.Init(m_attribData,CoreUIView_AttribMemSize);
 	
 	//cache attributes that are used often
 	attrib_name = attributes.Add(CoreObjectAttribute_Char32("name","Unnamed"));
@@ -328,16 +328,6 @@ void CoreUIView::LayoutSubViews()
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-bool CoreUIView::PostSpawnInit(void* pSpawnStruct)
-{
-    //TODO: save any links to other objects here
-    
-    return true;
-}
-
-
-//----------------------------------------------------------------
-//----------------------------------------------------------------
 void CoreUIView::Uninit()
 {
 	attributes.Uninit();
@@ -351,6 +341,7 @@ void CoreUIView::Uninit()
 //----------------------------------------------------------------
 void CoreUIView::Update(f32 timeElapsed)
 {
+#if defined(_DEBUG)
 	if(m_debugVisible == false)
 	{
 		return;
@@ -363,7 +354,6 @@ void CoreUIView::Update(f32 timeElapsed)
 	const s32 halfWidth = widthAttrib->value/2;
 	const s32 halfHeight = heightAttrib->value/2;
 	
-    //TODO: update here
 	vec3 pos3D;
 	pos3D.x = position.x;
 	pos3D.y = position.y;
@@ -395,6 +385,7 @@ void CoreUIView::Update(f32 timeElapsed)
 	
 	
 	GLRENDERER->DEBUGDRAW_DrawCircleXY(DebugDrawMode_Screen2D, &pos3D, 64.0f, &color4f_red);
+#endif
 }
 
 
