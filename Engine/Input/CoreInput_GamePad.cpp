@@ -152,12 +152,12 @@ void GamePad::DebugDraw()
 		
 		vec4 circleColor;
 		f32 circleRadius;
-		if(pButton->value & (1<<GamePadButtonState_On))
+		if(pButton->value & (1<<CoreInput_ButtonState_Began))
 		{
 			SetVec4(&circleColor,0,1,0,1);
 			circleRadius = pButton->buttonRadius*1.5f;
 		}
-		else if(pButton->value & (1<<GamePadButtonState_Released))
+		else if(pButton->value & (1<<CoreInput_ButtonState_Ended))
 		{
 			SetVec4(&circleColor,1,1,0,1);
 			circleRadius = pButton->buttonRadius*2.5f;
@@ -477,8 +477,8 @@ void GamePad::Update()
     for(u32 buttonIDX=0; buttonIDX<numButtons; ++buttonIDX)
     {
         //Clear out one-frame button flags from last update
-        buttons[buttonIDX].value &= ~(1<<GamePadButtonState_Released);
-         buttons[buttonIDX].value &= ~(1<<GamePadButtonState_FirstFrameOn);
+        buttons[buttonIDX].value &= ~(1<<CoreInput_ButtonState_Ended);
+         buttons[buttonIDX].value &= ~(1<<CoreInput_ButtonState_Began);
     }
     
     
@@ -596,15 +596,15 @@ void GamePad::Update()
                 {    
                     //printf("Pressed button\n");
                     pButton->touchIndex = i;
-                    pButton->value |= 1<<GamePadButtonState_On;
-                    pButton->value |= 1<<GamePadButtonState_FirstFrameOn;
+                    pButton->value |= 1<<CoreInput_ButtonState_Held;
+                    pButton->value |= 1<<CoreInput_ButtonState_Began;
                     pButton->timePressed = 0.0f;
                 }
                 
                 if(pButton && pButton->touchIndex == i)
                 {    
                     //printf("Pressed button\n");
-                    pButton->value |= 1<<GamePadButtonState_On;
+                    pButton->value |= 1<<CoreInput_ButtonState_Held;
                 }
                 
                 //Only check the stick if the touch index is the assigned index of the stick
@@ -620,7 +620,7 @@ void GamePad::Update()
                 if(pButton && pButton->touchIndex == i)
                 {    
                     //printf("Pressed button\n");
-                    pButton->value |= 1<<GamePadButtonState_On;
+                    pButton->value |= 1<<CoreInput_ButtonState_Held;
                 }
                 
                 break;
@@ -645,8 +645,8 @@ void GamePad::Update()
                 {
                     //printf("Released button\n");
                     pButton->touchIndex = -1;
-                    pButton->value &= ~(1<<GamePadButtonState_On);
-                    pButton->value |= 1<<GamePadButtonState_Released;
+                    pButton->value &= ~(1<<CoreInput_ButtonState_Held);
+                    pButton->value |= 1<<CoreInput_ButtonState_Ended;
                 }
 				
 				//	printf("Touch %d -Ended- <%f,%f>\n",i+1,posCurr.x,posCurr.y);

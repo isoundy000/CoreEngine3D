@@ -80,6 +80,7 @@
 		DD0D60DA15C5022600029420 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = DD0D60D215C5021E00029420 /* SOIL.c */; };
 		DD0D60DB15C5022600029420 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = DD0D60D415C5021E00029420 /* stb_image_aug.c */; };
 		DD0D60DC15C5022600029420 /* stbi_DDS_aug_c.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */; };
+		DD50F88115C8FF0E00B97194 /* CoreInput.h in Headers */ = {isa = PBXBuildFile; fileRef = DD50F88015C8FF0E00B97194 /* CoreInput.h */; };
 		DDEEC82915C517B90074A634 /* ArrayUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D606F15C4EEF700029420 /* ArrayUtil.cpp */; };
 		DDEEC82A15C517B90074A634 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D607115C4EEF700029420 /* base64.cpp */; };
 		DDEEC82B15C517B90074A634 /* Box2DContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D607315C4EEF700029420 /* Box2DContactListener.cpp */; };
@@ -531,6 +532,7 @@
 		DD0D60D515C5021E00029420 /* stb_image_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image_aug.h; sourceTree = "<group>"; };
 		DD0D60D615C5021E00029420 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug.h; sourceTree = "<group>"; };
 		DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
+		DD50F88015C8FF0E00B97194 /* CoreInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInput.h; sourceTree = "<group>"; };
 		DDEEC7D115C50F1A0074A634 /* libCoreEngine3D(iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDEEC87215C518E20074A634 /* Fl.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl.H; sourceTree = "<group>"; };
 		DDEEC87315C518E20074A634 /* Fl_Adjuster.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl_Adjuster.H; sourceTree = "<group>"; };
@@ -876,6 +878,7 @@
 		DD0D5FEC15C4EEF700029420 /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				DD50F88015C8FF0E00B97194 /* CoreInput.h */,
 				DD0D5FED15C4EEF700029420 /* CoreInput_DeviceInputState.cpp */,
 				DD0D5FEE15C4EEF700029420 /* CoreInput_DeviceInputState.h */,
 				DD0D5FEF15C4EEF700029420 /* CoreInput_GamePad.cpp */,
@@ -1378,6 +1381,7 @@
 				DDEEC98515C518E20074A634 /* Fl_Wizard.H in Headers */,
 				DDEEC98615C518E20074A634 /* Fl_XBM_Image.H in Headers */,
 				DDEEC98715C518E20074A634 /* Fl_XPM_Image.H in Headers */,
+				DD50F88115C8FF0E00B97194 /* CoreInput.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

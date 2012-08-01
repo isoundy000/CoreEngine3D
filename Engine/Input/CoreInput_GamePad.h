@@ -10,6 +10,7 @@
 #define CoreEngine3D_OSX__CoreInput_Joystick_h
 
 #include "MathTypes.h"
+#include "CoreInput.h"
 #include "CoreInput_DeviceInputState.h"
 
 enum GamePadButtonType
@@ -39,14 +40,6 @@ enum GamePadJoystickType
 	GamePadJoystickType_AnalogLeft,
 	GamePadJoystickType_AnalogRight,
 	GamePadJoystickType_Num,
-};
-
-enum GamePadButtonState
-{
-	GamePadButtonState_None,
-    GamePadButtonState_FirstFrameOn,
-	GamePadButtonState_On,
-    GamePadButtonState_Released,
 };
 
 struct JoystickBoundingBox

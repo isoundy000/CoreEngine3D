@@ -11,16 +11,8 @@
 
 #define MOUSESTATE_MAX_MOUSEBUTTONS 2
 
-#include "MathTypes.h"
-
-enum CoreInput_ButtonState
-{
-	CoreInput_ButtonState_None,
-	CoreInput_ButtonState_Began,
-	CoreInput_ButtonState_Held,
-	CoreInput_ButtonState_Ended,
-};
-
+#include "Math/MathTypes.h"
+#include "CoreInput.h"
 
 struct MouseInputState
 {
