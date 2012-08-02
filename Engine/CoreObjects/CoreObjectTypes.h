@@ -1,6 +1,6 @@
 //
 //  CoreObjectTypes.h
-//  CoreEngine3D(iOS)
+//  CoreEngine3D
 //
 //  Created by JodyMcAdams on 3/14/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  Box2DUtil.cpp
-//  CoreEngine3D(iOS)
+//  CoreEngine3D
 //
 //  Created by JodyMcAdams on 2/24/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.

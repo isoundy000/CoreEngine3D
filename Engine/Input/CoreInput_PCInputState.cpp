@@ -1,6 +1,6 @@
 //
 //  CoreInput_MouseState.cpp
-//  CoreEngine3D(OSX)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 12/29/11.
 //  Copyright (c) 2011 Jody McAdams. All rights reserved.

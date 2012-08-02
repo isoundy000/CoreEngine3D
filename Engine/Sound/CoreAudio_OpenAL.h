@@ -1,6 +1,6 @@
 //
 //  CoreAudio_OpenAL.h
-//  CoreEngine3D(iOS)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 12/31/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.

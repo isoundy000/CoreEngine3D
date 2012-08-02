@@ -1,13 +1,13 @@
 //
 //  SpriteSheetAnimator.h
-//  Crow-Regime(iOS)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 12/17/11.
 //  Copyright (c) 2011 Jody McAdams. All rights reserved.
 //
 
-#ifndef Crow_Regime_iOS__SpriteSheetAnimator_h
-#define Crow_Regime_iOS__SpriteSheetAnimator_h
+#ifndef CoreEngine3D__SpriteSheetAnimator_h
+#define CoreEngine3D__SpriteSheetAnimator_h
 
 #include "MathTypes.h"
 #include "GraphicsTypes.h"

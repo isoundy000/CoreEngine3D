@@ -1,13 +1,13 @@
 //
 //  AnimationController.h
-//  Crow-Regime(iOS)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 12/17/11.
 //  Copyright (c) 2011 Jody McAdams. All rights reserved.
 //
 
-#ifndef Crow_Regime_iOS__AnimationController_h
-#define Crow_Regime_iOS__AnimationController_h
+#ifndef CoreEngine3D_AnimationController_h
+#define CoreEngine3D_AnimationController_h
 
 #include "MathTypes.h"
 

@@ -1,6 +1,6 @@
 //
 //  StringUtil.h
-//  CoreEngine3D(OSX)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 4/21/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.

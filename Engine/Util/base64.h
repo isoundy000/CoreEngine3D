@@ -1,13 +1,13 @@
 //
 //  base64.h
-//  CrowRegime
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 11/12/11.
 //  Copyright (c) 2011 GameJelly Online. All rights reserved.
 //
 
-#ifndef CrowRegime_base64_h
-#define CrowRegime_base64_h
+#ifndef CoreEngine3D_base64_h
+#define CoreEngine3D_base64_h
 
 #include <memory.h>
 #include <stdlib.h>

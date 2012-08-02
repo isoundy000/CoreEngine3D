@@ -163,7 +163,7 @@ bool Game::Init()
 	}
 
 	m_path = pathString.substr(0,lastSlashIndex+1);
-	//m_path = "../Crow-Regime/";
+	//TODO: remove this nonsense
 	m_enginePath = "../CoreEngine3D/";
 
 	OutputDebugString(m_path.c_str());

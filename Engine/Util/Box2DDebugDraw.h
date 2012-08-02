@@ -1,6 +1,6 @@
 //
 //  Box2DDebugDraw.h
-//  CoreEngine3D(iOS)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 2/19/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.

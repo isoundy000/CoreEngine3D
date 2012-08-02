@@ -1,6 +1,6 @@
 //
 //  CoreObject_Manager.cpp
-//  CoreEngine3D(iOS)
+//  CoreEngine3D
 //
 //  Created by JodyMcAdams on 1/3/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  LevelEditor3D.h
-//  CoreEngine3D(OSX)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 7/14/12.
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.

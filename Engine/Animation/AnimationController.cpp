@@ -1,6 +1,6 @@
 //
 //  AnimationController.cpp
-//  Crow-Regime(iOS)
+//  CoreEngine3D
 //
 //  Created by Jody McAdams on 12/17/11.
 //  Copyright (c) 2011 Jody McAdams. All rights reserved.
