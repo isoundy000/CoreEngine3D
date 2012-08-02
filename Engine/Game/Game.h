@@ -49,7 +49,8 @@ extern Game* GAME;
 
 #if defined(_DEBUG_PC)
 #include "CoreUIEditor.h"
-extern bool g_GUIEditModeOn;
+#include "TiledLevelEditor.h"
+#include "LevelEditor3D.h"
 #endif
 
 class Box2DDebugDraw;
@@ -244,6 +245,9 @@ public:
     void TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
 	bool TiledLevel_CheckIsOnScreen_X(vec3* pPos, f32 scale);
 	
+	void ToggleUIEditor();
+	void ToggleTiledGameEditor();
+	
     TileVert* GetTiledVerts();
 	u32 GetTileVBO();
 	u32 GetTileVAO();
@@ -387,7 +391,12 @@ private:
 	f32 m_globalSongVolume;
 	
 #if defined(_DEBUG_PC)
-	CoreUIEditor m_uiEditor;
+	CoreUIEditor* m_pUIEditor;
+	bool m_GUIEditModeOn;
+	TiledLevelEditor* m_pTiledLevelEditor;
+	bool m_TiledLevelEditorOn;
+	LevelEditor3D* m_pLevelEditor3D;
+	bool m_LevelEditor3DOn;
 #endif
 };
 

@@ -81,6 +81,12 @@
 		DD0D60DB15C5022600029420 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = DD0D60D415C5021E00029420 /* stb_image_aug.c */; };
 		DD0D60DC15C5022600029420 /* stbi_DDS_aug_c.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */; };
 		DD50F88115C8FF0E00B97194 /* CoreInput.h in Headers */ = {isa = PBXBuildFile; fileRef = DD50F88015C8FF0E00B97194 /* CoreInput.h */; };
+		DD50F88515C9059800B97194 /* TiledLevelEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */; };
+		DD50F88615C9059800B97194 /* TiledLevelEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */; };
+		DD50F88715C9059800B97194 /* TiledLevelEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = DD50F88415C9059800B97194 /* TiledLevelEditor.h */; };
+		DD50F88A15CA513700B97194 /* LevelEditor3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD50F88815CA513700B97194 /* LevelEditor3D.cpp */; };
+		DD50F88B15CA513700B97194 /* LevelEditor3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD50F88815CA513700B97194 /* LevelEditor3D.cpp */; };
+		DD50F88C15CA513700B97194 /* LevelEditor3D.h in Headers */ = {isa = PBXBuildFile; fileRef = DD50F88915CA513700B97194 /* LevelEditor3D.h */; };
 		DDEEC82915C517B90074A634 /* ArrayUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D606F15C4EEF700029420 /* ArrayUtil.cpp */; };
 		DDEEC82A15C517B90074A634 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D607115C4EEF700029420 /* base64.cpp */; };
 		DDEEC82B15C517B90074A634 /* Box2DContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D607315C4EEF700029420 /* Box2DContactListener.cpp */; };
@@ -533,6 +539,10 @@
 		DD0D60D615C5021E00029420 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug.h; sourceTree = "<group>"; };
 		DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
 		DD50F88015C8FF0E00B97194 /* CoreInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInput.h; sourceTree = "<group>"; };
+		DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TiledLevelEditor.cpp; sourceTree = "<group>"; };
+		DD50F88415C9059800B97194 /* TiledLevelEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLevelEditor.h; sourceTree = "<group>"; };
+		DD50F88815CA513700B97194 /* LevelEditor3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelEditor3D.cpp; sourceTree = "<group>"; };
+		DD50F88915CA513700B97194 /* LevelEditor3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelEditor3D.h; sourceTree = "<group>"; };
 		DDEEC7D115C50F1A0074A634 /* libCoreEngine3D(iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCoreEngine3D(iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDEEC87215C518E20074A634 /* Fl.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl.H; sourceTree = "<group>"; };
 		DDEEC87315C518E20074A634 /* Fl_Adjuster.H */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fl_Adjuster.H; sourceTree = "<group>"; };
@@ -839,6 +849,10 @@
 		DD0D5FD715C4EEF700029420 /* Editors */ = {
 			isa = PBXGroup;
 			children = (
+				DD50F88815CA513700B97194 /* LevelEditor3D.cpp */,
+				DD50F88915CA513700B97194 /* LevelEditor3D.h */,
+				DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */,
+				DD50F88415C9059800B97194 /* TiledLevelEditor.h */,
 				DD0D5FD815C4EEF700029420 /* CoreUIEditor.cpp */,
 				DD0D5FD915C4EEF700029420 /* CoreUIEditor.h */,
 			);
@@ -1382,6 +1396,8 @@
 				DDEEC98615C518E20074A634 /* Fl_XBM_Image.H in Headers */,
 				DDEEC98715C518E20074A634 /* Fl_XPM_Image.H in Headers */,
 				DD50F88115C8FF0E00B97194 /* CoreInput.h in Headers */,
+				DD50F88715C9059800B97194 /* TiledLevelEditor.h in Headers */,
+				DD50F88C15CA513700B97194 /* LevelEditor3D.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1524,6 +1540,8 @@
 				DD0D60D915C5022600029420 /* image_helper.c in Sources */,
 				DD0D60DA15C5022600029420 /* SOIL.c in Sources */,
 				DD0D60DB15C5022600029420 /* stb_image_aug.c in Sources */,
+				DD50F88515C9059800B97194 /* TiledLevelEditor.cpp in Sources */,
+				DD50F88A15CA513700B97194 /* LevelEditor3D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1599,6 +1617,8 @@
 				DDEEC86B15C518A90074A634 /* pngwrite.c in Sources */,
 				DDEEC86C15C518A90074A634 /* pngwtran.c in Sources */,
 				DDEEC86D15C518A90074A634 /* pngwutil.c in Sources */,
+				DD50F88615C9059800B97194 /* TiledLevelEditor.cpp in Sources */,
+				DD50F88B15CA513700B97194 /* LevelEditor3D.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

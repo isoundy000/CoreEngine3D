@@ -35,10 +35,6 @@
 
 Game* GAME = NULL;
 
-#if defined(_DEBUG_PC)
-bool g_GUIEditModeOn = false;
-#endif
-
 static bool SortLinePointListByX(const LinePointList& lhs, const LinePointList& rhs);
 
 bool SortLinePointListByX(const LinePointList& lhs, const LinePointList& rhs)
@@ -87,6 +83,14 @@ void Game::ResetCamera()
 bool Game::Init()
 {	
 	m_paused = false;
+	
+	m_pUIEditor = NULL;
+	m_pTiledLevelEditor = NULL;
+	m_pLevelEditor3D = NULL;
+	
+	m_GUIEditModeOn = false;
+	m_TiledLevelEditorOn = false;
+	m_LevelEditor3DOn = false;
 	
 	m_Box2D_NumVelocitySteps = 5;
 	m_Box2D_NumPositionSteps = 5;
@@ -259,6 +263,27 @@ void Game::CleanUp()
 }
 
 
+void Game::ToggleUIEditor()
+{
+	m_GUIEditModeOn = !m_GUIEditModeOn;
+	if(m_GUIEditModeOn == true)
+	{
+		COREDEBUG_PrintDebugMessage("GUI Edit Mode: On");
+		m_pUIEditor->SetVisible(true);
+	}
+	else
+	{
+		COREDEBUG_PrintDebugMessage("GUI Edit Mode: Off");
+		m_pUIEditor->SetVisible(false);
+	}
+}
+
+void Game::ToggleTiledGameEditor()
+{
+	
+}
+
+
 void Game::Update(f32 timeElapsed)
 {
 #if defined (PLATFORM_OSX) || defined(PLATFORM_WIN)
@@ -277,24 +302,9 @@ void Game::Update(f32 timeElapsed)
 	}
 	
 #if defined(_DEBUG_PC)
-	if(m_keyboardState.buttonState[103] == CoreInput_ButtonState_Ended)
-	{
-		g_GUIEditModeOn = !g_GUIEditModeOn;
-		if(g_GUIEditModeOn == true)
-		{
-			COREDEBUG_PrintDebugMessage("GUI Edit Mode: On");
-			UIEDITOR->SetVisible(true);
-		}
-		else
-		{
-			COREDEBUG_PrintDebugMessage("GUI Edit Mode: Off");
-			UIEDITOR->SetVisible(false);
-		}
-	}
-	
 	//Make sure if you're editingthe UI that debug lines
 	//will always draw
-	if(g_GUIEditModeOn == true)
+	if(m_GUIEditModeOn == true)
 	{
 		GLRENDERER->paused = false;
 	}
@@ -1682,7 +1692,10 @@ u32* Game::GetHUDTextureByNameSig(u32 nameSig)
 void Game::Reset()
 {
 #if defined(_DEBUG_PC)
-	UIEDITOR->Clear();
+	if(m_pUIEditor != NULL)
+	{
+		m_pUIEditor->Clear();
+	}
 #endif
 }
 
@@ -1791,7 +1804,12 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 		container.rootView = pMainView->GetHandle();
 		container.filepath = filenameWithPath;
 		
-		UIEDITOR->AddViewContainer(container);
+		if(m_pUIEditor == NULL)
+		{
+			m_pUIEditor = new CoreUIEditor();
+		}
+		
+		m_pUIEditor->AddViewContainer(container);
 #endif
 		
 		pMainView->LayoutView();

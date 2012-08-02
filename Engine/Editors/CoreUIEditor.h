@@ -19,9 +19,6 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Tile.H>
 
-class CoreUIEditor;
-extern CoreUIEditor* UIEDITOR;
-
 struct CoreUI_Container
 {
 	std::string filepath;
