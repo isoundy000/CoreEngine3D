@@ -84,6 +84,7 @@ bool Game::Init()
 {	
 	m_paused = false;
 	
+#if defined(_DEBUG_PC)
 	m_pUIEditor = NULL;
 	m_pTiledLevelEditor = NULL;
 	m_pLevelEditor3D = NULL;
@@ -91,6 +92,7 @@ bool Game::Init()
 	m_GUIEditModeOn = false;
 	m_TiledLevelEditorOn = false;
 	m_LevelEditor3DOn = false;
+#endif
 	
 	m_Box2D_NumVelocitySteps = 5;
 	m_Box2D_NumPositionSteps = 5;
@@ -262,7 +264,7 @@ void Game::CleanUp()
 	delete m_coreObjectManager;
 }
 
-
+#if defined(_DEBUG_PC)
 void Game::ToggleUIEditor()
 {
 	m_GUIEditModeOn = !m_GUIEditModeOn;
@@ -277,12 +279,14 @@ void Game::ToggleUIEditor()
 		m_pUIEditor->SetVisible(false);
 	}
 }
+#endif
 
+#if defined(_DEBUG_PC)
 void Game::ToggleTiledGameEditor()
 {
 	
 }
-
+#endif
 
 void Game::Update(f32 timeElapsed)
 {

@@ -245,8 +245,10 @@ public:
     void TiledLevel_DeleteObjectIfOffscreen_Y(CoreObject* pObject, vec3* pPos, f32 scale, f32 distToCheck); //distToCheck is normally 0
 	bool TiledLevel_CheckIsOnScreen_X(vec3* pPos, f32 scale);
 	
+#if defined(_DEBUG_PC)
 	void ToggleUIEditor();
 	void ToggleTiledGameEditor();
+#endif
 	
     TileVert* GetTiledVerts();
 	u32 GetTileVBO();
