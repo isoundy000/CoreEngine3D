@@ -13,6 +13,7 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Choice.H>
 #include <cstdio>
 
 #include "GUI/CoreUIView.h"
@@ -402,7 +403,14 @@ Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 
 		}
 		case CoreObjectAttributeType_CoreUI_Origin:
 		{
-			break;
+			CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)pAttrib;
+			
+			Fl_Choice* pChoice = new Fl_Choice(posX, posY, width, height,(const char*)pAttrib->name);
+			pChoice->add("hi");
+			pChoice->add("bye");
+			pChoice->add("die");
+			
+			return pChoice;
 		}
 		case CoreObjectAttributeType_Char32:
 		{

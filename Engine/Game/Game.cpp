@@ -267,6 +267,12 @@ void Game::CleanUp()
 #if defined(_DEBUG_PC)
 void Game::ToggleUIEditor()
 {
+	if(m_pUIEditor == NULL)
+	{
+		COREDEBUG_PrintDebugMessage("ERROR: Tried to toggle UIEditor but no UI is loaded!  Ignoring...");
+		return;
+	}
+	
 	m_GUIEditModeOn = !m_GUIEditModeOn;
 	if(m_GUIEditModeOn == true)
 	{

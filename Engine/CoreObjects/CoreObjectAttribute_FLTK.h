@@ -30,6 +30,8 @@ public:
 	s32 attributeIndex;
 };
 
+
+//SLIDER INPUT
 class Slider_Int_Input : public Fl_Group
 {
 private:

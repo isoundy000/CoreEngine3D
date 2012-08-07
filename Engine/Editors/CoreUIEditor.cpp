@@ -80,11 +80,16 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 			break;
 		}
 		case FL_TREE_REASON_OPENED:
-		{
-			break;
-		}
 		case FL_TREE_REASON_CLOSED:
 		{
+			//Changed the whole view basically so we need
+			//to redraw
+			Fl_Group* pParent = pTree->parent();
+			if(pParent)
+			{
+				pParent->redraw();
+			}
+			
 			break;
 		}
 	}
