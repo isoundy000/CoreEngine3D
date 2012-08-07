@@ -42,6 +42,25 @@ bool SoundPlayer::SpawnInit(void* pSpawnStruct)
 	return true;
 }
 
+void SoundPlayer::SpawnInit(const vec3* pPos, u32 soundBufferID, f32 volume, f32 pitch, bool isLooping)
+{
+	m_soundSource = OPENALAUDIO->CreateSoundSourceFromBuffer(soundBufferID);
+	OPENALAUDIO->SetSoundSourcePosition(m_soundSource, pPos);
+	OPENALAUDIO->PlaySoundSource(m_soundSource, volume, pitch, isLooping);
+	
+	COREDEBUG_PrintDebugMessage("Sound started...");
+}
+
+
+void SoundPlayer::Update(f32 timeElapsed)
+{
+	const bool isStopped = OPENALAUDIO->GetSourceIsStopped(m_soundSource);
+	if(isStopped)
+	{
+		this->DeleteObject();
+	}
+}
+
 
 void SoundPlayer::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash value
 {
@@ -51,6 +70,9 @@ void SoundPlayer::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash va
 
 void SoundPlayer::Uninit()
 {
+	COREDEBUG_PrintDebugMessage("Sound deleted!");
+	OPENALAUDIO->DeleteSoundSource(&m_soundSource);
+	
 	CoreObject::Uninit();
 }
 

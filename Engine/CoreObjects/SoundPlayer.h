@@ -15,14 +15,15 @@
 #include "CoreObjects/CoreObject.h"
 #include "Game/Game.h"
 
-class SoundPlayer: public CoreObject
+class SoundPlayer: public CoreGameObject
 {
 public:
 	virtual void Uninit();
 	virtual void ProcessMessage(u32 message, u32 parameter);	//Pass in a hash value
 
 	virtual bool SpawnInit(void* pSpawnStruct);
-	
+	void SpawnInit(const vec3* pPos, u32 soundBufferID, f32 volume, f32 pitch, bool isLooping);
+	virtual void Update(f32 timeElapsed);
 private:	
 
 	u32 m_soundSource;
