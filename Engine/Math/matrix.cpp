@@ -621,6 +621,32 @@ void mat4f_LoadScaledZRotation_IgnoreTranslation(mat4f pOut_matrix, f32 radians,
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
+void mat4f_LoadTranslation(mat4f pOut_matrix, f32 x, f32 y, f32 z)
+{
+	pOut_matrix[0] = 1.0f;
+	pOut_matrix[1] = 0.0f;
+	pOut_matrix[2] = 0.0f;
+	pOut_matrix[3] = 0.0f;
+	
+	pOut_matrix[4] = 0.0f;
+	pOut_matrix[5] = 1.0f;
+	pOut_matrix[6] = 0.0f;
+	pOut_matrix[7] = 0.0f;
+	
+	pOut_matrix[8] = 0.0f;
+	pOut_matrix[9] = 0.0f;
+	pOut_matrix[10] = 1.0f;
+	pOut_matrix[11] = 0.0f;
+	
+	pOut_matrix[12] = x;
+	pOut_matrix[13] = y;
+	pOut_matrix[14] = z;
+	pOut_matrix[15] = 1.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void mat4f_LoadTranslation(mat4f pOut_matrix, const vec3* v)
 {
 	pOut_matrix[0] = 1.0f;
@@ -642,6 +668,162 @@ void mat4f_LoadTranslation(mat4f pOut_matrix, const vec3* v)
 	pOut_matrix[13] = v->y;
 	pOut_matrix[14] = v->z;
 	pOut_matrix[15] = 1.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_LoadRotationFromLeftAndUp(f32* pOut_matrix, const vec3* pLeft, const vec3* pUp)
+{
+	vec3 mat_up;
+	CopyVec3(&mat_up,pUp);
+	
+	vec3 mat_left;
+	CopyVec3(&mat_left,pLeft);
+	
+	//Create at
+	vec3 mat_at;
+	CrossVec3(&mat_at, &mat_left, pUp );
+	NormalizeVec3_Self(&mat_at);
+	
+	//Create up
+	CrossVec3(&mat_up, &mat_at, &mat_left );
+	
+	pOut_matrix[0] =  mat_left.x;	pOut_matrix[1] =  mat_up.x;	pOut_matrix[2]  =  mat_at.x;	pOut_matrix[3]  = 0.0f;
+	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
+	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
+	pOut_matrix[12] = 0.0f;
+	pOut_matrix[13] = 0.0f;
+	pOut_matrix[14] = 0.0f;
+	pOut_matrix[15] = 1.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_LoadRotationFromUpAndLeft(f32* pOut_matrix, const vec3* pUp, const vec3* pLeft)
+{
+	vec3 mat_up;
+	CopyVec3(&mat_up,pUp);
+	
+	vec3 mat_left;
+	CopyVec3(&mat_left,pLeft);
+	
+	//Create at
+	vec3 mat_at;
+	CrossVec3(&mat_at, &mat_left, pUp );
+	NormalizeVec3_Self(&mat_at);
+	
+	//Create left
+	CrossVec3(&mat_left, &mat_up, &mat_at );
+
+	pOut_matrix[0] =  mat_left.x;	pOut_matrix[1] =  mat_up.x;	pOut_matrix[2]  =  mat_at.x;	pOut_matrix[3]  = 0.0f;
+	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
+	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
+	pOut_matrix[12] = 0.0f;
+	pOut_matrix[13] = 0.0f;
+	pOut_matrix[14] = 0.0f;
+	pOut_matrix[15] = 1.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_LoadRotationFromUp(f32* pOut_matrix, const vec3* pUp)
+{
+	vec3 mat_up;
+	CopyVec3(&mat_up,pUp);
+	
+	vec3 mat_left;
+	CopyVec3(&mat_left,&vec3_left);
+	
+	//Create at
+	vec3 mat_at;
+	CrossVec3(&mat_at, &mat_left, pUp );
+	NormalizeVec3_Self(&mat_at);
+	
+	//Create left
+	CrossVec3(&mat_left, &mat_up, &mat_at );
+	
+	pOut_matrix[0] =  mat_left.x;	pOut_matrix[1] =  mat_up.x;	pOut_matrix[2]  =  mat_at.x;	pOut_matrix[3]  = 0.0f;
+	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
+	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
+	pOut_matrix[12] = 0.0f;
+	pOut_matrix[13] = 0.0f;
+	pOut_matrix[14] = 0.0f;
+	pOut_matrix[15] = 1.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_LoadRotationFromLeftAndUp_IgnoreTranslation(f32* pOut_matrix, const vec3* pLeft, const vec3* pUp)
+{
+	vec3 mat_up;
+	CopyVec3(&mat_up,pUp);
+	
+	vec3 mat_left;
+	CopyVec3(&mat_left,pLeft);
+	
+	//Create at
+	vec3 mat_at;
+	CrossVec3(&mat_at, &mat_left, pUp );
+	NormalizeVec3_Self(&mat_at);
+	
+	//Create up
+	CrossVec3(&mat_up, &mat_at, &mat_left );
+	
+	pOut_matrix[0] =  mat_left.x;	pOut_matrix[1] =  mat_up.x;	pOut_matrix[2]  =  mat_at.x;	pOut_matrix[3]  = 0.0f;
+	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
+	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_LoadRotationFromUpAndLeft_IgnoreTranslation(f32* pOut_matrix, const vec3* pUp, const vec3* pLeft)
+{
+	vec3 mat_up;
+	CopyVec3(&mat_up,pUp);
+	
+	vec3 mat_left;
+	CopyVec3(&mat_left,pLeft);
+	
+	//Create at
+	vec3 mat_at;
+	CrossVec3(&mat_at, &mat_left, pUp );
+	NormalizeVec3_Self(&mat_at);
+	
+	//Create left
+	CrossVec3(&mat_left, &mat_up, &mat_at );
+	
+	pOut_matrix[0] =  mat_left.x;	pOut_matrix[1] =  mat_up.x;	pOut_matrix[2]  =  mat_at.x;	pOut_matrix[3]  = 0.0f;
+	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
+	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_LoadRotationFromUp_IgnoreTranslation(f32* pOut_matrix, const vec3* pUp)
+{
+	vec3 mat_up;
+	CopyVec3(&mat_up,pUp);
+	
+	vec3 mat_left;
+	CopyVec3(&mat_left,&vec3_left);
+	
+	//Create at
+	vec3 mat_at;
+	CrossVec3(&mat_at, &mat_left, pUp );
+	NormalizeVec3_Self(&mat_at);
+	
+	//Create left
+	CrossVec3(&mat_left, &mat_up, &mat_at );
+
+	pOut_matrix[0] =  mat_left.x;	pOut_matrix[1] =  mat_up.x;	pOut_matrix[2]  =  mat_at.x;	pOut_matrix[3]  = 0.0f;
+	pOut_matrix[4] =  mat_left.y;	pOut_matrix[5] =  mat_up.y;	pOut_matrix[6]  =  mat_at.y;	pOut_matrix[7]  = 0.0f;
+	pOut_matrix[8] =  mat_left.z;	pOut_matrix[9] =  mat_up.z;	pOut_matrix[10] =  mat_at.z;	pOut_matrix[11] = 0.0f;
 }
 
 
