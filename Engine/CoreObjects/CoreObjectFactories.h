@@ -2,6 +2,7 @@
 #define __COREOBJECTFACTORIES_H
 
 #include "CoreObjects/CoreObject_Manager.h"
+#include "CoreObjects/CoreObject_Factory.h"
 #include "GUI/CoreUIView.h"
 #include "GUI/CoreUIImageView.h"
 #include "GUI/CoreUIButton.h"
