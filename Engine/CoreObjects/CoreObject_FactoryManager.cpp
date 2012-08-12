@@ -11,6 +11,9 @@
 #include "CoreObject_FactoryManager.h"
 #include "stddef.h" //for NULL -_-
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectFactoryManager::CoreObjectFactoryManager()
 {
 	m_pMemory = NULL;
@@ -19,6 +22,19 @@ CoreObjectFactoryManager::CoreObjectFactoryManager()
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+CoreObjectFactoryManager::~CoreObjectFactoryManager()
+{
+	if(m_pMemory != NULL)
+	{
+		delete[] m_pMemory;
+	}
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectFactoryManager::Init(u32 memorySizeBytes)
 {
 	m_pMemory = new u8[memorySizeBytes];
@@ -27,6 +43,8 @@ void CoreObjectFactoryManager::Init(u32 memorySizeBytes)
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectFactoryManager::Clear()
 {
 	u32 currByteIndex = 0;
@@ -50,6 +68,8 @@ void CoreObjectFactoryManager::Clear()
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectFactoryManager::Update(f32 timeElapsed)
 {
 	u32 currByteIndex = 0;

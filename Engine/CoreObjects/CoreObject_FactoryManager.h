@@ -29,6 +29,7 @@ public:
 	};
 	
 	CoreObjectFactoryManager();
+	~CoreObjectFactoryManager();
 	void Init(u32 memorySizeBytes);
 	void Clear(); //Clears the factories (like between levels, etc.)
 	void Update(f32 timeElapsed);
@@ -62,7 +63,9 @@ public:
 		CoreObjectFactoryEntry* pLastEntry = (CoreObjectFactoryEntry*)&m_pMemory[m_currByteIndex];
 		pLastEntry->nextEntryByteIndex = 0;
 		
-		COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem useage is: %.2fMB",((f32)m_currByteIndex) / SQUARE(1024.0f) );
+		const u32 memUsage = pLastEntry->nextEntryByteIndex+sizeof(CoreObjectFactoryEntry);
+		
+		COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem usage is: %d bytes, %.2fMB",memUsage, ((f32)memUsage) / SQUARE(1024.0f) );
 	}
 	
 private:

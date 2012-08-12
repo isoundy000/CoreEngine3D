@@ -37,6 +37,9 @@ void CoreObjectAttributeWidgetLink::LinkAttribute(CoreObjectHandle viewHandle, s
 
 //Int slider
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::UpdateAttribute()
 {
 	CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(widgetLink.viewHandle);
@@ -86,9 +89,9 @@ void Slider_Int_Input::UpdateAttribute()
 	}
 }
 
-// CALLBACK HANDLERS
-//    These 'attach' the input and slider's values together.
-//
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::Slider_CB2()
 {
 	static int recurse = 0;
@@ -112,11 +115,17 @@ void Slider_Int_Input::Slider_CB2()
 	}
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::Slider_CB(Fl_Widget *w, void *data)
 {
 	((Slider_Int_Input*)data)->Slider_CB2();
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::Input_CB2()
 {
 	static int recurse = 0;
@@ -136,12 +145,17 @@ void Slider_Int_Input::Input_CB2()
 	}
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::Input_CB(Fl_Widget *w, void *data)
 {
 	((Slider_Int_Input*)data)->Input_CB2();
 }
 
-// CTOR
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 Slider_Int_Input::Slider_Int_Input(int x, int y, int w, int h, const char *l) : Fl_Group(x,y,w,h,l)
 {
 	int in_w = 40;
@@ -159,38 +173,58 @@ Slider_Int_Input::Slider_Int_Input(int x, int y, int w, int h, const char *l) : 
 	end();             // close the group
 }
 
-// MINIMAL ACCESSORS --  Add your own as needed
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int  Slider_Int_Input::value() const
 { 
 	return ((int)(slider->value() + 0.5));
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::value(int val)
 {
 	slider->value(val);
 	Slider_CB2();
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::minumum(int val)
 {
 	slider->minimum(val);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int  Slider_Int_Input::minumum() const
 {
 	return((int)slider->minimum());
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::maximum(int val)
 {
 	slider->maximum(val);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int  Slider_Int_Input::maximum() const
 {
 	return((int)slider->maximum());
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Int_Input::bounds(int low, int high)
 {
 	slider->bounds(low, high);
@@ -198,6 +232,9 @@ void Slider_Int_Input::bounds(int low, int high)
 
 
 //Float Slider
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::UpdateAttribute()
 {
 	CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(widgetLink.viewHandle);
@@ -241,9 +278,9 @@ void Slider_Float_Input::UpdateAttribute()
 	}
 }
 
-// CALLBACK HANDLERS
-//    These 'attach' the input and slider's values together.
-//
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::Slider_CB2()
 {
 	static int recurse = 0;
@@ -267,11 +304,17 @@ void Slider_Float_Input::Slider_CB2()
 	}
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::Slider_CB(Fl_Widget *w, void *data)
 {
 	((Slider_Float_Input*)data)->Slider_CB2();
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::Input_CB2()
 {
 	static int recurse = 0;
@@ -291,12 +334,17 @@ void Slider_Float_Input::Input_CB2()
 	}
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::Input_CB(Fl_Widget *w, void *data)
 {
 	((Slider_Float_Input*)data)->Input_CB2();
 }
 
-// CTOR
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 Slider_Float_Input::Slider_Float_Input(int x, int y, int w, int h, const char *l) : Fl_Group(x,y,w,h,l)
 {
 	int in_w = 40;
@@ -314,43 +362,66 @@ Slider_Float_Input::Slider_Float_Input(int x, int y, int w, int h, const char *l
 	end();             // close the group
 }
 
-// MINIMAL ACCESSORS --  Add your own as needed
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 float  Slider_Float_Input::value() const
 { 
 	return slider->value();
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::value(float val)
 {
 	slider->value(val);
 	Slider_CB2();
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::minumum(float val)
 {
 	slider->minimum(val);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 float  Slider_Float_Input::minumum() const
 {
 	return(slider->minimum());
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::maximum(float val)
 {
 	slider->maximum(val);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 float  Slider_Float_Input::maximum() const
 {
 	return slider->maximum();
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void Slider_Float_Input::bounds(float low, float high)
 {
 	slider->bounds(low, high);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 posY, s32 width, s32 height, CoreObjectHandle viewHandle, s32 attribIndex)
 {
 	//Fl_Group* pGroup = new Fl_Group(0,posY,width,64,0);
@@ -432,7 +503,6 @@ Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 
 	
 	return NULL;
 }
-
 
 #endif
 

@@ -32,6 +32,10 @@ class CoreObjectFactory : public CoreObjectFactoryBase
 {
 	friend class CoreObjectManager;
 public:
+	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	CoreObjectFactory()
 	{
 		m_pObjectList = NULL;
@@ -43,6 +47,9 @@ public:
 		m_objectHasBeenDeleted = false;
 	}
 	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	~CoreObjectFactory()
 	{
 		if(m_usedPlacementNew == false
@@ -52,8 +59,17 @@ public:
 		}
 	}
 	
-	u32 GetDataSize(){return m_dataSize;}
 	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	u32 GetDataSize()
+	{
+		return m_dataSize;
+	}
+	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	void Sort(bool (*compareFunc)(const T& lhs, const T& rhs))
 	{
 		Array_InsertionSort(m_pObjectList, m_numObjects, compareFunc);
@@ -65,6 +81,8 @@ public:
 	}
 	
 	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	void Sort(u32 startIndex, u32 count, bool (*compareFunc)(const T& lhs, const T& rhs))
 	{
 		Array_InsertionSort(&m_pObjectList[startIndex], count, compareFunc);
@@ -76,6 +94,8 @@ public:
 	}
 	
 	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	void Clear()
 	{
 		for(u32 i=0; i<m_numObjects; ++i)
@@ -93,6 +113,8 @@ public:
 	};
 
 	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	T* CreateObject(u32 type)
 	{
 		if(m_numObjects == m_maxObjects)
@@ -116,6 +138,9 @@ public:
 		return NULL;
 	}
     
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
     void UpdateObjectSubList(u32 listStart, u32 num, f32 timeElapsed)
     {
         //Update remaining objects
@@ -126,17 +151,18 @@ public:
         }
     }
 	
-
+	//----------------------------------------------------------------------------
 	//Returns true if an object was deleted in case you need
 	//to respond to that sort of thing
+	//----------------------------------------------------------------------------
 	virtual bool UpdateObjectList(f32 timeElapsed)
 	{
+		m_objectHasBeenDeleted = false;
+		
 		if(m_numObjects == 0)
 		{
 			return false;
 		}
-		
-		m_objectHasBeenDeleted = false;
 		
 		//Delete dead objects
 		bool deletedSomething = false;
@@ -190,6 +216,8 @@ public:
 	}
 
 	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	void Init(u32 maxObjects, void* pMemLocation = NULL)
 	{
 		if(pMemLocation == NULL)
@@ -213,6 +241,8 @@ public:
 	}
 	
 	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	void SetObjectsCanUpdate(bool objectsCanUpdate)
 	{
 		m_objectsCanUpdate = objectsCanUpdate;

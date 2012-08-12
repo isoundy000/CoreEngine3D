@@ -8,8 +8,9 @@
 
 #include "CoreObjectAttribute.h"
 
-//Attribute class
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttribute::Init(const char* attribName, CoreObjectAttributeType type)
 {
 	nameHash = Hash(attribName);
@@ -21,6 +22,9 @@ void CoreObjectAttribute::Init(const char* attribName, CoreObjectAttributeType t
 	name[numChars] = 0;	//Sanity check
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 u32 CoreObjectAttribute::GetSizeBytes() const
 {
 	return m_classSizeBytes;
@@ -29,7 +33,11 @@ u32 CoreObjectAttribute::GetSizeBytes() const
 
 //Specializations for each attribute type
 
+
 //CHAR32
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_Char32::CoreObjectAttribute_Char32(const char* name)
 {
 	Init(name,CoreObjectAttributeType_Char32);
@@ -39,6 +47,9 @@ CoreObjectAttribute_Char32::CoreObjectAttribute_Char32(const char* name)
 	hashedValue = 0;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_Char32::CoreObjectAttribute_Char32(const char* name, const char* defaultValue)
 {
 	Init(name,CoreObjectAttributeType_Char32);
@@ -53,6 +64,9 @@ CoreObjectAttribute_Char32::CoreObjectAttribute_Char32(const char* name, const c
 	hashedValue = Hash((const char*)value);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttribute_Char32::SetValueFromCString(const char* cStr)
 {
 	const s32 numChars = MinS32(31,(s32)strlen(cStr));	//anti-buffer overrun
@@ -65,12 +79,19 @@ void CoreObjectAttribute_Char32::SetValueFromCString(const char* cStr)
 }
 
 //F32
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_F32::CoreObjectAttribute_F32(const char* name)
 {
 	Init(name,CoreObjectAttributeType_F32);
 	m_classSizeBytes = sizeof(CoreObjectAttribute_F32);
 	value = 0.0f;
 }
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_F32::CoreObjectAttribute_F32(const char* name, f32 defaultValue, f32 minValue, f32 maxValue)
 {
 	Init(name,CoreObjectAttributeType_F32);
@@ -80,35 +101,50 @@ CoreObjectAttribute_F32::CoreObjectAttribute_F32(const char* name, f32 defaultVa
 	this->maxValue = maxValue;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttribute_F32::SetValueFromCString(const char* cStr)
 {
 	value = atof(cStr);
 }
 
 //S32
-	CoreObjectAttribute_S32::CoreObjectAttribute_S32(const char* name)
-	{
-		Init(name,CoreObjectAttributeType_S32);
-		m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
-		value = 0;
-	}
-	
-	CoreObjectAttribute_S32::CoreObjectAttribute_S32(const char* name, s32 defaultValue, s32 minValue, s32 maxValue)
-	{
-		Init(name,CoreObjectAttributeType_S32);
-		m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
-		value = defaultValue;
-		this->minValue = minValue;
-		this->maxValue = maxValue;
-	}
-	
-	void CoreObjectAttribute_S32::SetValueFromCString(const char* cStr)
-	{
-		value = atoi(cStr);
-	}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+CoreObjectAttribute_S32::CoreObjectAttribute_S32(const char* name)
+{
+	Init(name,CoreObjectAttributeType_S32);
+	m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
+	value = 0;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+CoreObjectAttribute_S32::CoreObjectAttribute_S32(const char* name, s32 defaultValue, s32 minValue, s32 maxValue)
+{
+	Init(name,CoreObjectAttributeType_S32);
+	m_classSizeBytes = sizeof(CoreObjectAttribute_S32);
+	value = defaultValue;
+	this->minValue = minValue;
+	this->maxValue = maxValue;
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void CoreObjectAttribute_S32::SetValueFromCString(const char* cStr)
+{
+	value = atoi(cStr);
+}
 
 
 //U32
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_U32::CoreObjectAttribute_U32(const char* name)
 {
 	Init(name,CoreObjectAttributeType_U32);
@@ -116,6 +152,9 @@ CoreObjectAttribute_U32::CoreObjectAttribute_U32(const char* name)
 	value = 0;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_U32::CoreObjectAttribute_U32(const char* name, u32 defaultValue, u32 minValue, u32 maxValue)
 {
 	Init(name,CoreObjectAttributeType_U32);
@@ -125,26 +164,38 @@ CoreObjectAttribute_U32::CoreObjectAttribute_U32(const char* name, u32 defaultVa
 	this->maxValue = maxValue;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttribute_U32::SetValueFromCString(const char* cStr)
 {
 	value = atoi(cStr);
 }
 
 //CoreUI_Origin
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_CoreUI_Origin::CoreObjectAttribute_CoreUI_Origin(const char* name)
 {
 	Init(name,CoreObjectAttributeType_CoreUI_Origin);
 	m_classSizeBytes = sizeof(CoreObjectAttribute_CoreUI_Origin);
 	value = CoreUI_Origin_Center;
 }
-	
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute_CoreUI_Origin::CoreObjectAttribute_CoreUI_Origin(const char* name, CoreUI_Origin defaultValue)
 {
 	Init(name,CoreObjectAttributeType_CoreUI_Origin);
 	m_classSizeBytes = sizeof(CoreObjectAttribute_CoreUI_Origin);
 	value = defaultValue;
 }
-	
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttribute_CoreUI_Origin::SetValueFromCString(const char* cStr)
 {
 	//Set a default for sanity
@@ -190,6 +241,8 @@ void CoreObjectAttribute_CoreUI_Origin::SetValueFromCString(const char* cStr)
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttributeList::Init(u8* pDataBuffer, u32 numBytes)
 {
 	//Allocate some memory for the attributes
@@ -199,6 +252,9 @@ void CoreObjectAttributeList::Init(u8* pDataBuffer, u32 numBytes)
 	numAttributes = 0;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttributeList::Uninit()
 {
 	m_data = NULL;
@@ -207,17 +263,26 @@ void CoreObjectAttributeList::Uninit()
 	m_maxDataSizeBytes = 0;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 const CoreObjectAttribute* CoreObjectAttributeList::operator[](s32 index) const
 {
 	return GetAttributeByByteIndex(m_byteIndices[index]);
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute* CoreObjectAttributeList::operator[](s32 index)
 {
 	return GetAttributeByByteIndex(m_byteIndices[index]);
 }
 
+
+//----------------------------------------------------------------------------
 //Returns the byte index for quick access to the attribute
+//----------------------------------------------------------------------------
 s32 CoreObjectAttributeList::Add(const CoreObjectAttribute& attrib)
 {
 	if(numAttributes == CoreObjectAttribute_MaxAttributes)
@@ -255,12 +320,17 @@ s32 CoreObjectAttributeList::Add(const CoreObjectAttribute& attrib)
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 const CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByByteIndex(u32 byteIndex) const
 {
 	CoreObjectAttribute* pAttrib = (CoreObjectAttribute*)&m_data[byteIndex];
 	return pAttrib;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByByteIndex(u32 byteIndex)
 {
 	CoreObjectAttribute* pAttrib = (CoreObjectAttribute*)&m_data[byteIndex];
@@ -268,6 +338,8 @@ CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByByteIndex(u32 byteIn
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 const CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByName(const char* name) const
 {
 	const u32 nameHash = Hash(name);
@@ -276,6 +348,8 @@ const CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByName(const cha
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByNameHash(u32 nameHash) const
 {
 	u32 byteIndex = 0;
@@ -296,6 +370,8 @@ CoreObjectAttribute* CoreObjectAttributeList::GetAttributeByNameHash(u32 nameHas
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectAttributeList::SetValueForAttribByCString(const char* attribName, const char* valueString)
 {
 	const u32 nameHash = Hash(attribName);

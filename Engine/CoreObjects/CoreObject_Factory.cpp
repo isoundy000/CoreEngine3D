@@ -22,6 +22,9 @@
 
 CoreObjectManager* COREOBJECTMANAGER = NULL;
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectManager::CoreObjectHandleEntry::CoreObjectHandleEntry() 
 : m_nextFreeIndex(0)
 , m_counter(1)
@@ -30,6 +33,9 @@ CoreObjectManager::CoreObjectHandleEntry::CoreObjectHandleEntry()
 , m_pObject(NULL)
 {}
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectManager::CoreObjectHandleEntry::CoreObjectHandleEntry(u32 nextFreeIndex)
 : m_nextFreeIndex(nextFreeIndex)
 , m_counter(1)
@@ -39,6 +45,8 @@ CoreObjectManager::CoreObjectHandleEntry::CoreObjectHandleEntry(u32 nextFreeInde
 {}
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObjectManager::CoreObjectManager()
 {
 	COREOBJECTMANAGER = this;
@@ -47,6 +55,8 @@ CoreObjectManager::CoreObjectManager()
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectManager::Clear()
 {
 	m_activeEntryCount = 0;
@@ -63,6 +73,8 @@ void CoreObjectManager::Clear()
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 bool CoreObjectManager::AddObject(CoreObject *pCoreObject)
 {
 #if COREOBJECTMANAGER_DEBUG
@@ -117,6 +129,9 @@ bool CoreObjectManager::AddObject(CoreObject *pCoreObject)
 	return true;
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 CoreObject* CoreObjectManager::GetObjectByHandle(CoreObjectHandle handle)
 {
 	const s32 index = handle.m_index;
@@ -156,6 +171,8 @@ void CoreObjectManager::UpdateHandle(CoreObject* pCoreObject)
 }
 
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectManager::RemoveObject(CoreObject* pCoreObject)
 {
     if(m_activeEntryCount == 0)
@@ -190,6 +207,9 @@ void CoreObjectManager::RemoveObject(CoreObject* pCoreObject)
 	//COREDEBUG_PrintDebugMessage("Removed Handle: %u, for type: %u", (u32)handle, pCoreObject->GetEntityType());
 }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectManager::PrintStatus()
 {
 	COREDEBUG_PrintDebugMessage("Handles: Num Used: %d, Num Free %d",m_activeEntryCount,COREOBJECT_MAX_OBJECTS-m_activeEntryCount);
