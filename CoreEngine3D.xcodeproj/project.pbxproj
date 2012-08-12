@@ -83,6 +83,9 @@
 		DD4FB17C15D6F49200BB8731 /* CoreObject_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD4FB17A15D6F49100BB8731 /* CoreObject_Factory.cpp */; };
 		DD4FB17D15D6F49200BB8731 /* CoreObject_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD4FB17A15D6F49100BB8731 /* CoreObject_Factory.cpp */; };
 		DD4FB17E15D6F49200BB8731 /* CoreObject_Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = DD4FB17B15D6F49200BB8731 /* CoreObject_Factory.h */; };
+		DD4FB18215D6F5C500BB8731 /* CoreObject_FactoryManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD4FB18015D6F5C500BB8731 /* CoreObject_FactoryManager.cpp */; };
+		DD4FB18315D6F5C500BB8731 /* CoreObject_FactoryManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD4FB18015D6F5C500BB8731 /* CoreObject_FactoryManager.cpp */; };
+		DD4FB18415D6F5C500BB8731 /* CoreObject_FactoryManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DD4FB18115D6F5C500BB8731 /* CoreObject_FactoryManager.h */; };
 		DD50F88115C8FF0E00B97194 /* CoreInput.h in Headers */ = {isa = PBXBuildFile; fileRef = DD50F88015C8FF0E00B97194 /* CoreInput.h */; };
 		DD50F88515C9059800B97194 /* TiledLevelEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */; };
 		DD50F88615C9059800B97194 /* TiledLevelEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */; };
@@ -545,6 +548,8 @@
 		DD0D60D715C5021E00029420 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
 		DD4FB17A15D6F49100BB8731 /* CoreObject_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreObject_Factory.cpp; sourceTree = "<group>"; };
 		DD4FB17B15D6F49200BB8731 /* CoreObject_Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreObject_Factory.h; sourceTree = "<group>"; };
+		DD4FB18015D6F5C500BB8731 /* CoreObject_FactoryManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreObject_FactoryManager.cpp; sourceTree = "<group>"; };
+		DD4FB18115D6F5C500BB8731 /* CoreObject_FactoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreObject_FactoryManager.h; sourceTree = "<group>"; };
 		DD50F88015C8FF0E00B97194 /* CoreInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInput.h; sourceTree = "<group>"; };
 		DD50F88315C9059800B97194 /* TiledLevelEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TiledLevelEditor.cpp; sourceTree = "<group>"; };
 		DD50F88415C9059800B97194 /* TiledLevelEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLevelEditor.h; sourceTree = "<group>"; };
@@ -792,6 +797,8 @@
 		DD0D5FA715C4EEF700029420 /* CoreObjects */ = {
 			isa = PBXGroup;
 			children = (
+				DD4FB18015D6F5C500BB8731 /* CoreObject_FactoryManager.cpp */,
+				DD4FB18115D6F5C500BB8731 /* CoreObject_FactoryManager.h */,
 				DD4FB17A15D6F49100BB8731 /* CoreObject_Factory.cpp */,
 				DD4FB17B15D6F49200BB8731 /* CoreObject_Factory.h */,
 				DD0D5FA815C4EEF700029420 /* CoreGameObject.cpp */,
@@ -1410,6 +1417,7 @@
 				DD50F88715C9059800B97194 /* TiledLevelEditor.h in Headers */,
 				DD50F88C15CA513700B97194 /* LevelEditor3D.h in Headers */,
 				DD4FB17E15D6F49200BB8731 /* CoreObject_Factory.h in Headers */,
+				DD4FB18415D6F5C500BB8731 /* CoreObject_FactoryManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1556,6 +1564,7 @@
 				DD50F88A15CA513700B97194 /* LevelEditor3D.cpp in Sources */,
 				DDD11DBF15CF9E5600403A55 /* CoreObjectAttribute.cpp in Sources */,
 				DD4FB17C15D6F49200BB8731 /* CoreObject_Factory.cpp in Sources */,
+				DD4FB18215D6F5C500BB8731 /* CoreObject_FactoryManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1635,6 +1644,7 @@
 				DD50F88B15CA513700B97194 /* LevelEditor3D.cpp in Sources */,
 				DDD11DC015CF9E5600403A55 /* CoreObjectAttribute.cpp in Sources */,
 				DD4FB17D15D6F49200BB8731 /* CoreObject_Factory.cpp in Sources */,
+				DD4FB18315D6F5C500BB8731 /* CoreObject_FactoryManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,8 +20,15 @@
 class CoreObjectManager;
 extern CoreObjectManager* COREOBJECTMANAGER;
 
+class CoreObjectFactoryBase
+{
+public:
+	virtual bool UpdateObjectList(f32 timeElapsed) = 0;
+	virtual void Clear() = 0;
+};
+
 template <class T>
-class CoreObjectFactory
+class CoreObjectFactory : public CoreObjectFactoryBase
 {
 	friend class CoreObjectManager;
 public:
@@ -30,8 +37,22 @@ public:
 		m_pObjectList = NULL;
 		m_numObjects = 0;
 		m_maxObjects = 0;
+		m_dataSize = 0;
 		m_objectsCanUpdate = true;
+		m_usedPlacementNew = false;
+		m_objectHasBeenDeleted = false;
 	}
+	
+	~CoreObjectFactory()
+	{
+		if(m_usedPlacementNew == false
+		   && m_pObjectList != NULL)
+		{
+			delete[] m_pObjectList;
+		}
+	}
+	
+	u32 GetDataSize(){return m_dataSize;}
 	
 	void Sort(bool (*compareFunc)(const T& lhs, const T& rhs))
 	{
@@ -108,12 +129,14 @@ public:
 
 	//Returns true if an object was deleted in case you need
 	//to respond to that sort of thing
-	bool UpdateObjectList(f32 timeElapsed)
+	virtual bool UpdateObjectList(f32 timeElapsed)
 	{
 		if(m_numObjects == 0)
 		{
 			return false;
 		}
+		
+		m_objectHasBeenDeleted = false;
 		
 		//Delete dead objects
 		bool deletedSomething = false;
@@ -161,18 +184,32 @@ public:
             
 		}
 		
+		m_objectHasBeenDeleted = deletedSomething;
+		
 		return deletedSomething;
 	}
 
 	
-	void Init(u32 maxObjects)
+	void Init(u32 maxObjects, void* pMemLocation = NULL)
 	{
-		m_pObjectList = new T[maxObjects];
+		if(pMemLocation == NULL)
+		{
+			m_pObjectList = new T[maxObjects];
+			//m_usedPlacementNew is already set to false by default
+		}
+		else
+		{
+			m_pObjectList = new(pMemLocation) T[maxObjects];
+			m_usedPlacementNew = true;
+		}
+		
 		m_maxObjects = maxObjects;
 		
 		Clear();
 
 		T::InitClass();
+		
+		m_dataSize = sizeof(T)*m_maxObjects;
 	}
 	
 	
@@ -182,11 +219,13 @@ public:
 	}
     
 	//private:
-
 	T* m_pObjectList;
 	u32 m_numObjects;
 	u32 m_maxObjects;
+	u32 m_dataSize;
 	bool m_objectsCanUpdate;
+	bool m_usedPlacementNew;
+	bool m_objectHasBeenDeleted;
 };
 
 

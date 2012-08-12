@@ -309,7 +309,7 @@ int FLTKGLWindow::handle(int event) {
 				keyCode -= g_Key_StartHigh;
 			}
 			
-			COREDEBUG_PrintDebugMessage("FLTK Event: FL_KEYDOWN: %d",keyCode);
+			//COREDEBUG_PrintDebugMessage("FLTK Event: FL_KEYDOWN: %d",keyCode);
 			
 			const CoreInput_ButtonState currState = GAME->m_keyboardState.buttonState[keyCode];
 			if(currState != CoreInput_ButtonState_Held)

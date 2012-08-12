@@ -2412,7 +2412,7 @@ bool OpenGLRenderer::LoadTexture(const char* fileName,ImageType imageType, u32* 
     }
 	else if(*pGLTexture != 0)
 	{
-		COREDEBUG_PrintMessage("LoadTexture->Warning: Possible unitialized texture handle.  This is fine unless you see incorrect textures.");
+		COREDEBUG_PrintDebugMessage("LoadTexture->Warning: Possible unitialized texture handle.  This is fine unless you see incorrect textures.");
 		
 		return false;
 	}

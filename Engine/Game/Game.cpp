@@ -1770,7 +1770,7 @@ CoreUIView* Game::LoadCoreUIFromXML(std::string& path, std::string& filename)
 				
 				GLRENDERER->LoadTexture(texFilenameWithPath.c_str(), ImageType_PNG, &pCurrTexture->textureHandle, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,true);
 				
-				COREDEBUG_PrintMessage("GUITexture: %s, id: %d",texFilenameWithPath.c_str(),pCurrTexture->textureHandle);
+				COREDEBUG_PrintDebugMessage("GUITexture: %s, id: %d",texFilenameWithPath.c_str(),pCurrTexture->textureHandle);
 				
 				assert(pCurrTexture->textureHandle);
 				
