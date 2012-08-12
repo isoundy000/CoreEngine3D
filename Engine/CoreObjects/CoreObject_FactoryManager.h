@@ -33,43 +33,7 @@ public:
 	void Init(u32 memorySizeBytes);
 	void Clear(); //Clears the factories (like between levels, etc.)
 	void Update(f32 timeElapsed);
-	
-	template <class T>
-	
-	//----------------------------------------------------------------------------
-	//----------------------------------------------------------------------------
-	void Add(CoreObjectFactory<T>& factory, u32 maxObjects)
-	{
-		//To start, the current byte index is at the beginning of the current entry
-		
-		//Create new entry at the current location
-		CoreObjectFactoryEntry* pNewEntry = (CoreObjectFactoryEntry*)&m_pMemory[m_currByteIndex];
-		
-		//Save a pointer to the factory
-		pNewEntry->pFactory = &factory;
-		
-		//Now the byte index becomes the location of the memory to hold all the factory objects
-		m_currByteIndex += sizeof(CoreObjectFactoryEntry);
-		
-		//Init factory using memory at the current location
-		u8* pMemLoc = &m_pMemory[m_currByteIndex];
-		factory.Init(maxObjects,pMemLoc);
-		
-		//Now the byte index will be at the beginning of the next entry
-		const u32 dataSize = factory.GetDataSize();
-		m_currByteIndex += dataSize;
-		
-		//Save the location
-		pNewEntry->nextEntryByteIndex = m_currByteIndex;
-		
-		//Initialize the last entry as a terminator
-		CoreObjectFactoryEntry* pLastEntry = (CoreObjectFactoryEntry*)&m_pMemory[m_currByteIndex];
-		pLastEntry->nextEntryByteIndex = 0;
-		
-		const u32 memUsage = pLastEntry->nextEntryByteIndex+sizeof(CoreObjectFactoryEntry);
-		
-		COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem usage is: %d bytes, %.2fMB",memUsage, ((f32)memUsage) / SQUARE(1024.0f) );
-	}
+	void Add(CoreObjectFactoryBase& factory, u32 maxObjects);
 	
 private:
 	u8* m_pMemory;

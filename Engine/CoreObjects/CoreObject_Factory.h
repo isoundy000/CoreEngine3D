@@ -25,6 +25,8 @@ class CoreObjectFactoryBase
 public:
 	virtual bool UpdateObjectList(f32 timeElapsed) = 0;
 	virtual void Clear() = 0;
+	virtual u32 GetDataSize() = 0;
+	virtual void Init(u32 maxObjects, void* pMemLocation = NULL) = 0;
 };
 
 template <class T>
@@ -61,7 +63,7 @@ public:
 	
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
-	u32 GetDataSize()
+	virtual u32 GetDataSize()
 	{
 		return m_dataSize;
 	}
@@ -217,7 +219,7 @@ public:
 	
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
-	void Init(u32 maxObjects, void* pMemLocation = NULL)
+	virtual void Init(u32 maxObjects, void* pMemLocation = NULL)
 	{
 		if(pMemLocation == NULL)
 		{
