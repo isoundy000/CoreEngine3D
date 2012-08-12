@@ -35,6 +35,9 @@ public:
 	void Update(f32 timeElapsed);
 	
 	template <class T>
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	void Add(CoreObjectFactory<T>& factory, u32 maxObjects)
 	{
 		//To start, the current byte index is at the beginning of the current entry

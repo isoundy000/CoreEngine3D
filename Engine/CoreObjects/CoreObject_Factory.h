@@ -31,9 +31,8 @@ template <class T>
 class CoreObjectFactory : public CoreObjectFactoryBase
 {
 	friend class CoreObjectManager;
+	
 public:
-	
-	
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
 	CoreObjectFactory()

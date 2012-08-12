@@ -47,23 +47,15 @@ void CoreObjectFactoryManager::Init(u32 memorySizeBytes)
 //----------------------------------------------------------------------------
 void CoreObjectFactoryManager::Clear()
 {
-	u32 currByteIndex = 0;
+	CoreObjectFactoryEntry* pEntry = (CoreObjectFactoryEntry*)&m_pMemory[0];
 	
-	while (1)
+	while (pEntry->nextEntryByteIndex != 0)
 	{
-		CoreObjectFactoryEntry* pEntry = (CoreObjectFactoryEntry*)&m_pMemory[currByteIndex];
-		
-		//Once the next byte index is 0, we are at the end
-		if(pEntry->nextEntryByteIndex == 0)
-		{
-			break;
-		}
-		
-		//Update the factory
+		//Clear the factory
 		pEntry->pFactory->Clear();
 		
-		//Set the next memory location
-		currByteIndex = pEntry->nextEntryByteIndex;
+		//Get the next entry
+		pEntry = (CoreObjectFactoryEntry*)&m_pMemory[pEntry->nextEntryByteIndex];
 	}
 }
 
@@ -72,22 +64,14 @@ void CoreObjectFactoryManager::Clear()
 //----------------------------------------------------------------------------
 void CoreObjectFactoryManager::Update(f32 timeElapsed)
 {
-	u32 currByteIndex = 0;
+	CoreObjectFactoryEntry* pEntry = (CoreObjectFactoryEntry*)&m_pMemory[0];
 	
-	while (1)
+	while (pEntry->nextEntryByteIndex != 0)
 	{
-		CoreObjectFactoryEntry* pEntry = (CoreObjectFactoryEntry*)&m_pMemory[currByteIndex];
-
-		//Once the next byte index is 0, we are at the end
-		if(pEntry->nextEntryByteIndex == 0)
-		{
-			break;
-		}
-		
 		//Update the factory
 		pEntry->pFactory->UpdateObjectList(timeElapsed);
 		
-		//Set the next memory location
-		currByteIndex = pEntry->nextEntryByteIndex;
+		//Get the next entry
+		pEntry = (CoreObjectFactoryEntry*)&m_pMemory[pEntry->nextEntryByteIndex];
 	}
 }
