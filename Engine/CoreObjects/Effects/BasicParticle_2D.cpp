@@ -211,6 +211,7 @@ void BasicParticle_2D::UpdateParticle(f32 timeElapsed)
 	}
     
 	m_lifeTimer += timeElapsed;
+	m_lifeTimer = MinF(m_lifeTimer, m_totalLifeTime);
 	
 	//Calculate alpha based on life time
 	f32 breakableAlpha;
@@ -247,7 +248,7 @@ void BasicParticle_2D::UpdateParticle(f32 timeElapsed)
 	
 	vec3* pPos = mat4f_GetPos(pGeom->worldMat);
 	
-	const f32 lerpT = MinF(1.0f,m_lifeTimer/m_totalLifeTime);
+	const f32 lerpT = m_lifeTimer/m_totalLifeTime;
 	const f32 radius = Lerp(m_radiusStart, m_radiusEnd, lerpT);
 	
 	if(m_pBody != NULL)
@@ -352,19 +353,29 @@ void BasicParticle_2D::SetVelocity(const vec3* pVel)
 }
 
 
-void BasicParticle_2D::UpdateHandle()	//Call when the memory location changes
+void BasicParticle_2D::UpdatePointers()	//Call when the memory location changes
 {	
-	CoreObject::UpdateHandle();
+	CoreObject::UpdatePointers();
     
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
 
-	if(m_numColumns < 2)
+	if(pGeom != NULL)
 	{
-		pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
-	}
-	else
-	{
-		pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
-		pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+		//Should be a non-animated particle with just diffuse color
+		if(m_numColumns < 2)
+		{
+#if defined(_DEBUG)
+			assert(pGeom->material.materialID != MT_TextureAndDiffuseColorWithTexcoordOffset);
+#endif
+			pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
+		}
+		else
+		{
+#if defined(_DEBUG)
+			assert(pGeom->material.materialID != MT_TextureAndDiffuseColor);
+#endif
+			pGeom->material.uniqueUniformValues[0] = (u8*)&m_texcoordOffset;
+			pGeom->material.uniqueUniformValues[1] = (u8*)&m_diffuseColor;
+		}
 	}
 }

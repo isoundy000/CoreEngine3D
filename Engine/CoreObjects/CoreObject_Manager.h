@@ -35,7 +35,7 @@ public:
 	s32 GetNumEntries(){return m_activeEntryCount;}
 private:
 	void RemoveObject(CoreObject* pCoreObject);
-	void UpdateHandle(CoreObject* pCoreObject);
+	void UpdatePointers(CoreObject* pCoreObject);
 	
 	struct CoreObjectHandleEntry
 	{

@@ -25,7 +25,7 @@ public:
 	{
 		u32 nextEntryByteIndex;	//Set to 0 to terminate list
 		CoreObjectFactoryBase* pFactory;
-		u32 pad[2];
+		//u32 pad[2];
 	};
 	
 	CoreObjectFactoryManager();

@@ -32,7 +32,7 @@ void CoreObject::DeleteObject()
 //----------------------------------------------------------------------------
 void CoreObject::InvalidateHandle()
 {
-	handle = CoreObjectHandle();
+	handle = 0;
 }
 
 
@@ -47,11 +47,11 @@ u32 CoreObject::GetEntityType()
 //----------------------------------------------------------------------------
 //Called when the memory location changes
 //----------------------------------------------------------------------------
-void CoreObject::UpdateHandle()
+void CoreObject::UpdatePointers()
 {
 	//assert(m_markedForDeletion == false);
 	
-	COREOBJECTMANAGER->UpdateHandle(this);
+	COREOBJECTMANAGER->UpdatePointers(this);
 }
 
 

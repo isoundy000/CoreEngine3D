@@ -139,7 +139,7 @@ void CurvePoints_2D::Update(f32 timeElapsed)
 
 //----------------------------------------------------------------
 //----------------------------------------------------------------
-void CurvePoints_2D::UpdateHandle()
+void CurvePoints_2D::UpdatePointers()
 {
     //TODO: update anything that has pointers to local
     //member variables, such as material uniform locations

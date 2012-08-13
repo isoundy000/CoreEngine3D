@@ -70,7 +70,7 @@ public:
 	void SetEntityType(u32 type){m_entityTypeHash = type;}	//WARNING: never call this EVER... unless you really know why
 	CoreObjectHandle GetHandle() const;
 	
-	virtual void UpdateHandle();	//Call when the memory location changes
+	virtual void UpdatePointers();	//Call when the memory location changes
 	void DeleteObject();			//Use with new system
 
 	virtual bool Init(u32 type);

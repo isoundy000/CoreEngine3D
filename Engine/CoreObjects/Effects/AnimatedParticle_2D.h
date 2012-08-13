@@ -48,7 +48,7 @@ public:
 	
 	//static void InitClass(){};
 	
-	virtual void UpdateHandle();	//Call when the memory location changes
+	virtual void UpdatePointers();	//Call when the memory location changes
 	
 	//virtual bool Init(u32 type);
 	//virtual bool SpawnInit(void* pSpawnStruct){return true;}

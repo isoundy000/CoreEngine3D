@@ -21,7 +21,7 @@ static const u32 g_CurvePoints_2D_MaxPoints = 32;
 class CurvePoints_2D: public CoreGameObject
 {
 public:
-    virtual void UpdateHandle();	//Called when the memory location changes
+    virtual void UpdatePointers();	//Called when the memory location changes
 
 	virtual bool Init(u32 type);	//Init variables
 	virtual bool SpawnInit(void* pSpawnStruct);	//Create object from data

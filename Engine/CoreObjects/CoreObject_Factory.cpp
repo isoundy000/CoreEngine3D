@@ -154,7 +154,7 @@ CoreObject* CoreObjectManager::GetObjectByHandle(CoreObjectHandle handle)
 
 //Gets called when a CoreObject changes it's memory location
 //like when you compact an array
-void CoreObjectManager::UpdateHandle(CoreObject* pCoreObject)
+void CoreObjectManager::UpdatePointers(CoreObject* pCoreObject)
 {
 	const CoreObjectHandle handle = pCoreObject->GetHandle();
 	
@@ -187,7 +187,7 @@ void CoreObjectManager::RemoveObject(CoreObject* pCoreObject)
 	const CoreObjectHandle handle = pCoreObject->GetHandle();
 	
 	//Invalidate the object's handle
-	pCoreObject->handle = CoreObjectHandle();
+	pCoreObject->handle = 0;
 	
 	const s32 index = handle.m_index;
 	

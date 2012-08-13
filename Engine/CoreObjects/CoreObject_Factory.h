@@ -77,7 +77,7 @@ public:
 		
 		for(u32 i=0; i<m_numObjects; ++i)
 		{
-			m_pObjectList[i].UpdateHandle();
+			m_pObjectList[i].UpdatePointers();
 		}
 	}
 	
@@ -90,7 +90,7 @@ public:
 		
 		for(u32 i=startIndex; i<startIndex+count; ++i)
 		{
-			m_pObjectList[i].UpdateHandle();
+			m_pObjectList[i].UpdatePointers();
 		}
 	}
 	
@@ -158,44 +158,50 @@ public:
 	//----------------------------------------------------------------------------
 	virtual bool UpdateObjectList(f32 timeElapsed)
 	{
+		//So far nothing has been deleted
 		m_objectHasBeenDeleted = false;
 		
+		//If there's no objects, exit early
 		if(m_numObjects == 0)
 		{
 			return false;
 		}
-		
-		//Delete dead objects
-		bool deletedSomething = false;
+
+		//Loop through, deleting dead objects
 		for(u32 i=0; i<m_numObjects;)
 		{
 			T* pCurrObject = &m_pObjectList[i];
+			
 			if(pCurrObject->m_markedForDeletion)
 			{
-				deletedSomething = true;
+				m_objectHasBeenDeleted = true;
 
+				//Uninitialize object
+				//The object's Uninit function should delete everything it spawned.
 				pCurrObject->Uninit();
 
+				//This is the last object in the list
 				T* pLastObject = &m_pObjectList[m_numObjects-1];
 
+				//If the object is not the last object, overwrite it
 				if(pCurrObject != pLastObject)
 				{
 					//overwrite current enemy with last enemy
 					*pCurrObject = *pLastObject;	
 
-					//Memory location of the object has moved so update the handle
-					//to point to the new memory location
-					pCurrObject->UpdateHandle();
+					//Memory location of the object has changed.
+					//Update pointers to memory in this object (mostly for renderables)
+					pCurrObject->UpdatePointers();
 				}
-				
-				//Last object should now be an invalid object
-				pLastObject->m_markedForDeletion = false;
-				pLastObject->InvalidateHandle();
 
+				//Decrease the number of objects
 				--m_numObjects;
 			}
 			else
 			{
+				//If the object was deleted, the next object
+				//will already have been copied into it's place.
+				//Thus we only increment if nothing was deleted.
 				++i;
 			}
 		}
@@ -210,10 +216,8 @@ public:
             }
             
 		}
-		
-		m_objectHasBeenDeleted = deletedSomething;
-		
-		return deletedSomething;
+
+		return m_objectHasBeenDeleted;
 	}
 
 	

@@ -84,8 +84,9 @@ void MuzzleFlareParticle_2D::Update(f32 timeElapsed)
 	}
     
 	m_lifeTimer += timeElapsed;
+	m_lifeTimer = MinF(m_lifeTimer, m_timeToLive);
 	
-	const f32 lifeT = MinF(1.0f,m_lifeTimer/m_timeToLive);
+	const f32 lifeT = m_lifeTimer/m_timeToLive;
  
     if(lifeT == 1.0f)
 	{
@@ -142,10 +143,14 @@ void MuzzleFlareParticle_2D::Uninit()
 }
 
 
-void MuzzleFlareParticle_2D::UpdateHandle()	//Call when the memory location changes
+void MuzzleFlareParticle_2D::UpdatePointers()	//Call when the memory location changes
 {	
-	CoreObject::UpdateHandle();
+	CoreObject::UpdatePointers();
     
     RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);
-	pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
+	
+	if(pGeom != NULL)
+	{
+		pGeom->material.uniqueUniformValues[0] = (u8*)&m_diffuseColor;
+	}
 }

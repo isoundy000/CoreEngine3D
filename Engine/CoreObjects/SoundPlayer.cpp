@@ -48,7 +48,7 @@ void SoundPlayer::SpawnInit(const vec3* pPos, u32 soundBufferID, f32 volume, f32
 	OPENALAUDIO->SetSoundSourcePosition(m_soundSource, pPos);
 	OPENALAUDIO->PlaySoundSource(m_soundSource, volume, pitch, isLooping);
 	
-	COREDEBUG_PrintDebugMessage("Sound started...");
+	//COREDEBUG_PrintDebugMessage("Sound started...");
 }
 
 
@@ -70,7 +70,7 @@ void SoundPlayer::ProcessMessage(u32 message, u32 parameter)	//Pass in a hash va
 
 void SoundPlayer::Uninit()
 {
-	COREDEBUG_PrintDebugMessage("Sound deleted!");
+	//COREDEBUG_PrintDebugMessage("Sound deleted!");
 	OPENALAUDIO->DeleteSoundSource(&m_soundSource);
 	
 	CoreObject::Uninit();

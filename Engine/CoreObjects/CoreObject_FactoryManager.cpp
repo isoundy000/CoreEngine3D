@@ -90,9 +90,13 @@ void CoreObjectFactoryManager::Add(CoreObjectFactoryBase& factory, u32 maxObject
 	CoreObjectFactoryEntry* pLastEntry = (CoreObjectFactoryEntry*)&m_pMemory[m_currByteIndex];
 	pLastEntry->nextEntryByteIndex = 0;
 	
-	const u32 memUsage = pLastEntry->nextEntryByteIndex+sizeof(CoreObjectFactoryEntry);
 	
-	COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem usage is: %d bytes, %.2fMB",memUsage, ((f32)memUsage) / SQUARE(1024.0f) );
+#if defined(_DEBUG)
+	const u32 memUsage = m_currByteIndex+sizeof(CoreObjectFactoryEntry);
+	const f32 memUsageMB = ((f32)memUsage) / SQUARE(1024.0f);
+	
+	COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem usage is: %d bytes, %.2fMB",memUsage,memUsageMB);
+#endif
 }
 
 

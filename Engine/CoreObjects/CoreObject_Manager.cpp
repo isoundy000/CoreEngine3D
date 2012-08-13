@@ -85,6 +85,8 @@ bool CoreObjectManager::AddObject(CoreObject *pCoreObject)
 	
 	if(newIndex >= COREOBJECT_MAX_OBJECTS)
 	{
+		pCoreObject->handle = 0;
+		
 		return false;
 	}
 
@@ -156,7 +158,7 @@ CoreObject* CoreObjectManager::GetObjectByHandle(CoreObjectHandle handle)
 //Gets called when a CoreObject changes it's memory location
 //like when you compact an array
 //----------------------------------------------------------------------------
-void CoreObjectManager::UpdateHandle(CoreObject* pCoreObject)
+void CoreObjectManager::UpdatePointers(CoreObject* pCoreObject)
 {
 	const CoreObjectHandle handle = pCoreObject->GetHandle();
 	

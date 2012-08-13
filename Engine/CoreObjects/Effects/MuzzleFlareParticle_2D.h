@@ -41,7 +41,7 @@ public:
 		RenderLayer renderLayer;
 	};
 	
-	virtual void UpdateHandle();	//Call when the memory location changes
+	virtual void UpdatePointers();	//Call when the memory location changes
 	
 	void InitParticle(MuzzleFlareParticle_2D::ParticleSettings *pSettings, CoreObjectHandle hParentRenderable, mat4f localMat, u32 texIndex);
 	virtual void Uninit();
