@@ -19,11 +19,10 @@
 
 OpenGLRenderer* GLRENDERER = NULL;
 
-#include "matrix.h"
-#include <iostream>
-#include <cmath>
-#include "GameUtil.h"
-#include "ArrayUtil.h"
+#include "Math/MathTypes.h"
+#include "Math/matrix.h"
+#include "Util/GameUtil.h"
+#include "Util/ArrayUtil.h"
 #include "ThirdParty/zlib/zlib.h"
 #include "ThirdParty/libpng/png.h"
 #include "ThirdParty/SOIL/SOIL.h"
