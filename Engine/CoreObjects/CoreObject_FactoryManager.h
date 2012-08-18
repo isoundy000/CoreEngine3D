@@ -13,10 +13,15 @@
 #include "CoreObjects/CoreObject_Factory.h"
 #include "MathTypes.h"
 #include "CoreDebug.h"
-#include "stddef.h" //for NULL -_-
+#include <cstddef> //for NULL -_-
 #include "ArrayUtil.h"
 #include <cassert>
 #include "Math/MathTypes.h"
+#include <map>
+
+#define DECLAREFACTORYMANAGER(NAME) CoreObjectFactoryManager g_FactoryManager_##NAME
+#define INITFACTORYMANAGER(NAME,MEMSIZE)  g_FactoryManager_##NAME.Init(MEMSIZE)
+#define ADDFACTORY(FACTMAN,NAME,NUMOBJECTS) g_FactoryManager_##FACTMAN.Add(g_Factory_##NAME,NUMOBJECTS); g_Factory_##NAME.AddCreatedType(#NAME)
 
 class CoreObjectFactoryManager
 {
@@ -25,7 +30,6 @@ public:
 	{
 		u32 nextEntryByteIndex;	//Set to 0 to terminate list
 		CoreObjectFactoryBase* pFactory;
-		//u32 pad[2];
 	};
 	
 	CoreObjectFactoryManager();
@@ -34,11 +38,13 @@ public:
 	void Clear(); //Clears the factories (like between levels, etc.)
 	void Update(f32 timeElapsed);
 	void Add(CoreObjectFactoryBase& factory, u32 maxObjects);
+	CoreObject* CreateObject(u32 type);	//Used to spawn objects when level loads
 	
 private:
 	u8* m_pMemory;
 	u32 m_memorySizeBytes;
 	u32 m_currByteIndex;
+	std::multimap<int,CoreObjectFactoryBase*> m_factoryMap;
 };
 
 

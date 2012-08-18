@@ -10,7 +10,7 @@
 
 #include "CoreObject_FactoryManager.h"
 #include "stddef.h" //for NULL -_-
-
+#include "Util/Hash.h"
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -45,6 +45,21 @@ void CoreObjectFactoryManager::Init(u32 memorySizeBytes)
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
+CoreObject* CoreObjectFactoryManager::CreateObject(u32 type)
+{
+	CoreObjectFactoryBase* pFactory = (CoreObjectFactoryBase*)m_factoryMap.find(type)->second;
+	if(pFactory == NULL)
+	{
+		//TODO: find out if this actually gets set to NULL
+		return NULL;
+	}
+	
+	return pFactory->CreateObjectGeneric(type);
+}
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void CoreObjectFactoryManager::Clear()
 {
 	CoreObjectFactoryEntry* pEntry = (CoreObjectFactoryEntry*)&m_pMemory[0];
@@ -59,6 +74,7 @@ void CoreObjectFactoryManager::Clear()
 	}
 }
 
+static int testInt = 0;
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -97,6 +113,8 @@ void CoreObjectFactoryManager::Add(CoreObjectFactoryBase& factory, u32 maxObject
 	
 	COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem usage is: %d bytes, %.2fMB",memUsage,memUsageMB);
 #endif
+	
+	m_factoryMap.insert(std::make_pair<int,CoreObjectFactoryBase*>(testInt,&factory));
 }
 
 

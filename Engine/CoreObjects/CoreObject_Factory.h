@@ -10,12 +10,16 @@
 #define CoreEngine3D_CoreObjectFactory_h
 
 #include "CoreObjects/CoreObject.h"
-#include "MathTypes.h"
-#include "CoreDebug.h"
+#include "Math/MathTypes.h"
+#include "Math/MathUtil.h"
+#include "Util/CoreDebug.h"
+#include "Util/ArrayUtil.h"
+#include "Util/Hash.h"
+
 #include "stddef.h" //for NULL -_-
-#include "ArrayUtil.h"
 #include <cassert>
-#include "MathUtil.h"
+
+#define FACTORY_MAX_CREATED_TYPES 8
 
 class CoreObjectManager;
 extern CoreObjectManager* COREOBJECTMANAGER;
@@ -27,6 +31,10 @@ public:
 	virtual void Clear() = 0;
 	virtual u32 GetDataSize() = 0;
 	virtual void Init(u32 maxObjects, void* pMemLocation = NULL) = 0;
+	virtual CoreObject* CreateObjectGeneric(u32 type) = 0;
+	virtual u32 GetNumCreatedTypes() = 0;
+	virtual u32* GetCreatedTypes() = 0;
+	virtual void AddCreatedType(const char* type) = 0;	//You will never have to use this unless you're a bad person
 };
 
 template <class T>
@@ -46,6 +54,7 @@ public:
 		m_objectsCanUpdate = true;
 		m_usedPlacementNew = false;
 		m_objectHasBeenDeleted = false;
+		m_numCreatedTypes = 0;
 	}
 	
 	
@@ -66,6 +75,45 @@ public:
 	virtual u32 GetDataSize()
 	{
 		return m_dataSize;
+	}
+	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	virtual u32 GetNumCreatedTypes()
+	{
+		return m_numCreatedTypes;
+	}
+	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	virtual u32* GetCreatedTypes()
+	{
+		return m_createdTypes;
+	}
+	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	virtual void AddCreatedType(const char* type)
+	{
+		AddCreatedType(Hash(type));
+	}
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	void AddCreatedType(u32 type)
+	{
+		if(m_numCreatedTypes == FACTORY_MAX_CREATED_TYPES)
+		{
+			COREDEBUG_PrintDebugMessage("CoreObjectFactory::AddCreatedType -> INSANE ERROR: Exceeded max created types!");
+			
+			return;
+		}
+		
+		m_createdTypes[m_numCreatedTypes] = type;
+		++m_numCreatedTypes;
 	}
 	
 	
@@ -113,6 +161,13 @@ public:
 		m_numObjects = 0;
 	};
 
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	CoreObject* CreateObjectGeneric(u32 type)
+	{
+		return CreateObject(type);
+	}
 	
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
@@ -258,6 +313,8 @@ public:
 	u32 m_numObjects;
 	u32 m_maxObjects;
 	u32 m_dataSize;
+	u32 m_numCreatedTypes;
+	u32 m_createdTypes[FACTORY_MAX_CREATED_TYPES];
 	bool m_objectsCanUpdate;
 	bool m_usedPlacementNew;
 	bool m_objectHasBeenDeleted;
