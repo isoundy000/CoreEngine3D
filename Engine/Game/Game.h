@@ -192,7 +192,6 @@ public:
 	virtual void ReloadLevel(){};
 	virtual void FinishedCurrentLevel(){};
 	virtual void TileDestructionCallback(s32 tileIndexX, s32 tileIndexY, const vec2* pHitVel){};
-    virtual void LoadResourcesForType(u32 type){}
 #if defined (PLATFORM_IOS)
 	TouchInputIOS* m_pTouchInput;
 #endif

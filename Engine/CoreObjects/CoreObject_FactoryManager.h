@@ -39,7 +39,7 @@ public:
 	void Clear(); //Clears the factories (like between levels, etc.)
 	void Update(f32 timeElapsed);
 	void Add(CoreObjectFactoryBase& factory, u32 maxObjects, bool canAutoSpawn);
-	CoreObject* CreateObject(u32 type);	//Used to spawn objects when level loads
+	CoreObject* CreateObject(u32 type, bool loadResourcesForObject);	//Used to spawn objects when level loads
 	
 private:
 	u8* m_pMemory;

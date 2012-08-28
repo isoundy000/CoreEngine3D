@@ -45,7 +45,7 @@ void CoreObjectFactoryManager::Init(u32 memorySizeBytes)
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-CoreObject* CoreObjectFactoryManager::CreateObject(u32 type)
+CoreObject* CoreObjectFactoryManager::CreateObject(u32 type, bool loadResourcesForObject)
 {
 	std::multimap<u32,CoreObjectFactoryBase*>::iterator it = m_factoryMap.find(type);
 	if(it == m_factoryMap.end())
@@ -54,6 +54,11 @@ CoreObject* CoreObjectFactoryManager::CreateObject(u32 type)
 	}
 	
 	CoreObjectFactoryBase* pFactory = (CoreObjectFactoryBase*)it->second;
+	
+	if(loadResourcesForObject == true)
+	{
+		pFactory->LoadResourcesForType();
+	}
 	
 	if(pFactory->m_canAutoSpawn == true)
 	{

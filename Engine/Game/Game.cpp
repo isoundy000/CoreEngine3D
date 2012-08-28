@@ -2483,8 +2483,8 @@ bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 t
 						continue;
 					}
 					
-					//Create game object!
-					pCurrEnt->pObject = g_FactoryManager_GameObjects.CreateObject(pCurrEnt->type);
+					//Create game object and load it's resources!
+					pCurrEnt->pObject = g_FactoryManager_GameObjects.CreateObject(pCurrEnt->type,true);
 					if(pCurrEnt->pObject == NULL)
 					{
 						COREDEBUG_PrintDebugMessage("Game::LoadTiledLevelFromTMX -> WARNING! Object could not be created!");
@@ -2495,13 +2495,6 @@ bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 t
 					}
 				}
 			}
-		}
-        
-        //Load all the objects resources!
-		for(u32 i=0; i<m_numSpawnableEntities; ++i)
-		{
-            SpawnableEntity* pEnt = &m_spawnableEntities[i];
-            GAME->LoadResourcesForType(pEnt->type);
 		}
         
         //Load shared resources

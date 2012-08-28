@@ -39,7 +39,7 @@ public:
 	virtual u32 GetDataSize() = 0;
 	virtual void Init(u32 maxObjects, void* pMemLocation = NULL) = 0;
 	virtual CoreObject* CreateObjectGeneric(u32 type) = 0;
-	
+	virtual void LoadResourcesForType() = 0;
 	u32 m_numObjects;
 	u32 m_maxObjects;
 	u32 m_dataSize;
@@ -91,6 +91,14 @@ public:
 	virtual u32 GetDataSize()
 	{
 		return m_dataSize;
+	}
+	
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	virtual void LoadResourcesForType()
+	{
+		T::LoadResourcesForType(0);	//TODO: deprecate this type parameter
 	}
 	
 	
