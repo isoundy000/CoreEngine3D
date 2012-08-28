@@ -10,9 +10,10 @@
 #define Game_OSX__CoreUIImageView_h
 
 #include "CoreObjects/CoreGameObject.h"
-#include "MathTypes.h"
-#include "GraphicsTypes.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
 #include "CoreUIView.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 class CoreUIImageView: public CoreUIView
 {
@@ -43,5 +44,7 @@ private:
     CoreObjectHandle m_hRenderable;
 	vec4 m_diffuseColor;
 };
+
+DECLAREFACTORY(CoreUIImageView);
 
 #endif

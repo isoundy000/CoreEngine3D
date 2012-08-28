@@ -7,6 +7,9 @@
 //
 
 #include "AnimatedParticle_2D.h"
+
+DEFINEFACTORY(AnimatedParticle_2D);
+
 #include "Graphics/OpenGLRenderer.h"
 #include "Math/matrix.h"
 #include "Math/MathUtil.h"

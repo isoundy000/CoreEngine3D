@@ -32,7 +32,6 @@
 		DD0D609115C4FB6500029420 /* CoreObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FAA15C4EEF700029420 /* CoreObject.cpp */; };
 		DD0D609215C4FB6500029420 /* CoreObject_Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FAC15C4EEF700029420 /* CoreObject_Manager.cpp */; };
 		DD0D609315C4FB6500029420 /* CoreObjectAttribute_FLTK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FAF15C4EEF700029420 /* CoreObjectAttribute_FLTK.cpp */; };
-		DD0D609415C4FB6500029420 /* CoreObjectFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB115C4EEF700029420 /* CoreObjectFactories.cpp */; };
 		DD0D609515C4FB6500029420 /* CurvePoints_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB415C4EEF700029420 /* CurvePoints_2D.cpp */; };
 		DD0D609615C4FB7200029420 /* AnimatedParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB715C4EEF700029420 /* AnimatedParticle_2D.cpp */; };
 		DD0D609715C4FB7200029420 /* BasicParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB915C4EEF700029420 /* BasicParticle_2D.cpp */; };
@@ -124,7 +123,6 @@
 		DDEEC84415C5182E0074A634 /* CoreGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FA815C4EEF700029420 /* CoreGameObject.cpp */; };
 		DDEEC84515C5182E0074A634 /* CoreObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FAA15C4EEF700029420 /* CoreObject.cpp */; };
 		DDEEC84615C5182E0074A634 /* CoreObject_Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FAC15C4EEF700029420 /* CoreObject_Manager.cpp */; };
-		DDEEC84715C5182E0074A634 /* CoreObjectFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB115C4EEF700029420 /* CoreObjectFactories.cpp */; };
 		DDEEC84815C5182E0074A634 /* CurvePoints_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB415C4EEF700029420 /* CurvePoints_2D.cpp */; };
 		DDEEC84915C518350074A634 /* AnimatedParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB715C4EEF700029420 /* AnimatedParticle_2D.cpp */; };
 		DDEEC84A15C518350074A634 /* BasicParticle_2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FB915C4EEF700029420 /* BasicParticle_2D.cpp */; };
@@ -342,8 +340,6 @@
 		DD0D5FAE15C4EEF700029420 /* CoreObjectAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreObjectAttribute.h; sourceTree = "<group>"; };
 		DD0D5FAF15C4EEF700029420 /* CoreObjectAttribute_FLTK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreObjectAttribute_FLTK.cpp; sourceTree = "<group>"; };
 		DD0D5FB015C4EEF700029420 /* CoreObjectAttribute_FLTK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreObjectAttribute_FLTK.h; sourceTree = "<group>"; };
-		DD0D5FB115C4EEF700029420 /* CoreObjectFactories.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = CoreObjectFactories.cpp; sourceTree = "<group>"; };
-		DD0D5FB215C4EEF700029420 /* CoreObjectFactories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreObjectFactories.h; sourceTree = "<group>"; };
 		DD0D5FB315C4EEF700029420 /* CoreObjectTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreObjectTypes.h; sourceTree = "<group>"; };
 		DD0D5FB415C4EEF700029420 /* CurvePoints_2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = CurvePoints_2D.cpp; sourceTree = "<group>"; };
 		DD0D5FB515C4EEF700029420 /* CurvePoints_2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CurvePoints_2D.h; sourceTree = "<group>"; };
@@ -811,8 +807,6 @@
 				DDD11DBE15CF9E5600403A55 /* CoreObjectAttribute.cpp */,
 				DD0D5FAF15C4EEF700029420 /* CoreObjectAttribute_FLTK.cpp */,
 				DD0D5FB015C4EEF700029420 /* CoreObjectAttribute_FLTK.h */,
-				DD0D5FB115C4EEF700029420 /* CoreObjectFactories.cpp */,
-				DD0D5FB215C4EEF700029420 /* CoreObjectFactories.h */,
 				DD0D5FB315C4EEF700029420 /* CoreObjectTypes.h */,
 				DD0D5FB415C4EEF700029420 /* CurvePoints_2D.cpp */,
 				DD0D5FB515C4EEF700029420 /* CurvePoints_2D.h */,
@@ -1514,7 +1508,6 @@
 				DD0D609115C4FB6500029420 /* CoreObject.cpp in Sources */,
 				DD0D609215C4FB6500029420 /* CoreObject_Manager.cpp in Sources */,
 				DD0D609315C4FB6500029420 /* CoreObjectAttribute_FLTK.cpp in Sources */,
-				DD0D609415C4FB6500029420 /* CoreObjectFactories.cpp in Sources */,
 				DD0D609515C4FB6500029420 /* CurvePoints_2D.cpp in Sources */,
 				DD0D609615C4FB7200029420 /* AnimatedParticle_2D.cpp in Sources */,
 				DD0D609715C4FB7200029420 /* BasicParticle_2D.cpp in Sources */,
@@ -1601,7 +1594,6 @@
 				DDEEC84415C5182E0074A634 /* CoreGameObject.cpp in Sources */,
 				DDEEC84515C5182E0074A634 /* CoreObject.cpp in Sources */,
 				DDEEC84615C5182E0074A634 /* CoreObject_Manager.cpp in Sources */,
-				DDEEC84715C5182E0074A634 /* CoreObjectFactories.cpp in Sources */,
 				DDEEC84815C5182E0074A634 /* CurvePoints_2D.cpp in Sources */,
 				DDEEC84915C518350074A634 /* AnimatedParticle_2D.cpp in Sources */,
 				DDEEC84A15C518350074A634 /* BasicParticle_2D.cpp in Sources */,

@@ -17,7 +17,6 @@
 #include "Box2DUtil.h"
 #include "GameUtil.h"
 
-#include "CoreObjects/CoreObjectFactories.h"
 #include "CoreObjects/CoreObjectTypes.h"
 
 #if defined (PLATFORM_WIN)
@@ -34,6 +33,12 @@
 #define ENGINE_PATH "Engine/" 
 
 Game* GAME = NULL;
+
+DEFINEFACTORYMANAGER(GameObjects);
+DEFINEFACTORYMANAGER(GUI);
+
+DEFINEFACTORY_WITHNAME(RenderableGeometry3D,Geometry_Normal);
+DEFINEFACTORY_WITHNAME(RenderableGeometry3D,Geometry_UI);
 
 static bool SortLinePointListByX(const LinePointList& lhs, const LinePointList& rhs);
 
@@ -2473,70 +2478,20 @@ bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 t
 						}
 					}
 					
-					
 					if(pCurrEnt->autospawn == false)
 					{
 						continue;
 					}
-
-					switch(pCurrEnt->type)
+					
+					//Create game object!
+					pCurrEnt->pObject = g_FactoryManager_GameObjects.CreateObject(pCurrEnt->type);
+					if(pCurrEnt->pObject == NULL)
 					{
-						case g_Type_ScriptObject:
-						{
-							pCurrEnt->pObject = g_Factory_ScriptObject.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						case g_Type_CollisionBox:
-						{
-							pCurrEnt->pObject = g_Factory_Trigger_2D.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						case g_Type_ObjectGroup:
-						{
-							pCurrEnt->pObject = g_Factory_ObjectGroup.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						
-						case g_Type_TileAffector:
-						{
-							pCurrEnt->pObject = g_Factory_TileAffector.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						case g_Type_SoundPlayerType:
-						{
-							pCurrEnt->pObject = g_Factory_SoundPlayer.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						case g_Type_Spawner:
-						{
-							pCurrEnt->pObject = g_Factory_Spawner.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						case g_Type_CurvePoints_2D:
-						{
-							pCurrEnt->pObject = g_Factory_CurvePoints_2D.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						case g_Type_NullObject:
-						{
-							pCurrEnt->pObject = g_Factory_NullObject.CreateObject(pCurrEnt->type);
-							
-							break;
-						}
-						default:
-						{
-							//If it's not a core game object then it's a custom one
-							pCurrEnt->pObject = this->CreateObject(pCurrEnt->type);
-							
-							break;
-						}
+						COREDEBUG_PrintDebugMessage("Game::LoadTiledLevelFromTMX -> WARNING! Object could not be created!");
+					}
+					else
+					{
+						COREDEBUG_PrintDebugMessage("Game::LoadTiledLevelFromTMX -> Object created!");
 					}
 				}
 			}

@@ -8,6 +8,8 @@
 
 #include "CurvePoints_2D.h"
 
+DEFINEFACTORY(CurvePoints_2D);
+
 //Engine includes
 #include "Math/MathUtil.h"
 #include "Math/matrix.h"

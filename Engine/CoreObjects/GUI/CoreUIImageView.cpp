@@ -8,6 +8,8 @@
 
 #include "CoreUIImageView.h"
 
+DEFINEFACTORY(CoreUIImageView);
+
 //Engine includes
 #include "Math/MathUtil.h"
 #include "Math/matrix.h"

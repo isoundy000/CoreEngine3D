@@ -8,12 +8,15 @@
 
 #include "GameObjectTemplate.h"
 
-//Engine includes
-#include "Engine/MathUtil.h"
-#include "Engine/matrix.h"
-#include "Engine/Game.h"
+DEFINEFACTORY(GameObjectTemplate);
 
-//Game includes
+//ENGINE
+#include "ENGINE/MathUtil.h"
+#include "ENGINE/matrix.h"
+#include "ENGINE/Game.h"
+//#include "ENGINE/CoreObjects/SoundPlayer.h"
+
+//GAME
 #include "GameModels.h"
 
 //Art

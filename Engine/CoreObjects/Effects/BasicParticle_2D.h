@@ -12,6 +12,8 @@
 #include "CoreObjects/CoreObject.h"
 #include "Graphics/RenderLayer.h"
 #include "Graphics/GraphicsTypes.h"
+#include "CoreObjects/CoreObject_Factory.h"
+
 #include <Box2D/Box2D.h>
 
 class BasicParticle_2D: public CoreObject
@@ -113,5 +115,7 @@ private:
 	b2Body* m_pBody;
 	CoreObjectHandle m_hParentRenderable;
 };
+
+DECLAREFACTORY(BasicParticle_2D);
 
 #endif

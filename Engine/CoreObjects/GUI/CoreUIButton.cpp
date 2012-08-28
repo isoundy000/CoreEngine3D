@@ -7,6 +7,9 @@
 //
 
 #include "CoreUIButton.h"
+
+DEFINEFACTORY(CoreUIButton);
+
 #include "CoreUIImageView.h"
 
 //Engine includes

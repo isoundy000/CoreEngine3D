@@ -14,6 +14,7 @@
 
 #include "CoreObjects/CoreObject.h"
 #include "Game/Game.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 class SoundPlayer: public CoreGameObject
 {
@@ -30,5 +31,7 @@ private:
 };
 
 void SoundPlayer_Init();
+
+DECLAREFACTORY(SoundPlayer);
 
 #endif

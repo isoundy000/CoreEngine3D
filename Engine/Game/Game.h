@@ -38,6 +38,8 @@
 #include "ThirdParty/pugixml/src/pugixml.hpp"
 
 #include "CoreObject_Manager.h"
+#include "CoreObjects/CoreObject_FactoryManager.h"
+
 
 #include "CoreObjects/GUI/CoreUIView.h"
 #include "GameUtil.h"
@@ -46,6 +48,12 @@
 
 class Game;
 extern Game* GAME;
+
+DECLAREFACTORYMANAGER(GameObjects);
+DECLAREFACTORYMANAGER(GUI);
+
+DECLAREFACTORY_WITHNAME(RenderableGeometry3D,Geometry_Normal);
+DECLAREFACTORY_WITHNAME(RenderableGeometry3D,Geometry_UI);
 
 #if defined(_DEBUG_PC)
 #include "CoreUIEditor.h"

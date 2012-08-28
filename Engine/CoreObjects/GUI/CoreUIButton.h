@@ -14,6 +14,7 @@
 #include "GraphicsTypes.h"
 #include "CoreUIView.h"
 #include "Input/CoreInput_DeviceInputState.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 class CoreUIButton: public CoreUIView
 {
@@ -49,5 +50,7 @@ private:
 	
 	CoreUI_ButtonState m_buttonState;
 };
+
+DECLAREFACTORY(CoreUIButton);
 
 #endif

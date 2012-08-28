@@ -13,8 +13,7 @@
 #include "MathTypes.h"
 #include "GraphicsTypes.h"
 #include "CoreObjects/CoreObjectAttribute.h"
-
-#include <string>
+#include "CoreObjects/CoreObject_Factory.h"
 
 #define CoreUIView_MAX_CHILDREN 32
 #define CoreUIView_AttribMemSize 1280
@@ -94,5 +93,7 @@ private:
     //TODO: put member functions here
     //TODO: put member variables here
 };
+
+DECLAREFACTORY(CoreUIView);
 
 #endif

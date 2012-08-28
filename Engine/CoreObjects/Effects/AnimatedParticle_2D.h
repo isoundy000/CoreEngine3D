@@ -14,7 +14,7 @@
 #include "Graphics/GraphicsTypes.h"
 #include "Animation/AnimationController.h"
 #include "Animation/SpriteSheetAnimator.h"
-
+#include "CoreObjects/CoreObject_Factory.h"
 
 class AnimatedParticle_2D: public CoreObject
 {
@@ -78,5 +78,7 @@ private:
 	CoreObjectHandle m_hRenderable;
 	AnimationPlayer m_animPlayer;
 };
+
+DECLAREFACTORY(AnimatedParticle_2D);
 
 #endif

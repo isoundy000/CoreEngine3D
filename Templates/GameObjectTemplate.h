@@ -9,9 +9,11 @@
 #ifndef Game_OSX__GameObjectTemplate_h
 #define Game_OSX__GameObjectTemplate_h
 
+//ENGINE
 #include "Engine/CoreGameObject.h"
 #include "Engine/MathTypes.h"
 #include "Engine/GraphicsTypes.h"
+#include "Engine/CoreObjects/CoreObject_Factory.h"
 
 class GameObjectTemplate: public CoreGameObject
 {
@@ -32,5 +34,7 @@ private:
     //TODO: put member functions here
     //TODO: put member variables here
 };
+
+DECLAREFACTORY(GameObjectTemplate);
 
 #endif

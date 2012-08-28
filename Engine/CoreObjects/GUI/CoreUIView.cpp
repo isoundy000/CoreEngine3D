@@ -8,13 +8,16 @@
 
 #include "CoreUIView.h"
 
+DEFINEFACTORY(CoreUIView);
+
 //Engine includes
 #include "Math/MathUtil.h"
 #include "Math/matrix.h"
 #include "Game/Game.h"
 #include "ThirdParty/pugixml/src/pugixml.hpp"
-#include "CoreObjects/CoreObjectFactories.h"
 #include "Util/Hash.h"
+#include "CoreObjects/GUI/CoreUIImageView.h"
+#include "CoreObjects/GUI/CoreUIButton.h"
 
 //Art
 /*static TextureAsset g_Art_SpaceShip =

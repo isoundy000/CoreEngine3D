@@ -7,13 +7,13 @@
 //
 
 #include "TileAffector.h"
+DEFINEFACTORY(TileAffector);
 
 #include "Game/Game.h"
 
 #include "Math/matrix.h"
 #include "Graphics/OpenGLRenderer.h"
 #include "CoreObjects/CoreObject_Manager.h"
-#include "CoreObjectFactories.h"
 
 #include "Util/Hash.h"
 

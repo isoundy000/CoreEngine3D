@@ -12,6 +12,7 @@
 #include "CoreObjects/CoreGameObject.h"
 #include "Math/MathTypes.h"
 #include "Graphics/GraphicsTypes.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 class NullObject: public CoreGameObject
 {
@@ -35,5 +36,7 @@ private:
     //TODO: put member variables here
 	vec3 m_position;
 };
+
+DECLAREFACTORY(NullObject);
 
 #endif

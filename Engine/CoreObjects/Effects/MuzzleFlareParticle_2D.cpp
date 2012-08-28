@@ -7,6 +7,9 @@
 //
 
 #include "MuzzleFlareParticle_2D.h"
+
+DEFINEFACTORY(MuzzleFlareParticle_2D);
+
 #include "Graphics/OpenGLRenderer.h"
 #include "Math/matrix.h"
 #include "Math/MathUtil.h"

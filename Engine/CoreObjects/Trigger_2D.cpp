@@ -8,13 +8,13 @@
 
 #include "Trigger_2D.h"
 
+DEFINEFACTORY(Trigger_2D);
+
 #include "Game/Game.h"
 
 #include "Math/matrix.h"
 #include "Graphics/OpenGLRenderer.h"
 #include "CoreObjects/CoreObject_Manager.h"
-
-#include "CoreObjectFactories.h"
 
 bool Trigger_2D::SpawnInit(void* pSpawnStruct)
 {

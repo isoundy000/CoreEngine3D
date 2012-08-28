@@ -8,6 +8,8 @@
 
 #include "NullObject.h"
 
+DEFINEFACTORY(NullObject);
+
 //Engine includes
 #include "Game/Game.h"
 

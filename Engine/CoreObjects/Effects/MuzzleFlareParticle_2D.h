@@ -12,6 +12,7 @@
 #include "CoreObjects/CoreObject.h"
 #include "Graphics/RenderLayer.h"
 #include "Graphics/GraphicsTypes.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 class MuzzleFlareParticle_2D: public CoreObject
 {
@@ -66,5 +67,7 @@ private:
 	
 	CoreObjectHandle m_hParentRenderable;
 };
+
+DECLAREFACTORY(MuzzleFlareParticle_2D);
 
 #endif

@@ -18,6 +18,13 @@
 
 #include "stddef.h" //for NULL -_-
 #include <cassert>
+#include <typeinfo>
+
+#define DECLAREFACTORY(TYPE) extern CoreObjectFactory<TYPE> g_Factory_##TYPE
+#define DEFINEFACTORY(TYPE) CoreObjectFactory<TYPE> g_Factory_##TYPE(#TYPE)	//Constructor is called which hashes the #TYPE string and saves it!
+
+#define DECLAREFACTORY_WITHNAME(TYPE,NAME) extern CoreObjectFactory<TYPE> g_Factory_##NAME
+#define DEFINEFACTORY_WITHNAME(TYPE,NAME) CoreObjectFactory<TYPE> g_Factory_##NAME
 
 #define FACTORY_MAX_CREATED_TYPES 8
 
@@ -32,9 +39,15 @@ public:
 	virtual u32 GetDataSize() = 0;
 	virtual void Init(u32 maxObjects, void* pMemLocation = NULL) = 0;
 	virtual CoreObject* CreateObjectGeneric(u32 type) = 0;
-	virtual u32 GetNumCreatedTypes() = 0;
-	virtual u32* GetCreatedTypes() = 0;
-	virtual void AddCreatedType(const char* type) = 0;	//You will never have to use this unless you're a bad person
+	
+	u32 m_numObjects;
+	u32 m_maxObjects;
+	u32 m_dataSize;
+	u32 m_typeHash;
+	bool m_objectsCanUpdate;
+	bool m_usedPlacementNew;
+	bool m_objectHasBeenDeleted;
+	bool m_canAutoSpawn;
 };
 
 template <class T>
@@ -43,18 +56,21 @@ class CoreObjectFactory : public CoreObjectFactoryBase
 	friend class CoreObjectManager;
 	
 public:
+	
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	CoreObjectFactory(const char* name)
+	{
+		InitVariables();
+		
+		m_typeHash = Hash(name);
+	}
+	
 	//----------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
 	CoreObjectFactory()
 	{
-		m_pObjectList = NULL;
-		m_numObjects = 0;
-		m_maxObjects = 0;
-		m_dataSize = 0;
-		m_objectsCanUpdate = true;
-		m_usedPlacementNew = false;
-		m_objectHasBeenDeleted = false;
-		m_numCreatedTypes = 0;
+		InitVariables();
 	}
 	
 	
@@ -75,45 +91,6 @@ public:
 	virtual u32 GetDataSize()
 	{
 		return m_dataSize;
-	}
-	
-	
-	//----------------------------------------------------------------------------
-	//----------------------------------------------------------------------------
-	virtual u32 GetNumCreatedTypes()
-	{
-		return m_numCreatedTypes;
-	}
-	
-	
-	//----------------------------------------------------------------------------
-	//----------------------------------------------------------------------------
-	virtual u32* GetCreatedTypes()
-	{
-		return m_createdTypes;
-	}
-	
-	
-	//----------------------------------------------------------------------------
-	//----------------------------------------------------------------------------
-	virtual void AddCreatedType(const char* type)
-	{
-		AddCreatedType(Hash(type));
-	}
-	
-	//----------------------------------------------------------------------------
-	//----------------------------------------------------------------------------
-	void AddCreatedType(u32 type)
-	{
-		if(m_numCreatedTypes == FACTORY_MAX_CREATED_TYPES)
-		{
-			COREDEBUG_PrintDebugMessage("CoreObjectFactory::AddCreatedType -> INSANE ERROR: Exceeded max created types!");
-			
-			return;
-		}
-		
-		m_createdTypes[m_numCreatedTypes] = type;
-		++m_numCreatedTypes;
 	}
 	
 	
@@ -294,7 +271,7 @@ public:
 		m_maxObjects = maxObjects;
 		
 		Clear();
-
+		
 		T::InitClass();
 		
 		m_dataSize = sizeof(T)*m_maxObjects;
@@ -308,16 +285,21 @@ public:
 		m_objectsCanUpdate = objectsCanUpdate;
 	}
     
-	//private:
+	//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
+	void InitVariables()
+	{
+		m_pObjectList = NULL;
+		m_numObjects = 0;
+		m_maxObjects = 0;
+		m_dataSize = 0;
+		m_objectsCanUpdate = true;
+		m_usedPlacementNew = false;
+		m_objectHasBeenDeleted = false;
+		m_canAutoSpawn = false;
+	}
+	
 	T* m_pObjectList;
-	u32 m_numObjects;
-	u32 m_maxObjects;
-	u32 m_dataSize;
-	u32 m_numCreatedTypes;
-	u32 m_createdTypes[FACTORY_MAX_CREATED_TYPES];
-	bool m_objectsCanUpdate;
-	bool m_usedPlacementNew;
-	bool m_objectHasBeenDeleted;
 };
 
 

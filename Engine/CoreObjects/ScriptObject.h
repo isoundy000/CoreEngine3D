@@ -15,6 +15,8 @@
 #include "CoreObjects/CoreGameObject.h"
 #include "Game/Game.h"
 
+#include "CoreObjects/CoreObject_Factory.h"
+
 class ScriptObject: public CoreGameObject
 {
 public:
@@ -95,5 +97,7 @@ private:
 };
 
 void ScriptObject_Init();
+
+DECLAREFACTORY(ScriptObject);
 
 #endif

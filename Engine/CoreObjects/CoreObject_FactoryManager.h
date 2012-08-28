@@ -19,9 +19,10 @@
 #include "Math/MathTypes.h"
 #include <map>
 
-#define DECLAREFACTORYMANAGER(NAME) CoreObjectFactoryManager g_FactoryManager_##NAME
+#define DECLAREFACTORYMANAGER(NAME) extern CoreObjectFactoryManager g_FactoryManager_##NAME
+#define DEFINEFACTORYMANAGER(NAME) CoreObjectFactoryManager g_FactoryManager_##NAME
 #define INITFACTORYMANAGER(NAME,MEMSIZE)  g_FactoryManager_##NAME.Init(MEMSIZE)
-#define ADDFACTORY(FACTMAN,NAME,NUMOBJECTS) g_FactoryManager_##FACTMAN.Add(g_Factory_##NAME,NUMOBJECTS); g_Factory_##NAME.AddCreatedType(#NAME)
+#define ADDFACTORY(FACTMAN,NAME,NUMOBJECTS,CANAUTOSPAWN) g_FactoryManager_##FACTMAN.Add(g_Factory_##NAME,NUMOBJECTS,CANAUTOSPAWN)
 
 class CoreObjectFactoryManager
 {
@@ -37,14 +38,14 @@ public:
 	void Init(u32 memorySizeBytes);
 	void Clear(); //Clears the factories (like between levels, etc.)
 	void Update(f32 timeElapsed);
-	void Add(CoreObjectFactoryBase& factory, u32 maxObjects);
+	void Add(CoreObjectFactoryBase& factory, u32 maxObjects, bool canAutoSpawn);
 	CoreObject* CreateObject(u32 type);	//Used to spawn objects when level loads
 	
 private:
 	u8* m_pMemory;
 	u32 m_memorySizeBytes;
 	u32 m_currByteIndex;
-	std::multimap<int,CoreObjectFactoryBase*> m_factoryMap;
+	std::multimap<u32,CoreObjectFactoryBase*> m_factoryMap;
 };
 
 

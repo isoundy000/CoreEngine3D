@@ -14,6 +14,7 @@
 
 #include "Sound/CoreAudio_OpenAL.h"
 #include "CoreObjects/CoreGameObject.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 #include "Game/Game.h"
 
@@ -49,6 +50,6 @@ private:
 	//b2Body* m_pBody;
 };
 
-//void Spawner_Init();
+DECLAREFACTORY(Spawner);
 
 #endif

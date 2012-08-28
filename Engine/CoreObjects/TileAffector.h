@@ -13,6 +13,7 @@
 #include "Graphics/GraphicsTypes.h"
 
 #include "CoreObjects/CoreObject.h"
+#include "CoreObjects/CoreObject_Factory.h"
 #include "Game/Game.h"
 
 class TileAffector: public CoreObject
@@ -29,5 +30,7 @@ private:
 };
 
 void TileAffector_Init();
+
+DECLAREFACTORY(TileAffector);
 
 #endif

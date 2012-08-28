@@ -9,10 +9,11 @@
 #ifndef Game_OSX__CurvePoints_2D_h
 #define Game_OSX__CurvePoints_2D_h
 
-#include "CoreGameObject.h"
-#include "MathTypes.h"
-#include "GraphicsTypes.h"
-#include "Game.h"
+#include "CoreObjects/CoreGameObject.h"
+#include "Math/MathTypes.h"
+#include "Graphics/GraphicsTypes.h"
+#include "Game/Game.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 #include <vector>
 
@@ -40,5 +41,9 @@ private:
     //TODO: put member variables here
 	LinePointList m_pointList;
 };
+
+DECLAREFACTORY(CurvePoints_2D);
+
+
 
 #endif

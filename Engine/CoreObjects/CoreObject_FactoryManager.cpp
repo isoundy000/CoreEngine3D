@@ -47,14 +47,22 @@ void CoreObjectFactoryManager::Init(u32 memorySizeBytes)
 //----------------------------------------------------------------------------
 CoreObject* CoreObjectFactoryManager::CreateObject(u32 type)
 {
-	CoreObjectFactoryBase* pFactory = (CoreObjectFactoryBase*)m_factoryMap.find(type)->second;
-	if(pFactory == NULL)
+	std::multimap<u32,CoreObjectFactoryBase*>::iterator it = m_factoryMap.find(type);
+	if(it == m_factoryMap.end())
 	{
-		//TODO: find out if this actually gets set to NULL
 		return NULL;
 	}
 	
-	return pFactory->CreateObjectGeneric(type);
+	CoreObjectFactoryBase* pFactory = (CoreObjectFactoryBase*)it->second;
+	
+	if(pFactory->m_canAutoSpawn == true)
+	{
+		return pFactory->CreateObjectGeneric(type);
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 
@@ -74,11 +82,10 @@ void CoreObjectFactoryManager::Clear()
 	}
 }
 
-static int testInt = 0;
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-void CoreObjectFactoryManager::Add(CoreObjectFactoryBase& factory, u32 maxObjects)
+void CoreObjectFactoryManager::Add(CoreObjectFactoryBase& factory, u32 maxObjects, bool canAutoSpawn = true)
 {
 	//To start, the current byte index is at the beginning of the current entry
 	
@@ -87,6 +94,8 @@ void CoreObjectFactoryManager::Add(CoreObjectFactoryBase& factory, u32 maxObject
 	
 	//Save a pointer to the factory
 	pNewEntry->pFactory = &factory;
+	
+	factory.m_canAutoSpawn = canAutoSpawn;
 	
 	//Now the byte index becomes the location of the memory to hold all the factory objects
 	m_currByteIndex += sizeof(CoreObjectFactoryEntry);
@@ -114,7 +123,13 @@ void CoreObjectFactoryManager::Add(CoreObjectFactoryBase& factory, u32 maxObject
 	COREDEBUG_PrintDebugMessage("FactoryManager->Add: Current mem usage is: %d bytes, %.2fMB",memUsage,memUsageMB);
 #endif
 	
-	m_factoryMap.insert(std::make_pair<int,CoreObjectFactoryBase*>(testInt,&factory));
+	//Insert all the supported types into the manager's multimap
+	/*for(u32 i=0; i<factory.GetNumCreatedTypes(); ++i)
+	{
+		m_factoryMap.insert(std::make_pair<u32,CoreObjectFactoryBase*>(factory.GetCreatedTypes()[i],&factory));
+	}*/
+	
+	m_factoryMap.insert(std::make_pair<u32,CoreObjectFactoryBase*>(factory.m_typeHash,&factory));
 }
 
 

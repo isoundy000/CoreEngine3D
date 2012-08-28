@@ -7,3 +7,5 @@
 //
 
 #include "Tile.h"
+
+DEFINEFACTORY(Tile);

@@ -13,6 +13,7 @@
 #include "Graphics/GraphicsTypes.h"
 
 #include "CoreObjects/CoreGameObject.h"
+#include "CoreObjects/CoreObject_Factory.h"
 #include "Game/Game.h"
 #include "Trigger_2D.h"
 
@@ -35,5 +36,7 @@ private:
 };
 
 void ObjectGroup_Init();
+
+DECLAREFACTORY(ObjectGroup);
 
 #endif

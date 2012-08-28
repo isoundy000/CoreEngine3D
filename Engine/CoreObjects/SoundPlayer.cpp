@@ -8,12 +8,13 @@
 
 #include "SoundPlayer.h"
 
+DEFINEFACTORY(SoundPlayer);
+
 #include "Game/Game.h"
 
 #include "Math/matrix.h"
 #include "Graphics/OpenGLRenderer.h"
 #include "CoreObjects/CoreObject_Manager.h"
-#include "CoreObjects/CoreObjectFactories.h"
 
 #include "Util/Hash.h"
 

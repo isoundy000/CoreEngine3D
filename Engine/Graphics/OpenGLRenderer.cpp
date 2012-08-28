@@ -27,8 +27,6 @@ OpenGLRenderer* GLRENDERER = NULL;
 #include "ThirdParty/libpng/png.h"
 #include "ThirdParty/SOIL/SOIL.h"
 
-#include "CoreObjects/CoreObjectFactories.h"
-
 #include "CoreDebug.h"
 
 #if defined (PLATFORM_OSX)

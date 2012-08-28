@@ -13,6 +13,8 @@
 #include "Graphics/GraphicsTypes.h"
 
 #include "CoreObjects/CoreGameObject.h"
+#include "CoreObjects/CoreObject_Factory.h"
+
 #include <Box2D/Box2D.h>
 
 const u8 TILE_FLIPPED_HORIZONTALLY_FLAG = 0x80;
@@ -58,6 +60,8 @@ public:
 private:
 	
 };
+
+DECLAREFACTORY(Tile);
 
 
 #endif

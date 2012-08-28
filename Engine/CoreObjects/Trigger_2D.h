@@ -13,6 +13,7 @@
 #include "Graphics/GraphicsTypes.h"
 
 #include "CoreObjects/CoreObject.h"
+#include "CoreObjects/CoreObject_Factory.h"
 
 #define Trigger_2D_MAX_COLLISION_RESULTS 16
 
@@ -75,5 +76,7 @@ private:
 };
 
 void Trigger_2D_Init();
+
+DECLAREFACTORY(Trigger_2D);
 
 #endif
