@@ -323,7 +323,7 @@ void Slider_Float_Input::Input_CB2()
 	} else {
 		recurse = 1;
 		int val = 0;
-		if ( sscanf(input->value(), "%.2f", &val) != 1 ) {
+		if ( scanf(input->value(), "%.2f", &val) != 1 ) {
 			val = 0;
 		}
 		// fprintf(stderr, "SCANF('%s') -> %d\n", input->value(), val);
@@ -474,7 +474,7 @@ Fl_Widget* CreateWidgetForAttribute(CoreObjectAttribute* pAttrib, s32 posX, s32 
 		}
 		case CoreObjectAttributeType_CoreUI_Origin:
 		{
-			CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)pAttrib;
+			//CoreObjectAttribute_CoreUI_Origin* pOriginAttrib = (CoreObjectAttribute_CoreUI_Origin*)pAttrib;
 			
 			Fl_Choice* pChoice = new Fl_Choice(posX, posY, width, height,(const char*)pAttrib->name);
 			pChoice->add("hi");

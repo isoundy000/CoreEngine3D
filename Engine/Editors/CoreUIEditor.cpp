@@ -41,7 +41,7 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 		{
 			Fl_Tree_Item* pItem = pTree->callback_item();
 			const unsigned long data = (unsigned long)pItem->user_data();
-			const CoreObjectHandle handle = data;
+			const CoreObjectHandle handle = static_cast<const u32>(data);
 			CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(handle);
 			
 			if(pView == NULL)
@@ -63,7 +63,7 @@ static void AttributeBrowserCallback (Fl_Widget *pWidget, void* pClassPointer)
 		{
 			Fl_Tree_Item* pItem = pTree->callback_item();
 			const unsigned long data = (unsigned long)pItem->user_data();
-			const CoreObjectHandle handle = data;
+			const CoreObjectHandle handle = static_cast<const u32>(data);
 			CoreUIView* pView = (CoreUIView*)COREOBJECTMANAGER->GetObjectByHandle(handle);
 			
 			if(pView == NULL)
