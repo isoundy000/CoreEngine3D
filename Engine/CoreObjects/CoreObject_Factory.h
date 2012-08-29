@@ -169,6 +169,13 @@ public:
 
 		if(pObject->Init(type))
 		{
+			if(pObject->GetHandle() == 0)
+			{
+				COREDEBUG_PrintDebugMessage("INSANE ERROR! CoreObjectFactory: Failed to create object!  Did you forget to call the base class Init function?\n");
+				
+				return NULL;
+			}
+			
 			++m_numObjects;
 
 			return pObject;

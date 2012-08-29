@@ -19,15 +19,18 @@
 class SoundPlayer: public CoreGameObject
 {
 public:
+	virtual bool Init(u32 type);	//Init variables
 	virtual void Uninit();
 	virtual void ProcessMessage(u32 message, u32 parameter);	//Pass in a hash value
 
 	virtual bool SpawnInit(void* pSpawnStruct);
-	void SpawnInit(const vec3* pPos, u32 soundBufferID, f32 volume, f32 pitch, bool isLooping);
+	void SpawnInit(const vec3* pPos, u32 soundBufferID, f32 volume, f32 pitch, bool isLooping, CoreObjectHandle hParent);
 	virtual void Update(f32 timeElapsed);
 private:	
 
 	u32 m_soundSource;
+	CoreObjectHandle m_hParent;	//optional: parent to update position from
+	bool m_isAttachedToParent;
 };
 
 void SoundPlayer_Init();

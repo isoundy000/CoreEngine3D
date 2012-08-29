@@ -322,6 +322,16 @@ void BasicParticle_2D::Update(f32 timeElapsed)
 }
 
 
+bool BasicParticle_2D::Init(u32 type)	//Init variables
+{
+	CoreObject::Init(type);
+	
+	m_pSettings = NULL;
+	
+	return true;
+}
+
+
 void BasicParticle_2D::Uninit()
 {
 	RenderableGeometry3D* pGeom = (RenderableGeometry3D*)COREOBJECTMANAGER->GetObjectByHandle(m_hRenderable);

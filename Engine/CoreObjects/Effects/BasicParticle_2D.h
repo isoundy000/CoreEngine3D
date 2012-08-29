@@ -85,6 +85,7 @@ public:
 	void InitParticle(BasicParticle_2D::ParticleSettings *pSettings, u32 numColumns, const vec3* pPosition, const vec3* pDirection, f32 startAngle, u32 texIndex);
 	void SetPositionRelativeToRenderable(CoreObjectHandle hParentRenderable, const vec3* pRelativePos);
 	u32 GetCategoryFlags();
+	virtual bool Init(u32 type);	//Init variables
 	virtual void Uninit();
 	virtual void Update(f32 timeElapsed);
 	virtual const vec3* GetPosition() const;
