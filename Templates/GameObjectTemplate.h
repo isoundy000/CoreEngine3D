@@ -18,7 +18,7 @@
 class GameObjectTemplate: public CoreGameObject
 {
 public:
-    virtual void UpdateHandle();	//Called when the memory location changes
+    virtual void UpdatePointers();	//Called when the memory location changes
 
 	virtual bool Init(u32 type);	//Init variables
 	virtual bool SpawnInit(void* pSpawnStruct);	//Create object from data
