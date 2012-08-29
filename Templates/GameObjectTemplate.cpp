@@ -11,9 +11,9 @@
 DEFINEFACTORY(GameObjectTemplate);
 
 //ENGINE
-#include "ENGINE/MathUtil.h"
-#include "ENGINE/matrix.h"
-#include "ENGINE/Game.h"
+#include "ENGINE/Math/MathUtil.h"
+#include "ENGINE/Math/matrix.h"
+#include "ENGINE/Game/Game.h"
 //#include "ENGINE/CoreObjects/SoundPlayer.h"
 
 //GAME
