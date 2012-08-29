@@ -10,10 +10,10 @@
 #define Game_OSX__GameObjectTemplate_h
 
 //ENGINE
-#include "Engine/CoreObjects/CoreGameObject.h"
-#include "Engine/CoreObjects/CoreObject_Factory.h"
-#include "Engine/Math/MathTypes.h"
-#include "Engine/Graphics/GraphicsTypes.h"
+#include "ENGINE/CoreObjects/CoreGameObject.h"
+#include "ENGINE/CoreObjects/CoreObject_Factory.h"
+#include "ENGINE/Math/MathTypes.h"
+#include "ENGINE/Graphics/GraphicsTypes.h"
 
 class GameObjectTemplate: public CoreGameObject
 {
