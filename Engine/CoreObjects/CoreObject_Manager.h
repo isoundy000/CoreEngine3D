@@ -20,8 +20,7 @@
 class CoreObjectManager;
 extern CoreObjectManager* COREOBJECTMANAGER;
 
-#define COREOBJECT_MAX_OBJECTS 4096
-
+#define COREOBJECT_MAX_OBJECTS 4096	//You can change this to be up to 32768 if your game is insane
 
 class CoreObjectManager
 {
@@ -42,8 +41,8 @@ private:
 		CoreObjectHandleEntry();
 		explicit CoreObjectHandleEntry(u32 nextFreeIndex);
 		
-		u32 m_nextFreeIndex : 12;
-		u32 m_counter : 15;
+		u32 m_nextFreeIndex : 15;	//2^15 = 32768 max objects but COREOBJECT_MAX_OBJECTS above is the real limit
+		u32 m_counter : 15;			//Counter has to hit 32768 to roll over which is ridiculous and probaby impossible!
 		u32 m_active : 1;
 		u32 m_endOfList : 1;
 		CoreObject* m_pObject;
