@@ -52,8 +52,8 @@ void GameObjectTemplate::InitClass()
 //----------------------------------------------------------------
 bool GameObjectTemplate::LoadResourcesForType(u32 type)
 {
-    //TODO: call GAME->AddItemArt(&g_Art_SpaceShip)
-	//TODO: call GAME->AddItemSound(&g_Sound_SpaceShipBeam)
+    //TODO: call GAME->AddItemArt(&g_Art_SpaceShip);
+	//TODO: call GAME->AddItemSound(&g_Sound_SpaceShipBeam);
     
     return true;
 }
