@@ -178,6 +178,8 @@ void CoreUIButton::Update(f32 timeElapsed)
 //----------------------------------------------------------------
 void CoreUIButton::UpdatePointers()
 {
+	CoreObject::UpdatePointers();
+	
     //TODO: update anything that has pointers to local
     //member variables, such as material uniform locations
 }

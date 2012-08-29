@@ -134,6 +134,8 @@ void NullObject::Update(f32 timeElapsed)
 //----------------------------------------------------------------
 void NullObject::UpdatePointers()
 {
+	CoreObject::UpdatePointers();
+	
     //TODO: update anything that has pointers to local
     //member variables, such as material uniform locations
 }
