@@ -53,7 +53,7 @@ struct AnimationPlayer
 public:
 	void Init(AnimationSet* pAnimSet);
 	void Update(f32 timeElapsed);
-	void PlayAnimation(s32 animID,u32 frameOffset, f32 playSpeed);
+	void PlayAnimation(s32 animID,u32 frameOffset, f32 playSpeed, s32 numLoops = -1);
 	void SetSpeed(f32 speed);
 	bool GetAnimIsDone();
 	f32 GetAnimSpeed();
@@ -64,6 +64,7 @@ public:
 	AnimationSet* m_pAnimSet;
 	Animation* m_pCurrAnim;
 	f32 m_playSpeed;
+	s32 m_numLoopsRemaining;
 };
 
 

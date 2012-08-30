@@ -57,7 +57,7 @@ Animation* AnimationSet::GetAnimationByID(s32 animID)
 
 //ANIMATION PLAYER
 
-void AnimationPlayer::PlayAnimation(s32 animID, u32 frameOffset, f32 playSpeed)
+void AnimationPlayer::PlayAnimation(s32 animID, u32 frameOffset, f32 playSpeed, s32 numLoops)
 {
 	if(m_pAnimSet == NULL)
 	{
@@ -78,6 +78,8 @@ void AnimationPlayer::PlayAnimation(s32 animID, u32 frameOffset, f32 playSpeed)
 	const u32 numFrames = m_pCurrAnim->endFrame-m_pCurrAnim->startFrame;
 	
 	m_currFrame = static_cast<f32>(m_pCurrAnim->startFrame+frameOffset%numFrames);
+	
+	m_numLoopsRemaining = numLoops;
 }
 
 void AnimationPlayer::SetSpeed(f32 speed)
@@ -126,6 +128,16 @@ void AnimationPlayer::Update(f32 timeElapsed)
 		if(m_pCurrAnim->isLooping)
 		{
 			m_currFrame -= (m_pCurrAnim->endFrame-m_pCurrAnim->startFrame+1);
+			
+			if(m_numLoopsRemaining > 0)
+			{
+				--m_numLoopsRemaining;
+				
+				if(m_numLoopsRemaining == 0)
+				{
+					m_animIsDone = true;
+				}
+			}
 		}
 		else if(m_pCurrAnim->animID_playWhenFinished != -1)
 		{

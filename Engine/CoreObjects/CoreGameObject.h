@@ -32,6 +32,7 @@ class CoreGameObject: public CoreObject
 public:
 	virtual void SetPosition(const vec3* pPosition){}
 	virtual const vec3* GetPosition() const{return NULL;}
+	virtual const f32 GetRadius() const{return 0.0f;}
 
 	//TODO: separate Box2D functionality out so you are not forced to have it
 	virtual b2Body* Box2D_GetBody(){return NULL;}
