@@ -4,7 +4,7 @@
 
 #include <string.h>
 #include <math.h>
-#include "matrix.h"
+#include "Matrix.h"
 
 
 
@@ -1256,6 +1256,17 @@ void mat4f_Copy(mat4f pOut_matrix,mat4f m_copyFrom)
 	{
 		pOut_matrix[i] = m_copyFrom[i];
 	}
+}
+
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void mat4f_Normalize(mat4f pOut_matrix, mat4f pIn_matrix)
+{
+	TryNormalizeVec3(mat4f_GetAt(pOut_matrix),mat4f_GetAt(pIn_matrix));
+	TryNormalizeVec3(mat4f_GetUp(pOut_matrix),mat4f_GetUp(pIn_matrix));
+	TryNormalizeVec3(mat4f_GetLeft(pOut_matrix),mat4f_GetLeft(pIn_matrix));
 }
 
 

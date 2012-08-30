@@ -8,7 +8,7 @@
 
 #include "Game.h"
 #include "MathUtil.h"
-#include "matrix.h"
+#include "Matrix.h"
 
 #include "ThirdParty/zlib/zlib.h"
 #include "base64.h"

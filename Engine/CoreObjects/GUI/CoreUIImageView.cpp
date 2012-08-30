@@ -12,7 +12,7 @@ DEFINEFACTORY(CoreUIImageView);
 
 //Engine includes
 #include "Math/MathUtil.h"
-#include "Math/matrix.h"
+#include "Math/Matrix.h"
 #include "Game/Game.h"
 #include "Util/Hash.h"
 

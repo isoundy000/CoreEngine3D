@@ -10,12 +10,13 @@
 #include "Util/GameUtil.h"
 #include <math.h>
 #include "Math/MathUtil.h"
+#include "Math/Matrix.h"
 #include <Box2D/Box2D.h>
 #include "Box2DUtil.h"
 #include "Game/Game.h"
 
 
-//*****************************************************************************
+//----------------------------------------------------------------------------
 // Creator: JAM
 // Calculates velocity needed for simple ballistic motion so that the object
 // goes from pStartPos to pEndPos with the given gravity. The top of the arc
@@ -33,7 +34,7 @@
 // goes above out_totalJumpTime
 //
 // Returns NOTHING!
-//*****************************************************************************
+//----------------------------------------------------------------------------
 void GU_LaunchToPoint(vec3* out_jumpVel, f32* out_totalJumpTime, const vec3* in_startPos, const vec3* in_endPos, f32 in_jumpHeight, f32 in_gravity)
 {
 	const f32 highestY = MaxF(in_startPos->y, in_endPos->y);
@@ -63,8 +64,9 @@ void GU_LaunchToPoint(vec3* out_jumpVel, f32* out_totalJumpTime, const vec3* in_
 	}
 }
 
-//*****************************************************************************
-//*****************************************************************************
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void GU_InsertPositiveValueAsBits(u32* pOriginalNumber, u32 value, u32 bitPosition0to31, u32 numBitsToWrite)
 {
 	u32 insertNumberShifted = value << (32-bitPosition0to31-numBitsToWrite);
@@ -72,8 +74,8 @@ void GU_InsertPositiveValueAsBits(u32* pOriginalNumber, u32 value, u32 bitPositi
 }
 
 
-//*****************************************************************************
-//*****************************************************************************
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void GU_TMXStringToPoints(const char* valueString, f32 posX, f32 posY, vec2* pOut_Points, u32* pOut_NumPoints)
 {
 	const f32 unitConversionScale = GAME->GetTileUnitConversionScale();
@@ -122,8 +124,8 @@ void GU_TMXStringToPoints(const char* valueString, f32 posX, f32 posY, vec2* pOu
 }
 
 
-//*****************************************************************************
-//*****************************************************************************
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void GU_Create2DPathPointsFromXML(const pugi::xml_node& node, LinePointList* pOut_LinePointList, bool isCollision)
 {
 	vec2 polyLinePoints[64];
@@ -235,3 +237,5 @@ void GU_Create2DPathPointsFromXML(const pugi::xml_node& node, LinePointList* pOu
 		}
 	}
 }
+
+

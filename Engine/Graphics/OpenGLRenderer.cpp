@@ -20,7 +20,7 @@
 OpenGLRenderer* GLRENDERER = NULL;
 
 #include "Math/MathTypes.h"
-#include "Math/matrix.h"
+#include "Math/Matrix.h"
 #include "Util/GameUtil.h"
 #include "Util/ArrayUtil.h"
 #include "ThirdParty/zlib/zlib.h"

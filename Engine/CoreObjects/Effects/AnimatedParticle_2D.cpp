@@ -11,7 +11,7 @@
 DEFINEFACTORY(AnimatedParticle_2D);
 
 #include "Graphics/OpenGLRenderer.h"
-#include "Math/matrix.h"
+#include "Math/Matrix.h"
 #include "Math/MathUtil.h"
 #include "Game/Game.h"
 

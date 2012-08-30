@@ -9,7 +9,7 @@
 #include "CoreInput_GamePad.h"
 
 #include "MathUtil.h"
-#include "matrix.h"
+#include "Matrix.h"
 #include "MathTypes.h"
 #include <cmath>
 

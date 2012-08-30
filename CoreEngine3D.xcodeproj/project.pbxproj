@@ -25,7 +25,7 @@
 		DD0D5FA115C4E45F00029420 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5F9115C4E42E00029420 /* pngwutil.c */; };
 		DD0D608B15C4FB5500029420 /* MathTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FF815C4EEF700029420 /* MathTypes.cpp */; };
 		DD0D608C15C4FB5500029420 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FFA15C4EEF700029420 /* MathUtil.cpp */; };
-		DD0D608D15C4FB5500029420 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FFC15C4EEF700029420 /* matrix.cpp */; };
+		DD0D608D15C4FB5500029420 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FFC15C4EEF700029420 /* Matrix.cpp */; };
 		DD0D608E15C4FB5A00029420 /* AnimationController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FA315C4EEF700029420 /* AnimationController.cpp */; };
 		DD0D608F15C4FB5A00029420 /* SpriteSheetAnimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FA515C4EEF700029420 /* SpriteSheetAnimator.cpp */; };
 		DD0D609015C4FB6500029420 /* CoreGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FA815C4EEF700029420 /* CoreGameObject.cpp */; };
@@ -108,7 +108,7 @@
 		DDEEC83415C517DD0074A634 /* EngineModels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D600315C4EEF700029420 /* EngineModels.cpp */; };
 		DDEEC83515C517E40074A634 /* MathTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FF815C4EEF700029420 /* MathTypes.cpp */; };
 		DDEEC83615C517E40074A634 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FFA15C4EEF700029420 /* MathUtil.cpp */; };
-		DDEEC83715C517E40074A634 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FFC15C4EEF700029420 /* matrix.cpp */; };
+		DDEEC83715C517E40074A634 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FFC15C4EEF700029420 /* Matrix.cpp */; };
 		DDEEC83815C517FD0074A634 /* CoreInput_DeviceInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FED15C4EEF700029420 /* CoreInput_DeviceInputState.cpp */; };
 		DDEEC83915C517FD0074A634 /* CoreInput_GamePad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FEF15C4EEF700029420 /* CoreInput_GamePad.cpp */; };
 		DDEEC83A15C517FD0074A634 /* TouchInputIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD0D5FF415C4EEF700029420 /* TouchInputIOS.mm */; };
@@ -401,8 +401,8 @@
 		DD0D5FF915C4EEF700029420 /* MathTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathTypes.h; sourceTree = "<group>"; };
 		DD0D5FFA15C4EEF700029420 /* MathUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtil.cpp; sourceTree = "<group>"; };
 		DD0D5FFB15C4EEF700029420 /* MathUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
-		DD0D5FFC15C4EEF700029420 /* matrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = matrix.cpp; sourceTree = "<group>"; };
-		DD0D5FFD15C4EEF700029420 /* matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
+		DD0D5FFC15C4EEF700029420 /* Matrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
+		DD0D5FFD15C4EEF700029420 /* Matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
 		DD0D5FFF15C4EEF700029420 /* DEBUGMODEL_Circle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_Circle.h; sourceTree = "<group>"; };
 		DD0D600015C4EEF700029420 /* DEBUGMODEL_CircleXY.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_CircleXY.h; sourceTree = "<group>"; };
 		DD0D600115C4EEF700029420 /* DEBUGMODEL_CircleXZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DEBUGMODEL_CircleXZ.h; sourceTree = "<group>"; };
@@ -926,8 +926,8 @@
 				DD0D5FF915C4EEF700029420 /* MathTypes.h */,
 				DD0D5FFA15C4EEF700029420 /* MathUtil.cpp */,
 				DD0D5FFB15C4EEF700029420 /* MathUtil.h */,
-				DD0D5FFC15C4EEF700029420 /* matrix.cpp */,
-				DD0D5FFD15C4EEF700029420 /* matrix.h */,
+				DD0D5FFC15C4EEF700029420 /* Matrix.cpp */,
+				DD0D5FFD15C4EEF700029420 /* Matrix.h */,
 			);
 			path = Math;
 			sourceTree = "<group>";
@@ -1501,7 +1501,7 @@
 				DD0D5FA115C4E45F00029420 /* pngwutil.c in Sources */,
 				DD0D608B15C4FB5500029420 /* MathTypes.cpp in Sources */,
 				DD0D608C15C4FB5500029420 /* MathUtil.cpp in Sources */,
-				DD0D608D15C4FB5500029420 /* matrix.cpp in Sources */,
+				DD0D608D15C4FB5500029420 /* Matrix.cpp in Sources */,
 				DD0D608E15C4FB5A00029420 /* AnimationController.cpp in Sources */,
 				DD0D608F15C4FB5A00029420 /* SpriteSheetAnimator.cpp in Sources */,
 				DD0D609015C4FB6500029420 /* CoreGameObject.cpp in Sources */,
@@ -1579,7 +1579,7 @@
 				DDEEC83415C517DD0074A634 /* EngineModels.cpp in Sources */,
 				DDEEC83515C517E40074A634 /* MathTypes.cpp in Sources */,
 				DDEEC83615C517E40074A634 /* MathUtil.cpp in Sources */,
-				DDEEC83715C517E40074A634 /* matrix.cpp in Sources */,
+				DDEEC83715C517E40074A634 /* Matrix.cpp in Sources */,
 				DDEEC83815C517FD0074A634 /* CoreInput_DeviceInputState.cpp in Sources */,
 				DDEEC83915C517FD0074A634 /* CoreInput_GamePad.cpp in Sources */,
 				DDEEC83A15C517FD0074A634 /* TouchInputIOS.mm in Sources */,

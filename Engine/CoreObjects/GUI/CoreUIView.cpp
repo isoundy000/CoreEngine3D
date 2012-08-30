@@ -12,7 +12,7 @@ DEFINEFACTORY(CoreUIView);
 
 //Engine includes
 #include "Math/MathUtil.h"
-#include "Math/matrix.h"
+#include "Math/Matrix.h"
 #include "Game/Game.h"
 #include "ThirdParty/pugixml/src/pugixml.hpp"
 #include "Util/Hash.h"
