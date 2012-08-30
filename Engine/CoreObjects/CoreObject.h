@@ -86,6 +86,7 @@ public:
 	
 	void InvalidateHandle();
 	bool m_markedForDeletion;
+	bool m_canUpdate;
 	
 protected:
 

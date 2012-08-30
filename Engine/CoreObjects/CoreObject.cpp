@@ -61,6 +61,7 @@ bool CoreObject::Init(u32 type)
 {
 	m_markedForDeletion = false;
 	m_entityTypeHash = type;
+	m_canUpdate = true;
 
 	return COREOBJECTMANAGER->AddObject(this);
 }

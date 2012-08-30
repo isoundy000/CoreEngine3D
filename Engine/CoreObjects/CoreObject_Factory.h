@@ -195,7 +195,10 @@ public:
         for(u32 i=listStart; i<num; ++i)
         {
             T* pCurrObject = &m_pObjectList[i];
-            pCurrObject->Update(timeElapsed);
+			if(pCurrObject->m_canUpdate == true)
+			{
+				pCurrObject->Update(timeElapsed);
+			}
         }
     }
 	
@@ -259,7 +262,10 @@ public:
             for(u32 i=0; i<m_numObjects; ++i)
             {
                 T* pCurrObject = &m_pObjectList[i];
-                pCurrObject->Update(timeElapsed);
+				if(pCurrObject->m_canUpdate == true)
+				{
+					pCurrObject->Update(timeElapsed);
+				}
             }
             
 		}
