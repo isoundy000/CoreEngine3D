@@ -33,7 +33,7 @@ DEFINEFACTORY(GameObjectTemplate);
 
 
 //Sound
-/*static ItemSoundDescription g_Sound_SpaceShipBeam =
+/*static SoundAsset g_Sound_SpaceShipBeam =
 {
 	"ArtResources/SFX/SpaceShipBeam.wav",
 	0,//soundBufferID
