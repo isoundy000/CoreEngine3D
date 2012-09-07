@@ -155,12 +155,17 @@ void GamePad::DebugDraw()
 		if(pButton->value & (1<<CoreInput_ButtonState_Began))
 		{
 			SetVec4(&circleColor,0,1,0,1);
-			circleRadius = pButton->buttonRadius*1.5f;
+			circleRadius = pButton->buttonRadius*0.75f;
 		}
 		else if(pButton->value & (1<<CoreInput_ButtonState_Ended))
 		{
 			SetVec4(&circleColor,1,1,0,1);
 			circleRadius = pButton->buttonRadius*2.5f;
+		}
+		else if(pButton->value & (1<<CoreInput_ButtonState_Held))
+		{
+			SetVec4(&circleColor,1,0.5f,0.5f,1);
+			circleRadius = pButton->buttonRadius*1.5f;
 		}
 		else
 		{
