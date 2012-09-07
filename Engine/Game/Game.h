@@ -29,6 +29,8 @@
 #include "CoreInput_PCInputState.h"
 #endif
 
+#include "Input/CoreInput_GamePad.h"
+
 #include "CoreAudio_OpenAL.h"
 
 #if defined (PLATFORM_OSX) || defined (PLATFORM_IOS)
@@ -200,6 +202,9 @@ public:
 	MouseInputState m_mouseState;
 	KeyboardInputState m_keyboardState;
 #endif
+	
+	virtual const GamePad* GetGamePad(u32 playerIndex){return NULL;}
+	
 	virtual const vec3* GetPlayerPos(s32 playerIndex){return NULL;}
 	virtual void ProcessMessage(u32 message, u32 parameter){};	//Pass in a hash value
 	

@@ -105,8 +105,8 @@ public:
 	GamePadButton* AddButton(GamePadButtonType type, const JoystickBoundingBox& boundingBox, f32 radius);
 	void DebugDraw();
 	void Update();
-	GamePadJoystick* GetJoystickByType(GamePadJoystickType type);
-	GamePadButton* GetGamePadButtonByType(GamePadButtonType type);
+	const GamePadJoystick* GetJoystickByType(GamePadJoystickType type) const;
+	const GamePadButton* GetGamePadButtonByType(GamePadButtonType type) const;
 	
 	GamePadJoystick joysticks[GamePadJoystickType_Num];
 	u32 numJoysticks;

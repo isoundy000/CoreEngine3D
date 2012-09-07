@@ -76,11 +76,11 @@ GamePadButton* GamePad::AddButton(GamePadButtonType type, const JoystickBounding
 	return pButton;
 }
 
-GamePadJoystick* GamePad::GetJoystickByType(GamePadJoystickType type)
+const GamePadJoystick* GamePad::GetJoystickByType(GamePadJoystickType type) const
 {
 	for(u32 joystickIDX=0; joystickIDX<numJoysticks; ++joystickIDX)
 	{
-		GamePadJoystick* pJoystick = &joysticks[joystickIDX];
+		const GamePadJoystick* pJoystick = &joysticks[joystickIDX];
 		if(pJoystick->joystickType == type)
 		{
 			return pJoystick;
@@ -91,11 +91,11 @@ GamePadJoystick* GamePad::GetJoystickByType(GamePadJoystickType type)
 }
 
 
-GamePadButton* GamePad::GetGamePadButtonByType(GamePadButtonType type)
+const GamePadButton* GamePad::GetGamePadButtonByType(GamePadButtonType type) const
 {
 	for(u32 buttonIDX=0; buttonIDX<numButtons; ++buttonIDX)
 	{
-		GamePadButton* pButton = &buttons[buttonIDX];
+		const GamePadButton* pButton = &buttons[buttonIDX];
 		if(pButton->buttonType == type)
 		{
 			return pButton;
