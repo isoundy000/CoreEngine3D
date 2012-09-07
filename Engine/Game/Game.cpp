@@ -88,6 +88,7 @@ void Game::ResetCamera()
 bool Game::Init()
 {	
 	m_paused = false;
+	SetPixelsPerMeter(64.0f);
 	
 #if defined(_DEBUG_PC)
 	m_pUIEditor = NULL;
@@ -1281,7 +1282,15 @@ f32 Game::GetHalfTileSize()
 
 f32 Game::GetPixelsPerMeter()
 {
+#ifdef _DEBUG
+	assert(m_pixelsPerMeter != 0);
+#endif
 	return static_cast<f32>(m_pixelsPerMeter);
+}
+
+void Game::SetPixelsPerMeter(u32 pixelsPerMeter)
+{
+	m_pixelsPerMeter = pixelsPerMeter;
 }
 
 

@@ -240,6 +240,7 @@ public:
 	f32 GetTileSizeMeters(){return m_tileSizeMeters;}
 	f32 GetHalfTileSizeMeters(){return m_halfTileSizeMeters;}
 	f32 GetPixelsPerMeter();
+	void SetPixelsPerMeter(u32 pixelsPerMeter);
 	const vec3* GetCameraPosition();
 	void SetCameraPosition(const vec3* pCamPos, f32 lerpTime);	//use with caution
 	void SetParallaxPosition(const vec3* pParallaxPos);

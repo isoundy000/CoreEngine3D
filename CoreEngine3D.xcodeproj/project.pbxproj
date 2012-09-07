@@ -516,7 +516,7 @@
 		DD0D607415C4EEF700029420 /* Box2DContactListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DContactListener.h; sourceTree = "<group>"; };
 		DD0D607515C4EEF700029420 /* Box2DDebugDraw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = Box2DDebugDraw.cpp; sourceTree = "<group>"; };
 		DD0D607615C4EEF700029420 /* Box2DDebugDraw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DDebugDraw.h; sourceTree = "<group>"; };
-		DD0D607715C4EEF700029420 /* Box2DUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DUtil.cpp; sourceTree = "<group>"; };
+		DD0D607715C4EEF700029420 /* Box2DUtil.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = Box2DUtil.cpp; sourceTree = "<group>"; };
 		DD0D607815C4EEF700029420 /* Box2DUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DUtil.h; sourceTree = "<group>"; };
 		DD0D607915C4EEF700029420 /* CoreDebug.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = CoreDebug.cpp; sourceTree = "<group>"; };
 		DD0D607A15C4EEF700029420 /* CoreDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreDebug.h; sourceTree = "<group>"; };

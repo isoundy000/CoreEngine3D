@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Jody McAdams. All rights reserved.
 //
 
-#ifndef Game_OSX__GameObjectTemplate_h
-#define Game_OSX__GameObjectTemplate_h
+#ifndef Game_GameObjectTemplate_h
+#define Game_GameObjectTemplate_h
 
 //ENGINE
 #include "ENGINE/CoreObjects/CoreGameObject.h"

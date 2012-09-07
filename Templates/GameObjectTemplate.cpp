@@ -17,7 +17,7 @@ DEFINEFACTORY(GameObjectTemplate);
 //#include "ENGINE/CoreObjects/SoundPlayer.h"
 
 //GAME
-#include "GameModels.h"
+//#include "GameModels.h"
 
 //Art
 /*static TextureAsset g_Art_SpaceShip =
