@@ -22,12 +22,14 @@ const b2Vec2& AsBox2DVec2(const vec2& vec0)
 b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u32 maskBits, b2BodyType bodyType)
 {
 	b2Body* pOutBody = NULL;
+
+	const f32 pixelsPerMeter = GAME->GetPixelsPerMeter();
 	
 	b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
 	
-	const vec2 pos0 = {x0,y0};
-	const vec2 pos1 = {x1,y1};
+	const vec2 pos0 = {x0/pixelsPerMeter,y0/pixelsPerMeter};
+	const vec2 pos1 = {x1/pixelsPerMeter,y1/pixelsPerMeter};
 	
 	b2EdgeShape shape;
 	shape.Set(AsBox2DVec2(pos0), AsBox2DVec2(pos1));
