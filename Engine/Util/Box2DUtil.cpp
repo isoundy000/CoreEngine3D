@@ -19,7 +19,38 @@ const b2Vec2& AsBox2DVec2(const vec2& vec0)
     return (b2Vec2&)vec0;
 }
 
-b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 maskBits, b2BodyType bodyType, const b2FixtureDef* pfixtureDef)
+b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u32 maskBits, b2BodyType bodyType)
+{
+	b2Body* pOutBody = NULL;
+	
+	b2BodyDef bodyDef;
+	bodyDef.type = bodyType;
+	
+	const vec2 pos0 = {x0,y0};
+	const vec2 pos1 = {x1,y1};
+	
+	b2EdgeShape shape;
+	shape.Set(AsBox2DVec2(pos0), AsBox2DVec2(pos1));
+	
+	bodyDef.position.Set(0, 0);
+	
+	pOutBody = GAME->Box2D_GetWorld()->CreateBody(&bodyDef);
+	
+	{
+		b2FixtureDef fixtureDef;
+		fixtureDef.density = 1;
+		fixtureDef.friction = GAME->m_Box2D_defaultCollisionFriction;
+		fixtureDef.shape = &shape;
+		fixtureDef.filter.categoryBits = categoryBits;
+		fixtureDef.filter.maskBits = maskBits;
+		
+		pOutBody->CreateFixture(&fixtureDef);
+	}
+	
+	return pOutBody;
+}
+
+b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 maskBits, b2BodyType bodyType)
 {
 	b2Body* pOutBody = NULL;
 	
@@ -38,7 +69,6 @@ b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 m
 	b2CircleShape shape;
 	shape.m_radius = radius/pixelsPerMeter;
 
-	if(pfixtureDef == NULL)
 	{
 		b2FixtureDef fd;
 		fd.isSensor = false;
@@ -50,10 +80,6 @@ b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 m
 		fd.filter.maskBits = (u16)maskBits;
 		
 		pOutBody->CreateFixture(&fd);
-	}
-	else
-	{
-		pOutBody->CreateFixture(pfixtureDef);
 	}
 	
 	return pOutBody;
