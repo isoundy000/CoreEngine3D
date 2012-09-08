@@ -46,11 +46,6 @@ extern OpenGLRenderer* GLRENDERER;
 
 #define RENDERLOOP_ENABLED 1
 
-#if defined(DEBUG) || defined(_DEBUG)
-	#define DEBUG_DRAW 1
-#endif
-
-
 #define GAUSSIAN_NUMSAMPLES 6
 
 #define DEBUG_LINES_MAXVERTICES 30
@@ -158,6 +153,7 @@ public:
 	void ClearOneFrameGeometry();
 	void RenderLoop(u32 camViewIDX,RenderableGeometry3D* renderableObjectArray, u32 numRenderableObjects);
 	bool GetSupportsVAOs();
+	void SetDebugDrawEnabled(bool enabled);
 	void SetClearColor(f32 r, f32 g, f32 b);
 	const vec3* GetClearColor();
 	void SetGravityDir(const vec3* pNewGravityDir);
@@ -368,6 +364,7 @@ private:
     f32 m_clearColorPulseTimer;
     
     bool m_postProcessFlipper;
+	bool m_debugDrawEnabled;
 };
 
 
