@@ -31,6 +31,7 @@ public:
 	bool AddObject(CoreObject* pCoreObject);	//use outside this class is deprecated
 	void PrintStatus();
 	CoreObject* GetObjectByHandle(CoreObjectHandle handle);
+	void DeleteObjectByHandle(CoreObjectHandle handle);
 	s32 GetNumEntries(){return m_activeEntryCount;}
 private:
 	void RemoveObject(CoreObject* pCoreObject);

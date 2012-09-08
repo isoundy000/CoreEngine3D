@@ -2510,7 +2510,7 @@ bool Game::LoadTiledLevelFromTMX(std::string& path, std::string& filename, u32 t
 		LoadSharedResources();
 		
         //Perform actual loading of textures and sounds
-        LoadItemSounds();  
+        LoadItemSounds();
         LoadItemArt();
         
 		//All the objects have been created, now initialize them!

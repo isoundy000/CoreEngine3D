@@ -155,6 +155,18 @@ CoreObject* CoreObjectManager::GetObjectByHandle(CoreObjectHandle handle)
 
 
 //----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+void CoreObjectManager::DeleteObjectByHandle(CoreObjectHandle handle)
+{
+	CoreObject* pObject = GetObjectByHandle(handle);
+	if(pObject != NULL)
+	{
+		pObject->DeleteObject();
+	}
+}
+
+
+//----------------------------------------------------------------------------
 //Gets called when a CoreObject changes it's memory location
 //like when you compact an array
 //----------------------------------------------------------------------------
