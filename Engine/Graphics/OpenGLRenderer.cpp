@@ -4666,7 +4666,7 @@ RenderableGeometry3D* CreateSprite(TextureAsset* pTexture, const vec3* pPosition
 	assert(pGeom != NULL);
 #endif
 
-	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, material, &pTexture->textureHandle, scaleMat, renderLayer, blendMode, RenderFlagDefaults_2DTexture_AlphaBlended_UseView);
+	GLRENDERER->InitRenderableGeometry3D(pGeom, &g_Square1x1_modelData, material, &pTexture->textureHandle, scaleMat, renderLayer, blendMode, RenderFlagDefaults_2DTexture_AlphaBlended_UseView|RenderFlag_Visible);
 	
 	SetGeomPos(pGeom,pPosition);
 	
