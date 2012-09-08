@@ -19,7 +19,7 @@ const b2Vec2& AsBox2DVec2(const vec2& vec0)
     return (b2Vec2&)vec0;
 }
 
-b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u32 maskBits, b2BodyType bodyType)
+b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u32 maskBits, b2BodyType bodyType, bool isSensor)
 {
 	b2Body* pOutBody = NULL;
 
@@ -45,6 +45,7 @@ b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u
 		fixtureDef.shape = &shape;
 		fixtureDef.filter.categoryBits = categoryBits;
 		fixtureDef.filter.maskBits = maskBits;
+		fixtureDef.isSensor = isSensor;
 		
 		pOutBody->CreateFixture(&fixtureDef);
 	}
@@ -52,7 +53,44 @@ b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u
 	return pOutBody;
 }
 
-b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 maskBits, b2BodyType bodyType)
+void Box2D_CreateCircleFixture(b2FixtureDef* pOut_fixtureDef, b2CircleShape* pOut_Shape, f32 radius, u32 categoryBits, u32 maskBits, f32 density, f32 bounciness, f32 friction, bool isSensor)
+{
+	const f32 pixelsPerMeter = GAME->GetPixelsPerMeter();
+	
+	pOut_Shape->m_radius = radius/pixelsPerMeter;
+	
+	pOut_fixtureDef->shape = pOut_Shape;
+	pOut_fixtureDef->isSensor = isSensor;
+	pOut_fixtureDef->friction = friction;
+	pOut_fixtureDef->filter.categoryBits = categoryBits;
+	pOut_fixtureDef->filter.maskBits = maskBits;
+	pOut_fixtureDef->restitution = bounciness;
+}
+
+b2Body* Box2D_CreateCircleBody(f32 x, f32 y, b2BodyType bodyType, const b2FixtureDef* pfixtureDef)
+{
+	b2Body* pOutBody = NULL;
+	
+	const f32 pixelsPerMeter = GAME->GetPixelsPerMeter();
+	
+	b2BodyDef bd;
+	bd.type = bodyType;
+	
+	const f32 posX = x/pixelsPerMeter;
+	const f32 posY = y/pixelsPerMeter;
+	
+	bd.position.Set(posX, posY);
+	
+	pOutBody = GAME->Box2D_GetWorld()->CreateBody(&bd);
+	
+	pOutBody->CreateFixture(pfixtureDef);
+	
+	return pOutBody;
+}
+
+
+
+b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 maskBits, b2BodyType bodyType, bool isSensor)
 {
 	b2Body* pOutBody = NULL;
 	
@@ -73,7 +111,7 @@ b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 m
 
 	{
 		b2FixtureDef fd;
-		fd.isSensor = false;
+		fd.isSensor = isSensor;
 		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.restitution = 0.0f;
