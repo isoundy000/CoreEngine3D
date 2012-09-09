@@ -124,3 +124,22 @@ b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 m
 	
 	return pOutBody;
 }
+
+
+void Box2D_DrawAABB(const b2AABB& aabb)
+{
+	const f32 pixelsPerMeter = GAME->GetPixelsPerMeter();
+	
+	const vec2 lowerBound = {aabb.lowerBound.x*pixelsPerMeter,aabb.lowerBound.y*pixelsPerMeter};
+	const vec2 upperBound = {aabb.upperBound.x*pixelsPerMeter,aabb.upperBound.y*pixelsPerMeter};
+	
+	const vec3 topLeft = {lowerBound.x,lowerBound.y,0.0f};
+	const vec3 topRight = {upperBound.x,lowerBound.y,0.0f};
+	const vec3 botLeft = {lowerBound.x,upperBound.y,0.0f};
+	const vec3 botRight = {upperBound.x,upperBound.y,0.0f};
+	
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_2D, &topLeft, &topRight, &color4f_red);
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_2D, &botLeft, &botRight, &color4f_red);
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_2D, &topLeft, &botLeft, &color4f_red);
+	GLRENDERER->DEBUGDRAW_DrawLineSegment(DebugDrawMode_2D, &botRight, &topRight, &color4f_red);
+}
