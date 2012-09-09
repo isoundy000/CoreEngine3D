@@ -535,7 +535,7 @@ void Game::PlaySongByID(s32 songID, f32 volume, bool isLooping)
 	//m_pAudioPlayer = CreateAudioPlayer(fullPath,@"",YES,1.0f);
 	NSError* error;
 	
-	m_songVolume = 1.0f;
+	m_songVolume = volume;
 	
 	m_pAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:&error];
 	m_pAudioPlayer.volume = m_songVolume*m_globalSongVolume;
