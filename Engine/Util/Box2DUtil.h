@@ -21,6 +21,8 @@ b2Body* Box2D_CreateCircleBody(f32 x, f32 y, b2BodyType bodyType, const b2Fixtur
 
 b2Body* Box2D_CreateLineBody(f32 x0, f32 y0, f32 x1, f32 y1, u32 categoryBits, u32 maskBits, b2BodyType bodyType, bool isSensor = false);
 
+void Box2D_CreateAABB(b2AABB* pOut_AABB, f32 x0, f32 y0, f32 x1, f32 y1);
+
 void Box2D_DrawAABB(const b2AABB& aabb);
 
 //Fixtures

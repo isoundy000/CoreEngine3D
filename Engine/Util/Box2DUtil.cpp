@@ -126,6 +126,17 @@ b2Body* Box2D_CreateCircleBody(f32 x, f32 y, f32 radius, u32 categoryBits, u32 m
 }
 
 
+void Box2D_CreateAABB(b2AABB* pOut_AABB, f32 x0, f32 y0, f32 x1, f32 y1)
+{
+	const f32 pixelsPerMeter = GAME->GetPixelsPerMeter();
+	
+	pOut_AABB->lowerBound.x = x0/pixelsPerMeter;
+	pOut_AABB->lowerBound.y = y0/pixelsPerMeter;
+	pOut_AABB->upperBound.x = x1/pixelsPerMeter;
+	pOut_AABB->upperBound.y = y1/pixelsPerMeter;
+}
+
+
 void Box2D_DrawAABB(const b2AABB& aabb)
 {
 	const f32 pixelsPerMeter = GAME->GetPixelsPerMeter();
