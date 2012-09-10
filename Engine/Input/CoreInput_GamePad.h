@@ -80,6 +80,8 @@ struct GamePadJoystick
     JoystickMode stickMode;
     
     s32 touchIndex;
+	
+	bool recenterOnTouchBegin;
 };
 
 

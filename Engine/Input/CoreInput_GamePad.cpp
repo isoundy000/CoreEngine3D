@@ -24,6 +24,8 @@ GamePadJoystick* GamePad::AddJoystick(GamePadJoystickType type, JoystickMode sti
 	
 	GamePadJoystick* pJoystick = &joysticks[numJoysticks];
 	
+	pJoystick->recenterOnTouchBegin = true;
+	
 	pJoystick->joystickType = type;
 	
 	pJoystick->boundingBox = boundingBox;
@@ -580,7 +582,12 @@ void GamePad::Update()
 		{
 			case TouchState_Began:
                 //Set touch index for button
-                
+                if(touchIsLeftStick
+				   && pJoystick->recenterOnTouchBegin
+                   && pJoystick->touchIndex == -1)
+                {
+					CopyVec2(&pJoystick->stickCenter, &posCurr);
+				}
             case TouchState_Moving:
             {
                 
