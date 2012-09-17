@@ -14,6 +14,7 @@
 
 /* This macro allows it to be accessed as if it was 2D. */
 #define ARRAY2D(THEARRAY, X, Y, WIDTH) ((THEARRAY)[(X) + (Y) * (WIDTH)])
+#define ARRAY3D(THEARRAY, X, Y, Z, YLENGTH, ZLENGTH) ((THEARRAY)[X * ZLENGTH * YLENGTH + Y * ZLENGTH + Z])
 
 template <typename T>
 void Array_InsertionSort(T* array, s32 length, bool (*compareFunc)(const T& lhs, const T& rhs))
