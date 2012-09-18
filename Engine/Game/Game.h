@@ -165,6 +165,7 @@ struct Layer
 enum CameraMode
 {
 	CameraMode_FollowCam,
+	CameraMode_DriftToTarget,
 	CameraMode_Anchor,
 };
 
@@ -247,7 +248,7 @@ public:
 	f32 GetPixelsPerMeter();
 	void SetPixelsPerMeter(u32 pixelsPerMeter);
 	const vec3* GetCameraPosition();
-	void SetCameraPosition(const vec3* pCamPos, f32 lerpTime);	//use with caution
+	void SetCameraPosition(const vec3* pCamPos, f32 lerpTime = 0.0f);	//use with caution
 	void SetParallaxPosition(const vec3* pParallaxPos);
 	void SetParallaxScale(f32 parallaxScale);
 	void SetFollowCamTarget(const vec3* pFollowCamPos);
@@ -300,7 +301,6 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	u32 m_numTileSetDescriptions;
 	Layer m_layers[NumLevelLayers];
 	TiledLevelDescription m_tiledLevelDescription;
-	f32 m_view[16];
 	
 	vec3 m_camPos;
 	vec3 m_startCamPos;
@@ -320,6 +320,8 @@ protected:	//Only stuff that can be called from the game.cpp goes here
 	s32 m_camExtentTL_Y;
 	s32 m_camExtentBR_X;
 	s32 m_camExtentBR_Y;
+	
+	f32 m_camDriftSpeed;
 	
 #if defined (PLATFORM_IOS) || defined (PLATFORM_ANDROID)
 	bool m_touchIsDisabled[MAX_MULTITOUCH];

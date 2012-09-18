@@ -90,6 +90,8 @@ bool Game::Init()
 	m_paused = false;
 	SetPixelsPerMeter(64.0f);
 	
+	m_camDriftSpeed = 8.0f;
+	
 #if defined(_DEBUG_PC)
 	m_pUIEditor = NULL;
 	m_pTiledLevelEditor = NULL;
@@ -389,6 +391,14 @@ void Game::Update(f32 timeElapsed)
 		}
 		
 		LerpVec3(&m_camPos,&m_desiredCamPos,&m_startCamPos,m_camLerpTimer/m_camLerpTotalTime);
+	}
+	//This cam moves towards the desired position
+	else if(m_cameraMode == CameraMode_DriftToTarget)
+	{
+		//TODO: add speed controls
+		vec3 moveVec;
+		SubVec3(&moveVec,&m_desiredCamPos,&m_camPos);
+		AddScaledVec3_Self(&m_camPos, &moveVec, timeElapsed*m_camDriftSpeed);
 	}
 	//If we're not lerping and it's follow cam, straight up copy the position
 	else if(m_cameraMode == CameraMode_FollowCam)
@@ -1198,21 +1208,29 @@ void Game::SetParallaxScale(f32 parallaxScale)
 }
 
 
-//use with caution
+//TODO: change the lerpTime variable name
 void Game::SetCameraPosition(const vec3* pCamPos, f32 lerpTime)
 {
-	if(lerpTime == 0.0f)
+	if(m_cameraMode == CameraMode_DriftToTarget)
 	{
-		CopyVec3(&m_startCamPos,pCamPos);
-		CopyVec3(&m_camPos,pCamPos);
+		m_camDriftSpeed = lerpTime;
+		CopyVec3(&m_desiredCamPos,pCamPos);
 	}
 	else
 	{
-		m_camLerpTimer = lerpTime;
-		m_camLerpTotalTime = lerpTime;
-		
-		CopyVec3(&m_desiredCamPos,pCamPos);
-		CopyVec3(&m_startCamPos,&m_camPos);
+		if(lerpTime == 0.0f)
+		{
+			CopyVec3(&m_startCamPos,pCamPos);
+			CopyVec3(&m_camPos,pCamPos);
+		}
+		else
+		{
+			m_camLerpTimer = lerpTime;
+			m_camLerpTotalTime = lerpTime;
+			
+			CopyVec3(&m_desiredCamPos,pCamPos);
+			CopyVec3(&m_startCamPos,&m_camPos);
+		}
 	}
 }
 
@@ -1410,6 +1428,7 @@ void Game::ToggleTileVisibility(LevelLayer levelLayer,u32 tileIndex_X,u32 tileIn
 }
 
 
+//TODO: see if this function and m_followCamPos variable are even necessary
 void Game::SetFollowCamTarget(const vec3* pFollowCamPos)
 {
 	CopyVec3(&m_followCamPos,pFollowCamPos);
